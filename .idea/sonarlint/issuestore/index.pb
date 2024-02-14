@@ -41,3 +41,7 @@ ISpring Boot/lms/src/main/java/com/courzelo/lms/entities/FieldOfStudy.java,e\a\
 MSpring Boot/lms/src/main/java/com/courzelo/lms/entities/NonDisponibility.java,6\c\6cf0e911ef39a0d86b299d33ca2a0156f74820d1
 u
 ESpring Boot/lms/src/main/java/com/courzelo/lms/entities/Semester.java,e\c\eced9402d6116448f86b63a6625b214eb6d574ab
+{
+KSpring Boot/lms/src/main/java/com/courzelo/lms/entities/SemesterNumber.java,4\3\43b1fc860583a32a2f4a2360f7ce4fa14f290e40
+s
+CSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Period.java,e\6\e6b8e819d7781c253486393e4d83560ed93fce5f

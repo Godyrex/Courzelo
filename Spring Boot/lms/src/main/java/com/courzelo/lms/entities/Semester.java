@@ -1,5 +1,7 @@
 package com.courzelo.lms.entities;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,5 +38,7 @@ public class Semester {
 
     @Version
     private Integer version;
+    @Enumerated(EnumType.STRING)
+    private SemesterNumber semesterNumber;
 
 }

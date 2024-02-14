@@ -1,4 +1,4 @@
-package com.courzelo.lms.dto;
+package com.courzelo.lms.entities;
 
 
 public enum SemesterNumber {
