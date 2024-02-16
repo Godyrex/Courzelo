@@ -23,13 +23,13 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn -B package --file Spring Boot/lms/pom.xml
+      run: mvn -B package --file "Spring Boot/lms/pom.xml"
 
     - name: Run Unit Tests
-      working-directory: Spring Boot/lms
+      working-directory: "Spring Boot/lms"
       run: mvn test
     - name: Code Quality Checks
-      working-directory: Spring Boot/lms
+      working-directory: "Spring Boot/lms"
       run: mvn verify
 
     - name: Cache SonarCloud packages
@@ -47,11 +47,11 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
 
     - name: Generate Code Coverage Report
-      working-directory: Spring Boot/lms
+      working-directory: "Spring Boot/lms"
       run: mvn jacoco:report -DdataFile=target/jacoco.exec
 
     - name: Build and analyze
-      working-directory: Spring Boot/lms
+      working-directory: "Spring Boot/lms"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
