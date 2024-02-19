@@ -19,6 +19,7 @@ public class NonDisponibilityService {
     public NonDisponibilityService(final NonDisponibilityRepository nonDisponibilityRepository) {
         this.nonDisponibilityRepository = nonDisponibilityRepository;
     }
+    
 
     public List<NonDisponibilityDTO> findAll() {
         final List<NonDisponibility> nonDisponibilities = nonDisponibilityRepository.findAll(Sort.by("id"));
