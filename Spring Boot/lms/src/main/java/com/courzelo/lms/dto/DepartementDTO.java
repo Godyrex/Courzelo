@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class DepartementDTO {
 
-    private Long id;
+    private String  id;
 
     @Size(max = 255)
     private String name;

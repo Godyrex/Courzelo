@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 public class NonDisponibility {
 
     @Id
-    private Long id;
+    private  String id;
 
     @CreatedDate
     private OffsetDateTime dateCreated;

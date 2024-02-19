@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 public class Departement {
 
     @Id
-    private Long id;
+    private String id;
 
     @Size(max = 255)
     private String name;

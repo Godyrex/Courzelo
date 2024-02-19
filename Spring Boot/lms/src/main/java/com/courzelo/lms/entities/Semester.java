@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 public class Semester {
 
     @Id
-    private Long id;
+    private  String id;
 
     private LocalDate startDate;
 

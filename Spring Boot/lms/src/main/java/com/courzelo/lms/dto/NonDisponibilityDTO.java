@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class NonDisponibilityDTO {
 
-    private Long id;
+    private String  id;
 
 }
