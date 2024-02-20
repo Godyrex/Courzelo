@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @NotNull
     private List<Role> roles= new ArrayList<>();
     private boolean enabled;
+    private Boolean ban;
     private String grade;
     private String speciality;
     private List<String> courses;
@@ -53,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !ban;
     }
 
     @Override
@@ -63,6 +64,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 }

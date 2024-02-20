@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -69,6 +68,14 @@ public class UserController {
     @PostMapping("/signing")
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
         return userService.authenticateUser(loginDTO);
+    }
+    @PostMapping("/ban/{userID}")
+    public ResponseEntity<Response> ban(@PathVariable String userID){
+        return userService.ban(userID);
+    }
+    @PostMapping("/unban/{userID}")
+    public ResponseEntity<Response> unban(@PathVariable String userID){
+        return userService.unban(userID);
     }
 
 }

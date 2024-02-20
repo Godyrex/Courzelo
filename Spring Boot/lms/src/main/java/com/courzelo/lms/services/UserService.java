@@ -7,6 +7,7 @@ import com.courzelo.lms.dto.ProfileDTO;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.UserNotFoundException;
+import com.courzelo.lms.exceptions.UserRoleNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
@@ -40,6 +41,7 @@ public class UserService implements IUserService {
         }
         user.setPassword(encoder.encode(user.getPassword()));
         user.getRoles().add(Role.STUDENT);
+        user.setBan(false);
         userRepository.save(user);
         return ResponseEntity
                 .ok()
@@ -141,6 +143,34 @@ public class UserService implements IUserService {
                 ));
     }
 
+    @Override
+    public ResponseEntity<Response> ban(String userID) {
+        User user = userRepository.findById(userID)
+                .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND+userID));
+        if(Boolean.TRUE.equals(user.getBan())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Response("User already banned!"));
+        }
+        user.setBan(true);
+        userRepository.save(user);
+        return ResponseEntity.ok().body(new Response("User banned!"));
+    }
+
+    @Override
+    public ResponseEntity<Response> unban(String userID) {
+        User user = userRepository.findById(userID)
+                .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND+userID));
+        if(Boolean.FALSE.equals(user.getBan())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Response("User already unbanned!"));
+        }
+        user.setBan(false);
+        userRepository.save(user);
+        return ResponseEntity.ok().body(new Response("User unbanned!"));
+    }
+
 
     private User checkUserAndRole(Role role,String userID) {
         User user = userRepository.findById(userID)
@@ -153,7 +183,7 @@ public class UserService implements IUserService {
             }
         }
         if(!roleExists){
-            throw new RuntimeException("role not found");
+            throw new UserRoleNotFoundException("Role not found");
         }
         return user;
     }

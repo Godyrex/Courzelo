@@ -24,5 +24,8 @@ public interface IUserService {
     ResponseEntity<Response> removeRole (Role role,String userID);
     ResponseEntity<Response> changePassword(PasswordDTO passwordDTO,String email);
     ResponseEntity<JwtResponse> authenticateUser(LoginDTO loginDTO);
+    ResponseEntity<Response> ban(String userID);
+    ResponseEntity<Response> unban(String userID);
+
 
 }
