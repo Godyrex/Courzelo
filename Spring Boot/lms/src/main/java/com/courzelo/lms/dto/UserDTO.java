@@ -2,7 +2,6 @@ package com.courzelo.lms.dto;
 
 import com.courzelo.lms.entities.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;

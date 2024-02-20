@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class ProfileDTO {
-    @NotNull
-    private String id;
 
     private String name;
 
