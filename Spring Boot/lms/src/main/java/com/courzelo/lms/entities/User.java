@@ -26,12 +26,15 @@ public class User implements UserDetails {
     private String name;
     @NotNull
     private String lastName;
+    @DBRef
     private List<Token> tokens = new ArrayList<>();
     @NotNull
     private List<Role> roles= new ArrayList<>();
     private boolean enabled;
-    @DBRef
-    private Object roleDetails;
+    private String grade;
+    private String speciality;
+    private List<String> courses;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -11,7 +11,7 @@ public class Token {
     @Id
     private String id;
     @NotNull
-    private String token;
+    private String tokenCode;
     private boolean valid;
     private boolean expired;
 }
