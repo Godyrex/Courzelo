@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import {LoginResponse} from "../../../model/user/LoginResponse";
+import {UpdateService} from "../profile/update.service";
+import {FormBuilder} from "@angular/forms";
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
 @Injectable({
@@ -24,7 +27,7 @@ export class TokenStorageService {
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
-  public getUser(): any {
+  public getUser(): LoginResponse {
     const user = window.localStorage.getItem(USER_KEY);
     if (user) {
       return JSON.parse(user);

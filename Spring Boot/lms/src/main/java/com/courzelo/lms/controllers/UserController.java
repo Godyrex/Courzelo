@@ -1,10 +1,11 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.dto.*;
+import com.courzelo.lms.dto.PasswordDTO;
+import com.courzelo.lms.dto.ProfileDTO;
+import com.courzelo.lms.dto.UserDTO;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IAuthService;
 import com.courzelo.lms.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping()
+    @PatchMapping("/update/name")
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user,Principal principal){
         return userService.updateUserProfile(user,principal.getName());
     }
@@ -55,7 +56,7 @@ public class UserController {
         return userService.removeRole(role,userID);
     }
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/changePassword")
+    @PatchMapping("/update/password")
     public ResponseEntity<Response> changePassword(Principal principal, @Valid @RequestBody PasswordDTO passwordDTO){
         return userService.changePassword(passwordDTO, principal.getName());
     }

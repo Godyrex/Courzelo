@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {LoginRequest} from "../../model/user/LoginRequest";
-import {LoginResponse} from "../../model/user/LoginResponse";
+import {LoginRequest} from "../../../model/user/LoginRequest";
+import {LoginResponse} from "../../../model/user/LoginResponse";
 import {Router} from "@angular/router";
-import {AuthenticationService} from "../../service/user/auth/authentication.service";
-import {TokenStorageService} from "../../service/user/auth/token-storage.service";
+import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 
 @Component({
   selector: 'app-login',

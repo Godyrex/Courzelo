@@ -8,7 +8,6 @@ import com.courzelo.lms.exceptions.UserNotFoundException;
 import com.courzelo.lms.exceptions.UserRoleNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.Response;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,10 +46,11 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<Response> updateUserProfile(ProfileDTO profileDTO, String email) {
         User user = userRepository.findUserByEmail(email);
-        if(profileDTO.getName()!=null){
+        System.out.println(profileDTO);
+        if(profileDTO.getName()!=null&& !profileDTO.getName().isEmpty()){
             user.setName(profileDTO.getName());
         }
-        if(profileDTO.getLastName()!=null){
+        if(profileDTO.getLastName()!=null&& !profileDTO.getLastName().isEmpty()){
             user.setLastName(profileDTO.getLastName());
         }
         userRepository.save(user);

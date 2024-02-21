@@ -10,11 +10,13 @@ import { FooterComponent } from './back/footer/footer.component';
 import { DashboardComponent } from './back/dashboard/dashboard.component';
 import { FrontheaderComponent } from './front/frontheader/frontheader.component';
 import { FrontfooterComponent } from './front/frontfooter/frontfooter.component';
-import { RegisterComponent } from './back/register/register.component';
+import { RegisterComponent } from './back/auth/register/register.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { LoginComponent } from './back/login/login.component';
-import { LogoutComponent } from './back/logout/logout.component';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
+import { LoginComponent } from './back/auth/login/login.component';
+import { LogoutComponent } from './back/auth/logout/logout.component';
+import { ProfileComponent } from './back/user/profile/profile.component';
+import {JwtInterceptor} from "./service/user/auth/JwtInterceptor";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { LogoutComponent } from './back/logout/logout.component';
     FrontfooterComponent,
     RegisterComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,11 @@ import { LogoutComponent } from './back/logout/logout.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [HttpClient],
+  providers: [HttpClient,    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: JwtInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
