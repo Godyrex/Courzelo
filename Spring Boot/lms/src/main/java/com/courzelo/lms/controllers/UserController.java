@@ -28,8 +28,8 @@ public class UserController {
 
     private final IUserService userService;
     @PreAuthorize("permitAll()")
-    @PostMapping()
-    public ResponseEntity<Response> saveUser(@Valid @RequestBody RegisterDTO user){
+    @PostMapping("/signup")
+    public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user){
      return userService.saveUser(modelMapper.map(user,User.class));
     }
     @PreAuthorize("isAuthenticated()")

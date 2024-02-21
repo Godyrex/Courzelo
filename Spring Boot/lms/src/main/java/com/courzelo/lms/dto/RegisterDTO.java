@@ -21,5 +21,5 @@ public class RegisterDTO {
 
     @NotNull(message = "Last name cannot be null")
     @Size(min = 2, message = "Last name must be at least 2 characters long")
-    private String lastName;
+    private String lastname;
 }
