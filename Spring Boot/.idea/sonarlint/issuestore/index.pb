@@ -93,3 +93,15 @@ p
 @lms/src/main/java/com/courzelo/lms/services/IStudentService.java,c\1\c123afaac198744070f678e15a87ec378d8f5bd1
 m
 =lms/src/main/java/com/courzelo/lms/controllers/TimeTable.java,4\1\412d1007ed649758445424820ddd649c640756be
+c
+3lms/src/main/java/com/courzelo/lms/dto/UserDTO.java,d\6\d626ed314a1c898c7a705c22ecbf4a2facf34377
+e
+5lms/src/main/java/com/courzelo/lms/entities/Role.java,e\c\ec826707fc193f2f5870194b8a9250964b34a016
+g
+7lms/src/main/java/com/courzelo/lms/dto/RegisterDTO.java,0\4\043d5df01c18d33dc428a3f89836b272722b7418
+f
+6lms/src/main/java/com/courzelo/lms/dto/ProfileDTO.java,c\1\c165d054fdf78037f5260eed118a5e295c2d803b
+g
+7lms/src/main/java/com/courzelo/lms/dto/PasswordDTO.java,0\3\03e68cd72c2fb0e142168962be961e3e8ac339b7
+d
+4lms/src/main/java/com/courzelo/lms/dto/LoginDTO.java,5\2\52eed8899a1ffbd12019e13eb2bc8f562896e3c7

@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 @RestController
@@ -52,4 +53,9 @@ public class ElementModule {
         elementModuleService.delete(id);
         return ResponseEntity.noContent().build();
     }
+   // @RequestMapping("/api/days")
+   /* @GetMapping
+    public ResponseEntity<DayOfWeek[]> getDaysOfWeek() {
+        return ResponseEntity.ok(DayOfWeek.values());
+    }*/
 }

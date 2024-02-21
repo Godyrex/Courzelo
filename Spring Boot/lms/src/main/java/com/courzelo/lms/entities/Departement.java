@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Document(collection = "Departements")
@@ -31,5 +33,5 @@ public class Departement {
 
     @Version
     private Integer version;
-
+    private List<FieldOfStudy> fieldOfStudies=new ArrayList<>() ;
 }

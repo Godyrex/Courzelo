@@ -1,5 +1,6 @@
 package com.courzelo.lms.dto;
 
+import com.courzelo.lms.entities.Departement;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,5 @@ public class FieldOfStudyDTO {
 
     @Size(max = 255)
     private String chefField;
-
+ private Departement departement;
 }
