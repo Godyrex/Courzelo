@@ -5,13 +5,14 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Data
 @Document(collection = "tokens")
 public class Token {
     @Id
     private String id;
     @NotNull
-    private String token;
+    private String tokenCode;
     private boolean valid;
     private boolean expired;
 }

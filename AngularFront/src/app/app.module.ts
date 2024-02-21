@@ -8,7 +8,11 @@ import { HeaderComponent } from './back/header/header.component';
 import { SidebarComponent } from './back/sidebar/sidebar.component';
 import { FooterComponent } from './back/footer/footer.component';
 import { DashboardComponent } from './back/dashboard/dashboard.component';
-import {NgOptimizedImage} from "@angular/common";
+import { FrontheaderComponent } from './front/frontheader/frontheader.component';
+import { FrontfooterComponent } from './front/frontfooter/frontfooter.component';
+import { RegisterComponent } from './back/register/register.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -17,14 +21,19 @@ import {NgOptimizedImage} from "@angular/common";
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-    DashboardComponent
+    DashboardComponent,
+    FrontheaderComponent,
+    FrontfooterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgOptimizedImage
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
