@@ -2,7 +2,6 @@ package com.courzelo.lms.services;
 
 
 
-import com.courzelo.lms.entities.Universite;
 import com.courzelo.lms.repositories.Universiterepository;
 
 import java.util.List;
