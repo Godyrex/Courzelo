@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {catchError, Observable, throwError} from "rxjs";
 import {Departement} from "../../model/schedule/departement";
 import {environment} from "../../../environment/environment";
+import {JsonResponse} from "../../model/user/JsonResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,12 @@ export class DepartmentService {
     public getAllDepartements(): Observable<Departement> {
         return this.http.get<Departement>(this.baseUrl);
     }
-    public saveDepartment(department: Departement): Observable<Departement> {
-        return this.http.post<Departement>(this.baseUrl, department);
-    }
+  saveDepartment(department: Departement): Observable<JsonResponse> {
+    return this.http.post<JsonResponse>(this.baseUrl, department).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error occurred:', error);
+        return throwError(error);
+      })
+    );}
 
 }

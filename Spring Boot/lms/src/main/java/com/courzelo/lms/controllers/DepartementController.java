@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api/departements", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DepartementController {
@@ -33,10 +33,10 @@ public class DepartementController {
 
     @PostMapping
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<String> createDepartement(
+    public ResponseEntity<DepartementDTO> createDepartement(
             @RequestBody @Valid final DepartementDTO departementDTO) {
-        final String createdId = departementService.create(departementDTO);
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+        departementService.create(departementDTO);
+        return new ResponseEntity<>(departementDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

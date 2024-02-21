@@ -24,6 +24,7 @@ public class Departement {
 
     @Size(max = 255)
     private String name;
+    private String chefDepartement;
 
     @CreatedDate
     private OffsetDateTime dateCreated;
@@ -31,7 +32,6 @@ public class Departement {
     @LastModifiedDate
     private OffsetDateTime lastUpdated;
 
-    @Version
-    private Integer version;
-    private List<FieldOfStudy> fieldOfStudies=new ArrayList<>() ;
+
+
 }

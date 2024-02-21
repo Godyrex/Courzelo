@@ -54,14 +54,15 @@ public class DepartementService {
             final DepartementDTO departementDTO) {
 
         departementDTO.setName(departement.getName());
-        departementDTO.setChefDepartement(departement.getName());
+        departementDTO.setChefDepartement(departement.getChefDepartement());
         return departementDTO;
     }
 
     private Departement mapToEntity(final DepartementDTO departementDTO,
             final Departement departement) {
         departement.setName(departementDTO.getName());
-        departementDTO.setChefDepartement(departement.getName());
+     departement.setChefDepartement(departementDTO.getChefDepartement());
+
         return departement;
     }
 

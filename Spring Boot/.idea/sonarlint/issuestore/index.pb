@@ -1,6 +1,4 @@
 
-u
-Elms/src/main/java/com/courzelo/lms/controllers/StudentController.java,4\7\4751b7c8961948797c8503bd53e04f24f0ef3043
 y
 Ilms/src/main/java/com/courzelo/lms/controllers/DepartementController.java,d\4\d4b9d843be98550d9e403596fc8216bb2593a26f
 s
@@ -55,20 +53,12 @@ v
 Flms/src/main/java/com/courzelo/lms/controllers/SemesterController.java,a\c\ac26d8c653e52137802643687df15bf570debc48
 l
 <lms/src/main/java/com/courzelo/lms/services/UserService.java,d\d\dd2b97932a1d2fbf7a9598318ab2623415906141
-h
-8lms/src/main/java/com/courzelo/lms/entities/Teacher.java,1\b\1b874fd604d4896e3add53bab6f7d13bdcf1cb8f
 r
 Blms/src/main/java/com/courzelo/lms/services/UniversiteService.java,2\e\2efa8c80cf8918607f8dcd7933c58356a0336f74
 s
 Clms/src/main/java/com/courzelo/lms/services/IUniversiteService.java,3\2\325781264842c728df86f7b04619f205c344222e
-i
-9lms/src/main/java/com/courzelo/lms/repositories/test.java,b\e\be7da2c0ee026fd46df83b2b35604e0d0a7abeea
-v
-Flms/src/main/java/com/courzelo/lms/repositories/TeacherRepository.java,7\9\79ce2044a6b64f33fdd8520b42fb7c6ec285a549
 g
 7lms/src/main/java/com/courzelo/lms/entities/Course.java,0\7\07895e25d456f50e52f6af3fddb2859e82cfe1ff
-m
-=lms/src/main/java/com/courzelo/lms/services/AdminService.java,0\4\042e4a4a8a9f0a3385f53d60e0305814bfc760e6
 ;
 lms/pom.xml,3\d\3dd9ddcfb3d959d2a547b36248ba76c80a42ab64
 m
@@ -85,12 +75,6 @@ k
 ;lms/src/test/java/com/courzelo/lms/LmsApplicationTests.java,d\5\d52b20d5ce8885ca44ccab4359fa96f75f79d381
 f
 6lms/src/main/java/com/courzelo/lms/LmsApplication.java,0\d\0d61977749ff5c67342021d907220a4d1b5e5a3c
-o
-?lms/src/main/java/com/courzelo/lms/services/StudentService.java,a\5\a54692add284a3b1d7ff55572b8693f80bf86ff4
-p
-@lms/src/main/java/com/courzelo/lms/services/ITeacherService.java,4\7\47be03832726f1595c112d63a51b30d5c9ab0126
-p
-@lms/src/main/java/com/courzelo/lms/services/IStudentService.java,c\1\c123afaac198744070f678e15a87ec378d8f5bd1
 m
 =lms/src/main/java/com/courzelo/lms/controllers/TimeTable.java,4\1\412d1007ed649758445424820ddd649c640756be
 c
