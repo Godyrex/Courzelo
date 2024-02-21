@@ -8,6 +8,7 @@ import { HeaderComponent } from './back/header/header.component';
 import { SidebarComponent } from './back/sidebar/sidebar.component';
 import { FooterComponent } from './back/footer/footer.component';
 import { DashboardComponent } from './back/dashboard/dashboard.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DashboardComponent } from './back/dashboard/dashboard.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgOptimizedImage
   ],
   providers: [],
   bootstrap: [AppComponent]

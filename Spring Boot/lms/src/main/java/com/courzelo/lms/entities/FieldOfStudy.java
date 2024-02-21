@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.OffsetDateTime;
 
 
-@Document
+@Document(collection =  "FieldOfStudy")
 @Getter
 @Setter
 public class FieldOfStudy {

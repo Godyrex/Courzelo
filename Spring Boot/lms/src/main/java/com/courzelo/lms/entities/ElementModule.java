@@ -15,7 +15,7 @@ import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 
 
-@Document
+@Document(collation = "ElementModules")
 @Getter
 @Setter
 public class ElementModule {

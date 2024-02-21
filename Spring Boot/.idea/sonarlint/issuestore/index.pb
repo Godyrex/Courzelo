@@ -85,3 +85,11 @@ k
 ;lms/src/test/java/com/courzelo/lms/LmsApplicationTests.java,d\5\d52b20d5ce8885ca44ccab4359fa96f75f79d381
 f
 6lms/src/main/java/com/courzelo/lms/LmsApplication.java,0\d\0d61977749ff5c67342021d907220a4d1b5e5a3c
+o
+?lms/src/main/java/com/courzelo/lms/services/StudentService.java,a\5\a54692add284a3b1d7ff55572b8693f80bf86ff4
+p
+@lms/src/main/java/com/courzelo/lms/services/ITeacherService.java,4\7\47be03832726f1595c112d63a51b30d5c9ab0126
+p
+@lms/src/main/java/com/courzelo/lms/services/IStudentService.java,c\1\c123afaac198744070f678e15a87ec378d8f5bd1
+m
+=lms/src/main/java/com/courzelo/lms/controllers/TimeTable.java,4\1\412d1007ed649758445424820ddd649c640756be

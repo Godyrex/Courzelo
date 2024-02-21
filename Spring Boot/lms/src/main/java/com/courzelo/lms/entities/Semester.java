@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 
-@Document
+@Document(collection = "Semester")
 @Getter
 @Setter
 public class Semester {
