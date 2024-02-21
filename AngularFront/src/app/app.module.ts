@@ -13,6 +13,8 @@ import { FrontfooterComponent } from './front/frontfooter/frontfooter.component'
 import { RegisterComponent } from './back/register/register.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { LoginComponent } from './back/login/login.component';
+import { LogoutComponent } from './back/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     DashboardComponent,
     FrontheaderComponent,
     FrontfooterComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

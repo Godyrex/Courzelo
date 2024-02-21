@@ -2,7 +2,7 @@ package com.courzelo.lms.security;
 
 import com.courzelo.lms.security.jwt.AuthEntryPointJwt;
 import com.courzelo.lms.security.jwt.AuthTokenFilter;
-import com.courzelo.lms.services.AuthService;
+import com.courzelo.lms.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    AuthService authService;
+    UserService userService;
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -34,7 +34,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(authService);
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -52,7 +52,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(unauthorizedHandler)
@@ -68,6 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**")
                         .permitAll()
                         .anyRequest().authenticated());
+
+
 
         http.authenticationProvider(authenticationProvider());
 

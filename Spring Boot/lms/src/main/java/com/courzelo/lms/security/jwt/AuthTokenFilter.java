@@ -1,6 +1,6 @@
 package com.courzelo.lms.security.jwt;
 
-import com.courzelo.lms.services.AuthService;
+import com.courzelo.lms.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JWTUtils jwtUtils;
     @Autowired
-    private AuthService userDetailsService;
+    private UserService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

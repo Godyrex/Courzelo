@@ -3,15 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./front/home/home.component";
 import {DashboardComponent} from "./back/dashboard/dashboard.component";
 import {RegisterComponent} from "./back/register/register.component";
+import {LoginComponent} from "./back/login/login.component";
+import {LogoutComponent} from "./back/logout/logout.component";
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
     component: HomeComponent
   },
   {
@@ -21,6 +18,14 @@ const routes: Routes = [
   {
     path: 'signup',
     component: RegisterComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   },
 ];
 

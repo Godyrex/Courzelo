@@ -3,10 +3,9 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.*;
 import com.courzelo.lms.entities.Role;
-import com.courzelo.lms.entities.User;
-import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IUserService;
+import com.courzelo.lms.services.IAuthService;
+import com.courzelo.lms.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,12 +25,8 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    private final IUserService userService;
-    @PreAuthorize("permitAll()")
-    @PostMapping("/signup")
-    public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user){
-     return userService.saveUser(modelMapper.map(user,User.class));
-    }
+    private final UserService userService;
+
     @PreAuthorize("isAuthenticated()")
     @PatchMapping()
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user,Principal principal){
@@ -64,11 +59,7 @@ public class UserController {
     public ResponseEntity<Response> changePassword(Principal principal, @Valid @RequestBody PasswordDTO passwordDTO){
         return userService.changePassword(passwordDTO, principal.getName());
     }
-    @PreAuthorize("permitAll()")
-    @PostMapping("/signing")
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
-        return userService.authenticateUser(loginDTO);
-    }
+
     @PostMapping("/ban/{userID}")
     public ResponseEntity<Response> ban(@PathVariable String userID){
         return userService.ban(userID);
