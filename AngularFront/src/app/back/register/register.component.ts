@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+ import { Component } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {RegisterRequest} from "../../model/RegisterRequest";
 import {AuthenticationService} from "../../service/user/auth/authentication.service";

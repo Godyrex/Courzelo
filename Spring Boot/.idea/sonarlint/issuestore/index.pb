@@ -105,3 +105,5 @@ g
 7lms/src/main/java/com/courzelo/lms/dto/PasswordDTO.java,0\3\03e68cd72c2fb0e142168962be961e3e8ac339b7
 d
 4lms/src/main/java/com/courzelo/lms/dto/LoginDTO.java,5\2\52eed8899a1ffbd12019e13eb2bc8f562896e3c7
+c
+3lms/src/main/java/com/courzelo/lms/config/test.java,5\c\5ca6f09f18411336311b9bc107f50d364d4c6c8e

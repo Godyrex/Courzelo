@@ -14,9 +14,10 @@ import java.util.List;
 @Setter
 public class DepartementDTO {
 
-    private String  id;
-    private String chefDepartement;
-    @Size(max = 255)
+
     private String name;
-  private List<FieldOfStudy>fieldOfStudies ;
+    private String chefDepartement;
+
+
+
 }

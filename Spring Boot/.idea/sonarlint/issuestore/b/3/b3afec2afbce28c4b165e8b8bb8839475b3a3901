@@ -1,5 +1,12 @@
 
+`
+java:S1128"CRemove this unused import 'com.courzelo.lms.entities.FieldOfStudy'.(Á˜Áó8Éõ‡ìÜ1
+]
+java:S1128"@Remove this unused import 'jakarta.validation.constraints.Size'.(çÀ…Í8Êõ‡ìÜ1
 M
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ÁÊîÛÜ1
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8Êõ‡ìÜ1
 S
-java:S1128	"1Remove this unused import 'java.util.Collection'.(¹ÉĞšùÿÿÿÿ8çªÙÛÜ1
+java:S1128	"1Remove this unused import 'java.util.Collection'.(¹ÉĞšùÿÿÿÿ8Ëõ‡ìÜ1
+M
+java:S1128
+"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8Ëõ‡ìÜ1
