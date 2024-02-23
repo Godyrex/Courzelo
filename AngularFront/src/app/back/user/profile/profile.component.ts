@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
@@ -32,11 +32,16 @@ export class ProfileComponent {
     lastName: ['', [ Validators.maxLength(20), Validators.minLength(3)]],
   });
   passwordForm = this.formBuilder.group({
-    password: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+    password: ['', [Validators.required]],
     newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
 
-  });
+  }/*,{
+    validator: this.checkingPasswords
+  }*/);
+  public checkingPasswords(formGroup: FormGroup) {
+      return formGroup.controls['newPassword'].value === formGroup.controls['confirmPassword'].value ? false : { "notMatched": true }
+  }
   changeName(){
     if(this.nameForm.valid) {
       this.nameRequest = Object.assign(this.nameRequest,this.nameForm.value);

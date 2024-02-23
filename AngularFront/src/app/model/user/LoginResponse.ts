@@ -1,4 +1,5 @@
 export interface LoginResponse {
+  accessToken?: string;
   token?: string;
   type?: string;
   email?: string;

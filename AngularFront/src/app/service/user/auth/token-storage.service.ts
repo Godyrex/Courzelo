@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {LoginResponse} from "../../../model/user/LoginResponse";
 import {UpdateService} from "../profile/update.service";
 import {FormBuilder} from "@angular/forms";
-const TOKEN_KEY = 'auth-token';
+const TOKEN_KEY = 'token';
+const ACCES_TOKEN_KEY = 'access-token';
 const USER_KEY = 'auth-user';
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,16 @@ export class TokenStorageService {
     window.localStorage.removeItem(TOKEN_KEY);
     window.localStorage.setItem(TOKEN_KEY, token);
   }
+  public saveAccesToken(accesToken: string): void {
+    window.localStorage.removeItem(ACCES_TOKEN_KEY);
+    window.localStorage.setItem(ACCES_TOKEN_KEY, accesToken);
+  }
 
   public getToken(): string | null {
     return window.localStorage.getItem(TOKEN_KEY);
+  }
+  public getAccessToken(): string | null {
+    return window.localStorage.getItem(ACCES_TOKEN_KEY);
   }
 
   public saveUser(user: any): void {

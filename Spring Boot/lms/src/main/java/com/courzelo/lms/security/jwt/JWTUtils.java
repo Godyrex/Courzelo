@@ -1,13 +1,12 @@
 package com.courzelo.lms.security.jwt;
 
-import com.courzelo.lms.entities.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -22,13 +21,11 @@ public class JWTUtils {
 
     @Value("${Security.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+    public String generateJwtToken(String email) {
 
-    public String generateJwtToken(Authentication authentication) {
-
-        User userPrincipal = (User) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getEmail()))
+                .setSubject((email))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)
@@ -42,6 +39,17 @@ public class JWTUtils {
     public String getEmailFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
+    }
+    public Date getExpirationFromJwtToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key()).build()
+                .parseClaimsJws(token).getBody().getExpiration();
+    }
+    private Boolean isTokenExpired(String token) {
+        return getExpirationFromJwtToken(token).before(new Date());
+    }
+    public Boolean validateTokenUser(String token, UserDetails userDetails) {
+        final String email = getEmailFromJwtToken(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public boolean validateJwtToken(String authToken) {

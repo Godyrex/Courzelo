@@ -1,8 +1,10 @@
 package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.LoginDTO;
+import com.courzelo.lms.dto.RefreshTokenRequestDTO;
 import com.courzelo.lms.dto.RegisterDTO;
 import com.courzelo.lms.entities.User;
+import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.AuthService;
 import jakarta.validation.Valid;
@@ -33,5 +35,9 @@ public class AuthController {
     @PostMapping("/logout")
     public void logout(){
          userService.logout();
+    }
+    @PostMapping("/refreshToken")
+    public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+    return userService.refreshToken(refreshTokenRequestDTO);
     }
 }

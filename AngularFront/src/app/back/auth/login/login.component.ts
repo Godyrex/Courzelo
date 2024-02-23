@@ -36,6 +36,7 @@ export class LoginComponent {
           this.message = '';
           this.loginResponse = response;
           this.token.saveToken(this.loginResponse.token as string);
+          this.token.saveAccesToken(this.loginResponse.accessToken as string);
           this.token.saveUser(response);
           this.router.navigate(['']);
         },
