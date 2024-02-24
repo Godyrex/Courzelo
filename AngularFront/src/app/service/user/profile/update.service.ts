@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {JsonResponse} from "../../../model/user/JsonResponse";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";

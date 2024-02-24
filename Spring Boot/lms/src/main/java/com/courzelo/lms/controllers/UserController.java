@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders ="*" )
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders ="*",allowCredentials = "true"  )
 @RequestMapping("/api/v1/user")
 @RestController
 @RequiredArgsConstructor

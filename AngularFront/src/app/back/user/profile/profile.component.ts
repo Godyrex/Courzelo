@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -35,12 +35,21 @@ export class ProfileComponent {
     password: ['', [Validators.required]],
     newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
-
-  }/*,{
     validator: this.checkingPasswords
-  }*/);
+  });
   public checkingPasswords(formGroup: FormGroup) {
-      return formGroup.controls['newPassword'].value === formGroup.controls['confirmPassword'].value ? false : { "notMatched": true }
+
+    const newPassword = formGroup.get('newPassword')!.value;
+    const confirmPassword = formGroup.get('confirmPassword')!.value;
+
+    // Check if new password and confirm password match
+    if (newPassword === confirmPassword) {
+      // If passwords match, clear the error on confirmPassword control
+      formGroup.get('confirmPassword')!.setErrors(null);
+    } else {
+      // If passwords don't match, set 'notMatched' error on confirmPassword control
+      formGroup.get('confirmPassword')!.setErrors({notMatched: true});
+    }
   }
   changeName(){
     if(this.nameForm.valid) {
@@ -65,7 +74,8 @@ export class ProfileComponent {
   }
   changePassword(){
     if(this.passwordForm.valid) {
-      this.passwordRequest = Object.assign(this.passwordRequest,this.passwordForm.value);
+      this.passwordRequest.password = this.passwordForm.controls['password'].value!;
+      this.passwordRequest.newPassword = this.passwordForm.controls['newPassword'].value!;
       console.log(this.passwordRequest);
       this.updateService.changePassword(this.passwordRequest)
         .subscribe(data => {

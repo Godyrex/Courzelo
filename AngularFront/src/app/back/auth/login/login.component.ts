@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {LoginRequest} from "../../../model/user/LoginRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
@@ -35,8 +35,6 @@ export class LoginComponent {
         response => {
           this.message = '';
           this.loginResponse = response;
-          this.token.saveToken(this.loginResponse.token as string);
-          this.token.saveAccesToken(this.loginResponse.accessToken as string);
           this.token.saveUser(response);
           this.router.navigate(['']);
         },

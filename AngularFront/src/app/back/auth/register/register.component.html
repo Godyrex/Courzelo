@@ -19,6 +19,8 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
+        </div>
+        <div class="input-group mb-1">
           <div class="text-danger" *ngIf="registerForm.controls.email.touched && registerForm.controls.email?.invalid">
             email must be a valid email address</div>
         </div>
@@ -50,7 +52,7 @@
             </div>
           </div>
           <div class="text-danger" *ngIf="registerForm.controls.password.touched && registerForm.controls.password?.invalid">
-            password must be at least 8 characters and maximum 50 characters</div>
+            Password must be at least 8 characters and maximum 50 characters</div>
         </div>
         <div class="input-group mb-3">
           <input formControlName="confirmPassword" type="password" class="form-control" placeholder="Retype password">
@@ -58,6 +60,11 @@
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
+          </div>
+        </div>
+        <div class="input-group mb-1">
+          <div class="text-danger" *ngIf="registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword?.invalid">
+            Passwords must match
           </div>
         </div>
         <div class="row">

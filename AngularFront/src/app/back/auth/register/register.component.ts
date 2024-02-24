@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterRequest} from "../../../model/RegisterRequest";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 
@@ -24,10 +24,28 @@ export class RegisterComponent {
     lastname: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+    validator: this.checkingPasswords
   });
+  public checkingPasswords(formGroup: FormGroup) {
+
+    const newPassword = formGroup.get('password')!.value;
+    const confirmPassword = formGroup.get('confirmPassword')!.value;
+
+    // Check if new password and confirm password match
+    if (newPassword === confirmPassword) {
+      // If passwords match, clear the error on confirmPassword control
+      formGroup.get('confirmPassword')!.setErrors(null);
+    } else {
+      // If passwords don't match, set 'notMatched' error on confirmPassword control
+      formGroup.get('confirmPassword')!.setErrors({notMatched: true});
+    }
+  }
   registerUser(){
     if(this.registerForm.valid) {
-      this.registerRequest = Object.assign(this.registerRequest,this.registerForm.value);
+      this.registerRequest.email = this.registerForm.controls['email'].value!;
+      this.registerRequest.name = this.registerForm.controls['name'].value!;
+      this.registerRequest.lastname = this.registerForm.controls['lastname'].value!;
+      this.registerRequest.password = this.registerForm.controls['password'].value!;
       console.log(this.registerRequest);
       this.authService.register(this.registerRequest)
         .subscribe(data => {
