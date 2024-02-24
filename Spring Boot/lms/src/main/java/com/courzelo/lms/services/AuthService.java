@@ -119,24 +119,12 @@ public class AuthService implements IAuthService {
         log.info("Logout :Security context cleared!");
         log.info("Logout :Logout Finished!");
     }
-    public ResponseEntity<JwtResponse> refreshToken(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response){
+
+    public void refresh(@NonNull HttpServletResponse response,String email){
         log.info("refreshToken :Refreshing Token...");
-        RefreshToken refreshToken = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
-        log.info("refreshToken :Refresh token = " + refreshToken.getToken() + "\nUser = "+refreshToken.getUser().getEmail());
-        iRefreshTokenService.verifyExpiration(refreshToken);
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(jwtUtils.generateJwtToken(refreshToken.getUser().getEmail()),jwtExpirationMs).toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(jwtUtils.generateJwtToken(email),jwtExpirationMs).toString());
         log.info("refreshToken :Access token created!");
-        User userDetails = userRepository.findUserByEmail(refreshToken.getUser().getEmail());
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
         log.info("refreshToken :Refreshing token DONE!");
-        return ResponseEntity.ok(new JwtResponse(
-                userDetails.getEmail(),
-                userDetails.getName(),
-                userDetails.getLastName(),
-                roles
-        ));
     }
 
 }

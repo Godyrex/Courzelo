@@ -161,4 +161,8 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+    public boolean ValidUser(String email){
+        User user = userRepository.findUserByEmail(email);
+        return !user.getBan() && user.isEnabled();
+    }
 }

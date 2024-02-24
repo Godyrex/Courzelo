@@ -17,7 +17,4 @@ export class AuthenticationService {
   login(loginRequest : LoginRequest){
     return this.http.post<LoginResponse>(`${this.baseUrl}/signing`,loginRequest);
   }
-  refreshToken(){
-    return this.http.post<LoginResponse>(`${this.baseUrl}/refreshToken`,null);
-  }
 }

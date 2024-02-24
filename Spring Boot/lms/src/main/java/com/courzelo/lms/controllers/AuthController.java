@@ -37,8 +37,4 @@ public class AuthController {
     public void logout(HttpServletRequest request,HttpServletResponse response){
          userService.logout(request,response);
     }
-    @PostMapping("/refreshToken")
-    public ResponseEntity<JwtResponse> refreshToken(HttpServletRequest request,HttpServletResponse response){
-    return userService.refreshToken(request,response);
-    }
 }

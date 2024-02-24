@@ -1,5 +1,8 @@
 package com.courzelo.lms.security.jwt;
 
+import com.courzelo.lms.entities.RefreshToken;
+import com.courzelo.lms.services.AuthService;
+import com.courzelo.lms.services.IRefreshTokenService;
 import com.courzelo.lms.services.UserService;
 import com.courzelo.lms.utils.CookieUtil;
 import jakarta.servlet.FilterChain;
@@ -32,13 +35,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private UserService userDetailsService;
     @Autowired
     private CookieUtil cookieUtil;
+    @Autowired
+    private IRefreshTokenService iRefreshTokenService;
+    @Autowired
+    private AuthService authService;
+
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         List<String> excludedEndpoints = Arrays.asList("/api/v1/auth/signing", "/api/v1/auth/signup", "/api/v1/auth/logout", "/api/v1/auth/refreshToken");
 
-        // Get the request URI
         String requestUri = request.getRequestURI();
         log.info("doFilterInternal :requestUri "+requestUri);
         boolean isExcludedEndpoint = excludedEndpoints.contains(requestUri);
@@ -48,15 +55,26 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-            String accessToken = cookieUtil.getAccessTokenFromCookies(request);
+        String accessToken = cookieUtil.getAccessTokenFromCookies(request);
+
         try {
-        if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
-            String email = jwtUtils.getEmailFromJwtToken(accessToken);
+                if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+                    String email = jwtUtils.getEmailFromJwtToken(accessToken);
+                    UserDetails userDetails = userDetailsService.loadUserByEmail(email);
+                    if(userDetailsService.ValidUser(email)) {
+                        setAuthenticationInSecurityContext(request, userDetails);
+                    }
+                } else if (cookieUtil.getRefreshTokenFromCookies(request) != null) {
+                    RefreshToken token = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
+                    iRefreshTokenService.verifyExpiration(token);
+                    authService.refresh(response, token.getUser().getEmail());
+                    UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
+                    if(userDetailsService.ValidUser(token.getUser().getEmail())) {
+                        log.info("doFilterInternal : "+token.getUser().getEmail()+" is valid!");
+                        setAuthenticationInSecurityContext(request, userDetails);
+                    }
+                }
 
-            UserDetails userDetails = userDetailsService.loadUserByEmail(email);
-
-                setAuthenticationInSecurityContext(request, userDetails);
-        }
         } catch (Exception e) {
             jwtLogger.error("Cannot set user authentication: {}", e.getMessage());
         }
