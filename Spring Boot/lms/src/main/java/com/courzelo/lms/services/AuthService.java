@@ -110,7 +110,7 @@ public class AuthService implements IAuthService {
         user.setEnabled(false);
         user.setBan(false);
         String randomCode = RandomString.make(64);
-        user.setVerificationCode(randomCode);
+        user.setEmailVerificationCode(randomCode);
         userRepository.save(user);
         try {
             emailService.sendVerificationEmail(user);

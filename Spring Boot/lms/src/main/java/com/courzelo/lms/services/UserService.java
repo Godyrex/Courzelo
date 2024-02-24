@@ -2,14 +2,20 @@ package com.courzelo.lms.services;
 
 import com.courzelo.lms.dto.PasswordDTO;
 import com.courzelo.lms.dto.ProfileDTO;
+import com.courzelo.lms.dto.UpdateEmailDTO;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.UserNotFoundException;
 import com.courzelo.lms.exceptions.UserRoleNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.Response;
+import com.courzelo.lms.security.jwt.JWTUtils;
+import com.courzelo.lms.utils.CookieUtil;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,17 +23,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final CookieUtil cookieUtil;
+    private final JWTUtils jwtUtils;
+    private final  EmailService emailService;
 
-    public UserService(UserRepository userRepository,@Lazy PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, CookieUtil cookieUtil, JWTUtils jwtUtils, EmailService emailService) {
         this.userRepository = userRepository;
         this.encoder = encoder;
+        this.cookieUtil = cookieUtil;
+        this.jwtUtils = jwtUtils;
+        this.emailService = emailService;
     }
 
     private static final String USER_NOT_FOUND = "User not found with id : ";
@@ -164,5 +178,37 @@ public class UserService implements UserDetailsService {
     public boolean ValidUser(String email){
         User user = userRepository.findUserByEmail(email);
         return !user.getBan() && user.isEnabled();
+    }
+    private int generateVerificationCode(User user){
+        log.info("generateVerificationCode : Generating verification code ...");
+        Random random = new Random();
+        int verificationCode = random.nextInt(9000) + 1000;
+        log.info("generateVerificationCode : Verification code is "+ verificationCode);
+        user.setVerificationCode(verificationCode);
+        userRepository.save(user);
+        log.info("generateVerificationCode : Generating complete ...");
+        return verificationCode;
+    }
+
+    public ResponseEntity<HttpStatus> sendVerificationCode(HttpServletRequest request) {
+     String email =  jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request));
+     User user = userRepository.findUserByEmail(email);
+        try {
+            emailService.sendVerificationCode(user,generateVerificationCode(user));
+            return ResponseEntity.ok().build();
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public ResponseEntity<HttpStatus> updateEmail(UpdateEmailDTO updateEmailDTO,HttpServletRequest request){
+        String email =  jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request));
+        User user = userRepository.findUserByEmail(email);
+        if(user.getVerificationCode() == updateEmailDTO.getCode()){
+            user.setEmail(updateEmailDTO.getEmail());
+            user.setVerificationCode(null);
+            userRepository.save(user);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -29,7 +29,8 @@ public class User implements UserDetails {
     private List<Role> roles= new ArrayList<>();
     private boolean enabled;
     private Boolean ban;
-    private String verificationCode;
+    private String emailVerificationCode;
+    private Integer verificationCode;
     private String grade;
     private String speciality;
     private List<String> courses;

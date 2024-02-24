@@ -52,6 +52,99 @@ public class EmailService {
                 "        .email-content {\n" +
                 "            max-width: 600px; /* Adjust max-width as needed */\n" +
                 "            width: 100%;\n" +
+                "            background-color: #f7f7f7;\n" +
+                "            padding: 20px;\n" +
+                "            border-radius: 5px;\n" +
+                "            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);\n" +
+                "        }\n" +
+                "        .email-header {\n" +
+                "            background-color: #17a2b8;\n" +
+                "            color: #fff;\n" +
+                "            padding: 15px;\n" +
+                "            border-radius: 5px 5px 0 0;\n" +
+                "        }\n" +
+                "        .email-body {\n" +
+                "            padding: 20px;\n" +
+                "        }\n" +
+                "        .btn {\n" +
+                "            background-color: #17a2b8;\n" +
+                "            color: #fff;\n" +
+                "            border: none;\n" +
+                "            padding: 10px 20px;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 5px;\n" +
+                "            display: inline-block;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"wrapper\">\n" +
+                "        <div class=\"email-content\">\n" +
+                "            <!-- Main content -->\n" +
+                "            <div class=\"email-header\">\n" +
+                "                <h3>Verification Email</h3>\n" +
+                "            </div>\n" +
+                "            <div class=\"email-body\">\n" +
+                "                <p>Dear [[name]],</p>\n" +
+                "                <p>Your verification code is: <strong>[[verificationCode]]</strong></p>\n" +
+                "                <p>Thank you,</p>\n" +
+                "                <p>Courzelo</p>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <!-- /.email-content -->\n" +
+                "    </div>\n" +
+                "    <!-- /.wrapper -->\n" +
+                "\n" +
+                "    <!-- AdminLTE JavaScript -->\n" +
+                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js\"></script>\n" +
+                "</body>\n" +
+                "</html>";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getName()+" "+user.getLastName());
+        String verifyURL = "localhost:4200" + "/verify?code=" + user.getEmailVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+
+    }
+    public void sendVerificationCode(User user,int verificationCode)
+            throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = "noreply@courzelo.com";
+        String senderName = "Courzelo";
+        String subject = "Please verify your registration";
+        String content = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Email Content</title>\n" +
+                "    <!-- AdminLTE CSS -->\n" +
+                "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css\">\n" +
+                "    <style>\n" +
+                "        body, html {\n" +
+                "            height: 100%;\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "        }\n" +
+                "        .wrapper {\n" +
+                "            display: flex;\n" +
+                "            align-items: center;\n" +
+                "            justify-content: center;\n" +
+                "            height: 100%;\n" +
+                "        }\n" +
+                "        .email-content {\n" +
+                "            max-width: 600px; /* Adjust max-width as needed */\n" +
+                "            width: 100%;\n" +
                 "        }\n" +
                 "    </style>\n" +
                 "</head>\n" +
@@ -68,8 +161,7 @@ public class EmailService {
                 "                        <!-- /.card-header -->\n" +
                 "                        <div class=\"card-body\">\n" +
                 "                            <p>Dear [[name]],</p>\n" +
-                "                            <p>Please click the link below to verify your registration:</p>\n" +
-                "                            <p><a href=\"[[URL]]\" target=\"_blank\" class=\"btn btn-primary\">Verify Now</a></p>\n" +
+                "                            <p>Your verification code is: <strong>[[verificationCode]]</strong></p>\n" +
                 "                            <p>Thank you,</p>\n" +
                 "                            <p>Courzelo</p>\n" +
                 "                        </div>\n" +
@@ -89,6 +181,7 @@ public class EmailService {
                 "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js\"></script>\n" +
                 "</body>\n" +
                 "</html>";
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -96,14 +189,11 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getName()+" "+user.getLastName());
-        String verifyURL = "localhost:4200" + "/verify?code=" + user.getVerificationCode();
-
-        content = content.replace("[[URL]]", verifyURL);
+        content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
+        content = content.replace("[[verificationCode]]", String.valueOf(verificationCode));
 
         helper.setText(content, true);
 
         mailSender.send(message);
-
     }
 }

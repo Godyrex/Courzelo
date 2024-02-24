@@ -51,7 +51,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 "/api/v1/auth/refreshToken",
                 "/api/v1/auth/verify"
         );
-
         String requestUri = request.getRequestURI();
         log.info("doFilterInternal :requestUri "+requestUri);
         boolean isExcludedEndpoint = excludedEndpoints.contains(requestUri);

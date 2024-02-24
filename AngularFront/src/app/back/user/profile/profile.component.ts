@@ -5,6 +5,9 @@ import {UpdateService} from "../../../service/user/profile/update.service";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
+import {EmailRequest} from "../../../model/user/EmailRequest";
+import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -13,12 +16,17 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 })
 export class ProfileComponent {
   nameRequest : NameRequest = {};
+  emailRequest : EmailRequest = {};
   passwordRequest : PasswordRequest = {};
   message = '';
   messageSuccess = '';
   user : LoginResponse={};
+  verificationCode: string = '';
+  showVerification: boolean = false;
+  showEmailForm: boolean = true;
   constructor(
     private token: TokenStorageService,
+    private router: Router,
     private updateService : UpdateService,
     private formBuilder : FormBuilder
 
@@ -27,6 +35,12 @@ export class ProfileComponent {
   fullName : string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
   role : string = `${this.token.getUser().roles}`
   email : string = `${this.token.getUser().email}`
+  emailForm = this.formBuilder.group({
+    email: ['', [ Validators.email]],
+  });
+  verificationForm = this.formBuilder.group({
+    code: ['', [ Validators.maxLength(4),Validators.minLength(4)]],
+  });
   nameForm = this.formBuilder.group({
     name: ['', [ Validators.maxLength(20), Validators.minLength(3)]],
     lastName: ['', [ Validators.maxLength(20), Validators.minLength(3)]],
@@ -90,4 +104,36 @@ export class ProfileComponent {
           });
     }
   }
+  sendVerificationCode(){
+    if(this.emailForm.valid){
+      this.updateService.sendVerificationCode().subscribe(
+        (response: any) => {
+          this.showVerification=true;
+          this.showEmailForm=false;
+          console.log('Verification code sent successfully:', response);
+        },
+        (error: any) => {
+          console.error('Error sending verification code:', error);
+        }
+      );
+    }
+  }
+  changeEmail(){
+    if(this.verificationForm.valid){
+      this.emailRequest.email = this.emailForm.controls['email'].value!;
+      this.emailRequest.code = +this.verificationForm.controls['code'].value!;
+      this.updateService.changeEmail(this.emailRequest).subscribe(
+        (response: any) => {
+          this.showVerification=false;
+          this.showEmailForm=true;
+          console.log('Email Changed successfully Logging out ....:', response);
+          this.router.navigate(['/logout']);
+          },
+        (error: any) => {
+          console.error('Error sending verification code:', error);
+        }
+      );
+    }
+  }
+
 }

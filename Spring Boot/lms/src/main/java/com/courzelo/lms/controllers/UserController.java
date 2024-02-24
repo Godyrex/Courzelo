@@ -3,14 +3,17 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.PasswordDTO;
 import com.courzelo.lms.dto.ProfileDTO;
+import com.courzelo.lms.dto.UpdateEmailDTO;
 import com.courzelo.lms.dto.UserDTO;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +71,16 @@ public class UserController {
     @PostMapping("/unban/{userID}")
     public ResponseEntity<Response> unban(@PathVariable String userID){
         return userService.unban(userID);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/sendVerificationCode")
+    public ResponseEntity<HttpStatus> sendVerificationCode(HttpServletRequest request){
+        return userService.sendVerificationCode(request);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/update/email")
+    public ResponseEntity<HttpStatus> changeEmail(@Valid @RequestBody UpdateEmailDTO updateEmailDTO, HttpServletRequest request){
+        return userService.updateEmail(updateEmailDTO,request);
     }
 
 }
