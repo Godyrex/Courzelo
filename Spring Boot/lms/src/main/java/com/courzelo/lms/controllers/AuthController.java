@@ -3,7 +3,6 @@ package com.courzelo.lms.controllers;
 import com.courzelo.lms.dto.LoginDTO;
 import com.courzelo.lms.dto.RegisterDTO;
 import com.courzelo.lms.entities.User;
-import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,5 +35,9 @@ public class AuthController {
     @PostMapping("/logout")
     public void logout(HttpServletRequest request,HttpServletResponse response){
          userService.logout(request,response);
+    }
+    @GetMapping("/verify")
+    public ResponseEntity<Response> verifyAccount(@RequestParam("code") String code) {
+          return userService.verifyAccount(code);
     }
 }

@@ -14,4 +14,5 @@ public interface IAuthService {
     ResponseEntity<?> authenticateUser(LoginDTO loginDTO, HttpServletResponse response);
 
 
+    ResponseEntity<Response> verifyAccount(String code);
 }

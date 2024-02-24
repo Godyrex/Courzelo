@@ -17,4 +17,7 @@ export class AuthenticationService {
   login(loginRequest : LoginRequest){
     return this.http.post<LoginResponse>(`${this.baseUrl}/signing`,loginRequest);
   }
+  verifyAccount(code: string) {
+    return this.http.get<JsonResponse>(`${this.baseUrl}/verify?code=${code}`);
+  }
 }

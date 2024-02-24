@@ -44,7 +44,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        List<String> excludedEndpoints = Arrays.asList("/api/v1/auth/signing", "/api/v1/auth/signup", "/api/v1/auth/logout", "/api/v1/auth/refreshToken");
+        List<String> excludedEndpoints = Arrays.asList(
+                "/api/v1/auth/signing",
+                "/api/v1/auth/signup",
+                "/api/v1/auth/logout",
+                "/api/v1/auth/refreshToken",
+                "/api/v1/auth/verify"
+        );
 
         String requestUri = request.getRequestURI();
         log.info("doFilterInternal :requestUri "+requestUri);
@@ -67,7 +73,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 } else if (cookieUtil.getRefreshTokenFromCookies(request) != null) {
                     RefreshToken token = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
                     iRefreshTokenService.verifyExpiration(token);
-                    authService.refresh(response, token.getUser().getEmail());
+                    authService.refreshToken(response, token.getUser().getEmail());
                     UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
                     if(userDetailsService.ValidUser(token.getUser().getEmail())) {
                         log.info("doFilterInternal : "+token.getUser().getEmail()+" is valid!");

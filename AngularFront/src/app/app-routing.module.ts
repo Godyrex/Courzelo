@@ -6,6 +6,7 @@ import {RegisterComponent} from "./back/auth/register/register.component";
 import {LoginComponent} from "./back/auth/login/login.component";
 import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {ProfileComponent} from "./back/user/profile/profile.component";
+import {VerifyComponent} from "./back/auth/verify/verify.component";
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent
+  },
+  {
+    path: 'verify',
+    component: VerifyComponent
   },
 ];
 

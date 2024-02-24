@@ -17,6 +17,7 @@ import {LoginComponent} from './back/auth/login/login.component';
 import {LogoutComponent} from './back/auth/logout/logout.component';
 import {ProfileComponent} from './back/user/profile/profile.component';
 import {JwtInterceptor} from "./service/user/auth/JwtInterceptor";
+import { VerifyComponent } from './back/auth/verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {JwtInterceptor} from "./service/user/auth/JwtInterceptor";
     RegisterComponent,
     LoginComponent,
     LogoutComponent,
-    ProfileComponent
+    ProfileComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule,

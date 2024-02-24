@@ -10,12 +10,14 @@ import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.security.jwt.JWTUtils;
 import com.courzelo.lms.utils.CookieUtil;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,6 +46,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final JWTUtils jwtUtils;
     private final CookieUtil cookieUtil;
+    private final  EmailService emailService;
     @Value("${Security.app.jwtExpirationMs}")
     private long jwtExpirationMs;
     @Value("${Security.app.refreshExpirationMs}")
@@ -82,6 +86,19 @@ public class AuthService implements IAuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
         }
     }
+
+    @Override
+    public ResponseEntity<Response> verifyAccount(String code) {
+        User user = userRepository.findUserByVerificationCode(code);
+        if(user != null){
+        user.setEnabled(true);
+        user.setVerificationCode(null);
+        userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response("Verification Failed"));
+    }
+
     public ResponseEntity<Response> saveUser(User user) {
         if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
             return ResponseEntity
@@ -92,7 +109,14 @@ public class AuthService implements IAuthService {
         user.getRoles().add(Role.STUDENT);
         user.setEnabled(false);
         user.setBan(false);
+        String randomCode = RandomString.make(64);
+        user.setVerificationCode(randomCode);
         userRepository.save(user);
+        try {
+            emailService.sendVerificationEmail(user);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity
                 .ok()
                 .body(new Response("Account Created!"));
@@ -120,7 +144,7 @@ public class AuthService implements IAuthService {
         log.info("Logout :Logout Finished!");
     }
 
-    public void refresh(@NonNull HttpServletResponse response,String email){
+    public void refreshToken(@NonNull HttpServletResponse response, String email){
         log.info("refreshToken :Refreshing Token...");
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(jwtUtils.generateJwtToken(email),jwtExpirationMs).toString());
         log.info("refreshToken :Access token created!");
