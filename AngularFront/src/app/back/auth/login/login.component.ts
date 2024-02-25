@@ -19,6 +19,8 @@ export class LoginComponent {
     private formBuilder : FormBuilder
   ) {
   }
+  verification : boolean = false;
+  code : number = 0;
   loginResponse : LoginResponse = {};
   loginRequest : LoginRequest = {};
   loginForm = this.formBuilder.group({
@@ -27,21 +29,49 @@ export class LoginComponent {
     password: ['',
       [Validators.required]]
   });
+  verificationForm = this.formBuilder.group({
+    code: ['',
+      [Validators.required,Validators.minLength(4),Validators.maxLength(4)]]
+  });
   message = '';
   login() {
     if (this.loginForm.valid ) {
       this.loginRequest = Object.assign(this.loginRequest, this.loginForm.value);
       this.authService.login(this.loginRequest).subscribe(
         response => {
-          this.message = '';
-          this.loginResponse = response;
-          this.token.saveUser(response);
-          this.router.navigate(['']);
+          if (response.deviceIsNew !== undefined) {
+            console.log("device not confirmed")
+            if (response.deviceIsNew) {
+              this.verification = true;
+            }
+          } else {
+            this.message = '';
+            this.loginResponse = response;
+            this.token.saveUser(response);
+            this.router.navigate(['']);
+          }
         },
         error => {
           console.log(error)
           this.message = error.error.msg;
         });
+    }
+  }
+  submitVerificationCode(){
+    if(this.verificationForm.valid){
+      this.code = +this.verificationForm.controls['code'].value!;
+        this.authService.confirmDevice(this.loginRequest, this.code).subscribe(
+          response => {
+              this.message = '';
+              this.loginResponse = response;
+              this.token.saveUser(response);
+              this.router.navigate(['']);
+
+          },
+          error => {
+            console.log(error)
+            this.message = error.error.msg;
+          });
     }
   }
 }

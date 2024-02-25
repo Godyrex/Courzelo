@@ -179,22 +179,13 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserByEmail(email);
         return !user.getBan() && user.isEnabled();
     }
-    private int generateVerificationCode(User user){
-        log.info("generateVerificationCode : Generating verification code ...");
-        Random random = new Random();
-        int verificationCode = random.nextInt(9000) + 1000;
-        log.info("generateVerificationCode : Verification code is "+ verificationCode);
-        user.setVerificationCode(verificationCode);
-        userRepository.save(user);
-        log.info("generateVerificationCode : Generating complete ...");
-        return verificationCode;
-    }
+
 
     public ResponseEntity<HttpStatus> sendVerificationCode(HttpServletRequest request) {
      String email =  jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request));
      User user = userRepository.findUserByEmail(email);
         try {
-            emailService.sendVerificationCode(user,generateVerificationCode(user));
+            emailService.sendVerificationCode(user, emailService.generateVerificationCode(user));
             return ResponseEntity.ok().build();
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);

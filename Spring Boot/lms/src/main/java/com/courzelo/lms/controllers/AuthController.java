@@ -24,13 +24,17 @@ public class AuthController {
     @Autowired
     private ModelMapper modelMapper;
     private final AuthService userService;
+    @PostMapping("/confirmDevice/{code}")
+    public ResponseEntity<?> confirmDevice(@Valid @RequestBody LoginDTO loginDTO,@PathVariable Integer code,HttpServletResponse response,@RequestHeader(value = "User-Agent") String userAgent) {
+        return userService.confirmDevice(userAgent,response,loginDTO,code);
+    }
     @PostMapping("/signing")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO,HttpServletResponse response) {
-        return userService.authenticateUser(loginDTO,response);
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO,HttpServletResponse response,@RequestHeader(value = "User-Agent") String userAgent) {
+        return userService.authenticateUser(loginDTO,response,userAgent);
     }
     @PostMapping("/signup")
-    public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user){
-        return userService.saveUser(modelMapper.map(user, User.class));
+    public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user,@RequestHeader(value = "User-Agent") String userAgent){
+        return userService.saveUser(modelMapper.map(user, User.class),userAgent);
     }
     @PostMapping("/logout")
     public void logout(HttpServletRequest request,HttpServletResponse response){

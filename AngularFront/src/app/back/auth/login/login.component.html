@@ -8,38 +8,61 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form  [formGroup]="loginForm" (ngSubmit)="login()">
-        <div class="text-danger" *ngIf="message">{{message}}.</div>
-        <div class="input-group mb-3">
-          <input formControlName="email" type="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+      <ng-container *ngIf="!verification; else verificationCodeInput">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="text-danger" *ngIf="message">{{message}}.</div>
+          <div class="input-group mb-3">
+            <input formControlName="email" type="email" class="form-control" placeholder="Email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="text-danger" *ngIf="loginForm.controls.email.touched && loginForm.controls.email?.invalid">
-          Please enter an email.</div>
-        <div class="input-group mb-3">
-          <input formControlName="password" type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+          <div class="text-danger" *ngIf="loginForm.controls.email.touched && loginForm.controls.email?.invalid">
+            Please enter an email.</div>
+          <div class="input-group mb-3">
+            <input formControlName="password" type="password" class="form-control" placeholder="Password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="text-danger" *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid">
-          Please enter a password.</div>
-        <div class="row">
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <div class="text-danger" *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid">
+            Please enter a password.</div>
+          <div class="row">
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </div>
+            <!-- /.col -->
           </div>
-          <!-- /.col -->
-        </div>
-      </form>
-      <!-- /.social-auth-links -->
+        </form>
+        <!-- /.social-auth-links -->
 
+      </ng-container>
+
+      <ng-template #verificationCodeInput>
+        <!-- Show input field for verification code -->
+        <form [formGroup]="verificationForm" (ngSubmit)="submitVerificationCode()">
+          <div class="input-group mb-3">
+            <input formControlName="code" type="text" class="form-control" placeholder="Verification Code">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block">Verify</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+      </ng-template>
 
       <p class="mb-0">
         <a routerLink="/signup" class="text-center">Register a new membership</a>
@@ -48,6 +71,4 @@
     <!-- /.login-card-body -->
   </div>
 </div>
-
 </body>
-

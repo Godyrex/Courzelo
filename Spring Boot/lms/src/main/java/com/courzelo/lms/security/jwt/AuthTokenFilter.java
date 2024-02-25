@@ -49,11 +49,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 "/api/v1/auth/signup",
                 "/api/v1/auth/logout",
                 "/api/v1/auth/refreshToken",
-                "/api/v1/auth/verify"
+                "/api/v1/auth/verify",
+                "/api/v1/auth/confirmDevice/"
         );
         String requestUri = request.getRequestURI();
         log.info("doFilterInternal :requestUri "+requestUri);
-        boolean isExcludedEndpoint = excludedEndpoints.contains(requestUri);
+        boolean isExcludedEndpoint = false;
+        for (String endpoint : excludedEndpoints) {
+            if (requestUri.startsWith(endpoint)) {
+                isExcludedEndpoint = true;
+                break;
+            }
+        }
         log.info("doFilterInternal : isExcludedEndpoint " + isExcludedEndpoint);
         if (isExcludedEndpoint) {
             log.info("doFilterInternal :Excluded! ");

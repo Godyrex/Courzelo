@@ -1,6 +1,7 @@
 package com.courzelo.lms.services;
 
 
+import com.courzelo.lms.dto.DeviceDTO;
 import com.courzelo.lms.dto.LoginDTO;
 import com.courzelo.lms.entities.RefreshToken;
 import com.courzelo.lms.entities.Role;
@@ -32,9 +33,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -46,20 +49,21 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final JWTUtils jwtUtils;
     private final CookieUtil cookieUtil;
-    private final  EmailService emailService;
+    private final EmailService emailService;
+    private final IDeviceMetadataService iDeviceMetadataService;
     @Value("${Security.app.jwtExpirationMs}")
     private long jwtExpirationMs;
     @Value("${Security.app.refreshExpirationMs}")
     private long refreshExpirationMs;
     @Value("${Security.app.refreshRememberMeExpirationMs}")
     private long refreshRememberMeExpirationMs;
-    public ResponseEntity<?> authenticateUser(LoginDTO loginDTO,@NonNull HttpServletResponse response) {
+    public ResponseEntity<?> authenticateUser(LoginDTO loginDTO,@NonNull HttpServletResponse response,String userAgent) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            if(authentication.isAuthenticated()){
+            User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
+            if(!iDeviceMetadataService.isNewDevice(userAgent,checkUser)){
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 String accessToken = jwtUtils.generateJwtToken(authentication.getName());
                 response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken,jwtExpirationMs).toString());
                 RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail());
@@ -68,7 +72,12 @@ public class AuthService implements IAuthService {
                 List<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .toList();
-
+                if(!iDeviceMetadataService.isNewDevice(userAgent,userDetails)){
+                    log.info("Device Found");
+                }else {
+                    log.info("Saving Device");
+                    iDeviceMetadataService.getDeviceDetails(userAgent, userDetails);
+                }
             return ResponseEntity.ok(new JwtResponse(
                     userDetails.getEmail(),
                     userDetails.getName(),
@@ -76,7 +85,12 @@ public class AuthService implements IAuthService {
                     roles
             ));
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new Response("An error has occurred please try again later"));
+                try {
+                    emailService.sendVerificationCode(checkUser,emailService.generateVerificationCode(checkUser));
+                } catch (MessagingException | UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(new DeviceDTO(true));
             }
         } catch (DisabledException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
@@ -85,6 +99,43 @@ public class AuthService implements IAuthService {
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
         }
+    }
+    public ResponseEntity<?> confirmDevice(String userAgent,@NonNull HttpServletResponse response,LoginDTO loginDTO,Integer code) {
+    User user = userRepository.findUserByEmail(loginDTO.getEmail());
+    if(Objects.equals(code, user.getVerificationCode())){
+        try {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = jwtUtils.generateJwtToken(authentication.getName());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken,jwtExpirationMs).toString());
+        RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(user.getEmail());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(),refreshExpirationMs).toString());
+        User userDetails = (User) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        if(!iDeviceMetadataService.isNewDevice(userAgent,userDetails)){
+            log.info("Device Found");
+        }else {
+            log.info("Saving Device");
+            iDeviceMetadataService.getDeviceDetails(userAgent, userDetails);
+        }
+        return ResponseEntity.ok(new JwtResponse(
+                userDetails.getEmail(),
+                userDetails.getName(),
+                userDetails.getLastName(),
+                roles
+        ));
+        } catch (DisabledException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
+        } catch (LockedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Your account has been banned"));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
+        }
+    }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Wrong Verification Code"));
     }
 
     @Override
@@ -99,7 +150,7 @@ public class AuthService implements IAuthService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response("Verification Failed"));
     }
 
-    public ResponseEntity<Response> saveUser(User user) {
+    public ResponseEntity<Response> saveUser(User user,String userAgent) {
         if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
             return ResponseEntity
                     .badRequest()
@@ -112,6 +163,7 @@ public class AuthService implements IAuthService {
         String randomCode = RandomString.make(64);
         user.setEmailVerificationCode(randomCode);
         userRepository.save(user);
+        iDeviceMetadataService.getDeviceDetails(userAgent,user);
         try {
             emailService.sendVerificationEmail(user);
         } catch (MessagingException | UnsupportedEncodingException e) {

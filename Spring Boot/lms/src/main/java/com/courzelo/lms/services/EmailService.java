@@ -1,8 +1,10 @@
 package com.courzelo.lms.services;
 
 import com.courzelo.lms.entities.User;
+import com.courzelo.lms.repositories.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,12 +12,20 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Random;
 
 @Service
+@Slf4j
 public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    private final UserRepository userRepository;
+
+    public EmailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public void sendEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -195,5 +205,15 @@ public class EmailService {
         helper.setText(content, true);
 
         mailSender.send(message);
+    }
+    public int generateVerificationCode(User user){
+        log.info("generateVerificationCode : Generating verification code ...");
+        Random random = new Random();
+        int verificationCode = random.nextInt(9000) + 1000;
+        log.info("generateVerificationCode : Verification code is "+ verificationCode);
+        user.setVerificationCode(verificationCode);
+        userRepository.save(user);
+        log.info("generateVerificationCode : Generating complete ...");
+        return verificationCode;
     }
 }
