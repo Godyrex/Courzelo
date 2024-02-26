@@ -1,16 +1,20 @@
 package com.courzelo.lms.dto;
 
-import com.courzelo.lms.entities.Departement;
+import com.courzelo.lms.entities.Department;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Data
 @Getter
 @Setter
 public class FieldOfStudyDTO {
 
-    private String  id;
 
     @Size(max = 255)
     private String name;
@@ -19,5 +23,7 @@ public class FieldOfStudyDTO {
 
     @Size(max = 255)
     private String chefField;
- private Departement departement;
+
+    private Department department;
+
 }

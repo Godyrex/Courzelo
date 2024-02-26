@@ -12,14 +12,18 @@ import Swal from 'sweetalert2';
 })
 
   export class AddDepartementComponent implements OnInit {
+
+
   newDepartementFormGroup!: FormGroup ;
   constructor(private fb: FormBuilder,private dpService:DepartmentService,
               private router: Router) {}
 
     ngOnInit(): void {
+
       this.newDepartementFormGroup = this.fb.group({
         name: this.fb.control('', [Validators.required]),
-        chefDepartement: this.fb.control('', [Validators.required])
+        chefDepartement: this.fb.control('', [Validators.required]
+        )
       });
     }
   handleAddDepartement() {
@@ -40,5 +44,8 @@ import Swal from 'sweetalert2';
     } else {
       Swal.fire('Error', 'Please fill in all fields of the form correctly', 'error');
     }
+
+
+
 
 }}

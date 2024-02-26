@@ -19,13 +19,4 @@ public class NonDisponibility {
     @Id
     private  String id;
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
-
-    @Version
-    private Integer version;
-
 }

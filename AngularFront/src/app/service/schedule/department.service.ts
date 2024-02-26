@@ -26,5 +26,8 @@ export class DepartmentService {
         return throwError(error);
       })
     );}
+  getDepartmentCount(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/count`);
+  }
 
 }

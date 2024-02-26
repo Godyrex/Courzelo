@@ -4,6 +4,5 @@ export interface Departement {
 
   name:string;
   chefDepartement:string;
-
-
+  fieldOfStudy:FieldOfStudy[];
 }

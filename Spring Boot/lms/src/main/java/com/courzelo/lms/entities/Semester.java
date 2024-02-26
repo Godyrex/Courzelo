@@ -30,14 +30,7 @@ public class Semester {
     @Size(max = 255)
     private String universityYear;
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
 
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
-
-    @Version
-    private Integer version;
     @Enumerated(EnumType.STRING)
     private SemesterNumber semesterNumber;
 

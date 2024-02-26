@@ -1,12 +1,4 @@
 
-y
-Ilms/src/main/java/com/courzelo/lms/controllers/DepartementController.java,d\4\d4b9d843be98550d9e403596fc8216bb2593a26f
-s
-Clms/src/main/java/com/courzelo/lms/services/DepartementService.java,a\d\addcc3a688e4d93f223a36670d0b130ac834e07e
-z
-Jlms/src/main/java/com/courzelo/lms/repositories/DepartementRepository.java,e\1\e176147e47cd90c2e4bb90e8fcf851347a2cf9af
-l
-<lms/src/main/java/com/courzelo/lms/entities/Departement.java,5\7\5765bb48974b471716252522a0b3778484223ab8
 n
 >lms/src/main/java/com/courzelo/lms/entities/ElementModule.java,4\2\42608629649ec3d9ab989fee857b3e125dd6e6c9
 m
@@ -17,8 +9,6 @@ i
 9lms/src/main/java/com/courzelo/lms/entities/Semester.java,1\7\1722962af14662d54b804e1b77e2b9e726ddbf62
 o
 ?lms/src/main/java/com/courzelo/lms/utils/NotFoundException.java,4\0\406ff410a68c499ee6eb5825f00d0b4623aef2e5
-j
-:lms/src/main/java/com/courzelo/lms/dto/DepartementDTO.java,b\3\b3afec2afbce28c4b165e8b8bb8839475b3a3901
 l
 <lms/src/main/java/com/courzelo/lms/dto/ElementModuleDTO.java,9\c\9c1dad5e4bdd1063ab4aa97d2ecbfb35ba387ff0
 k
@@ -91,3 +81,15 @@ d
 4lms/src/main/java/com/courzelo/lms/dto/LoginDTO.java,5\2\52eed8899a1ffbd12019e13eb2bc8f562896e3c7
 c
 3lms/src/main/java/com/courzelo/lms/config/test.java,5\c\5ca6f09f18411336311b9bc107f50d364d4c6c8e
+k
+;lms/src/main/java/com/courzelo/lms/entities/Department.java,b\0\b08818dd8b1aff270d6f551c917996cd2974e3c8
+x
+Hlms/src/main/java/com/courzelo/lms/controllers/DepartmentController.java,5\9\592bc14a5fa5084c6308c42a881ff541f49752d5
+r
+Blms/src/main/java/com/courzelo/lms/services/DepartmentService.java,b\1\b1817e74f22d126c348ad66bb50e0ad9c406c929
+y
+Ilms/src/main/java/com/courzelo/lms/repositories/DepartmentRepository.java,b\b\bb180d1efc39ece7c3768b2544a9f080494d654b
+i
+9lms/src/main/java/com/courzelo/lms/dto/DepartmentDTO.java,e\6\e6d67ea11bddd42a69f460bd1d3b32248c3b28f3
+e
+5lms/src/main/java/com/courzelo/lms/entities/Exam.java,0\4\04c336ed5ea23abcb01b81c01e8b71296776050c

@@ -28,14 +28,9 @@ public class ElementModule {
     @Size(max = 255)
     private String name;
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
 
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
 
-    @Version
-    private Integer version;
+
     @Enumerated(EnumType.STRING)
     private DayOfWeek jour;
     @Enumerated(EnumType.STRING)

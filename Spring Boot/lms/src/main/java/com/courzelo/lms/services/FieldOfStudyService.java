@@ -52,10 +52,11 @@ public class FieldOfStudyService {
 
     private FieldOfStudyDTO mapToDTO(final FieldOfStudy fieldOfStudy,
             final FieldOfStudyDTO fieldOfStudyDTO) {
-        fieldOfStudyDTO.setId(fieldOfStudy.getId());
+        //fieldOfStudyDTO.setId(fieldOfStudy.getId());
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
         fieldOfStudyDTO.setChefField(fieldOfStudy.getChefField());
+        fieldOfStudyDTO.setDepartment(fieldOfStudy.getDepartment());
         return fieldOfStudyDTO;
     }
 
@@ -64,6 +65,7 @@ public class FieldOfStudyService {
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
+        fieldOfStudy.setDepartment(fieldOfStudyDTO.getDepartment());
         return fieldOfStudy;
     }
 
