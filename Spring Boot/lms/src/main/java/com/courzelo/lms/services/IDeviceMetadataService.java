@@ -3,6 +3,6 @@ package com.courzelo.lms.services;
 import com.courzelo.lms.entities.User;
 
 public interface IDeviceMetadataService {
-    void getDeviceDetails(String userAgent, User user);
+    void saveDeviceDetails(String userAgent, User user);
     boolean isNewDevice(String userAgent, User user);
 }

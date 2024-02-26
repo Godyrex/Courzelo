@@ -33,7 +33,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -57,33 +56,13 @@ public class AuthService implements IAuthService {
     private long refreshExpirationMs;
     @Value("${Security.app.refreshRememberMeExpirationMs}")
     private long refreshRememberMeExpirationMs;
-    public ResponseEntity<?> authenticateUser(LoginDTO loginDTO,@NonNull HttpServletResponse response,String userAgent) {
+    public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response, String userAgent) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
             if(!iDeviceMetadataService.isNewDevice(userAgent,checkUser)){
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String accessToken = jwtUtils.generateJwtToken(authentication.getName());
-                response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken,jwtExpirationMs).toString());
-                RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail());
-                response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(),refreshExpirationMs).toString());
-                User userDetails = (User) authentication.getPrincipal();
-                List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .toList();
-                if(!iDeviceMetadataService.isNewDevice(userAgent,userDetails)){
-                    log.info("Device Found");
-                }else {
-                    log.info("Saving Device");
-                    iDeviceMetadataService.getDeviceDetails(userAgent, userDetails);
-                }
-            return ResponseEntity.ok(new JwtResponse(
-                    userDetails.getEmail(),
-                    userDetails.getName(),
-                    userDetails.getLastName(),
-                    roles
-            ));
+            return authenticateUser(authentication,response,loginDTO);
             }else{
                 try {
                     emailService.sendVerificationCode(checkUser,emailService.generateVerificationCode(checkUser));
@@ -100,33 +79,40 @@ public class AuthService implements IAuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
         }
     }
-    public ResponseEntity<?> confirmDevice(String userAgent,@NonNull HttpServletResponse response,LoginDTO loginDTO,Integer code) {
-    User user = userRepository.findUserByEmail(loginDTO.getEmail());
-    if(Objects.equals(code, user.getVerificationCode())){
-        try {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-         SecurityContextHolder.getContext().setAuthentication(authentication);
+    private ResponseEntity<?> authenticateUser(Authentication authentication,@NonNull HttpServletResponse response,LoginDTO loginDTO){
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtUtils.generateJwtToken(authentication.getName());
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken,jwtExpirationMs).toString());
-        RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(user.getEmail());
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(),refreshExpirationMs).toString());
+        RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail());
         User userDetails = (User) authentication.getPrincipal();
+        if(loginDTO.isRememberMe()){
+            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshRememberMeExpirationMs).toString());
+            userDetails.setRememberMe(true);
+        }else {
+            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshExpirationMs).toString());
+            userDetails.setRememberMe(false);
+        }
+        userRepository.save(userDetails);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
-        if(!iDeviceMetadataService.isNewDevice(userAgent,userDetails)){
-            log.info("Device Found");
-        }else {
-            log.info("Saving Device");
-            iDeviceMetadataService.getDeviceDetails(userAgent, userDetails);
-        }
         return ResponseEntity.ok(new JwtResponse(
                 userDetails.getEmail(),
                 userDetails.getName(),
                 userDetails.getLastName(),
                 roles
         ));
+    }
+    public ResponseEntity<?> confirmDevice(String userAgent,@NonNull HttpServletResponse response,LoginDTO loginDTO,Integer code) {
+    User user = userRepository.findUserByEmail(loginDTO.getEmail());
+    if(Objects.equals(code, user.getVerificationCode())){
+        try {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        ResponseEntity<?>  response1 =authenticateUser(authentication,response,loginDTO);
+            User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
+                iDeviceMetadataService.saveDeviceDetails(userAgent, checkUser);
+        return response1;
         } catch (DisabledException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
         } catch (LockedException e) {
@@ -138,7 +124,7 @@ public class AuthService implements IAuthService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Wrong Verification Code"));
     }
 
-    @Override
+
     public ResponseEntity<Response> verifyAccount(String code) {
         User user = userRepository.findUserByVerificationCode(code);
         if(user != null){
@@ -163,7 +149,7 @@ public class AuthService implements IAuthService {
         String randomCode = RandomString.make(64);
         user.setEmailVerificationCode(randomCode);
         userRepository.save(user);
-        iDeviceMetadataService.getDeviceDetails(userAgent,user);
+        iDeviceMetadataService.saveDeviceDetails(userAgent,user);
         try {
             emailService.sendVerificationEmail(user);
         } catch (MessagingException | UnsupportedEncodingException e) {

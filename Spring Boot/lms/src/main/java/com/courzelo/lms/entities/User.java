@@ -29,6 +29,7 @@ public class User implements UserDetails {
     private List<Role> roles= new ArrayList<>();
     private boolean enabled;
     private Boolean ban;
+    private boolean rememberMe;
     private String emailVerificationCode;
     private Integer verificationCode;
     private String grade;

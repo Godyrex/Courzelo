@@ -32,7 +32,14 @@
           <div class="text-danger" *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid">
             Please enter a password.</div>
           <div class="row">
-            <!-- /.col -->
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input formControlName="rememberMe"  type="checkbox" id="remember">
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div>
+            </div>
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
@@ -46,6 +53,10 @@
       <ng-template #verificationCodeInput>
         <!-- Show input field for verification code -->
         <form [formGroup]="verificationForm" (ngSubmit)="submitVerificationCode()">
+          <div *ngIf="messageSuccess" id="message-sucess" class="message-container">{{messageSuccess}}</div>
+          <div class="text-danger" *ngIf="message" id="message-error">{{message}}</div>
+          <div class="text-danger" *ngIf="verificationForm.controls.code.touched && verificationForm.controls.code?.invalid">
+            Verification Code must be 4 digit </div>
           <div class="input-group mb-3">
             <input formControlName="code" type="text" class="form-control" placeholder="Verification Code">
             <div class="input-group-append">
