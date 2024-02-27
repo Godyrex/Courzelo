@@ -3,6 +3,7 @@ package com.courzelo.lms.entities;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,8 @@ public class User implements UserDetails {
     private String lastName;
     @NotNull
     private List<Role> roles= new ArrayList<>();
+    @DBRef
+    private Photo photo;
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;

@@ -109,8 +109,10 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#name" data-toggle="tab">Name</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#photo" data-toggle="tab">Profile photo</a></li>
                   <li class="nav-item"><a class="nav-link" href="#email" data-toggle="tab">Email</a></li>
                   <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">Password</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#delete" data-toggle="tab">Delete account</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -133,6 +135,32 @@
                         <label class="col-sm-2 col-form-label">Lastname</label>
                         <div class="col-sm-10">
                           <input formControlName="lastName" type="text" class="form-control"  placeholder="Lastname">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                          <button type="submit" class="btn btn-danger">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- /.post -->
+                  </div>
+                  <div class="tab-pane" id="photo">
+                    <form enctype="multipart/form-data" [formGroup]="photoForm" (ngSubmit)="changePhoto()" class="form-horizontal">
+                      <div *ngIf="messageSuccess" class="message-container">{{messageSuccess}}</div>
+                      <div class="text-danger" *ngIf="message">{{message}}</div>
+                      <div class="text-danger" *ngIf="photoForm.controls.photo.touched && photoForm.controls.photo?.invalid">
+                        photo must not be null</div>
+                      <div class="form-group row">
+                        <label for="exampleInputFile">File input</label>
+                        <div class="input-group">
+                          <div class="custom-file">
+                            <input (change)="onFileSelected($event)" formControlName="photo"  type="file" class="custom-file-input" id="exampleInputFile">
+                            <label  class="custom-file-label" for="exampleInputFile">Choose file</label>
+                          </div>
+                          <div class="input-group-append">
+                            <span class="input-group-text">Upload</span>
+                          </div>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -209,6 +237,20 @@
                           <button type="submit" class="btn btn-danger">Submit</button>
                         </div>
                       </div>
+                    </form>
+                  </div>
+
+                  <div class="tab-pane" id="delete">
+                    <form [formGroup]="deleteForm" (ngSubmit)="confirmDelete()" class="form-horizontal">
+                      <div class="text-danger" *ngIf="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword?.invalid">
+                        Please type your password</div>
+                      <div class="form-group row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                          <input formControlName="password" type="password" class="form-control" id="psps" placeholder="Password">
+                        </div>
+                      </div>
+                    <button class="btn btn-danger" >Delete My Account</button>
                     </form>
                   </div>
                   <!-- /.tab-pane -->

@@ -1,18 +1,15 @@
 package com.courzelo.lms.services;
 
-import com.courzelo.lms.dto.PasswordDTO;
-import com.courzelo.lms.dto.ProfileDTO;
-import com.courzelo.lms.dto.UpdateEmailDTO;
+import com.courzelo.lms.dto.*;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.UserNotFoundException;
 import com.courzelo.lms.exceptions.UserRoleNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.security.jwt.JWTUtils;
-import com.courzelo.lms.utils.CookieUtil;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -22,26 +19,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-    private final CookieUtil cookieUtil;
-    private final JWTUtils jwtUtils;
     private final  EmailService emailService;
-
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, CookieUtil cookieUtil, JWTUtils jwtUtils, EmailService emailService) {
+    private final IPhotoService iPhotoService;
+    private final IAuthService iAuthService;
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService,@Lazy IAuthService iAuthService) {
         this.userRepository = userRepository;
         this.encoder = encoder;
-        this.cookieUtil = cookieUtil;
-        this.jwtUtils = jwtUtils;
         this.emailService = emailService;
+        this.iPhotoService = iPhotoService;
+        this.iAuthService = iAuthService;
     }
 
     private static final String USER_NOT_FOUND = "User not found with id : ";
@@ -181,9 +179,8 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public ResponseEntity<HttpStatus> sendVerificationCode(HttpServletRequest request) {
-     String email =  jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request));
-     User user = userRepository.findUserByEmail(email);
+    public ResponseEntity<HttpStatus> sendVerificationCode(Principal principal) {
+     User user = userRepository.findUserByEmail(principal.getName());
         try {
             emailService.sendVerificationCode(user, emailService.generateVerificationCode(user));
             return ResponseEntity.ok().build();
@@ -191,9 +188,8 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException(e);
         }
     }
-    public ResponseEntity<HttpStatus> updateEmail(UpdateEmailDTO updateEmailDTO,HttpServletRequest request){
-        String email =  jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request));
-        User user = userRepository.findUserByEmail(email);
+    public ResponseEntity<HttpStatus> updateEmail(UpdateEmailDTO updateEmailDTO,Principal principal){
+        User user = userRepository.findUserByEmail(principal.getName());
         if(user.getVerificationCode() == updateEmailDTO.getCode()){
             user.setEmail(updateEmailDTO.getEmail());
             user.setVerificationCode(null);
@@ -202,4 +198,26 @@ public class UserService implements UserDetailsService {
         }
         return ResponseEntity.badRequest().build();
     }
+    public ResponseEntity<HttpStatus> updatePhoto(MultipartFile file, Principal principal) throws IOException {
+        log.info("test update photo");
+        User user = userRepository.findUserByEmail(principal.getName());
+        user.setPhoto(iPhotoService.addPhoto(file));
+        userRepository.save(user);
+        log.info("finish update photo");
+        return ResponseEntity.ok().build();
+    }
+    public ResponseEntity<HttpStatus> deleteAccount(DeleteAccountDTO dto, Principal principal, HttpServletRequest request, HttpServletResponse response){
+        User user = userRepository.findUserByEmail(principal.getName());
+        if(user!= null&&dto.getPassword()!= null){
+            if(encoder.matches(dto.getPassword(), user.getPassword())){
+                deleteUser(user);
+                iAuthService.logout(request,response);
+                return ResponseEntity.ok().build();
+            }
+           return ResponseEntity.badRequest().build();
+
+        }
+       return ResponseEntity.badRequest().build();
+    }
+
 }

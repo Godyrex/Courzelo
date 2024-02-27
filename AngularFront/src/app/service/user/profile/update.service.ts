@@ -5,6 +5,8 @@ import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {Observable} from "rxjs";
+import {PhotoRequest} from "../../../model/user/PhotoRequest";
+import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +25,11 @@ export class UpdateService {
   }
   sendVerificationCode(): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendVerificationCode`, null);
+  }
+  changePhoto(photoRequest: File): Observable<any>{
+    return this.http.post(`${this.baseUrl}/update/photo`,photoRequest);
+  }
+  deleteAccount(password: DeleteAccountRequest){
+    return this.http.post(`${this.baseUrl}/delete`,password);
   }
 }

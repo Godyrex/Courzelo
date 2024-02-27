@@ -8,6 +8,8 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {Router} from "@angular/router";
+import {PhotoRequest} from "../../../model/user/PhotoRequest";
+import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 
 @Component({
   selector: 'app-profile',
@@ -17,11 +19,12 @@ import {Router} from "@angular/router";
 export class ProfileComponent {
   nameRequest : NameRequest = {};
   emailRequest : EmailRequest = {};
+  deleteAccountRequest : DeleteAccountRequest = {};
   passwordRequest : PasswordRequest = {};
   message = '';
   messageSuccess = '';
   user : LoginResponse={};
-  verificationCode: string = '';
+  selectedFile: File | undefined;
   showVerification: boolean = false;
   showEmailForm: boolean = true;
   constructor(
@@ -38,6 +41,9 @@ export class ProfileComponent {
   emailForm = this.formBuilder.group({
     email: ['', [ Validators.email]],
   });
+  photoForm = this.formBuilder.group({
+    photo: ['', [ Validators.email]],
+  });
   verificationForm = this.formBuilder.group({
     code: ['', [ Validators.maxLength(4),Validators.minLength(4)]],
   });
@@ -50,6 +56,9 @@ export class ProfileComponent {
     newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     validator: this.checkingPasswords
+  });
+  deleteForm = this.formBuilder.group({
+    password: ['', [Validators.required]],
   });
   public checkingPasswords(formGroup: FormGroup) {
 
@@ -85,6 +94,48 @@ export class ProfileComponent {
             this.message = error.error.msg;
           });
     }
+  }
+  changePhoto(){
+    if (this.selectedFile) {
+      const formData: FormData = new FormData();
+      formData.append('file', this.selectedFile,this.selectedFile.name);
+      console.log(formData);
+      this.updateService.changePhoto(this.selectedFile)
+        .subscribe(data => {
+            console.log(data)
+            this.messageSuccess = "Photo Updated!";
+            this.message = "";
+          },
+          error => {
+            console.log("update name error :", error)
+            this.messageSuccess = "";
+            this.message = error.error.msg;
+          });
+    }
+
+  }
+  confirmDelete(): void {
+    if(this.deleteForm.valid){
+      if(confirm('Are you sure you want to delete your account?')) {
+      this.deleteAccount();
+    }
+  }
+  }
+  deleteAccount(): void {
+    this.deleteAccountRequest.password =this.deleteForm.controls['password'].value!;
+    this.updateService.deleteAccount(this.deleteAccountRequest).subscribe(data => {
+        console.log(data)
+        console.log('Account deleted successfully!');
+        this.router.navigate(['/logout']);
+      },
+      error => {
+        console.log("delete account error :",error)
+        console.log(error)
+      });
+  }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
   }
   changePassword(){
     if(this.passwordForm.valid) {

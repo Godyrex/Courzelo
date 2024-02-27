@@ -1,14 +1,12 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.dto.PasswordDTO;
-import com.courzelo.lms.dto.ProfileDTO;
-import com.courzelo.lms.dto.UpdateEmailDTO;
-import com.courzelo.lms.dto.UserDTO;
+import com.courzelo.lms.dto.*;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders ="*",allowCredentials = "true"  )
@@ -74,13 +74,23 @@ public class UserController {
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/sendVerificationCode")
-    public ResponseEntity<HttpStatus> sendVerificationCode(HttpServletRequest request){
-        return userService.sendVerificationCode(request);
+    public ResponseEntity<HttpStatus> sendVerificationCode(Principal principal){
+        return userService.sendVerificationCode(principal);
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/email")
-    public ResponseEntity<HttpStatus> changeEmail(@Valid @RequestBody UpdateEmailDTO updateEmailDTO, HttpServletRequest request){
-        return userService.updateEmail(updateEmailDTO,request);
+    public ResponseEntity<HttpStatus> changeEmail(@Valid @RequestBody UpdateEmailDTO updateEmailDTO, Principal principal){
+        return userService.updateEmail(updateEmailDTO,principal);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value ="/update/photo", consumes = "multipart/form-data")
+    public ResponseEntity<HttpStatus> changePhoto(@RequestParam("photo") MultipartFile file, Principal principal) throws IOException {
+        return userService.updatePhoto(file,principal);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete")
+    public ResponseEntity<HttpStatus> deleteAccount(@Valid @RequestBody DeleteAccountDTO dto, Principal principal,HttpServletRequest request, HttpServletResponse response) {
+        return userService.deleteAccount(dto,principal,request,response);
     }
 
 }
