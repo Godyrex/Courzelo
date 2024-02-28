@@ -15,8 +15,9 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PhotoService implements IPhotoService{
+public class PhotoService implements IPhotoService {
     private final PhotoRepository photoRepository;
+
     @Override
     public Photo addPhoto(MultipartFile file) throws IOException {
         log.info("Starting Adding Photo");
@@ -29,5 +30,6 @@ public class PhotoService implements IPhotoService{
 
     @Override
     public Photo getPhoto(String id) {
-        return photoRepository.findById(id).orElseThrow(()-> new PhotoNotFoundException("Photo Not Found!"));     }
+        return photoRepository.findById(id).orElseThrow(() -> new PhotoNotFoundException("Photo Not Found!"));
+    }
 }

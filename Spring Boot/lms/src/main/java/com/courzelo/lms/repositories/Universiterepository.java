@@ -4,5 +4,5 @@ import com.courzelo.lms.entities.Universite;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
-public interface Universiterepository extends MongoRepository<Universite, String > {
+public interface Universiterepository extends MongoRepository<Universite, String> {
 }

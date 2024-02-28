@@ -18,9 +18,9 @@ import java.util.Random;
 @Slf4j
 public class EmailService {
 
+    private final UserRepository userRepository;
     @Autowired
     private JavaMailSender mailSender;
-    private final UserRepository userRepository;
 
     public EmailService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -33,6 +33,7 @@ public class EmailService {
         message.setText(body);
         mailSender.send(message);
     }
+
     public void sendVerificationEmail(User user)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
@@ -78,7 +79,7 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getName()+" "+user.getLastName());
+        content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
         String verifyURL = "localhost:4200" + "/verify?code=" + user.getEmailVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
@@ -87,7 +88,8 @@ public class EmailService {
 
         mailSender.send(message);
     }
-    public void sendVerificationCode(User user,int verificationCode)
+
+    public void sendVerificationCode(User user, int verificationCode)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";
@@ -167,11 +169,12 @@ public class EmailService {
 
         mailSender.send(message);
     }
-    public int generateVerificationCode(User user){
+
+    public int generateVerificationCode(User user) {
         log.info("generateVerificationCode : Generating verification code ...");
         Random random = new Random();
         int verificationCode = random.nextInt(9000) + 1000;
-        log.info("generateVerificationCode : Verification code is "+ verificationCode);
+        log.info("generateVerificationCode : Verification code is " + verificationCode);
         user.setVerificationCode(verificationCode);
         userRepository.save(user);
         log.info("generateVerificationCode : Generating complete ...");

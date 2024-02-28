@@ -21,10 +21,11 @@ import static com.courzelo.lms.services.UserService.USER_NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AdminService implements IAdminService{
+public class AdminService implements IAdminService {
+    private final UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
-    private final UserRepository userRepository;
+
     public ResponseEntity<Response> toggleEnable(String userID) {
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
@@ -34,6 +35,7 @@ public class AdminService implements IAdminService{
         String message = isEnabled ? "User disabled!" : "User enabled!";
         return ResponseEntity.ok().body(new Response(message));
     }
+
     public ResponseEntity<Response> toggleBan(String userID) {
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
@@ -46,7 +48,7 @@ public class AdminService implements IAdminService{
     }
 
     public ResponseEntity<Response> addRole(String role, String userID) {
-        if(roleExist(role)) {
+        if (roleExist(role)) {
             User user = userRepository.findById(userID)
                     .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
             if (user.getRoles().contains(Role.valueOf(role))) {
@@ -67,7 +69,7 @@ public class AdminService implements IAdminService{
 
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
-        if(!user.getRoles().contains(Role.valueOf(role))){
+        if (!user.getRoles().contains(Role.valueOf(role))) {
             return ResponseEntity
                     .badRequest()
                     .body(new Response("Role not assigned"));
@@ -76,6 +78,7 @@ public class AdminService implements IAdminService{
         userRepository.save(user);
         return ResponseEntity.ok().body(new Response("Role removed!"));
     }
+
     private Boolean roleExist(String role) {
         boolean roleExists = false;
         for (Role r : Role.values()) {
@@ -84,18 +87,19 @@ public class AdminService implements IAdminService{
                 break;
             }
         }
-        if(!roleExists){
+        if (!roleExists) {
             throw new UserRoleNotFoundException("Role not found");
         }
         return roleExists;
     }
+
     public ResponseEntity<List<UserDTO>> getUsers() {
         return ResponseEntity
                 .ok()
                 .body(userRepository.findAll()
-                .stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .toList());
+                        .stream()
+                        .map(user -> modelMapper.map(user, UserDTO.class))
+                        .toList());
     }
 
 }

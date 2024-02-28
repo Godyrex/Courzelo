@@ -5,7 +5,6 @@ import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {Observable} from "rxjs";
-import {PhotoRequest} from "../../../model/user/PhotoRequest";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 
 @Injectable({

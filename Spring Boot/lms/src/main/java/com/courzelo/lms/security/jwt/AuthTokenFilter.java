@@ -53,7 +53,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 "/api/v1/auth/confirmDevice/"
         );
         String requestUri = request.getRequestURI();
-        log.info("doFilterInternal :requestUri "+requestUri);
+        log.info("doFilterInternal :requestUri " + requestUri);
         boolean isExcludedEndpoint = false;
         for (String endpoint : excludedEndpoints) {
             if (requestUri.startsWith(endpoint)) {
@@ -70,22 +70,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String accessToken = cookieUtil.getAccessTokenFromCookies(request);
 
         try {
-                if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
-                    String email = jwtUtils.getEmailFromJwtToken(accessToken);
-                    UserDetails userDetails = userDetailsService.loadUserByEmail(email);
-                    if(userDetailsService.ValidUser(email)) {
-                        setAuthenticationInSecurityContext(request, userDetails);
-                    }
-                } else if (cookieUtil.getRefreshTokenFromCookies(request) != null) {
-                    RefreshToken token = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
-                    iRefreshTokenService.verifyExpiration(token);
-                    authService.refreshToken(response, token.getUser().getEmail());
-                    UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
-                    if(userDetailsService.ValidUser(token.getUser().getEmail())) {
-                        log.info("doFilterInternal : "+token.getUser().getEmail()+" is valid!");
-                        setAuthenticationInSecurityContext(request, userDetails);
-                    }
+            if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+                String email = jwtUtils.getEmailFromJwtToken(accessToken);
+                UserDetails userDetails = userDetailsService.loadUserByEmail(email);
+                if (userDetailsService.ValidUser(email)) {
+                    setAuthenticationInSecurityContext(request, userDetails);
                 }
+            } else if (cookieUtil.getRefreshTokenFromCookies(request) != null) {
+                RefreshToken token = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
+                iRefreshTokenService.verifyExpiration(token);
+                authService.refreshToken(response, token.getUser().getEmail());
+                UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
+                if (userDetailsService.ValidUser(token.getUser().getEmail())) {
+                    log.info("doFilterInternal : " + token.getUser().getEmail() + " is valid!");
+                    setAuthenticationInSecurityContext(request, userDetails);
+                }
+            }
 
         } catch (Exception e) {
             jwtLogger.error("Cannot set user authentication: {}", e.getMessage());
@@ -93,7 +93,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
 
 
     private void setAuthenticationInSecurityContext(HttpServletRequest request, UserDetails userDetails) {

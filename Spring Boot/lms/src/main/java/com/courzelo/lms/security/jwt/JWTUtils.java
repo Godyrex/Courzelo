@@ -20,6 +20,7 @@ public class JWTUtils {
 
     @Value("${Security.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
     public String generateJwtToken(String email) {
         return Jwts.builder()
                 .setSubject((email))

@@ -6,9 +6,7 @@ import {NameRequest} from "../../../model/user/NameRequest";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 import {EmailRequest} from "../../../model/user/EmailRequest";
-import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {Router} from "@angular/router";
-import {PhotoRequest} from "../../../model/user/PhotoRequest";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 
 @Component({

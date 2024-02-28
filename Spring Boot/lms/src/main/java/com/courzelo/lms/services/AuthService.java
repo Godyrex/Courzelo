@@ -56,18 +56,19 @@ public class AuthService implements IAuthService {
     private long refreshExpirationMs;
     @Value("${Security.app.refreshRememberMeExpirationMs}")
     private long refreshRememberMeExpirationMs;
+
     public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response, String userAgent) {
         log.info("Starting Logging in...");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
-            if(!iDeviceMetadataService.isNewDevice(userAgent,checkUser)){
+            if (!iDeviceMetadataService.isNewDevice(userAgent, checkUser)) {
                 log.info("Finished Logging in...");
-                return authenticateUser(authentication,response,loginDTO);
-            }else{
+                return authenticateUser(authentication, response, loginDTO);
+            } else {
                 try {
-                    emailService.sendVerificationCode(checkUser,emailService.generateVerificationCode(checkUser));
+                    emailService.sendVerificationCode(checkUser, emailService.generateVerificationCode(checkUser));
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     throw new RuntimeException(e);
                 }
@@ -82,20 +83,21 @@ public class AuthService implements IAuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
         }
     }
-    private ResponseEntity<?> authenticateUser(Authentication authentication,@NonNull HttpServletResponse response,LoginDTO loginDTO){
+
+    private ResponseEntity<?> authenticateUser(Authentication authentication, @NonNull HttpServletResponse response, LoginDTO loginDTO) {
         log.info("Starting Authentication...");
-        log.info("Email :"+loginDTO.getEmail());
+        log.info("Email :" + loginDTO.getEmail());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtUtils.generateJwtToken(authentication.getName());
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken,jwtExpirationMs).toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken, jwtExpirationMs).toString());
         User userDetails = (User) authentication.getPrincipal();
-        if(loginDTO.isRememberMe()){
-            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(),refreshRememberMeExpirationMs);
+        if (loginDTO.isRememberMe()) {
+            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshRememberMeExpirationMs);
             response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshRememberMeExpirationMs).toString());
             userDetails.setRememberMe(true);
             log.info("RememberMe : On");
-        }else {
-            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(),refreshExpirationMs);
+        } else {
+            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshExpirationMs);
             response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshExpirationMs).toString());
             userDetails.setRememberMe(false);
             log.info("RememberMe : Off");
@@ -112,26 +114,27 @@ public class AuthService implements IAuthService {
                 roles
         ));
     }
-    public ResponseEntity<?> confirmDevice(String userAgent,@NonNull HttpServletResponse response,LoginDTO loginDTO,Integer code) {
+
+    public ResponseEntity<?> confirmDevice(String userAgent, @NonNull HttpServletResponse response, LoginDTO loginDTO, Integer code) {
         log.info("Started Confirming Device...");
         User user = userRepository.findUserByEmail(loginDTO.getEmail());
-    if(Objects.equals(code, user.getVerificationCode())){
-        try {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-        ResponseEntity<?>  response1 =authenticateUser(authentication,response,loginDTO);
-            User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
+        if (Objects.equals(code, user.getVerificationCode())) {
+            try {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+                ResponseEntity<?> response1 = authenticateUser(authentication, response, loginDTO);
+                User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
                 iDeviceMetadataService.saveDeviceDetails(userAgent, checkUser);
-            log.info("Finished Confirming Device...");
-            return response1;
-        } catch (DisabledException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
-        } catch (LockedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Your account has been banned"));
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
+                log.info("Finished Confirming Device...");
+                return response1;
+            } catch (DisabledException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
+            } catch (LockedException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Your account has been banned"));
+            } catch (AuthenticationException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
+            }
         }
-    }
         log.info("Started Confirming Device...");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Wrong Verification Code"));
     }
@@ -141,11 +144,11 @@ public class AuthService implements IAuthService {
         log.info("Started Verifying...");
         log.info(code);
         User user = userRepository.findUserByEmailVerificationCode(code);
-        if(user != null){
+        if (user != null) {
             log.info(user.getEmail());
             user.setEnabled(true);
-        user.setVerificationCode(null);
-        userRepository.save(user);
+            user.setVerificationCode(null);
+            userRepository.save(user);
             log.info("Finished Verifying...");
             return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
         }
@@ -153,7 +156,7 @@ public class AuthService implements IAuthService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response("Verification Failed"));
     }
 
-    public ResponseEntity<Response> saveUser(User user,String userAgent) {
+    public ResponseEntity<Response> saveUser(User user, String userAgent) {
         log.info("Started Signing up...");
         if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
             return ResponseEntity
@@ -167,7 +170,7 @@ public class AuthService implements IAuthService {
         String randomCode = RandomString.make(64);
         user.setEmailVerificationCode(randomCode);
         userRepository.save(user);
-        iDeviceMetadataService.saveDeviceDetails(userAgent,user);
+        iDeviceMetadataService.saveDeviceDetails(userAgent, user);
         try {
             emailService.sendVerificationEmail(user);
         } catch (MessagingException | UnsupportedEncodingException e) {
@@ -178,9 +181,10 @@ public class AuthService implements IAuthService {
                 .ok()
                 .body(new Response("Account Created!"));
     }
-    public void logout(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response){
+
+    public void logout(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
         log.info("Logout :Logging out...");
-        if(request.getCookies() != null) {
+        if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals("accessToken")) {
                     iRefreshTokenService.deleteAllUserTokenByEmail(jwtUtils.getEmailFromJwtToken(cookie.getValue()));
@@ -200,9 +204,9 @@ public class AuthService implements IAuthService {
         log.info("Logout :Logout Finished!");
     }
 
-    public void refreshToken(@NonNull HttpServletResponse response, String email){
+    public void refreshToken(@NonNull HttpServletResponse response, String email) {
         log.info("refreshToken :Refreshing Token...");
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(jwtUtils.generateJwtToken(email),jwtExpirationMs).toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(jwtUtils.generateJwtToken(email), jwtExpirationMs).toString());
         log.info("refreshToken :Access token created!");
         log.info("refreshToken :Refreshing token DONE!");
     }

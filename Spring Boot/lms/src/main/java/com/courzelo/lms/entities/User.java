@@ -27,7 +27,7 @@ public class User implements UserDetails {
     @NotNull
     private String lastName;
     @NotNull
-    private List<Role> roles= new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
     @DBRef
     private Photo photo;
     private boolean enabled;
@@ -42,7 +42,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" +role1.name())).toList();
+        return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" + role1.name())).toList();
     }
 
     @Override

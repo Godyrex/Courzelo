@@ -7,7 +7,6 @@ import com.courzelo.lms.repositories.RefreshTokenRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,11 +16,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class RefreshTokenService implements IRefreshTokenService{
+public class RefreshTokenService implements IRefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
+
     @Override
-    public RefreshToken createRefreshToken(String email,long expiration) {
+    public RefreshToken createRefreshToken(String email, long expiration) {
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(userRepository.findUserByEmail(email))
                 .token(UUID.randomUUID().toString())
@@ -37,7 +37,7 @@ public class RefreshTokenService implements IRefreshTokenService{
 
     @Override
     public void verifyExpiration(RefreshToken token) {
-        if(token.getExpiryDate().compareTo(Instant.now())<0){
+        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             log.info("verifyExpiration :Refresh Token removed from database");
             throw new RefreshTokenExpiredException(token.getToken() + " Refresh token is expired. Please make a new login..!");
@@ -52,7 +52,7 @@ public class RefreshTokenService implements IRefreshTokenService{
 
     @Override
     public void deleteToken(RefreshToken token) {
-    refreshTokenRepository.delete(token);
+        refreshTokenRepository.delete(token);
     }
 
     @Override

@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface DeviceMetadataRepository extends MongoRepository<DeviceMetadata,String> {
+public interface DeviceMetadataRepository extends MongoRepository<DeviceMetadata, String> {
     List<DeviceMetadata> findByUser(User user);
 }

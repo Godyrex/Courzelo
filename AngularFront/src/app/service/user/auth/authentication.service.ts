@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {RegisterRequest} from "../../../model/RegisterRequest";
 import {JsonResponse} from "../../../model/user/JsonResponse";
-import {LoginResponse} from "../../../model/user/LoginResponse";
 import {LoginRequest} from "../../../model/user/LoginRequest";
 import {Observable} from "rxjs";
 

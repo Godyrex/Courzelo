@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {JsonResponse} from "../../../model/user/JsonResponse";

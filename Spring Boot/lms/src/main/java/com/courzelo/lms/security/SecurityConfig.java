@@ -44,6 +44,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -60,7 +61,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**")
                         .permitAll()
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**")
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
                         .permitAll()
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());

@@ -17,8 +17,8 @@ import {LoginComponent} from './back/auth/login/login.component';
 import {LogoutComponent} from './back/auth/logout/logout.component';
 import {ProfileComponent} from './back/user/profile/profile.component';
 import {JwtInterceptor} from "./service/user/auth/JwtInterceptor";
-import { VerifyComponent } from './back/auth/verify/verify.component';
-import { AdminPanelComponent } from './back/user/admin-panel/admin-panel.component';
+import {VerifyComponent} from './back/auth/verify/verify.component';
+import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [

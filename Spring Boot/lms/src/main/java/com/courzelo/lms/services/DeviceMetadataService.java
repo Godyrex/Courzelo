@@ -13,13 +13,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class DeviceMetadataService implements IDeviceMetadataService{
+public class DeviceMetadataService implements IDeviceMetadataService {
     private final DeviceMetadataRepository deviceMetadataRepository;
+
     @Override
-    public void saveDeviceDetails(String device, User user){
+    public void saveDeviceDetails(String device, User user) {
         log.info("Saving Device...");
-        log.info("Device : "+device);
-        DeviceMetadata deviceMetadata= new DeviceMetadata();
+        log.info("Device : " + device);
+        DeviceMetadata deviceMetadata = new DeviceMetadata();
         deviceMetadata.setDeviceDetails(device);
         deviceMetadata.setUser(user);
         deviceMetadata.setLastLoggedIn(Instant.now());
