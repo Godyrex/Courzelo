@@ -38,17 +38,25 @@ export class LoginComponent {
   messageSuccess = '';
   login() {
     if (this.loginForm.valid ) {
-      this.loginRequest = Object.assign(this.loginRequest, this.loginForm.value);
+      this.loginRequest.email =this.loginForm.controls['email'].value!.toLowerCase();
+      this.loginRequest.password =this.loginForm.controls['password'].value!;
+      if(this.loginForm.controls['rememberMe'].value == null){
+        this.loginRequest.rememberMe = false;
+      }else{
+        this.loginRequest.rememberMe = true;
+      }
       this.authService.login(this.loginRequest).subscribe(
         response => {
           if (response.deviceIsNew !== undefined) {
             console.log("device not confirmed")
             if (response.deviceIsNew) {
+              console.log(this.loginRequest.rememberMe)
               this.verification = true;
               this.message = '';
               this.messageSuccess ='';
             }
           } else {
+            console.log(this.loginRequest.rememberMe)
             this.message = '';
             this.loginResponse = response;
             this.token.saveUser(response);

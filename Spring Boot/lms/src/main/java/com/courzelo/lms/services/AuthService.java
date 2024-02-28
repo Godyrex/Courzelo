@@ -139,9 +139,11 @@ public class AuthService implements IAuthService {
 
     public ResponseEntity<Response> verifyAccount(String code) {
         log.info("Started Verifying...");
-        User user = userRepository.findUserByVerificationCode(code);
+        log.info(code);
+        User user = userRepository.findUserByEmailVerificationCode(code);
         if(user != null){
-        user.setEnabled(true);
+            log.info(user.getEmail());
+            user.setEnabled(true);
         user.setVerificationCode(null);
         userRepository.save(user);
             log.info("Finished Verifying...");

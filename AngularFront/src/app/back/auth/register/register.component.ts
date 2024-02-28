@@ -42,10 +42,13 @@ export class RegisterComponent {
   }
   registerUser(){
     if(this.registerForm.valid) {
-      this.registerRequest.email = this.registerForm.controls['email'].value!;
-      this.registerRequest.name = this.registerForm.controls['name'].value!;
-      this.registerRequest.lastname = this.registerForm.controls['lastname'].value!;
+      this.registerRequest.email = this.registerForm.controls['email'].value!.toLowerCase().trim();
+      this.registerRequest.name = this.registerForm.controls['name'].value!.toLowerCase().trim();
+      this.registerRequest.lastname = this.registerForm.controls['lastname'].value!.toLowerCase().trim();
       this.registerRequest.password = this.registerForm.controls['password'].value!;
+      this.registerRequest.name=this.registerRequest.name.charAt(0).toUpperCase()+this.registerRequest.name.slice(1);
+      this.registerRequest.lastname=this.registerRequest.lastname.charAt(0).toUpperCase()+this.registerRequest.lastname.slice(1);
+
       console.log(this.registerRequest);
       this.authService.register(this.registerRequest)
         .subscribe(data => {

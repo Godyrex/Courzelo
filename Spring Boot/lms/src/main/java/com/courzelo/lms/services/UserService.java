@@ -1,10 +1,8 @@
 package com.courzelo.lms.services;
 
 import com.courzelo.lms.dto.*;
-import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.UserNotFoundException;
-import com.courzelo.lms.exceptions.UserRoleNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
@@ -24,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -42,7 +39,7 @@ public class UserService implements UserDetailsService {
         this.iAuthService = iAuthService;
     }
 
-    private static final String USER_NOT_FOUND = "User not found with id : ";
+    public static final String USER_NOT_FOUND = "User not found with id : ";
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email);
@@ -83,35 +80,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND+userID));
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    public ResponseEntity<Response> addRole(Role role, String userID) {
-        User user = checkUserAndRole(role,userID);
-        if(user.getRoles().contains(role)){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Response("Role already assigned"));
-        }
-        user.getRoles().add(role);
-        userRepository.save(user);
-        return ResponseEntity.ok().body(new Response("Role assigned!"));
-    }
-
-    public ResponseEntity<Response> removeRole(Role role, String userID) {
-
-        User user = checkUserAndRole(role,userID);
-        if(!user.getRoles().contains(role)){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Response("Role not assigned"));
-        }
-        user.getRoles().remove(role);
-        userRepository.save(user);
-        return ResponseEntity.ok().body(new Response("Role removed!"));
-    }
-
     public ResponseEntity<Response> changePassword(PasswordDTO passwordDTO, String email) {
         log.info("changePassword :Changing user " + email+ " password...");
         log.info("changePassword :Given Password :" + encoder.encode(passwordDTO.getPassword()));
@@ -127,51 +95,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         log.info("changePassword :Password Changed!");
         return ResponseEntity.ok().body(new Response("Password updated!"));
-    }
-
-
-    public ResponseEntity<Response> ban(String userID) {
-        User user = userRepository.findById(userID)
-                .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND+userID));
-        if(Boolean.TRUE.equals(user.getBan())){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Response("User already banned!"));
-        }
-        user.setBan(true);
-        userRepository.save(user);
-        return ResponseEntity.ok().body(new Response("User banned!"));
-    }
-
-
-    public ResponseEntity<Response> unban(String userID) {
-        User user = userRepository.findById(userID)
-                .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND+userID));
-        if(Boolean.FALSE.equals(user.getBan())){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Response("User already unbanned!"));
-        }
-        user.setBan(false);
-        userRepository.save(user);
-        return ResponseEntity.ok().body(new Response("User unbanned!"));
-    }
-
-
-    private User checkUserAndRole(Role role,String userID) {
-        User user = userRepository.findById(userID)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND+userID));
-        boolean roleExists = false;
-        for (Role r : Role.values()) {
-            if (r.equals(role)) {
-                roleExists = true;
-                break;
-            }
-        }
-        if(!roleExists){
-            throw new UserRoleNotFoundException("Role not found");
-        }
-        return user;
     }
     public boolean ValidUser(String email){
         User user = userRepository.findUserByEmail(email);

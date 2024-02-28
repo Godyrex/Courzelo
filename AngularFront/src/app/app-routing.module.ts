@@ -7,6 +7,7 @@ import {LoginComponent} from "./back/auth/login/login.component";
 import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {ProfileComponent} from "./back/user/profile/profile.component";
 import {VerifyComponent} from "./back/auth/verify/verify.component";
+import {AdminPanelComponent} from "./back/user/admin-panel/admin-panel.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'verify',
     component: VerifyComponent
+  },
+  {
+    path: 'admin',
+    component: AdminPanelComponent
   },
 ];
 

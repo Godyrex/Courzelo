@@ -1,0 +1,88 @@
+<div class="wrapper">
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Users Table</h3>
+        <div class="card-tools">
+          <div class="input-group input-group-sm" style="width: 150px;">
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-default">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Lastname</th>
+            <th>Roles</th>
+            <th>Ban</th>
+            <th>Enabled</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of userResponse">
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.lastname }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let role of user.roles">{{ role}}</li>
+              </ul>
+            </td>
+            <td>
+              <button (click)="toggleBan(user)" class="btn btn-sm" [ngClass]="{'btn-danger': user.ban, 'btn-success': !user.ban}">
+                {{ user.ban ? 'Unban' : 'Ban' }}
+              </button>
+            </td>
+            <td>
+              <button (click)="toggleEnable(user)" class="btn btn-sm" [ngClass]="{'btn-danger': !user.enabled, 'btn-success': user.enabled}">
+                {{ user.enabled ? 'Disable' : 'Enable' }}
+              </button>
+            </td>
+            <td>
+              <form (ngSubmit)="changeUserRole(user)">
+                <div class="form-group">
+                  <select class="form-control" name="role" [(ngModel)]="selectedRole">
+                    <option *ngFor="let role of availableRoles" [value]="role">{{ role }}</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add/Remove Role</button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <app-footer></app-footer>
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+</div>
+

@@ -39,75 +39,37 @@ public class EmailService {
         String fromAddress = "noreply@courzelo.com";
         String senderName = "Courzelo";
         String subject = "Please verify your registration";
-        String content = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "    <title>Email Content</title>\n" +
-                "    <!-- AdminLTE CSS -->\n" +
-                "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css\">\n" +
-                "    <style>\n" +
-                "        body, html {\n" +
-                "            height: 100%;\n" +
-                "            margin: 0;\n" +
-                "            padding: 0;\n" +
-                "        }\n" +
-                "        .wrapper {\n" +
-                "            display: flex;\n" +
-                "            align-items: center;\n" +
-                "            justify-content: center;\n" +
-                "            height: 100%;\n" +
-                "        }\n" +
-                "        .email-content {\n" +
-                "            max-width: 600px; /* Adjust max-width as needed */\n" +
-                "            width: 100%;\n" +
-                "            background-color: #f7f7f7;\n" +
-                "            padding: 20px;\n" +
-                "            border-radius: 5px;\n" +
-                "            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);\n" +
-                "        }\n" +
-                "        .email-header {\n" +
-                "            background-color: #17a2b8;\n" +
-                "            color: #fff;\n" +
-                "            padding: 15px;\n" +
-                "            border-radius: 5px 5px 0 0;\n" +
-                "        }\n" +
-                "        .email-body {\n" +
-                "            padding: 20px;\n" +
-                "        }\n" +
-                "        .btn {\n" +
-                "            background-color: #17a2b8;\n" +
-                "            color: #fff;\n" +
-                "            border: none;\n" +
-                "            padding: 10px 20px;\n" +
-                "            text-decoration: none;\n" +
-                "            border-radius: 5px;\n" +
-                "            display: inline-block;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <div class=\"wrapper\">\n" +
-                "        <div class=\"email-content\">\n" +
-                "            <!-- Main content -->\n" +
-                "            <div class=\"email-header\">\n" +
-                "                <h3>Verification Email</h3>\n" +
-                "            </div>\n" +
-                "            <div class=\"email-body\">\n" +
-                "                <p>Dear [[name]],</p>\n" +
-                "                <p>Your verification code is: <strong>[[verificationCode]]</strong></p>\n" +
-                "                <p>Thank you,</p>\n" +
-                "                <p>Courzelo</p>\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "        <!-- /.email-content -->\n" +
-                "    </div>\n" +
-                "    <!-- /.wrapper -->\n" +
-                "\n" +
-                "    <!-- AdminLTE JavaScript -->\n" +
-                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js\"></script>\n" +
-                "</body>\n" +
+        String content = "<!DOCTYPE html>" +
+                "<html lang=\"en\">" +
+                "<head>" +
+                "<meta charset=\"UTF-8\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                "<title>Email Template</title>" +
+                "<!-- AdminLTE CSS -->" +
+                "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css\">" +
+                "<!-- Google Fonts -->" +
+                "<link href=\"https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap\" rel=\"stylesheet\">" +
+                "<style>" +
+                "body { font-family: 'Roboto', sans-serif; }" +
+                ".email-container { max-width: 600px; margin: 0 auto; padding: 20px; }" +
+                ".btn { display: inline-block; font-weight: 400; color: #fff; text-align: center; vertical-align: middle; user-select: none; background-color: #007bff; border: 1px solid transparent; padding: 0.375rem 0.75rem; font-size: 1rem; line-height: 1.5; border-radius: 0.25rem; transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }" +
+                ".btn:hover { background-color: #0056b3; color: #fff; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<div class=\"email-container\">" +
+                "<div class=\"text-center\">" +
+                "<img src=\"https://adminlte.io/themes/dev/AdminLTE/dist/img/AdminLTELogo.png\" alt=\"AdminLTE Logo\" width=\"100\">" +
+                "</div>" +
+                "<h2 class=\"text-center\">Hello [[name]],</h2>" +
+                "<p>Thank you for registering with Courzelo. Please click the button below to verify your email address:</p>" +
+                "<div class=\"text-center\">" +
+                "<a href=\"[[URL]]\" class=\"btn btn-primary\">Verify Email Address</a>" +
+                "</div>" +
+                "<p class=\"text-center mt-4\">If you didn't request this, please ignore this email.</p>" +
+                "<p class=\"text-center\">Regards,<br>Courzelo Team</p>" +
+                "</div>" +
+                "</body>" +
                 "</html>";
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -124,7 +86,6 @@ public class EmailService {
         helper.setText(content, true);
 
         mailSender.send(message);
-
     }
     public void sendVerificationCode(User user,int verificationCode)
             throws MessagingException, UnsupportedEncodingException {

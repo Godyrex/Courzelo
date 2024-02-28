@@ -41,37 +41,19 @@ public class UserController {
     public UserDTO getUserByID(@PathVariable String userID){
         return modelMapper.map(userService.getUserByID(userID), UserDTO.class);
     }
-    @GetMapping()
-    public List<UserDTO> getUsers(){
-        return  userService.getUsers().stream()
-                .map(user -> modelMapper.map(user,UserDTO.class)).toList();
-    }
+
     @DeleteMapping("/{userID}")
     public ResponseEntity<Response> deleteUser(@PathVariable String userID){
       return userService.deleteUser(userService.getUserByID(userID));
     }
-    @PostMapping("/add/{userID}/{role}")
-    public ResponseEntity<Response> addRole(@PathVariable String userID, @PathVariable Role role){
-        return userService.addRole(role,userID);
-    }
-    @PostMapping("/remove/{userID}/{role}")
-    public ResponseEntity<Response> removeRole(@PathVariable String userID, @PathVariable Role role){
-        return userService.removeRole(role,userID);
-    }
+
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/update/password")
     public ResponseEntity<Response> changePassword(Principal principal, @Valid @RequestBody PasswordDTO passwordDTO){
         return userService.changePassword(passwordDTO, principal.getName());
     }
 
-    @PostMapping("/ban/{userID}")
-    public ResponseEntity<Response> ban(@PathVariable String userID){
-        return userService.ban(userID);
-    }
-    @PostMapping("/unban/{userID}")
-    public ResponseEntity<Response> unban(@PathVariable String userID){
-        return userService.unban(userID);
-    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/sendVerificationCode")
     public ResponseEntity<HttpStatus> sendVerificationCode(Principal principal){
