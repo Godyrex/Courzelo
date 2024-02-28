@@ -35,9 +35,9 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="../../dist/img/user4-128x128.jpg"
-                       alt="User profile picture">
+                  <img alt="User profile picture"
+                       class="profile-user-img img-fluid img-circle"
+                       src="../../dist/img/user4-128x128.jpg">
                 </div>
 
                 <h3 class="profile-username text-center">{{fullName}}</h3>
@@ -56,7 +56,7 @@
                   </li>
                 </ul>
 
-                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                <a class="btn btn-primary btn-block" href="#"><b>Follow</b></a>
               </div>
               <!-- /.card-body -->
             </div>
@@ -97,7 +97,8 @@
 
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim
+                  neque.</p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -108,55 +109,63 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#name" data-toggle="tab">Name</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#photo" data-toggle="tab">Profile photo</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#email" data-toggle="tab">Email</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">Password</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#delete" data-toggle="tab">Delete account</a></li>
+                  <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name">Name</a></li>
+                  <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo">Profile photo</a></li>
+                  <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email">Email</a></li>
+                  <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password">Password</a></li>
+                  <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete">Delete account</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="name">
-                    <form [formGroup]="nameForm" (ngSubmit)="changeName()" class="form-horizontal">
+                    <form (ngSubmit)="changeName()" [formGroup]="nameForm" class="form-horizontal">
                       <div *ngIf="messageSuccess" class="message-container">{{messageSuccess}}</div>
-                      <div class="text-danger" *ngIf="message">{{message}}</div>
-                      <div class="text-danger" *ngIf="nameForm.controls.name.touched && nameForm.controls.name?.invalid">
-                        name must be at least 3 characters and maximum 20 characters</div>
-                      <div class="text-danger" *ngIf="nameForm.controls.lastName.touched && nameForm.controls.lastName?.invalid">
-                        lastname must be at least 3 characters and maximum 20 characters</div>
+                      <div *ngIf="message" class="text-danger">{{message}}</div>
+                      <div *ngIf="nameForm.controls.name.touched && nameForm.controls.name?.invalid"
+                           class="text-danger">
+                        name must be at least 3 characters and maximum 20 characters
+                      </div>
+                      <div *ngIf="nameForm.controls.lastName.touched && nameForm.controls.lastName?.invalid"
+                           class="text-danger">
+                        lastname must be at least 3 characters and maximum 20 characters
+                      </div>
                       <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                        <label class="col-sm-2 col-form-label" for="inputName">Name</label>
                         <div class="col-sm-10">
-                          <input formControlName="name" type="text" class="form-control"  placeholder="Name">
+                          <input class="form-control" formControlName="name" placeholder="Name" type="text">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Lastname</label>
                         <div class="col-sm-10">
-                          <input formControlName="lastName" type="text" class="form-control"  placeholder="Lastname">
+                          <input class="form-control" formControlName="lastName" placeholder="Lastname" type="text">
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button class="btn btn-danger" type="submit">Submit</button>
                         </div>
                       </div>
                     </form>
                     <!-- /.post -->
                   </div>
                   <div class="tab-pane" id="photo">
-                    <form enctype="multipart/form-data" [formGroup]="photoForm" (ngSubmit)="changePhoto()" class="form-horizontal">
+                    <form (ngSubmit)="changePhoto()" [formGroup]="photoForm" class="form-horizontal"
+                          enctype="multipart/form-data">
                       <div *ngIf="messageSuccess" class="message-container">{{messageSuccess}}</div>
-                      <div class="text-danger" *ngIf="message">{{message}}</div>
-                      <div class="text-danger" *ngIf="photoForm.controls.photo.touched && photoForm.controls.photo?.invalid">
-                        photo must not be null</div>
+                      <div *ngIf="message" class="text-danger">{{message}}</div>
+                      <div *ngIf="photoForm.controls.photo.touched && photoForm.controls.photo?.invalid"
+                           class="text-danger">
+                        photo must not be null
+                      </div>
                       <div class="form-group row">
                         <label for="exampleInputFile">File input</label>
                         <div class="input-group">
                           <div class="custom-file">
-                            <input (change)="onFileSelected($event)" formControlName="photo"  type="file" class="custom-file-input" id="exampleInputFile">
-                            <label  class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <input (change)="onFileSelected($event)" class="custom-file-input" formControlName="photo"
+                                   id="exampleInputFile" type="file">
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                           </div>
                           <div class="input-group-append">
                             <span class="input-group-text">Upload</span>
@@ -165,7 +174,7 @@
                       </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button class="btn btn-danger" type="submit">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -173,30 +182,32 @@
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="email">
-                    <form *ngIf="showEmailForm" [formGroup]="emailForm" (ngSubmit)="sendVerificationCode()" class="form-horizontal">
+                    <form (ngSubmit)="sendVerificationCode()" *ngIf="showEmailForm" [formGroup]="emailForm"
+                          class="form-horizontal">
                       <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Email</label>
+                        <label class="col-sm-2 col-form-label" for="inputName">Email</label>
                         <div class="col-sm-10">
-                          <input formControlName="email" type="email" class="form-control"  placeholder="Email">
+                          <input class="form-control" formControlName="email" placeholder="Email" type="email">
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button class="btn btn-danger" type="submit">Submit</button>
                         </div>
                       </div>
                     </form>
                     <div *ngIf="showVerification">
-                      <form class="form-horizontal" [formGroup]="verificationForm" (ngSubmit)="changeEmail()">
+                      <form (ngSubmit)="changeEmail()" [formGroup]="verificationForm" class="form-horizontal">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Verification Code</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" formControlName="code" name="verificationCode" placeholder="Verification Code" required>
+                            <input class="form-control" formControlName="code" name="verificationCode" placeholder="Verification Code"
+                                   required type="text">
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="offset-sm-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Verify Code</button>
+                            <button class="btn btn-primary" type="submit">Verify Code</button>
                           </div>
                         </div>
                       </form>
@@ -205,52 +216,61 @@
                   <!-- /.tab-pane -->
 
                   <div class="tab-pane" id="password">
-                    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="form-horizontal">
-                      <div *ngIf="messageSuccess" id="message-sucess" class="message-container">{{messageSuccess}}</div>
-                      <div class="text-danger" *ngIf="message" id="message-error">{{message}}</div>
-                      <div class="text-danger" *ngIf="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword?.invalid">
-                        password must be at least 8 characters and maximum 50 characters</div>
-                      <div class="text-danger" *ngIf="passwordForm.controls.confirmPassword.touched && passwordForm.controls.confirmPassword.invalid">
+                    <form (ngSubmit)="changePassword()" [formGroup]="passwordForm" class="form-horizontal">
+                      <div *ngIf="messageSuccess" class="message-container" id="message-sucess">{{messageSuccess}}</div>
+                      <div *ngIf="message" class="text-danger" id="message-error">{{message}}</div>
+                      <div *ngIf="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword?.invalid"
+                           class="text-danger">
+                        password must be at least 8 characters and maximum 50 characters
+                      </div>
+                      <div *ngIf="passwordForm.controls.confirmPassword.touched && passwordForm.controls.confirmPassword.invalid"
+                           class="text-danger">
                         Passwords must match.
                       </div>
                       <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Password</label>
+                        <label class="col-sm-2 col-form-label" for="inputName">Password</label>
                         <div class="col-sm-10">
-                          <input formControlName="password" type="password" class="form-control" id="inputName" placeholder="Password">
+                          <input class="form-control" formControlName="password" id="inputName" placeholder="Password"
+                                 type="password">
                         </div>
                       </div>
 
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label">New password</label>
                         <div class="col-sm-10">
-                          <input formControlName="newPassword" type="password" class="form-control" placeholder="New password">
+                          <input class="form-control" formControlName="newPassword" placeholder="New password"
+                                 type="password">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label  class="col-sm-2 col-form-label">Confirm password</label>
+                        <label class="col-sm-2 col-form-label">Confirm password</label>
                         <div class="col-sm-10">
-                          <input formControlName="confirmPassword" type="password" class="form-control"  placeholder="Confirm password">
+                          <input class="form-control" formControlName="confirmPassword" placeholder="Confirm password"
+                                 type="password">
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button class="btn btn-danger" type="submit">Submit</button>
                         </div>
                       </div>
                     </form>
                   </div>
 
                   <div class="tab-pane" id="delete">
-                    <form [formGroup]="deleteForm" (ngSubmit)="confirmDelete()" class="form-horizontal">
-                      <div class="text-danger" *ngIf="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword?.invalid">
-                        Please type your password</div>
+                    <form (ngSubmit)="confirmDelete()" [formGroup]="deleteForm" class="form-horizontal">
+                      <div *ngIf="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword?.invalid"
+                           class="text-danger">
+                        Please type your password
+                      </div>
                       <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Password</label>
+                        <label class="col-sm-2 col-form-label" for="inputName">Password</label>
                         <div class="col-sm-10">
-                          <input formControlName="password" type="password" class="form-control" id="psps" placeholder="Password">
+                          <input class="form-control" formControlName="password" id="psps" placeholder="Password"
+                                 type="password">
                         </div>
                       </div>
-                    <button class="btn btn-danger" >Delete My Account</button>
+                      <button class="btn btn-danger">Delete My Account</button>
                     </form>
                   </div>
                   <!-- /.tab-pane -->

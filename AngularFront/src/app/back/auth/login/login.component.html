@@ -9,39 +9,41 @@
       <p class="login-box-msg">Sign in to start your session</p>
 
       <ng-container *ngIf="!verification; else verificationCodeInput">
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
-          <div class="text-danger" *ngIf="message">{{message}}.</div>
+        <form (ngSubmit)="login()" [formGroup]="loginForm">
+          <div *ngIf="message" class="text-danger">{{message}}.</div>
           <div class="input-group mb-3">
-            <input formControlName="email" type="email" class="form-control" placeholder="Email">
+            <input class="form-control" formControlName="email" placeholder="Email" type="email">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
               </div>
             </div>
           </div>
-          <div class="text-danger" *ngIf="loginForm.controls.email.touched && loginForm.controls.email?.invalid">
-            Please enter an email.</div>
+          <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email?.invalid" class="text-danger">
+            Please enter an email.
+          </div>
           <div class="input-group mb-3">
-            <input formControlName="password" type="password" class="form-control" placeholder="Password">
+            <input class="form-control" formControlName="password" placeholder="Password" type="password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
               </div>
             </div>
           </div>
-          <div class="text-danger" *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid">
-            Please enter a password.</div>
+          <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid" class="text-danger">
+            Please enter a password.
+          </div>
           <div class="row">
             <div class="col-8">
               <div class="icheck-primary">
-                <input formControlName="rememberMe"  type="checkbox" id="remember">
+                <input formControlName="rememberMe" id="remember" type="checkbox">
                 <label for="remember">
                   Remember Me
                 </label>
               </div>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+              <button class="btn btn-primary btn-block" type="submit">Sign In</button>
             </div>
             <!-- /.col -->
           </div>
@@ -52,13 +54,15 @@
 
       <ng-template #verificationCodeInput>
         <!-- Show input field for verification code -->
-        <form [formGroup]="verificationForm" (ngSubmit)="submitVerificationCode()">
-          <div *ngIf="messageSuccess" id="message-sucess" class="message-container">{{messageSuccess}}</div>
-          <div class="text-danger" *ngIf="message" id="message-error">{{message}}</div>
-          <div class="text-danger" *ngIf="verificationForm.controls.code.touched && verificationForm.controls.code?.invalid">
-            Verification Code must be 4 digit </div>
+        <form (ngSubmit)="submitVerificationCode()" [formGroup]="verificationForm">
+          <div *ngIf="messageSuccess" class="message-container" id="message-sucess">{{messageSuccess}}</div>
+          <div *ngIf="message" class="text-danger" id="message-error">{{message}}</div>
+          <div *ngIf="verificationForm.controls.code.touched && verificationForm.controls.code?.invalid"
+               class="text-danger">
+            Verification Code must be 4 digit
+          </div>
           <div class="input-group mb-3">
-            <input formControlName="code" type="text" class="form-control" placeholder="Verification Code">
+            <input class="form-control" formControlName="code" placeholder="Verification Code" type="text">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -68,7 +72,7 @@
           <div class="row">
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Verify</button>
+              <button class="btn btn-primary btn-block" type="submit">Verify</button>
             </div>
             <!-- /.col -->
           </div>
@@ -76,7 +80,7 @@
       </ng-template>
 
       <p class="mb-0">
-        <a routerLink="/signup" class="text-center">Register a new membership</a>
+        <a class="text-center" routerLink="/signup">Register a new membership</a>
       </p>
     </div>
     <!-- /.login-card-body -->

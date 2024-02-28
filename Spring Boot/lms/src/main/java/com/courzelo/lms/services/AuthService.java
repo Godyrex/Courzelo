@@ -12,7 +12,6 @@ import com.courzelo.lms.security.Response;
 import com.courzelo.lms.security.jwt.JWTUtils;
 import com.courzelo.lms.utils.CookieUtil;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -156,6 +155,24 @@ public class AuthService implements IAuthService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response("Verification Failed"));
     }
 
+    @Override
+    public ResponseEntity<Boolean> isAuthenticated(@NonNull HttpServletRequest request) {
+        String accessToken = cookieUtil.getAccessTokenFromCookies(request);
+        if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+            return ResponseEntity.ok().body(true);
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
+    @Override
+    public ResponseEntity<List<Role>> getRole(@NonNull HttpServletRequest request) {
+        User user = userRepository.findUserByEmail(jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request)));
+        if (user != null) {
+            return ResponseEntity.ok().body(user.getRoles());
+        }
+        return null;
+    }
+
     public ResponseEntity<Response> saveUser(User user, String userAgent) {
         log.info("Started Signing up...");
         if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
@@ -184,21 +201,23 @@ public class AuthService implements IAuthService {
 
     public void logout(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
         log.info("Logout :Logging out...");
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("accessToken")) {
-                    iRefreshTokenService.deleteAllUserTokenByEmail(jwtUtils.getEmailFromJwtToken(cookie.getValue()));
-                    response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(cookie.getValue(), 0L).toString());
-                    log.info("Logout :Access Token removed");
-                }
-            }
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("refreshToken")) {
-                    response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(cookie.getValue(), 0L).toString());
-                    log.info("Logout :Refresh Token removed");
-                }
+        String accessToken = cookieUtil.getAccessTokenFromCookies(request);
+        String refreshToken = cookieUtil.getRefreshTokenFromCookies(request);
+        if (accessToken != null) {
+            String email = jwtUtils.getEmailFromJwtToken(accessToken);
+            if (email != null) {
+                iRefreshTokenService.deleteAllUserTokenByEmail(email);
+                response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken, 0L).toString());
+                log.info("Logout: Access Token removed");
+            } else {
+                log.error("Failed to extract email from JWT token");
             }
         }
+        if (refreshToken != null) {
+            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken, 0L).toString());
+            log.info("Logout :Refresh Token removed");
+        }
+
         SecurityContextHolder.clearContext();
         log.info("Logout :Security context cleared!");
         log.info("Logout :Logout Finished!");

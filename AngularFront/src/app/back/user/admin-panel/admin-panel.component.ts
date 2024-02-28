@@ -8,11 +8,13 @@ import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent implements OnInit{
-  userResponse : UserResponse[] = []
-  selectedRole: string="";
+export class AdminPanelComponent implements OnInit {
+  userResponse: UserResponse[] = []
+  selectedRole: string = "";
   availableRoles: string[] = ['STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN']
-  constructor(private panelService: PanelService) { }
+
+  constructor(private panelService: PanelService) {
+  }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -21,15 +23,16 @@ export class AdminPanelComponent implements OnInit{
   loadUsers(): void {
     this.panelService.getUsers().subscribe(
       (response: UserResponse[]) => {
-        this.userResponse= response;
+        this.userResponse = response;
       },
       (error: any) => {
         console.error('Error fetching users:', error);
       }
     );
   }
+
   toggleBan(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = { userID: user.id };
+    const userRoleRequest: UserRoleRequest = {userID: user.id};
     this.panelService.toggleBan(userRoleRequest).subscribe(
       () => {
         user.ban = !user.ban;
@@ -41,7 +44,7 @@ export class AdminPanelComponent implements OnInit{
   }
 
   toggleEnable(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = { userID: user.id };
+    const userRoleRequest: UserRoleRequest = {userID: user.id};
     this.panelService.toggleEnable(userRoleRequest).subscribe(
       () => {
         user.enabled = !user.enabled;
@@ -51,8 +54,9 @@ export class AdminPanelComponent implements OnInit{
       }
     );
   }
+
   changeUserRole(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = { userID: user.id, role: this.selectedRole };
+    const userRoleRequest: UserRoleRequest = {userID: user.id, role: this.selectedRole};
     if (user.roles && user.roles.includes(this.selectedRole)) {
       this.panelService.removeRole(userRoleRequest).subscribe(
         () => {

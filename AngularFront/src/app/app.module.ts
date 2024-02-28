@@ -16,7 +16,7 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/h
 import {LoginComponent} from './back/auth/login/login.component';
 import {LogoutComponent} from './back/auth/logout/logout.component';
 import {ProfileComponent} from './back/user/profile/profile.component';
-import {JwtInterceptor} from "./service/user/auth/JwtInterceptor";
+import {Interceptor} from "./service/user/auth/Interceptor";
 import {VerifyComponent} from './back/auth/verify/verify.component';
 import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component';
 
@@ -46,7 +46,7 @@ import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component
   ],
   providers: [HttpClient,    {
     provide: HTTP_INTERCEPTORS,
-    useClass: JwtInterceptor,
+    useClass: Interceptor,
     multi: true
   }],
   bootstrap: [AppComponent]

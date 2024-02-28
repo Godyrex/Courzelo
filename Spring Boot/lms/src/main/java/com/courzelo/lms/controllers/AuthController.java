@@ -2,6 +2,7 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.LoginDTO;
 import com.courzelo.lms.dto.RegisterDTO;
+import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.IAuthService;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/auth")
@@ -48,5 +51,15 @@ public class AuthController {
     @GetMapping("/verify")
     public ResponseEntity<Response> verifyAccount(@RequestParam("code") String code) {
         return iAuthService.verifyAccount(code);
+    }
+
+    @GetMapping("/isAuthenticated")
+    public ResponseEntity<Boolean> isAuthenticated(HttpServletRequest request) {
+        return iAuthService.isAuthenticated(request);
+    }
+
+    @GetMapping("/getRole")
+    public ResponseEntity<List<Role>> getRole(HttpServletRequest request) {
+        return iAuthService.getRole(request);
     }
 }

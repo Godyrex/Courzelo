@@ -7,10 +7,10 @@ import {TokenStorageService} from "../../service/user/auth/token-storage.service
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
+  fullName: string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
+
   constructor(
     private token: TokenStorageService
-
   ) {
   }
-  fullName : string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
 }

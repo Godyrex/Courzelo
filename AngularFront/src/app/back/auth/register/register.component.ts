@@ -10,14 +10,9 @@ import {AuthenticationService} from "../../../service/user/auth/authentication.s
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  registerRequest : RegisterRequest = {};
+  registerRequest: RegisterRequest = {};
   message = '';
   messageSuccess = '';
-  constructor(
-    private authService : AuthenticationService,
-    private formBuilder : FormBuilder
-  ) {
-  }
   registerForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     name: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]],
@@ -26,6 +21,13 @@ export class RegisterComponent {
     confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
     validator: this.checkingPasswords
   });
+
+  constructor(
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder
+  ) {
+  }
+
   public checkingPasswords(formGroup: FormGroup) {
 
     const newPassword = formGroup.get('password')!.value;
@@ -40,14 +42,15 @@ export class RegisterComponent {
       formGroup.get('confirmPassword')!.setErrors({notMatched: true});
     }
   }
-  registerUser(){
-    if(this.registerForm.valid) {
+
+  registerUser() {
+    if (this.registerForm.valid) {
       this.registerRequest.email = this.registerForm.controls['email'].value!.toLowerCase().trim();
       this.registerRequest.name = this.registerForm.controls['name'].value!.toLowerCase().trim();
       this.registerRequest.lastname = this.registerForm.controls['lastname'].value!.toLowerCase().trim();
       this.registerRequest.password = this.registerForm.controls['password'].value!;
-      this.registerRequest.name=this.registerRequest.name.charAt(0).toUpperCase()+this.registerRequest.name.slice(1);
-      this.registerRequest.lastname=this.registerRequest.lastname.charAt(0).toUpperCase()+this.registerRequest.lastname.slice(1);
+      this.registerRequest.name = this.registerRequest.name.charAt(0).toUpperCase() + this.registerRequest.name.slice(1);
+      this.registerRequest.lastname = this.registerRequest.lastname.charAt(0).toUpperCase() + this.registerRequest.lastname.slice(1);
 
       console.log(this.registerRequest);
       this.authService.register(this.registerRequest)
@@ -56,7 +59,7 @@ export class RegisterComponent {
             this.messageSuccess = data.msg!;
           },
           error => {
-            console.log("register error :",error)
+            console.log("register error :", error)
             this.message = error.error.msg;
           });
     }

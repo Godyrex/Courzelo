@@ -1,6 +1,5 @@
 package com.courzelo.lms.utils;
 
-import com.courzelo.lms.exceptions.RefreshTokenNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,9 @@ public class CookieUtil {
                 if (cookie.getName().equals("accessToken")) {
                     return cookie.getValue();
                 }
+                return null;
             }
+            return null;
         }
         return null;
     }
@@ -49,12 +50,12 @@ public class CookieUtil {
                     return cookie.getValue();
                 } else {
                     log.error("getRefreshTokenFromCookies : cookie.getName().equals(\"refreshToken\") is null");
-                    throw new RefreshTokenNotFoundException("Refresh Token not found");
+                    return null;
                 }
             }
         }
         log.error("getRefreshTokenFromCookies : request.getCookies() is null");
-        throw new RefreshTokenNotFoundException("Refresh Token not found");
+        return null;
     }
 
 }

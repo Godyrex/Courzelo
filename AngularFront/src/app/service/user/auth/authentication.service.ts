@@ -23,4 +23,10 @@ export class AuthenticationService {
   confirmDevice(loginRequest : LoginRequest,code: number): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/confirmDevice/${code}`, loginRequest);
   }
+  isAuthenticated() {
+    return this.http.get<boolean>(`${this.baseUrl}/isAuthenticated`);
+  }
+  getRole() {
+    return this.http.get<string[]>(`${this.baseUrl}/getRole`);
+  }
 }

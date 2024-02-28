@@ -9,10 +9,14 @@ import {HttpClient} from "@angular/common/http";
 })
 export class LogoutComponent implements OnInit {
   private logoutUrl = 'http://localhost:8081/api/v1/auth/logout';
-  constructor(private router: Router,private http: HttpClient) { }
+
+  constructor(private router: Router, private http: HttpClient) {
+  }
+
   logout() {
     return this.http.post(this.logoutUrl, null);
   }
+
   ngOnInit(): void {
     this.logout().subscribe();
     localStorage.clear();

@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor
+export class Interceptor implements HttpInterceptor
 {
 
   constructor(private router: Router) {}
@@ -17,9 +17,9 @@ export class JwtInterceptor implements HttpInterceptor
 
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+   /*     if (error.status === 401) {
           this.router.navigate(['/logout']);
-        }
+        }*/
         return throwError(error);
       })
     );
