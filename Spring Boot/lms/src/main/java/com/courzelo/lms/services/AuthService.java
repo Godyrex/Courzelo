@@ -106,12 +106,22 @@ public class AuthService implements IAuthService {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         log.info("Authentication finished!");
+        if(userDetails.getPhoto()!=null){
         return ResponseEntity.ok(new JwtResponse(
                 userDetails.getEmail(),
                 userDetails.getName(),
                 userDetails.getLastName(),
-                roles
+                roles,
+                userDetails.getPhoto().getId()
         ));
+        }else{
+            return ResponseEntity.ok(new JwtResponse(
+                    userDetails.getEmail(),
+                    userDetails.getName(),
+                    userDetails.getLastName(),
+                    roles
+            ));
+        }
     }
 
     public ResponseEntity<?> confirmDevice(String userAgent, @NonNull HttpServletResponse response, LoginDTO loginDTO, Integer code) {

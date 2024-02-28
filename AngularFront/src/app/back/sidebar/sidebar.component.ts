@@ -13,4 +13,6 @@ export class SidebarComponent {
     private token: TokenStorageService
   ) {
   }
+  userRoles =this.token.getUser().roles!;
+  auth =this.token.isAuthenticated();
 }

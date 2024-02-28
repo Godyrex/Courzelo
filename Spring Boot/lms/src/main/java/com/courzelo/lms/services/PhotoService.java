@@ -7,10 +7,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +25,25 @@ public class PhotoService implements IPhotoService {
     @Override
     public Photo addPhoto(MultipartFile file) throws IOException {
         log.info("Starting Adding Photo");
-        Photo photo = new Photo("title");
-        photo.setImage(
-                new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        Photo photo = new Photo(
+                file.getName(),
+                file.getContentType(),
+                new Binary(BsonBinarySubType.BINARY, file.getBytes())
+        );
         log.info("Finished Adding Photo");
         return photoRepository.save(photo);
     }
 
     @Override
-    public Photo getPhoto(String id) {
-        return photoRepository.findById(id).orElseThrow(() -> new PhotoNotFoundException("Photo Not Found!"));
+    public ResponseEntity<byte[]> getPhoto(String photoId) {
+        Optional<Photo> photoOptional = photoRepository.findById(photoId);
+        if (photoOptional.isPresent()) {
+            Photo photo = photoOptional.get();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(photo.getType()))
+                    .body(photo.getImage().getData());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

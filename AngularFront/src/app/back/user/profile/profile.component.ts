@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -14,7 +14,7 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
   deleteAccountRequest: DeleteAccountRequest = {};
@@ -22,6 +22,8 @@ export class ProfileComponent {
   message = '';
   messageSuccess = '';
   user: LoginResponse = {};
+  userPhotoUrl: any;
+  uploadProgress: number = 0;
   selectedFile: File | undefined;
   showVerification: boolean = false;
   showEmailForm: boolean = true;
@@ -73,6 +75,15 @@ export class ProfileComponent {
       formGroup.get('confirmPassword')!.setErrors({notMatched: true});
     }
   }
+  getImage(){
+      this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              this.userPhotoUrl = reader.result;
+          };
+          reader.readAsDataURL(data);
+      });
+  }
 
   changeName() {
     if (this.nameForm.valid) {
@@ -102,16 +113,13 @@ export class ProfileComponent {
       formData.append('file', this.selectedFile, this.selectedFile.name);
       console.log(formData);
       this.updateService.changePhoto(this.selectedFile)
-        .subscribe(data => {
-            console.log(data)
-            this.messageSuccess = "Photo Updated!";
-            this.message = "";
-          },
-          error => {
-            console.log("update name error :", error)
-            this.messageSuccess = "";
-            this.message = error.error.msg;
-          });
+        .subscribe(progress => {
+          this.uploadProgress = progress;
+          if (progress === 100) {
+            alert("File upload completed")
+            this.selectedFile = null!;
+          }
+        });
     }
 
   }
@@ -193,5 +201,9 @@ export class ProfileComponent {
       );
     }
   }
+
+    ngOnInit(): void {
+    this.getImage();
+    }
 
 }

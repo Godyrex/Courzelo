@@ -3,4 +3,5 @@ export interface LoginResponse {
   name?: string;
   lastname?: string;
   roles?: string[];
+  photoID?: string;
 }

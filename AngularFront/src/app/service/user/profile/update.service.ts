@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEventType} from "@angular/common/http";
 import {JsonResponse} from "../../../model/user/JsonResponse";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {EmailRequest} from "../../../model/user/EmailRequest";
-import {Observable} from "rxjs";
+import {map, Observable, pipe} from "rxjs";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 
 @Injectable({
@@ -25,8 +25,25 @@ export class UpdateService {
   sendVerificationCode(): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendVerificationCode`, null);
   }
-  changePhoto(photoRequest: File): Observable<any>{
-    return this.http.post(`${this.baseUrl}/update/photo`,photoRequest);
+  changePhoto(file: File): Observable<any>{
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.baseUrl}/update/photo`,formData,{
+      reportProgress: true,
+        observe: 'events'
+    }).pipe(
+      map(event => this.getUploadProgress(event)),
+    );
+  }
+  private getUploadProgress(event: any): number | null {
+    if (event.type === HttpEventType.UploadProgress) {
+      const percentDone = Math.round((event.loaded / event.total) * 100);
+      return percentDone;
+    }
+    return null;
+  }
+  getPhoto(photoId: string) {
+    return this.http.get(`${this.baseUrl}/photo/${photoId}`, { responseType: 'blob' });
   }
   deleteAccount(password: DeleteAccountRequest){
     return this.http.post(`${this.baseUrl}/delete`,password);

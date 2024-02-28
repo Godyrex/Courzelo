@@ -131,7 +131,6 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseEntity<HttpStatus> updatePhoto(MultipartFile file, Principal principal) throws IOException {
-        log.info("test update photo");
         User user = userRepository.findUserByEmail(principal.getName());
         user.setPhoto(iPhotoService.addPhoto(file));
         userRepository.save(user);

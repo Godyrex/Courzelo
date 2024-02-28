@@ -2,7 +2,10 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.*;
+import com.courzelo.lms.entities.Photo;
 import com.courzelo.lms.security.Response;
+import com.courzelo.lms.services.IPhotoService;
+import com.courzelo.lms.services.PhotoService;
 import com.courzelo.lms.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/user")
@@ -26,6 +30,7 @@ import java.security.Principal;
 @PreAuthorize("hasRole('SUPERADMIN')")
 public class UserController {
     private final UserService userService;
+    private final IPhotoService photoService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -65,9 +70,14 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/update/photo", consumes = "multipart/form-data")
-    public ResponseEntity<HttpStatus> changePhoto(@RequestParam("photo") MultipartFile file, Principal principal) throws IOException {
+    @PostMapping(value = "/update/photo")
+    public ResponseEntity<HttpStatus> changePhoto(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         return userService.updatePhoto(file, principal);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/photo/{photoId}")
+    public ResponseEntity<byte[]> getPhoto(@PathVariable String photoId) {
+    return photoService.getPhoto(photoId);
     }
 
     @PreAuthorize("isAuthenticated()")
