@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FrontheaderComponent } from './frontheader.component';
+import {FrontheaderComponent} from './frontheader.component';
 
 describe('FrontheaderComponent', () => {
   let component: FrontheaderComponent;

@@ -26,12 +26,15 @@ public class User implements UserDetails {
     private String name;
     @NotNull
     private String lastName;
-    @DBRef
-    private List<Token> tokens = new ArrayList<>();
     @NotNull
-    private List<Role> roles= new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
+    @DBRef
+    private Photo photo;
     private boolean enabled;
     private Boolean ban;
+    private boolean rememberMe;
+    private String emailVerificationCode;
+    private Integer verificationCode;
     private String grade;
     private String speciality;
     private List<String> courses;
@@ -39,7 +42,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" +role1.name())).toList();
+        return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" + role1.name())).toList();
     }
 
     @Override
@@ -64,6 +67,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
