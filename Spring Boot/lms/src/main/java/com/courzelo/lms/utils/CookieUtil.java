@@ -32,12 +32,14 @@ public class CookieUtil {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals("accessToken")) {
+                    log.info("getAccessTokenFromCookies : Cookie found : " + cookie.getValue());
                     return cookie.getValue();
                 }
-                return null;
             }
+            log.error("getAccessTokenFromCookies : for is null");
             return null;
         }
+        log.error("getAccessTokenFromCookies : request.getCookies() is null");
         return null;
     }
 
@@ -48,9 +50,6 @@ public class CookieUtil {
                 if (cookie.getName().equals("refreshToken")) {
                     log.info("getRefreshTokenFromCookies : Cookie found : " + cookie.getValue());
                     return cookie.getValue();
-                } else {
-                    log.error("getRefreshTokenFromCookies : cookie.getName().equals(\"refreshToken\") is null");
-                    return null;
                 }
             }
         }

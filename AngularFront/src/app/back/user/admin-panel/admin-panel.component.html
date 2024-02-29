@@ -54,7 +54,8 @@
                       </button>
                     </td>
                     <td>
-                      <button (click)="toggleEnable(user)" [ngClass]="{'btn-danger': !user.enabled, 'btn-success': user.enabled}"
+                      <button (click)="toggleEnable(user)"
+                              [ngClass]="{'btn-danger': !user.enabled, 'btn-success': user.enabled}"
                               class="btn btn-sm">
                         {{ user.enabled ? 'Disable' : 'Enable' }}
                       </button>

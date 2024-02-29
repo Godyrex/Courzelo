@@ -9,23 +9,31 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private baseUrl : string = 'http://localhost:8081/api/v1/auth';
-  constructor(private http: HttpClient) { }
-  register(registerRequest : RegisterRequest)  {
-    return this.http.post<JsonResponse>(`${this.baseUrl}/signup`,registerRequest)
+  private baseUrl: string = 'http://localhost:8081/api/v1/auth';
+
+  constructor(private http: HttpClient) {
   }
-  login(loginRequest : LoginRequest): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/signing`,loginRequest);
+
+  register(registerRequest: RegisterRequest) {
+    return this.http.post<JsonResponse>(`${this.baseUrl}/signup`, registerRequest)
   }
+
+  login(loginRequest: LoginRequest): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/signing`, loginRequest);
+  }
+
   verifyAccount(code: string) {
     return this.http.get<JsonResponse>(`${this.baseUrl}/verify?code=${code}`);
   }
-  confirmDevice(loginRequest : LoginRequest,code: number): Observable<any> {
+
+  confirmDevice(loginRequest: LoginRequest, code: number): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/confirmDevice/${code}`, loginRequest);
   }
+
   isAuthenticated() {
     return this.http.get<boolean>(`${this.baseUrl}/isAuthenticated`);
   }
+
   getRole() {
     return this.http.get<string[]>(`${this.baseUrl}/getRole`);
   }

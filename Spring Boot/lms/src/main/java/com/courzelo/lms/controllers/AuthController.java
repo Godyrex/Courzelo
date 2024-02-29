@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
@@ -44,8 +45,8 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        iAuthService.logout(request, response);
+    public void logout(HttpServletResponse response) {
+        iAuthService.logout(response);
     }
 
     @GetMapping("/verify")
@@ -59,7 +60,7 @@ public class AuthController {
     }
 
     @GetMapping("/getRole")
-    public ResponseEntity<List<Role>> getRole(HttpServletRequest request) {
-        return iAuthService.getRole(request);
+    public ResponseEntity<List<Role>> getRole(Principal principal) {
+        return iAuthService.getRole(principal);
     }
 }

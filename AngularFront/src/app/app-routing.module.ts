@@ -8,7 +8,6 @@ import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {ProfileComponent} from "./back/user/profile/profile.component";
 import {VerifyComponent} from "./back/auth/verify/verify.component";
 import {AdminPanelComponent} from "./back/user/admin-panel/admin-panel.component";
-import {AuthGuardService} from "./service/user/guard/auth-guard.service";
 import {RoleGuardService} from "./service/user/guard/role-guard.service";
 
 const routes: Routes = [
@@ -18,8 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuardService]
+    component: DashboardComponent
   },
   {
     path: 'signup',
@@ -35,8 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent,
-    canActivate: [AuthGuardService]
+    component: ProfileComponent
   },
   {
     path: 'verify',
@@ -56,4 +53,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

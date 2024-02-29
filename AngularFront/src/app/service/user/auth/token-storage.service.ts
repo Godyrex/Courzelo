@@ -17,7 +17,7 @@ export class TokenStorageService {
   public saveUser(user: any): void {
     window.localStorage.removeItem(USER_KEY);
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
-    window.localStorage.setItem(AUTH_KEY,"true");
+    window.localStorage.setItem(AUTH_KEY, "true");
   }
 
   public getUser(): LoginResponse {
@@ -27,7 +27,8 @@ export class TokenStorageService {
     }
     return {};
   }
-  public isAuthenticated() : boolean{
+
+  public isAuthenticated(): boolean {
     return window.localStorage.getItem(AUTH_KEY) == "true";
 
   }

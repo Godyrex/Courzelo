@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface IAuthService {
@@ -18,12 +19,12 @@ public interface IAuthService {
 
     ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response, String userAgent);
 
-    void logout(HttpServletRequest request, HttpServletResponse response);
+    void logout(HttpServletResponse response);
 
     ResponseEntity<Response> verifyAccount(String code);
 
     ResponseEntity<Boolean> isAuthenticated(HttpServletRequest request);
 
-    ResponseEntity<List<Role>> getRole(HttpServletRequest request);
+    ResponseEntity<List<Role>> getRole(Principal principal);
 
 }

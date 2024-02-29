@@ -8,21 +8,28 @@ import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
   providedIn: 'root'
 })
 export class PanelService {
-  private baseUrl : string = 'http://localhost:8081/api/v1/admin';
-  constructor(private http: HttpClient) { }
+  private baseUrl: string = 'http://localhost:8081/api/v1/admin';
+
+  constructor(private http: HttpClient) {
+  }
+
   getUsers(): Observable<UserResponse[]> {
     return this.http.get<UserResponse[]>(`${this.baseUrl}/users`);
   }
-  addRole(userRoleRequest : UserRoleRequest): Observable<any> {
+
+  addRole(userRoleRequest: UserRoleRequest): Observable<any> {
     return this.http.post(`${this.baseUrl}/add/${userRoleRequest.userID}/${userRoleRequest.role}`, null);
   }
-  removeRole(userRoleRequest : UserRoleRequest): Observable<any> {
+
+  removeRole(userRoleRequest: UserRoleRequest): Observable<any> {
     return this.http.post(`${this.baseUrl}/remove/${userRoleRequest.userID}/${userRoleRequest.role}`, null);
   }
-  toggleBan(userRoleRequest : UserRoleRequest): Observable<any> {
+
+  toggleBan(userRoleRequest: UserRoleRequest): Observable<any> {
     return this.http.post(`${this.baseUrl}/ban/${userRoleRequest.userID}`, null);
   }
-  toggleEnable(userRoleRequest : UserRoleRequest): Observable<any> {
+
+  toggleEnable(userRoleRequest: UserRoleRequest): Observable<any> {
     return this.http.post(`${this.baseUrl}/enable/${userRoleRequest.userID}`, null);
   }
 }

@@ -8,11 +8,11 @@ import {TokenStorageService} from "../../service/user/auth/token-storage.service
 })
 export class SidebarComponent {
   fullName: string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
+  userRoles = this.token.getUser().roles!;
+  auth = this.token.isAuthenticated();
 
   constructor(
     private token: TokenStorageService
   ) {
   }
-  userRoles =this.token.getUser().roles!;
-  auth =this.token.isAuthenticated();
 }

@@ -18,6 +18,7 @@ public class JwtResponse {
         this.lastname = lastname;
         this.roles = roles;
     }
+
     public JwtResponse(String email, String name, String lastname, List<String> roles, String photoID) {
         this.email = email;
         this.name = name;

@@ -68,7 +68,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             return;
         }
         String accessToken = cookieUtil.getAccessTokenFromCookies(request);
-
+        String refreshToken = cookieUtil.getRefreshTokenFromCookies(request);
+        log.info("doFilterInternal :Finished Getting tokens ");
         try {
             if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
                 String email = jwtUtils.getEmailFromJwtToken(accessToken);
@@ -76,8 +77,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 if (userDetailsService.ValidUser(email)) {
                     setAuthenticationInSecurityContext(request, userDetails);
                 }
-            } else if (cookieUtil.getRefreshTokenFromCookies(request) != null) {
-                RefreshToken token = iRefreshTokenService.findByToken(cookieUtil.getRefreshTokenFromCookies(request));
+            } else if (refreshToken != null) {
+                RefreshToken token = iRefreshTokenService.findByToken(refreshToken);
                 iRefreshTokenService.verifyExpiration(token);
                 authService.refreshToken(response, token.getUser().getEmail());
                 UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
@@ -93,6 +94,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
     private void setAuthenticationInSecurityContext(HttpServletRequest request, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());

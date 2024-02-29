@@ -5,10 +5,10 @@ import {Router} from "@angular/router";
 
 
 @Injectable()
-export class Interceptor implements HttpInterceptor
-{
+export class Interceptor implements HttpInterceptor {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const modifiedRequest = request.clone({
@@ -17,9 +17,9 @@ export class Interceptor implements HttpInterceptor
 
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
-   /*     if (error.status === 401) {
-          this.router.navigate(['/logout']);
-        }*/
+        /*     if (error.status === 401) {
+               this.router.navigate(['/logout']);
+             }*/
         return throwError(error);
       })
     );

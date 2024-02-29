@@ -143,7 +143,7 @@ public class UserService implements UserDetailsService {
         if (user != null && dto.getPassword() != null) {
             if (encoder.matches(dto.getPassword(), user.getPassword())) {
                 deleteUser(user);
-                iAuthService.logout(request, response);
+                iAuthService.logout(response);
                 return ResponseEntity.ok().build();
             }
             return ResponseEntity.badRequest().build();

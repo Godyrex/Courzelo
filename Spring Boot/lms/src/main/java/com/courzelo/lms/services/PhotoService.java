@@ -1,7 +1,6 @@
 package com.courzelo.lms.services;
 
 import com.courzelo.lms.entities.Photo;
-import com.courzelo.lms.exceptions.PhotoNotFoundException;
 import com.courzelo.lms.repositories.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import org.bson.types.Binary;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

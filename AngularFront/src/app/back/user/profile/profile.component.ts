@@ -14,7 +14,7 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit{
+export class ProfileComponent implements OnInit {
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
   deleteAccountRequest: DeleteAccountRequest = {};
@@ -75,14 +75,15 @@ export class ProfileComponent implements OnInit{
       formGroup.get('confirmPassword')!.setErrors({notMatched: true});
     }
   }
-  getImage(){
-      this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-              this.userPhotoUrl = reader.result;
-          };
-          reader.readAsDataURL(data);
-      });
+
+  getImage() {
+    this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        this.userPhotoUrl = reader.result;
+      };
+      reader.readAsDataURL(data);
+    });
   }
 
   changeName() {
@@ -202,8 +203,8 @@ export class ProfileComponent implements OnInit{
     }
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.getImage();
-    }
+  }
 
 }

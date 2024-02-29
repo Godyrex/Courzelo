@@ -33,6 +33,7 @@ public class AdminService implements IAdminService {
         user.setEnabled(!isEnabled);
         userRepository.save(user);
         String message = isEnabled ? "User disabled!" : "User enabled!";
+        log.info(message + " :" + userID);
         return ResponseEntity.ok().body(new Response(message));
     }
 
@@ -44,6 +45,7 @@ public class AdminService implements IAdminService {
         user.setBan(!isBanned);
         userRepository.save(user);
         String message = isBanned ? "User unbanned!" : "User banned!";
+        log.info(message + " :" + userID);
         return ResponseEntity.ok().body(new Response(message));
     }
 

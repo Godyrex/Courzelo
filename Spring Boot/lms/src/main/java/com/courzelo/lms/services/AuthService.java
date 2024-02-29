@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -34,6 +35,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 
@@ -106,15 +108,15 @@ public class AuthService implements IAuthService {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         log.info("Authentication finished!");
-        if(userDetails.getPhoto()!=null){
-        return ResponseEntity.ok(new JwtResponse(
-                userDetails.getEmail(),
-                userDetails.getName(),
-                userDetails.getLastName(),
-                roles,
-                userDetails.getPhoto().getId()
-        ));
-        }else{
+        if (userDetails.getPhoto() != null) {
+            return ResponseEntity.ok(new JwtResponse(
+                    userDetails.getEmail(),
+                    userDetails.getName(),
+                    userDetails.getLastName(),
+                    roles,
+                    userDetails.getPhoto().getId()
+            ));
+        } else {
             return ResponseEntity.ok(new JwtResponse(
                     userDetails.getEmail(),
                     userDetails.getName(),
@@ -174,9 +176,10 @@ public class AuthService implements IAuthService {
         return ResponseEntity.ok().body(false);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @Override
-    public ResponseEntity<List<Role>> getRole(@NonNull HttpServletRequest request) {
-        User user = userRepository.findUserByEmail(jwtUtils.getEmailFromJwtToken(cookieUtil.getAccessTokenFromCookies(request)));
+    public ResponseEntity<List<Role>> getRole(Principal principal) {
+        User user = userRepository.findUserByEmail(principal.getName());
         if (user != null) {
             return ResponseEntity.ok().body(user.getRoles());
         }
@@ -209,25 +212,12 @@ public class AuthService implements IAuthService {
                 .body(new Response("Account Created!"));
     }
 
-    public void logout(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
+    public void logout(@NonNull HttpServletResponse response) {
         log.info("Logout :Logging out...");
-        String accessToken = cookieUtil.getAccessTokenFromCookies(request);
-        String refreshToken = cookieUtil.getRefreshTokenFromCookies(request);
-        if (accessToken != null) {
-            String email = jwtUtils.getEmailFromJwtToken(accessToken);
-            if (email != null) {
-                iRefreshTokenService.deleteAllUserTokenByEmail(email);
-                response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken, 0L).toString());
-                log.info("Logout: Access Token removed");
-            } else {
-                log.error("Failed to extract email from JWT token");
-            }
-        }
-        if (refreshToken != null) {
-            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken, 0L).toString());
-            log.info("Logout :Refresh Token removed");
-        }
-
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie("accessToken", 0L).toString());
+        log.info("Logout: Access Token removed");
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie("refreshToken", 0L).toString());
+        log.info("Logout :Refresh Token removed");
         SecurityContextHolder.clearContext();
         log.info("Logout :Security context cleared!");
         log.info("Logout :Logout Finished!");

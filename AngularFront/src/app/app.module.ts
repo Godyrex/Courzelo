@@ -44,11 +44,12 @@ import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [HttpClient,    {
+  providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,
     useClass: Interceptor,
     multi: true
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
