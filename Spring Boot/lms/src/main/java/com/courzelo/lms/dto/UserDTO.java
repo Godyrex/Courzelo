@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
 public class UserDTO {
     private String id;
     private String email;
     private String name;
-    private String lastName;
+    private String lastname;
     private List<Role> roles;
-    private String grade;
-    private String speciality;
-    private List<String> courses;
+    private boolean ban;
+    private boolean enabled;
 }

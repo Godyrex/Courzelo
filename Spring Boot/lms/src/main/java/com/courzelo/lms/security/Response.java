@@ -1,4 +1,5 @@
 package com.courzelo.lms.security;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

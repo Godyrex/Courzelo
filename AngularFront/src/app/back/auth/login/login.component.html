@@ -1,0 +1,89 @@
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a routerLink="/"><b>Cour</b>zelo</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+
+      <ng-container *ngIf="!verification; else verificationCodeInput">
+        <form (ngSubmit)="login()" [formGroup]="loginForm">
+          <div *ngIf="message" class="text-danger">{{message}}.</div>
+          <div class="input-group mb-3">
+            <input class="form-control" formControlName="email" placeholder="Email" type="email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email?.invalid" class="text-danger">
+            Please enter an email.
+          </div>
+          <div class="input-group mb-3">
+            <input class="form-control" formControlName="password" placeholder="Password" type="password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password?.invalid" class="text-danger">
+            Please enter a password.
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input formControlName="rememberMe" id="remember" type="checkbox">
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div>
+            </div>
+            <div class="col-4">
+              <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+        <!-- /.social-auth-links -->
+
+      </ng-container>
+
+      <ng-template #verificationCodeInput>
+        <!-- Show input field for verification code -->
+        <form (ngSubmit)="submitVerificationCode()" [formGroup]="verificationForm">
+          <div *ngIf="messageSuccess" class="message-container" id="message-sucess">{{messageSuccess}}</div>
+          <div *ngIf="message" class="text-danger" id="message-error">{{message}}</div>
+          <div *ngIf="verificationForm.controls.code.touched && verificationForm.controls.code?.invalid"
+               class="text-danger">
+            Verification Code must be 4 digit
+          </div>
+          <div class="input-group mb-3">
+            <input class="form-control" formControlName="code" placeholder="Verification Code" type="text">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- /.col -->
+            <div class="col-4">
+              <button class="btn btn-primary btn-block" type="submit">Verify</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+      </ng-template>
+
+      <p class="mb-0">
+        <a class="text-center" routerLink="/signup">Register a new membership</a>
+      </p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+</body>

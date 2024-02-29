@@ -2,80 +2,86 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.*;
-import com.courzelo.lms.entities.Role;
-import com.courzelo.lms.entities.User;
-import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IUserService;
+import com.courzelo.lms.services.IPhotoService;
+import com.courzelo.lms.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders ="*" )
+
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/user")
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('SUPERADMIN')")
 public class UserController {
+    private final UserService userService;
+    private final IPhotoService photoService;
     @Autowired
     private ModelMapper modelMapper;
 
-    private final IUserService userService;
-    @PreAuthorize("permitAll()")
-    @PostMapping("/signup")
-    public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user){
-     return userService.saveUser(modelMapper.map(user,User.class));
-    }
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping()
-    public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user,Principal principal){
-        return userService.updateUserProfile(user,principal.getName());
+    @PatchMapping("/update/name")
+    public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user, Principal principal) {
+        return userService.updateUserProfile(user, principal.getName());
     }
 
     @GetMapping("/{userID}")
-    public UserDTO getUserByID(@PathVariable String userID){
+    public UserDTO getUserByID(@PathVariable String userID) {
         return modelMapper.map(userService.getUserByID(userID), UserDTO.class);
     }
-    @GetMapping()
-    public List<UserDTO> getUsers(){
-        return  userService.getUsers().stream()
-                .map(user -> modelMapper.map(user,UserDTO.class)).toList();
-    }
+
     @DeleteMapping("/{userID}")
-    public ResponseEntity<Response> deleteUser(@PathVariable String userID){
-      return userService.deleteUser(userService.getUserByID(userID));
+    public ResponseEntity<Response> deleteUser(@PathVariable String userID) {
+        return userService.deleteUser(userService.getUserByID(userID));
     }
-    @PostMapping("/add/{userID}/{role}")
-    public ResponseEntity<Response> addRole(@PathVariable String userID, @PathVariable Role role){
-        return userService.addRole(role,userID);
-    }
-    @PostMapping("/remove/{userID}/{role}")
-    public ResponseEntity<Response> removeRole(@PathVariable String userID, @PathVariable Role role){
-        return userService.removeRole(role,userID);
-    }
+
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/changePassword")
-    public ResponseEntity<Response> changePassword(Principal principal, @Valid @RequestBody PasswordDTO passwordDTO){
+    @PatchMapping("/update/password")
+    public ResponseEntity<Response> changePassword(Principal principal, @Valid @RequestBody PasswordDTO passwordDTO) {
         return userService.changePassword(passwordDTO, principal.getName());
     }
-    @PreAuthorize("permitAll()")
-    @PostMapping("/signing")
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
-        return userService.authenticateUser(loginDTO);
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/sendVerificationCode")
+    public ResponseEntity<HttpStatus> sendVerificationCode(Principal principal) {
+        return userService.sendVerificationCode(principal);
     }
-    @PostMapping("/ban/{userID}")
-    public ResponseEntity<Response> ban(@PathVariable String userID){
-        return userService.ban(userID);
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/update/email")
+    public ResponseEntity<HttpStatus> changeEmail(@Valid @RequestBody UpdateEmailDTO updateEmailDTO, Principal principal) {
+        return userService.updateEmail(updateEmailDTO, principal);
     }
-    @PostMapping("/unban/{userID}")
-    public ResponseEntity<Response> unban(@PathVariable String userID){
-        return userService.unban(userID);
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/update/photo")
+    public ResponseEntity<HttpStatus> changePhoto(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+        return userService.updatePhoto(file, principal);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/photo/{photoId}")
+    public ResponseEntity<byte[]> getPhoto(@PathVariable String photoId) {
+        return photoService.getPhoto(photoId);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete")
+    public ResponseEntity<HttpStatus> deleteAccount(@Valid @RequestBody DeleteAccountDTO dto, Principal principal, HttpServletRequest request, HttpServletResponse response) {
+        return userService.deleteAccount(dto, principal, request, response);
     }
 
 }
