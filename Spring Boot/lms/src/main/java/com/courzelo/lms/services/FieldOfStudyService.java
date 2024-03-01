@@ -2,9 +2,12 @@ package com.courzelo.lms.services;
 
 
 import com.courzelo.lms.dto.FieldOfStudyDTO;
+import com.courzelo.lms.entities.Department;
 import com.courzelo.lms.entities.FieldOfStudy;
+import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,11 @@ import java.util.List;
 public class FieldOfStudyService {
 
     private final FieldOfStudyRepository fieldOfStudyRepository;
+    private final DepartmentRepository departmentRepository;
 
-    public FieldOfStudyService(final FieldOfStudyRepository fieldOfStudyRepository) {
+    public FieldOfStudyService(final FieldOfStudyRepository fieldOfStudyRepository, DepartmentRepository departmentRepository) {
         this.fieldOfStudyRepository = fieldOfStudyRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     public List<FieldOfStudyDTO> findAll() {
@@ -56,7 +61,7 @@ public class FieldOfStudyService {
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
         fieldOfStudyDTO.setChefField(fieldOfStudy.getChefField());
-        fieldOfStudyDTO.setDepartment(fieldOfStudy.getDepartment());
+         fieldOfStudyDTO.setDepartment(fieldOfStudy.getDepartment());
         return fieldOfStudyDTO;
     }
 
@@ -65,7 +70,7 @@ public class FieldOfStudyService {
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
-        fieldOfStudy.setDepartment(fieldOfStudyDTO.getDepartment());
+       fieldOfStudy.setDepartment(fieldOfStudyDTO.getDepartment());
         return fieldOfStudy;
     }
 

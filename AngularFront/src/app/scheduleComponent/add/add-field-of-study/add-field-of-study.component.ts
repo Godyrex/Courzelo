@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {FieldOfstudyService} from "../../../service/schedule/field-ofstudy.service";
 import Swal from "sweetalert2";
 import {FieldOfStudy} from "../../../model/schedule/field-of-study";
+import {DepartmentService} from "../../../service/schedule/department.service";
 
 @Component({
   selector: 'app-add-field-of-study',
@@ -13,36 +14,64 @@ import {FieldOfStudy} from "../../../model/schedule/field-of-study";
   styleUrls: ['./add-field-of-study.component.css']
 })
 export class AddFieldOfStudyComponent {
-  newFiliereFormGroup!: FormGroup;
-  departements: Departement[] = [];
+  newfieldOfstudyFormGroup!: FormGroup;
+  departments: Departement[] = [];
   constructor(
     private fb: FormBuilder,
-    private filiereService: FieldOfstudyService,
+    private fieldOfstudyService: FieldOfstudyService,
+    private departmentService: DepartmentService,
 
     private router: Router
   ) {}
+  ngOnInit(): void {
+    this.newfieldOfstudyFormGroup = this.fb.group({
+      name: [null, Validators.required],
+      numbrWeeks: [null, Validators.required],
+      chefField: [null, Validators.required],
+      department: [null, Validators.required],
+
+    });
 
 
 
-  handleAddFiliere() {
-    if (this.newFiliereFormGroup.valid) {
-      const newFiliere: FieldOfStudy  = this.newFiliereFormGroup.value;
-      this.filiereService.saveFieldOfStudy(newFiliere).subscribe({
-        next: () => {
-          Swal.fire('Succès', 'Filière ajoutée avec succès', 'success');
-          this.router.navigateByUrl('FieldOfStudy/add');
+    this.fetchDepartments();
+  }
+
+
+
+  handleAddFieldOfStudy() {
+    if (this.newfieldOfstudyFormGroup.valid) {
+      const fieldOfStudy: FieldOfStudy = Object.assign({}, this.newfieldOfstudyFormGroup.value);
+
+      this.fieldOfstudyService.saveFieldOfStudy(fieldOfStudy).subscribe({
+        next: data => {
+          console.log(data);
+          Swal.fire('Success', 'field of study added successfully', 'success');
+
         },
-        error: (err: any) => {
-          console.log(err);
-        },
+        error: err => {
+          console.error('Save field of study error:', err);
+          Swal.fire('Error', 'An error occurred while saving the field of study', 'error');
+        }
       });
     } else {
-      Swal.fire(
-        'Erreur',
-        'Veuillez remplir correctement tous les champs du formulaire',
-        'error'
-      );
+      Swal.fire('Error', 'Please fill in all fields of the form correctly', 'error');
     }
 
-  }}
+
+  }
+
+  private fetchDepartments() {
+    this.departmentService.getAllDepartements().subscribe(
+      (departments: Departement[]) => {
+        this.departments = departments; // Assign fetched departments to the local variable
+      },
+      error => {
+        console.error('Error fetching departments:', error);
+
+      }
+
+    );
+  }
+}
 

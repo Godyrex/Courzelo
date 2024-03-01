@@ -9,15 +9,15 @@ import {JsonResponse} from "../../model/user/JsonResponse";
   providedIn: 'root'
 })
 export class DepartmentService {
-    private baseUrl = 'http://localhost:8081/api/departements';
+    private baseUrl = 'http://localhost:8081/api/departments';
 
 
   constructor(private http: HttpClient) { }
   /*  public getDepartment(id: number): Observable<Departement> {
         return this.http.get<Departement>(`${environment.backendHost}//api/departements/${id}`);
     }*/
-    public getAllDepartements(): Observable<Departement> {
-        return this.http.get<Departement>(this.baseUrl);
+    public getAllDepartements(): Observable<Departement[]> {
+        return this.http.get<Departement[]>(this.baseUrl);
     }
   saveDepartment(department: Departement): Observable<JsonResponse> {
     return this.http.post<JsonResponse>(this.baseUrl, department).pipe(

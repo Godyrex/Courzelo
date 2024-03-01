@@ -64,4 +64,12 @@ public class ElementModuleService {
         return elementModule;
     }
 
+    public ElementModule getElementDeModuleById(String id) {
+        return elementModuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Module Element number " + id + " does not exist!"));
+    }
+
+    public List<ElementModule>getEmploisByClass(String classe){
+        return elementModuleRepository.findByClasse(classe);
+    }
+
 }

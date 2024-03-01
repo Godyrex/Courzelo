@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
 
       this.newDepartementFormGroup = this.fb.group({
         name: this.fb.control('', [Validators.required]),
-        chefDepartement: this.fb.control('', [Validators.required]
+        chefDepartment: this.fb.control('', [Validators.required]
         )
       });
     }

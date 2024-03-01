@@ -55,6 +55,7 @@ public class SemesterService {
         semesterDTO.setStartDate(semester.getStartDate());
         semesterDTO.setEndDate(semester.getEndDate());
         semesterDTO.setUniversityYear(semester.getUniversityYear());
+        semesterDTO.setSemesterNumber(semester.getSemesterNumber());
         return semesterDTO;
     }
 
@@ -62,6 +63,7 @@ public class SemesterService {
         semester.setStartDate(semesterDTO.getStartDate());
         semester.setEndDate(semesterDTO.getEndDate());
         semester.setUniversityYear(semesterDTO.getUniversityYear());
+        semester.setSemesterNumber(semesterDTO.getSemesterNumber());
         return semester;
     }
 

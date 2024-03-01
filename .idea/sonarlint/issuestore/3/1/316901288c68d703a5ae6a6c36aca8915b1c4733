@@ -1,0 +1,8 @@
+
+X	java:S125"<This block of commented-out lines of code should be removed.(ôù‚©8ÇÖğ‡ß1
+Z
+java:S1128"=Remove this unused import 'com.courzelo.lms.entities.Period'.(ÙØÒ8ÈÖğ‡ß1
+p
+java:S1128"NRemove this unused import 'org.springframework.data.mongodb.repository.Query'.(Ç§ò•øÿÿÿÿ8šÆí‡ß1
+R
+java:S1128	"0Remove this unused import 'java.time.DayOfWeek'.(Óò»¸şÿÿÿÿ8ÈÖğ‡ß1

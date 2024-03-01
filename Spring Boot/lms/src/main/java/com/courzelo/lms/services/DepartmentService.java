@@ -2,7 +2,6 @@ package com.courzelo.lms.services;
 
 
 import com.courzelo.lms.dto.DepartmentDTO;
-import com.courzelo.lms.dto.FieldOfStudyDTO;
 import com.courzelo.lms.entities.Department;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.courzelo.lms.entities.FieldOfStudy;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -18,15 +18,14 @@ import java.util.List;
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final FieldOfStudyRepository fieldOfStudyRepository;
     private final FieldOfStudyService fieldOfStudyService ;
-    private final FieldOfStudyDTO fieldOfStudyDTO;
-    private final FieldOfStudy fieldOfStudy;
-    public DepartmentService(final DepartmentRepository departementRepository, FieldOfStudyRepository fieldOfStudyRepository, FieldOfStudyService fieldOfStudyService, FieldOfStudyDTO fieldOfStudyDTO, FieldOfStudy fieldOfStudy) {
+
+    public DepartmentService(final DepartmentRepository departementRepository, FieldOfStudyRepository fieldOfStudyRepository, FieldOfStudyRepository fieldOfStudyRepository1, FieldOfStudyService fieldOfStudyService) {
         this.departmentRepository = departementRepository;
+        this.fieldOfStudyRepository = fieldOfStudyRepository1;
         this.fieldOfStudyService = fieldOfStudyService;
 
-        this.fieldOfStudyDTO = fieldOfStudyDTO;
-        this.fieldOfStudy = fieldOfStudy;
     }
 
     public List<DepartmentDTO> findAll() {
@@ -45,10 +44,36 @@ public class DepartmentService {
     public String create(final DepartmentDTO departmentDTO ) {
         final Department department = new Department();
         mapToEntity(departmentDTO, department);
-
-
         return departmentRepository.save(department).getId();
+
+
+
     }
+    /*public String create1(final DepartmentDTO departmentDTO ) {
+
+        Department department = new Department();
+        department.setName(departmentDTO.getName());
+        department.setChefDepartment(departmentDTO.getChefDepartment());
+
+
+        department = departmentRepository.save(department);
+
+        // Create FieldOfStudy entity
+        FieldOfStudy fieldOfStudy = new FieldOfStudy();
+        fieldOfStudy.setName(fieldOfStudy.getName());
+        fieldOfStudy.setChefField(fieldOfStudy.getChefField());
+        fieldOfStudy.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
+
+
+
+        //fieldOfStudy.setDepartment(department);
+
+        // Save the FieldOfStudy
+        fieldOfStudy = fieldOfStudyRepository.save(fieldOfStudy);
+
+        return department.getId();
+    }
+*/
 
 
 
@@ -70,7 +95,7 @@ public class DepartmentService {
 
         departmentDTO.setName(departement.getName());
         departmentDTO.setChefDepartment(departement.getChefDepartment());
-        departmentDTO.setFieldOfStudy(departement.getFieldOfStudy());
+
         return departmentDTO;
     }
 
@@ -78,7 +103,8 @@ public class DepartmentService {
                                    final Department department) {
         department.setName(departmentDTO.getName());
         department.setChefDepartment(departmentDTO.getChefDepartment());
-        department.setFieldOfStudy(departmentDTO.getFieldOfStudy());
+
+
 
 
         return department;

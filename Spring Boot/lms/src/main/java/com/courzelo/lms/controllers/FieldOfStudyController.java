@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api/fieldOfStudies", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FieldOfStudyController {

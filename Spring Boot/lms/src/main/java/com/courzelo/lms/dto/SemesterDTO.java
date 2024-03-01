@@ -1,6 +1,9 @@
 package com.courzelo.lms.dto;
 
+import com.courzelo.lms.entities.SemesterNumber;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
@@ -22,5 +25,5 @@ public class SemesterDTO {
 
     @Size(max = 255)
     private String universityYear;
-
+    private SemesterNumber semesterNumber ;
 }

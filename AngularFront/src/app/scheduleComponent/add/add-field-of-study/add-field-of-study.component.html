@@ -2,53 +2,61 @@
   <div class="col-sm-12">
     <div class="card comman-shadow">
       <div class="card-body">
-        <form [formGroup]="newFiliereFormGroup">
+        <form [formGroup]="newfieldOfstudyFormGroup" (ngSubmit)="handleAddFieldOfStudy()" >
           <div class="row">
             <div class="col-12">
               <h5 class="form-title student-info">
-                Informations sur la Filière<span
-              ><a href="javascript:;"
+                Informations about fields<span
+              ><a href="javascript:"
               ><i class="feather-more-vertical"></i></a
               ></span>
               </h5>
             </div>
             <div class="col-12 col-sm-4">
               <div class="form-group local-forms">
-                <label>libellé <span class="login-danger">*</span></label>
+                <label>name <span class="login-danger">*</span></label>
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="libellé ...."
-                  formControlName="libelle"
+                  placeholder="name ...."
+                  formControlName="name"
                 />
               </div>
             </div>
             <div class="col-12 col-sm-4">
               <div class="form-group local-forms">
-                <label>nombre de semestres <span class="login-danger">*</span></label>
+                <label>numbrWeeks <span class="login-danger">*</span></label>
                 <input
                   class="form-control"
                   type="number"
-                  placeholder="nombre de semestres...."
-                  formControlName="nombreSem"
+                  placeholder="numbrWeeks...."
+                  formControlName="numbrWeeks"
                 />
               </div>
             </div>
             <div class="col-12 col-sm-4">
               <div class="form-group local-forms">
-                <label>filière<span class="login-danger">*</span></label>
+                <label>chefField<span class="login-danger">*</span></label>
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="libellé ...."
-                  formControlName="chefFiliere"
+                  placeholder="chefField ...."
+                  formControlName="chefField"
                 />
               </div>
             </div>
 
+            <div class="col-12 col-sm-4">
+              <div class="form-group local-forms">
+                <label>departments<span class="login-danger">*</span></label>
+                <select class="form-control" formControlName="department">
+                  <option *ngFor="let dep of departments" [value]="dep.name">{{ dep.name }}</option>
+                </select>
+              </div>
+            </div>
             <div class="col-12 d-flex align-items-center justify-content-center">
               <div class="student-submit">
-                <button type="submit" class="btn btn-primary">Confirmer</button>
+                <button type="submit" class="btn btn-primary">submit</button>
               </div>
             </div>
             <hr class="mt-4" />

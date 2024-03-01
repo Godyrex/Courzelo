@@ -1,5 +1,6 @@
 package com.courzelo.lms.dto;
 
+import com.courzelo.lms.entities.Period;
 import com.courzelo.lms.entities.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class NonDisponibilityDTO {
     private String  id;
     private DayOfWeek dayOfWeek;
     private List<Role>roles;
+    private Period period;
 
 }

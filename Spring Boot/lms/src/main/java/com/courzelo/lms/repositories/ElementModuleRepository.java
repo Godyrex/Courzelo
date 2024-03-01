@@ -7,9 +7,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 
 public interface ElementModuleRepository extends MongoRepository<ElementModule, String> {
-    @Query("{ 'jour' : ?0, 'period' : ?1 }")
-    ElementModule findByDayOfWeekAndPeriode(DayOfWeek dayOfWeek, Period period);
+
+ //   ElementModule findByDayOfWeekAndPeriode(DayOfWeek dayOfWeek, Period period);
+
+   List<ElementModule> findByClasse(String classe);
 }

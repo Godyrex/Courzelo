@@ -9,15 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/elementModules", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ElementModule {
+public class ElementModuleController {
     private final ElementModuleService elementModuleService;
 
-    public ElementModule(final ElementModuleService elementModuleService) {
+    public ElementModuleController(final ElementModuleService elementModuleService) {
         this.elementModuleService = elementModuleService;
     }
 
@@ -53,6 +52,7 @@ public class ElementModule {
         elementModuleService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
    // @RequestMapping("/api/days")
    /* @GetMapping
     public ResponseEntity<DayOfWeek[]> getDaysOfWeek() {

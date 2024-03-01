@@ -1,0 +1,10 @@
+
+]	java:S125*"<This block of commented-out lines of code should be removed.(ıÑüúÿÿÿÿ8¯Á°Ïß1
+]	java:S125P"<This block of commented-out lines of code should be removed.(ÛàÒ©ùÿÿÿÿ8¯Á°Ïß1
+X
+java:S1068!";Remove this unused "elementModuleRepository" private field.(’¡Ü¬8´Á°Ïß1
+Z
+java:S1068#"8Remove this unused "elementModuleService" private field.(–Òùäüÿÿÿÿ8´Á°Ïß1
+N
+java:S1068%",Remove this unused "schedule" private field.(–²‡ıÿÿÿÿÿ8´Á°Ïß1
+qsecrets:S6694"PMake sure this MongoDB database password gets changed and removed from the code.(ğ¯ÅÔ8úÓöŠß1

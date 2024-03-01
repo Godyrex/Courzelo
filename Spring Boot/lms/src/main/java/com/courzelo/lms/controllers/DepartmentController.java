@@ -3,6 +3,7 @@ package com.courzelo.lms.controllers;
 import com.courzelo.lms.dto.DepartmentDTO;
 
 import com.courzelo.lms.dto.FieldOfStudyDTO;
+import com.courzelo.lms.entities.FieldOfStudy;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.services.DepartmentService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,13 +38,12 @@ public class DepartmentController {
 
     @PostMapping
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<DepartmentDTO> createDepartment(
-            @RequestBody @Valid final DepartmentDTO departmentDTO ) {
-        departmentService.create(departmentDTO);
-
-
-        return new ResponseEntity<>(departmentDTO, HttpStatus.CREATED);
+    public ResponseEntity<String> createFieldOfStudy(
+            @RequestBody @Valid final DepartmentDTO departmentDTO) {
+        final String createdId = departmentService.create(departmentDTO);
+        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateDepartment(@PathVariable(name = "id") final String id,

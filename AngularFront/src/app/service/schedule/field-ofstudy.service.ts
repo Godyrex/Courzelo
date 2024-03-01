@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {FieldOfStudy} from "../../model/schedule/field-of-study";
 
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 
 
 @Injectable({
@@ -16,6 +16,10 @@ export class FieldOfstudyService {
     return this.http.get<FieldOfStudy>(this.baseUrl);
   }
   public saveFieldOfStudy(fieldOfStudy: FieldOfStudy): Observable<FieldOfStudy> {
-    return this.http.post<FieldOfStudy>(this.baseUrl, fieldOfStudy);
-  }
+    return this.http.post<FieldOfStudy>(this.baseUrl, fieldOfStudy).pipe(
+    catchError((error: HttpErrorResponse) => {
+      console.error('Error occurred:', error);
+      return throwError(error);
+    })
+    );}
 }

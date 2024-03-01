@@ -1,10 +1,12 @@
 package com.courzelo.lms.entities;
 
 import com.courzelo.lms.dto.FieldOfStudyDTO;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -20,9 +22,13 @@ public class Department {
     private String id;
 
     @Size(max = 255)
+    @NotNull
     private String name;
+    @NotNull
     private String chefDepartment;
-    private List<FieldOfStudy>fieldOfStudy=new ArrayList<>();
+
+
+
 
 
 

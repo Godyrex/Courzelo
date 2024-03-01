@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,7 +24,6 @@ public class FieldOfStudyDTO {
 
     @Size(max = 255)
     private String chefField;
-
     private Department department;
 
 }
