@@ -54,6 +54,12 @@ public class ElementModuleService {
         elementModuleDTO.setId(elementModule.getId());
         elementModuleDTO.setNmbrHours(elementModule.getNmbrHours());
         elementModuleDTO.setName(elementModule.getName());
+        elementModuleDTO.setDayOfWeeks(elementModule.getDayOfWeeks());
+        elementModuleDTO.setPeriods(elementModule.getPeriods());
+        //elementModuleDTO.setClasses(elementModule.getClasses());
+        elementModuleDTO.setModule(elementModule.getModule());
+        elementModuleDTO.setSemesters(elementModule.getSemesters());
+        elementModuleDTO.setDepartments(elementModule.getDepartments());
         return elementModuleDTO;
     }
 
@@ -61,6 +67,12 @@ public class ElementModuleService {
             final ElementModule elementModule) {
         elementModule.setNmbrHours(elementModuleDTO.getNmbrHours());
         elementModule.setName(elementModuleDTO.getName());
+        elementModule.setDayOfWeeks(elementModuleDTO.getDayOfWeeks());
+        elementModule.setPeriods(elementModuleDTO.getPeriods());
+        //elementModule.setClasses(elementModuleDTO.getClasses());
+        elementModule.setModule(elementModuleDTO.getModule());
+        elementModule.setSemesters(elementModuleDTO.getSemesters());
+        elementModule.setDepartments(elementModuleDTO.getDepartments());
         return elementModule;
     }
 
@@ -68,8 +80,8 @@ public class ElementModuleService {
         return elementModuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Module Element number " + id + " does not exist!"));
     }
 
-    public List<ElementModule>getEmploisByClass(String classe){
+   /* public List<ElementModule>getEmploisByClass(String classe){
         return elementModuleRepository.findByClasse(classe);
-    }
+    }*/
 
 }

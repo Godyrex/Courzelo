@@ -1,11 +1,16 @@
 
+X	java:S125%"<This block of commented-out lines of code should be removed.(¥ÊÖÀ8îÒåÓß1
+V
+java:S1128"9Remove this unused import 'jakarta.persistence.EnumType'.(…÷Íà8²¡ÀÓß1
+]
+java:S1128";Remove this unused import 'jakarta.persistence.Enumerated'.(àèòùÿÿÿÿ8³¡ÀÓß1
 n
-java:S1128	"LRemove this unused import 'org.springframework.data.annotation.CreatedDate'.(Éå¥°ÿÿÿÿÿ8ÇÀ‰†ß1
+java:S1128	"LRemove this unused import 'org.springframework.data.annotation.CreatedDate'.(Éå¥°ÿÿÿÿÿ8³¡ÀÓß1
 n
-java:S1128"QRemove this unused import 'org.springframework.data.annotation.LastModifiedDate'.(Æğ¼‰8ÈÀ‰†ß1
+java:S1128"QRemove this unused import 'org.springframework.data.annotation.LastModifiedDate'.(Æğ¼‰8³¡ÀÓß1
 e
-java:S1128"HRemove this unused import 'org.springframework.data.annotation.Version'.(¨Şíú8ÉÀ‰†ß1
+java:S1128"HRemove this unused import 'org.springframework.data.annotation.Version'.(¨Şíú8³¡ÀÓß1
+m
+java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.mapping.DBRef'.(°‘íâ8³¡ÀÓß1
 R
-java:S1128"5Remove this unused import 'java.time.OffsetDateTime'.(ûùˆı8ËÀ‰†ß1
-M
-java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ËÀ‰†ß1
+java:S1128"5Remove this unused import 'java.time.OffsetDateTime'.(ûùˆı8³¡ÀÓß1

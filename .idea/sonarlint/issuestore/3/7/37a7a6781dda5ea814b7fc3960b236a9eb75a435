@@ -1,4 +1,9 @@
 
 W	java:S125<"<This block of commented-out lines of code should be removed.(óİ;8Ï”½ßŞ1
+^
+java:S1128"ARemove this unused import 'com.courzelo.lms.entities.Department'.(ûˆí°8’¥Óß1
+e
+java:S1128
+"HRemove this unused import 'jakarta.persistence.EntityNotFoundException'.(†œşè8’¥Óß1
 U
 java:S1068"8Remove this unused "departmentRepository" private field.(Ç‘øí8Ô”½ßŞ1

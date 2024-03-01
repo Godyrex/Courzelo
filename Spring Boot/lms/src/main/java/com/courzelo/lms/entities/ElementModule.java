@@ -22,32 +22,23 @@ import java.util.List;
 @Getter
 @Setter
 public class ElementModule {
-
     @Id
     private  String id;
-
+    @NotNull
     private Integer nmbrHours;
-
+    @NotNull
     @Size(max = 255)
     private String name;
-
-
-
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek jour;
+    private List<DayOfWeek> dayOfWeeks;
     @NotNull
-    @Enumerated(EnumType.STRING)
+    private List<Period> periods;
     @NotNull
-    private Period period;
-    @NotNull
-    private String classe;
+   // private List<Class>classes;
     @NotNull
     private String module;
-     @DBRef
-    private Semester semesters;
-     @DBRef
-    private Department departments;
-
-
+    @NotNull
+    private List<Semester> semesters ;
+    @NotNull
+    private List<Department> departments;
 }

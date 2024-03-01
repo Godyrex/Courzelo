@@ -89,3 +89,5 @@ KSpring Boot/lms/src/main/java/com/courzelo/lms/entities/SemesterNumber.java,4\
 RSpring Boot/lms/src/main/java/com/courzelo/lms/controllers/SemesterController.java,e\7\e77ccf443561e93e6f703a0ab5ab60dee2a61471
 q
 ASpring Boot/lms/src/main/java/com/courzelo/lms/entities/Role.java,f\2\f2b45ba651dc4c2df7f107b283224859bd194618
+w
+GSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Universite.java,e\9\e904ba8beffde4045983b0e499ec867cad4fd276

@@ -14,5 +14,5 @@ public interface ElementModuleRepository extends MongoRepository<ElementModule, 
 
  //   ElementModule findByDayOfWeekAndPeriode(DayOfWeek dayOfWeek, Period period);
 
-   List<ElementModule> findByClasse(String classe);
+   //List<ElementModule> findByClasse(String classe);
 }
