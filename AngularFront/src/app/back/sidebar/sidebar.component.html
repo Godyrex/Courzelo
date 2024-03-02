@@ -34,13 +34,11 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
-        <!-- Add icons to the links using the .nav-icon class
-             with font-awesome or any other icon font library -->
         <li class="nav-item menu-open">
           <a class="nav-link" routerLink="/" routerLinkActive="active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              Settings
+              User
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -51,10 +49,27 @@
                 <p>Profile</p>
               </a>
             </li>
-            <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item">
-              <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+          </ul>
+        </li>
+        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item menu-open">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              SuperAdmin
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/institutions" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Admin</p>
+                <p>Institutions</p>
+              </a>
+            </li>
+            <li  class="nav-item">
+              <a class="nav-link" routerLink="/admin/users" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Users</p>
               </a>
             </li>
           </ul>

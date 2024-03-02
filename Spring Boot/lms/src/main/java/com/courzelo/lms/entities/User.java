@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Document(collection = "users")
@@ -30,6 +31,8 @@ public class User implements UserDetails {
     private List<Role> roles = new ArrayList<>();
     @DBRef
     private Photo photo;
+    @DBRef
+    private Institution institution;
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;
@@ -68,5 +71,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(email, user.email);
     }
 }

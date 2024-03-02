@@ -1,0 +1,133 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">Institution</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <!-- Notification area -->
+      <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" (click)="resetSuccessAlert()">×</button>
+        {{ messageSuccess }}
+      </div>
+      <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" (click)="resetErrorAlert()">×</button>
+        {{ messageError }}
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+<div class="row">
+  <div class="col-12">
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Institutions Table</h3>
+    <div class="card-tools">
+      <div class="input-group input-group-sm" style="width: 150px;">
+        <input class="form-control float-right" name="table_search" placeholder="Search" type="text">
+
+        <div class="input-group-append">
+          <button class="btn btn-default" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Description</th>
+        <th>Website</th>
+        <th>Admins</th>
+        <th>Teachers</th>
+        <th>Students</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let institution of institutionResponse">
+        <td>{{ institution.id }}</td>
+        <td>{{ institution.name }}</td>
+        <td>{{ institution.location }}</td>
+        <td>{{ institution.description }}</td>
+        <td>
+          <a href="https://{{ institution.website }}" target="_blank">{{ institution.website }}</a>
+        </td>
+        <td>
+          <button (click)="showAdminTable(institution.id!)" class="btn btn-link">
+            <i class="fas fa-user-shield mr-1" style="color: blue;"></i>Admins
+          </button>
+        </td>
+        <td>
+          <button (click)="showTeacherTable(institution.id!)" class="btn btn-link">
+            <i class="fas fa-chalkboard-teacher mr-1" style="color: green;"></i>Teachers
+          </button>
+        </td>
+
+        <td>
+          <button (click)="showStudentTable(institution.id!)" class="btn btn-link">
+            <i class="fas fa-user-graduate mr-1" style="color: orange;"></i>Students
+          </button>
+        </td>
+        <td>
+          <button (click)="showUpdateForm(institution)"  class="btn btn-info btn-sm">Update</button>
+        </td>
+        <td>
+          <button (click)="deleteInstitution(institution.id!)" class="btn btn-danger btn-sm">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <button (click)="showAddForm()" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add institution
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-pagination
+    [totalPages]="totalPages"
+    (pageChanged)="onPageChange($event)">
+  </app-pagination>
+  <!-- /.card-body -->
+</div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-12">
+      <app-institution-add-form
+        *ngIf="addForm"
+        (addForm) = "handleAddFormToggle($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        (errorMessage)="handleErrorMessage($event)">
+      </app-institution-add-form>
+      <app-institution-update-form
+        *ngIf="updateForm"
+        [institutionToUpdate]="selectedInstitution"
+        (updateForm) = "handleUpdateFormToggle($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        (errorMessage)="handleErrorMessage($event)">
+      </app-institution-update-form>
+      <app-institution-admins-table
+        *ngIf="adminsTable"
+        [institutionID]="selectedInstitutionUsers"
+        (updateForm) = "handleAdminTableToggle($event)"
+      ></app-institution-admins-table>
+      <app-institution-students-table
+        *ngIf="studentsTable"
+        [institutionID]="selectedInstitutionUsers"
+        (updateForm) = "handleStudentTableToggle($event)"
+      ></app-institution-students-table>
+      <app-institution-teachers-table
+        *ngIf="teachersTable"
+        [institutionID]="selectedInstitutionUsers"
+        (updateForm) = "handleTeacherTableToggle($event)"
+      ></app-institution-teachers-table>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+

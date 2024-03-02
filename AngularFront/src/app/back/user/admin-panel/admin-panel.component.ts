@@ -8,79 +8,9 @@ import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent implements OnInit {
-  userResponse: UserResponse[] = []
-  selectedRole: string = "";
-  availableRoles: string[] = ['STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN']
+export class AdminPanelComponent {
 
-  constructor(private panelService: PanelService) {
+  constructor() {
   }
 
-  ngOnInit(): void {
-    this.loadUsers();
-  }
-
-  loadUsers(): void {
-    this.panelService.getUsers().subscribe(
-      (response: UserResponse[]) => {
-        this.userResponse = response;
-      },
-      (error: any) => {
-        console.error('Error fetching users:', error);
-      }
-    );
-  }
-
-  toggleBan(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = {userID: user.id};
-    this.panelService.toggleBan(userRoleRequest).subscribe(
-      () => {
-        user.ban = !user.ban;
-      },
-      (error: any) => {
-        console.error('Error toggling ban:', error);
-      }
-    );
-  }
-
-  toggleEnable(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = {userID: user.id};
-    this.panelService.toggleEnable(userRoleRequest).subscribe(
-      () => {
-        user.enabled = !user.enabled;
-      },
-      (error: any) => {
-        console.error('Error toggling enable:', error);
-      }
-    );
-  }
-
-  changeUserRole(user: UserResponse): void {
-    const userRoleRequest: UserRoleRequest = {userID: user.id, role: this.selectedRole};
-    if (user.roles && user.roles.includes(this.selectedRole)) {
-      this.panelService.removeRole(userRoleRequest).subscribe(
-        () => {
-          const index = user.roles!.indexOf(this.selectedRole);
-          if (index !== -1) {
-            user.roles!.splice(index, 1);
-          }
-        },
-        (error: any) => {
-          console.error('Error removing role:', error);
-        }
-      );
-    } else {
-      this.panelService.addRole(userRoleRequest).subscribe(
-        () => {
-          if (!user.roles) {
-            user.roles = [];
-          }
-          user.roles.push(this.selectedRole);
-        },
-        (error: any) => {
-          console.error('Error adding role:', error);
-        }
-      );
-    }
-  }
 }

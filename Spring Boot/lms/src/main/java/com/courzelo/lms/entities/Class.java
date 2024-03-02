@@ -1,24 +1,24 @@
 package com.courzelo.lms.entities;
 
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Getter
-@Setter
-@Document(collection = "Class")
+@Document(collection = "classes")
+@Data
 public class Class {
 
     @Id
     private String id;
     private String name ;
     private Long capacity ;
-
     @DBRef
     private List<Program> programs ;
+    @DBRef
+    private List<User> users;
 
 }
