@@ -1,9 +1,13 @@
 <div class="card-footer clearfix">
   <ul class="pagination pagination-sm m-0 float-right">
-    <li class="page-item"><button class="page-link"  (click)="navigateToPage(1)">&laquo;</button></li>
-    <li class="page-item" *ngFor="let page of pageNumbers">
-      <button class="page-link"  (click)="navigateToPage(page)">{{ page }}</button>
+    <li class="page-item">
+      <button (click)="navigateToPage(1)" class="page-link">&laquo;</button>
     </li>
-    <li class="page-item"><button class="page-link"  (click)="navigateToPage(totalPages)">&raquo;</button></li>
+    <li *ngFor="let page of pageNumbers" class="page-item">
+      <button (click)="navigateToPage(page)" class="page-link">{{ page }}</button>
+    </li>
+    <li class="page-item">
+      <button (click)="navigateToPage(totalPages)" class="page-link">&raquo;</button>
+    </li>
   </ul>
 </div>

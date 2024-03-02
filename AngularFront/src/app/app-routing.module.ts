@@ -8,10 +8,9 @@ import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {ProfileComponent} from "./back/user/profile/profile.component";
 import {VerifyComponent} from "./back/auth/verify/verify.component";
 import {AdminPanelComponent} from "./back/user/admin-panel/admin-panel.component";
-import {RoleGuardService} from "./service/user/guard/role-guard.service";
 import {InstitutionTableComponent} from "./back/program/institution-table/institution-table.component";
 import {UsersTableComponent} from "./back/user/users-table/users-table.component";
-import {InstitutionAddFormComponent} from "./back/program/institution-add-form/institution-add-form.component";
+import {InstitutionPanelComponent} from "./back/program/institution-panel/institution-panel.component";
 
 const routes: Routes = [
   {
@@ -45,19 +44,18 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminPanelComponent,
-   /* canActivate: [RoleGuardService],
-    data: {
-      expectedRole: 'SUPERADMIN'
-    },*/
+    /* canActivate: [RoleGuardService],
+     data: {
+       expectedRole: 'SUPERADMIN'
+     },*/
     children: [
       {
         path: 'users',
         component: UsersTableComponent
       },
       {
-        path: 'institutions',
-        component: InstitutionAddFormComponent,
-        outlet : 'second'
+        path: 'institution',
+        component: InstitutionPanelComponent
       },
       {
         path: 'institutions',
@@ -66,6 +64,7 @@ const routes: Routes = [
     ]
   }
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

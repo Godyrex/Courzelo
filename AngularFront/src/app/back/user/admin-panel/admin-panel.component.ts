@@ -1,7 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {PanelService} from "../../../service/user/admin/panel.service";
-import {UserResponse} from "../../../model/user/UserResponse";
-import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-admin-panel',

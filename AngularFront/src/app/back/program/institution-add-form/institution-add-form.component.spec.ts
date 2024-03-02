@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { InstitutionAddFormComponent } from './institution-add-form.component';
+import {InstitutionAddFormComponent} from './institution-add-form.component';
 
 describe('InstitutionAddFormComponent', () => {
   let component: InstitutionAddFormComponent;
@@ -8,9 +8,9 @@ describe('InstitutionAddFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InstitutionAddFormComponent ]
+      declarations: [InstitutionAddFormComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(InstitutionAddFormComponent);
     component = fixture.componentInstance;

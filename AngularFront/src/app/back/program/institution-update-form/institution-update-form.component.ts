@@ -8,27 +8,30 @@ import {FormBuilder, Validators} from "@angular/forms";
   templateUrl: './institution-update-form.component.html',
   styleUrls: ['./institution-update-form.component.css']
 })
-export class InstitutionUpdateFormComponent implements OnChanges{
-  institutionRequest : InstitutionDTO = {};
-  @Input() institutionToUpdate : InstitutionDTO={};
+export class InstitutionUpdateFormComponent implements OnChanges {
+  institutionRequest: InstitutionDTO = {};
+  @Input() institutionToUpdate: InstitutionDTO = {};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  institutionForm = this.formBuilder.group({
+    id: [this.institutionToUpdate.id, [Validators.required]],
+    name: [this.institutionToUpdate.name, [Validators.required, Validators.maxLength(40)]],
+    location: [this.institutionToUpdate.location, [Validators.required, Validators.maxLength(80)]],
+    description: [this.institutionToUpdate.description, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
+    website: [this.institutionToUpdate.website],
+  });
+
   constructor(
     private institutionService: InstitutionService,
     private formBuilder: FormBuilder
   ) {
   }
-  institutionForm = this.formBuilder.group({
-    id: [this.institutionToUpdate.id, [Validators.required]],
-    name: [this.institutionToUpdate.name, [Validators.required, Validators.maxLength(40)]],
-    location: [this.institutionToUpdate.location, [Validators.required,Validators.maxLength(80)]],
-    description: [this.institutionToUpdate.description, [Validators.required,Validators.maxLength(200), Validators.minLength(10)]],
-    website: [this.institutionToUpdate.website],
-  });
-  close(){
+
+  close() {
     this.updateForm.emit(false)
   }
+
   updateInstitution() {
     if (this.institutionForm.valid) {
       this.institutionRequest = Object.assign(this.institutionRequest, this.institutionForm.value);
@@ -52,6 +55,7 @@ export class InstitutionUpdateFormComponent implements OnChanges{
       this.initializeForm();
     }
   }
+
   private initializeForm(): void {
     this.institutionForm.patchValue({
       id: this.institutionToUpdate.id || '',

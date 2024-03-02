@@ -19,18 +19,15 @@ import {ProfileComponent} from './back/user/profile/profile.component';
 import {Interceptor} from "./service/user/auth/Interceptor";
 import {VerifyComponent} from './back/auth/verify/verify.component';
 import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component';
-import { InstitutionTableComponent } from './back/program/institution-table/institution-table.component';
-import { UsersTableComponent } from './back/user/users-table/users-table.component';
+import {InstitutionTableComponent} from './back/program/institution-table/institution-table.component';
+import {UsersTableComponent} from './back/user/users-table/users-table.component';
 import {RouterOutlet} from "@angular/router";
-import { InstitutionAddFormComponent } from './back/program/institution-add-form/institution-add-form.component';
-import { InstitutionUpdateFormComponent } from './back/program/institution-update-form/institution-update-form.component';
-import { InstitutionAdminsTableComponent } from './back/program/institution-admins-table/institution-admins-table.component';
-import { InstitutionAddAdminComponent } from './back/program/institution-add-admin/institution-add-admin.component';
-import { InstitutionStudentsTableComponent } from './back/program/institution-students-table/institution-students-table.component';
-import { InstitutionTeachersTableComponent } from './back/program/institution-teachers-table/institution-teachers-table.component';
-import { InstitutionAddStudentComponent } from './back/program/institution-add-student/institution-add-student.component';
-import { InstitutionAddTeacherComponent } from './back/program/institution-add-teacher/institution-add-teacher.component';
-import { PaginationComponent } from './back/shared/pagination/pagination.component';
+import {InstitutionAddFormComponent} from './back/program/institution-add-form/institution-add-form.component';
+import {InstitutionUpdateFormComponent} from './back/program/institution-update-form/institution-update-form.component';
+import {PaginationComponent} from './back/shared/pagination/pagination.component';
+import {InstitutionPanelComponent} from './back/program/institution-panel/institution-panel.component';
+import {InstitutionUsersTableComponent} from './back/program/institution-users-table/institution-users-table.component';
+import {InstitutionAddUserComponent} from './back/program/institution-add-user/institution-add-user.component';
 
 @NgModule({
   declarations: [
@@ -52,22 +49,19 @@ import { PaginationComponent } from './back/shared/pagination/pagination.compone
     UsersTableComponent,
     InstitutionAddFormComponent,
     InstitutionUpdateFormComponent,
-    InstitutionAdminsTableComponent,
-    InstitutionAddAdminComponent,
-    InstitutionStudentsTableComponent,
-    InstitutionTeachersTableComponent,
-    InstitutionAddStudentComponent,
-    InstitutionAddTeacherComponent,
-    PaginationComponent
+    PaginationComponent,
+    InstitutionPanelComponent,
+    InstitutionUsersTableComponent,
+    InstitutionAddUserComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterOutlet
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterOutlet
+  ],
   providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,
     useClass: Interceptor,

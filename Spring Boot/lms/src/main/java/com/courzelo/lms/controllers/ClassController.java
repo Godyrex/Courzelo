@@ -14,10 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClassController {
     private final IClassService iClassService;
+
     @PostMapping("/add")
     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         return iClassService.addClass(classDTO);
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<ClassDTO>> getClasses() {
         return iClassService.getClasses();
@@ -27,6 +29,7 @@ public class ClassController {
     public ResponseEntity<Boolean> deleteClass(@PathVariable String classID) {
         return iClassService.deleteClass(classID);
     }
+
     @PostMapping("/update")
     public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
         return iClassService.updateClass(classDTO);

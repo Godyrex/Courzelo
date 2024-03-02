@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {InstitutionDTO} from "../../model/program/InstitutionDTO";
-import {UserResponse} from "../../model/user/UserResponse";
 import {InstitutionListDTO} from "../../model/program/InstitutionListDTO";
 import {UserListDTO} from "../../model/user/UserListDTO";
+import {InstitutionUsersCountDTO} from "../../model/program/institutionUsersCountDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +12,9 @@ import {UserListDTO} from "../../model/user/UserListDTO";
 export class InstitutionService {
   private baseUrl = 'http://localhost:8081/api/v1/institution';
 
-  constructor(private http: HttpClient) { }
-  getInstitutionAdmins(institutionID: string,page: number, itemsPerPage: number): Observable<UserListDTO> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('sizePerPage', itemsPerPage.toString());
-    return this.http.get<UserListDTO>(`${this.baseUrl}/${institutionID}/admins`);
+  constructor(private http: HttpClient) {
   }
-  getInstitutionTeachers(institutionID: string,page: number, itemsPerPage: number): Observable<UserListDTO> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('sizePerPage', itemsPerPage.toString());
-    return this.http.get<UserListDTO>(`${this.baseUrl}/${institutionID}/teachers`);
-  }
-  getInstitutionStudent(institutionID: string,page: number, itemsPerPage: number): Observable<UserListDTO> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('sizePerPage', itemsPerPage.toString());
-    return this.http.get<UserListDTO>(`${this.baseUrl}/${institutionID}/students`);
-  }
+
   getAllInstitutions(): Observable<InstitutionDTO[]> {
     return this.http.get<InstitutionDTO[]>(`${this.baseUrl}/all`);
   }
@@ -47,6 +31,10 @@ export class InstitutionService {
     return this.http.get<InstitutionDTO>(`${this.baseUrl}/`);
   }
 
+  countUsers(): Observable<InstitutionUsersCountDTO> {
+    return this.http.get<InstitutionUsersCountDTO>(`${this.baseUrl}/countUsers`);
+  }
+
   deleteInstitution(institutionID: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.baseUrl}/${institutionID}`);
   }
@@ -54,26 +42,40 @@ export class InstitutionService {
   updateInstitution(institution: InstitutionDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/update`, institution);
   }
-  addAdmin(institutionId: string, userEmail: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/add/admin/${institutionId}/${userEmail}`, null);
+
+  updateMyInstitution(institution: InstitutionDTO): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/updateMine`, institution);
   }
-  addTeacher(institutionId: string, userEmail: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/add/teacher/${institutionId}/${userEmail}`, null);
+
+  addUserToInstitution(institutionID: string, role: string, userEmail: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('institution', institutionID)
+    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, {params});
   }
-  addStudent(institutionId: string, userEmail: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/add/student/${institutionId}/${userEmail}`, null);
+
+  removeUserFromInstitution(institutionID: string, userEmail: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('institution', institutionID)
+    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${userEmail}`, {params});
   }
-  addUser(role: string, userEmail: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null);
+
+  getInstitutionUsers(institutionID: string, role: string, page: number, itemsPerPage: number): Observable<UserListDTO> {
+    const params = new HttpParams()
+      .set('institution', institutionID)
+      .set('page', page.toString())
+      .set('sizePerPage', itemsPerPage.toString());
+    return this.http.get<UserListDTO>(`${this.baseUrl}/getInstitutionUsers/${role}`, {params});
   }
-  removeUser(institutionID: string, userEmail: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${institutionID}/${userEmail}`, null);
-  }
+
   getPaginatedInstitution(page: number, itemsPerPage: number): Observable<InstitutionListDTO> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('sizePerPage', itemsPerPage.toString());
 
-    return this.http.get<InstitutionListDTO>(`${this.baseUrl}/all`, { params });
+    return this.http.get<InstitutionListDTO>(`${this.baseUrl}/all`, {params});
+  }
+
+  getMyInstitution(): Observable<InstitutionDTO> {
+    return this.http.get<InstitutionDTO>(`${this.baseUrl}/getMyInstitution`);
   }
 }

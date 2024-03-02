@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface IProgramService {
     ResponseEntity<List<ProgramDTO>> getPrograms();
+
     ResponseEntity<Boolean> deleteProgram(String programID);
+
     ResponseEntity<Boolean> addProgram(ProgramDTO programDTO);
+
     ResponseEntity<Boolean> updateProgram(ProgramDTO programDTO);
 }

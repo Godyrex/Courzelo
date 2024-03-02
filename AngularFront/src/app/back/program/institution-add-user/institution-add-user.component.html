@@ -1,19 +1,19 @@
 <div class="card card-primary">
   <div class="card-header">
-    <h3 class="card-title">Add teacher</h3>
+    <h3 class="card-title">Add {{role}}</h3>
     <div class="card-tools">
-      <button type="button" class="btn btn-tool" (click)="close()">
+      <button (click)="close()" class="btn btn-tool" type="button">
         <i class="fas fa-times"></i>
       </button>
     </div>
   </div>
-  <form (ngSubmit)="addTeacher()" [formGroup]="emailForm" class="form-horizontal">
+  <form (ngSubmit)="addUserToInstitution()" [formGroup]="emailForm" class="form-horizontal">
     <div class="card-body">
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label" >Email</label>
+        <label class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
           <input class="form-control" formControlName="email" placeholder="Email" type="text">
-          <div class="text-danger" *ngIf="emailForm.controls.email.touched && emailForm.controls.email?.invalid">
+          <div *ngIf="emailForm.controls.email.touched && emailForm.controls.email?.invalid" class="text-danger">
             <div *ngIf="emailForm.get('email')?.errors?.['required']">Email is required.</div>
             <div *ngIf="emailForm.get('email')?.errors?.['email']">Email must be valid.</div>
           </div>

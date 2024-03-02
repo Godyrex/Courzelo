@@ -8,10 +8,11 @@ import {PanelService} from "../../../service/user/admin/panel.service";
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css']
 })
-export class UsersTableComponent implements OnInit{
+export class UsersTableComponent implements OnInit {
   userResponse: UserResponse[] = []
   selectedRole: string = "";
   availableRoles: string[] = ['STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN']
+
   constructor(private panelService: PanelService) {
   }
 

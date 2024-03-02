@@ -7,7 +7,7 @@ import {UpdateService} from "../../service/user/profile/update.service";
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
   fullName: string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
   userRoles = this.token.getUser().roles!;
   auth = this.token.isAuthenticated();
@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit{
     private updateService: UpdateService
   ) {
   }
+
   getImage() {
     this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
       const reader = new FileReader();
@@ -29,6 +30,6 @@ export class SidebarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.getImage();
+    //  this.getImage();
   }
 }

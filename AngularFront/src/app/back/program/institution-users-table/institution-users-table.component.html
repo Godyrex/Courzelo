@@ -1,16 +1,16 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="col-sm-6">
-      <h1 class="m-0">Students</h1>
+      <h1 class="m-0">{{role}}</h1>
     </div><!-- /.col -->
     <div class="col-sm-6">
       <!-- Notification area -->
       <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
-        <button type="button" class="close" (click)="resetSuccessAlert()">×</button>
+        <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
         {{ messageSuccess }}
       </div>
       <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" (click)="resetErrorAlert()">×</button>
+        <button (click)="resetErrorAlert()" class="close" type="button">×</button>
         {{ messageError }}
       </div>
     </div><!-- /.col -->
@@ -19,9 +19,9 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Students Table</h3>
+          <h3 class="card-title">{{role}} Table</h3>
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" (click)="close()">
+            <button (click)="close()" class="btn btn-tool" type="button">
               <i class="fas fa-times"></i>
             </button>
           </div>
@@ -46,7 +46,7 @@
             <tr>
               <td colspan="6">
                 <button (click)="showAddForm()" class="btn btn-primary">
-                  <i class="fas fa-plus"></i> Add student
+                  <i class="fas fa-plus"></i> Add {{role}}
                 </button>
               </td>
             </tr>
@@ -54,8 +54,8 @@
           </table>
         </div>
         <app-pagination
-          [totalPages]="totalPages"
-          (pageChanged)="onPageChange($event)">
+          (pageChanged)="onPageChange($event)"
+          [totalPages]="totalPages">
         </app-pagination>
         <!-- /.card-body -->
       </div>
@@ -63,14 +63,18 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <app-institution-add-student
-        *ngIf="addForm"
-        [institutionToUpdate]="institutionID"
-        (addForm) = "handleAddFormToggle($event)"
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-institution-add-user
+        (addForm)="handleAddFormToggle($event)"
+        (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
-        (errorMessage)="handleErrorMessage($event)">
+        *ngIf="addForm"
+        [role]="role">
         >
-      </app-institution-add-student>
+      </app-institution-add-user>
     </div>
   </div>
 </div><!-- /.container-fluid -->

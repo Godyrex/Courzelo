@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,6 +20,7 @@ public class ClassService implements IClassService {
     private final ClassRepository classRepository;
     @Autowired
     private ModelMapper modelMapper;
+
     @Override
     public ResponseEntity<List<ClassDTO>> getClasses() {
         log.info("Getting all classes");
@@ -32,10 +34,10 @@ public class ClassService implements IClassService {
 
     @Override
     public ResponseEntity<Boolean> deleteClass(String classID) {
-        log.info("Delete CLASS :"+classID);
+        log.info("Delete CLASS :" + classID);
         Class aClass = classRepository.findById(classID)
-                .orElseThrow(()->new ClassNotFoundException("Class "+classID+" not found"));
-        if(aClass != null) {
+                .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
+        if (aClass != null) {
             classRepository.deleteById(classID);
             return ResponseEntity.ok().body(true);
         }
@@ -56,9 +58,9 @@ public class ClassService implements IClassService {
 
     @Override
     public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
-        log.info("Update class :"+classDTO.getId());
+        log.info("Update class :" + classDTO.getId());
         classRepository.findById(classDTO.getId())
-                .orElseThrow(()-> new ClassNotFoundException("Class "+classDTO.getId()+" not found"));
+                .orElseThrow(() -> new ClassNotFoundException("Class " + classDTO.getId() + " not found"));
         Class aClass = modelMapper.map(classDTO, Class.class);
         Class savedClass = classRepository.save(aClass);
         if (savedClass.getId() != null) {
