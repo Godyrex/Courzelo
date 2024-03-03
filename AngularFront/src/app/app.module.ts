@@ -28,6 +28,13 @@ import {PaginationComponent} from './back/shared/pagination/pagination.component
 import {InstitutionPanelComponent} from './back/program/institution-panel/institution-panel.component';
 import {InstitutionUsersTableComponent} from './back/program/institution-users-table/institution-users-table.component';
 import {InstitutionAddUserComponent} from './back/program/institution-add-user/institution-add-user.component';
+import { ProgramTableComponent } from './back/program/program-table/program-table.component';
+import { ProgramAddFormComponent } from './back/program/program-add-form/program-add-form.component';
+import { ProgramUpdateFormComponent } from './back/program/program-update-form/program-update-form.component';
+import { ProgramClassesTableComponent } from './back/program/program-classes-table/program-classes-table.component';
+import { ProgramAddClassComponent } from './back/program/program-add-class/program-add-class.component';
+import { ProgramClassUsersTableComponent } from './back/program/program-class-users-table/program-class-users-table.component';
+import { ClassAddUserComponent } from './back/program/class-add-user/class-add-user.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +59,14 @@ import {InstitutionAddUserComponent} from './back/program/institution-add-user/i
     PaginationComponent,
     InstitutionPanelComponent,
     InstitutionUsersTableComponent,
-    InstitutionAddUserComponent
+    InstitutionAddUserComponent,
+    ProgramTableComponent,
+    ProgramAddFormComponent,
+    ProgramUpdateFormComponent,
+    ProgramClassesTableComponent,
+    ProgramAddClassComponent,
+    ProgramClassUsersTableComponent,
+    ClassAddUserComponent
   ],
   imports: [
     BrowserModule,

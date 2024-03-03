@@ -34,8 +34,8 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
-        <li class="nav-item menu-open">
-          <a class="nav-link" routerLink="/" routerLinkActive="active">
+        <li class="nav-item menu-open" [ngClass]="{'menu-open': isMenuOpen, 'menu-close': !isMenuOpen}">
+          <a class="nav-link" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" (click)="toggleMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               User
@@ -51,8 +51,8 @@
             </li>
           </ul>
         </li>
-        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item menu-open">
-          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item" [ngClass]="{'menu-open': isSuperAdminMenuOpen, 'menu-close': !isSuperAdminMenuOpen}">
+          <a class="nav-link" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}" (click)="toggleSuperAdminMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               SuperAdmin
@@ -61,25 +61,44 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a class="nav-link" routerLink="/admin/institutions" routerLinkActive="active">
+              <a class="nav-link" routerLink="/superAdmin/institutions" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Institutions</p>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/admin/institution" routerLinkActive="active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>My Institution</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/admin/users" routerLinkActive="active">
+              <a class="nav-link" routerLink="/superAdmin/users" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Users</p>
               </a>
             </li>
           </ul>
         </li>
+
+        <li *ngIf="userRoles && userRoles.includes('ROLE_ADMIN')" class="nav-item" [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
+          <a class="nav-link" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" (click)="toggleAdminMenu()">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Admin
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li *ngIf="userRoles && userRoles.includes('ROLE_ADMIN')" class="nav-item">
+              <a class="nav-link" routerLink="/organisation/institution" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>My Institution</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/organisation/programs" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Programs</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

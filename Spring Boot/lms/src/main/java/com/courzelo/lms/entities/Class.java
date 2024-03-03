@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "classes")
@@ -16,8 +17,10 @@ public class Class {
     private String name;
     private Long capacity;
     @DBRef
-    private List<Program> programs;
+    private Program program;
     @DBRef
-    private List<User> users;
+    private List<User> teachers = new ArrayList<>();
+    @DBRef
+    private List<User> students = new ArrayList<>();
 
 }

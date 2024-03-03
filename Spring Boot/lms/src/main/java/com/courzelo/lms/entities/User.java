@@ -33,6 +33,8 @@ public class User implements UserDetails {
     private Photo photo;
     @DBRef
     private Institution institution;
+    @DBRef
+    private Class aClass;
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;

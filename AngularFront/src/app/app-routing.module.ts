@@ -11,6 +11,8 @@ import {AdminPanelComponent} from "./back/user/admin-panel/admin-panel.component
 import {InstitutionTableComponent} from "./back/program/institution-table/institution-table.component";
 import {UsersTableComponent} from "./back/user/users-table/users-table.component";
 import {InstitutionPanelComponent} from "./back/program/institution-panel/institution-panel.component";
+import {RoleGuardService} from "./service/user/guard/role-guard.service";
+import {ProgramTableComponent} from "./back/program/program-table/program-table.component";
 
 const routes: Routes = [
   {
@@ -42,7 +44,7 @@ const routes: Routes = [
     component: VerifyComponent
   },
   {
-    path: 'admin',
+    path: 'superAdmin',
     component: AdminPanelComponent,
     /* canActivate: [RoleGuardService],
      data: {
@@ -54,15 +56,31 @@ const routes: Routes = [
         component: UsersTableComponent
       },
       {
-        path: 'institution',
-        component: InstitutionPanelComponent
-      },
-      {
         path: 'institutions',
         component: InstitutionTableComponent
       }
     ]
+  },
+  {
+    path: 'organisation',
+    component: AdminPanelComponent,
+    children: [
+      {
+        path: 'institution',
+        component: InstitutionPanelComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'ADMIN'
+        },
+
+      },
+      {
+        path: 'programs',
+        component: ProgramTableComponent
+      }
+    ]
   }
+
 ];
 
 @NgModule({

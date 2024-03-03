@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li><a routerLink="/">Home</a></li>
-        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')"><a routerLink="/admin">Admin</a></li>
+        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')"><a routerLink="/superAdmin">Admin</a></li>
         <li *ngIf="auth"><a routerLink="/profile">Profile</a></li>
         <li *ngIf="!auth"><a routerLink="/login">Login</a></li>
         <li *ngIf="!auth"><a routerLink="/signup">Signup</a></li>

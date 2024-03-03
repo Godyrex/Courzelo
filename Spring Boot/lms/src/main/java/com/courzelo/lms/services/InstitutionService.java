@@ -3,10 +3,12 @@ package com.courzelo.lms.services;
 
 import com.courzelo.lms.dto.*;
 import com.courzelo.lms.entities.Institution;
+import com.courzelo.lms.entities.Program;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.InstitutionNotFoundException;
 import com.courzelo.lms.repositories.InstitutionRepository;
+import com.courzelo.lms.repositories.ProgramRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import java.util.Objects;
 public class InstitutionService implements IInstitutionService {
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
+    private final ProgramRepository programRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -87,6 +90,16 @@ public class InstitutionService implements IInstitutionService {
         Institution institution = institutionRepository.findById(institutionID)
                 .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionID + " not found"));
         if (institution != null) {
+            List<User> users = userRepository.findByInstitution(institution);
+            for (User user : users) {
+                user.setInstitution(null);
+                userRepository.save(user);
+            }
+            List<Program> programs = programRepository.findByInstitution(institution);
+            for (Program program : programs) {
+                program.setInstitution(null);
+                programRepository.save(program);
+            }
             institutionRepository.deleteById(institutionID);
             return ResponseEntity.ok().body(true);
         }

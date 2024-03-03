@@ -1,16 +1,23 @@
 package com.courzelo.lms.services;
 
-import com.courzelo.lms.dto.ProgramDTO;
+import com.courzelo.lms.dto.*;
 import org.springframework.http.ResponseEntity;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface IProgramService {
-    ResponseEntity<List<ProgramDTO>> getPrograms();
+    ResponseEntity<ProgramListDTO> getPrograms(Principal principal,int page, int sizePerPage);
 
-    ResponseEntity<Boolean> deleteProgram(String programID);
+    ResponseEntity<Boolean> deleteProgram(Principal principal,String programID);
 
-    ResponseEntity<Boolean> addProgram(ProgramDTO programDTO);
+    ResponseEntity<Boolean> addProgram(Principal principal, ProgramDTO programDTO);
 
-    ResponseEntity<Boolean> updateProgram(ProgramDTO programDTO);
+    ResponseEntity<Boolean> updateProgram(Principal principal,ProgramDTO programDTO);
+
+    ResponseEntity<ClassListDTO> getProgramClasses(Principal principal,String programID, int page, int sizePerPage);
+
+    ResponseEntity<Boolean> removeClass( String classID, Principal principal);
+
+    ResponseEntity<Boolean> addClassToProgram(String program, ClassDTO classe, Principal principal);
 }

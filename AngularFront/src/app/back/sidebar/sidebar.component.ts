@@ -12,7 +12,19 @@ export class SidebarComponent implements OnInit {
   userRoles = this.token.getUser().roles!;
   auth = this.token.isAuthenticated();
   userPhotoUrl: any;
+  isMenuOpen: boolean = false;
+  isSuperAdminMenuOpen: boolean = false;
+  isAdminMenuOpen: boolean = false;
+  toggleSuperAdminMenu() {
+    this.isSuperAdminMenuOpen = !this.isSuperAdminMenuOpen;
+  }
 
+  toggleAdminMenu() {
+    this.isAdminMenuOpen = !this.isAdminMenuOpen;
+  }
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
   constructor(
     private token: TokenStorageService,
     private updateService: UpdateService
@@ -30,6 +42,6 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //  this.getImage();
+      this.getImage();
   }
 }
