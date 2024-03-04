@@ -19,6 +19,23 @@ import {ProfileComponent} from './back/user/profile/profile.component';
 import {Interceptor} from "./service/user/auth/Interceptor";
 import {VerifyComponent} from './back/auth/verify/verify.component';
 import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component';
+import {InstitutionTableComponent} from './back/program/institution/institution-table/institution-table.component';
+import {UsersTableComponent} from './back/user/users-table/users-table.component';
+import {RouterOutlet} from "@angular/router";
+import {InstitutionAddFormComponent} from './back/program/institution/institution-add-form/institution-add-form.component';
+import {InstitutionUpdateFormComponent} from './back/program/institution/institution-update-form/institution-update-form.component';
+import {PaginationComponent} from './back/shared/pagination/pagination.component';
+import {InstitutionPanelComponent} from './back/program/institution/institution-panel/institution-panel.component';
+import {InstitutionUsersTableComponent} from './back/program/institution/institution-users-table/institution-users-table.component';
+import {InstitutionAddUserComponent} from './back/program/institution/institution-add-user/institution-add-user.component';
+import { ProgramTableComponent } from './back/program/program-table/program-table.component';
+import { ProgramAddFormComponent } from './back/program/program-add-form/program-add-form.component';
+import { ProgramUpdateFormComponent } from './back/program/program-update-form/program-update-form.component';
+import { ProgramClassesTableComponent } from './back/program/program-classes-table/program-classes-table.component';
+import { ProgramAddClassComponent } from './back/program/program-add-class/program-add-class.component';
+import { ProgramClassUsersTableComponent } from './back/program/program-class-users-table/program-class-users-table.component';
+import { ClassAddUserComponent } from './back/program/class/class-add-user/class-add-user.component';
+import { ClassUpdateComponent } from './back/program/class/class-update/class-update.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +52,31 @@ import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component
     LogoutComponent,
     ProfileComponent,
     VerifyComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    InstitutionTableComponent,
+    UsersTableComponent,
+    InstitutionAddFormComponent,
+    InstitutionUpdateFormComponent,
+    PaginationComponent,
+    InstitutionPanelComponent,
+    InstitutionUsersTableComponent,
+    InstitutionAddUserComponent,
+    ProgramTableComponent,
+    ProgramAddFormComponent,
+    ProgramUpdateFormComponent,
+    ProgramClassesTableComponent,
+    ProgramAddClassComponent,
+    ProgramClassUsersTableComponent,
+    ClassAddUserComponent,
+    ClassUpdateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterOutlet
   ],
   providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,
