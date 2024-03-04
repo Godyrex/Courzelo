@@ -72,7 +72,9 @@
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
         *ngIf="addForm"
-        [role]="role">
+        [role]="role"
+        [institutionToUpdate]="institutionID"
+      >
         >
       </app-institution-add-user>
     </div>

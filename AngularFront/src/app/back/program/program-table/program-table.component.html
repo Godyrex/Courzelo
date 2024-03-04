@@ -95,7 +95,7 @@
         [programToUpdate]="selectedProgram">
       </app-program-update-form>
       <app-program-classes-table
-        (updateForm)="handleClassesTableToggle($event)"
+        (updateClassTable)="handleClassesTableToggle($event)"
         *ngIf="classesTable"
         [programID]="selectedProgramClass"
       ></app-program-classes-table>

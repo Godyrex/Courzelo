@@ -8,9 +8,9 @@ import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {ProfileComponent} from "./back/user/profile/profile.component";
 import {VerifyComponent} from "./back/auth/verify/verify.component";
 import {AdminPanelComponent} from "./back/user/admin-panel/admin-panel.component";
-import {InstitutionTableComponent} from "./back/program/institution-table/institution-table.component";
+import {InstitutionTableComponent} from "./back/program/institution/institution-table/institution-table.component";
 import {UsersTableComponent} from "./back/user/users-table/users-table.component";
-import {InstitutionPanelComponent} from "./back/program/institution-panel/institution-panel.component";
+import {InstitutionPanelComponent} from "./back/program/institution/institution-panel/institution-panel.component";
 import {RoleGuardService} from "./service/user/guard/role-guard.service";
 import {ProgramTableComponent} from "./back/program/program-table/program-table.component";
 

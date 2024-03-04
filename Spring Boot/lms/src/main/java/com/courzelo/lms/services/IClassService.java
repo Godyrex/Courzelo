@@ -2,6 +2,8 @@ package com.courzelo.lms.services;
 
 import com.courzelo.lms.dto.ClassDTO;
 import com.courzelo.lms.dto.UserListDTO;
+import com.courzelo.lms.entities.Institution;
+import com.courzelo.lms.entities.User;
 import org.springframework.http.ResponseEntity;
 
 import java.security.Principal;
@@ -11,6 +13,7 @@ public interface IClassService {
     ResponseEntity<List<ClassDTO>> getClasses();
 
     ResponseEntity<Boolean> deleteClass(String classID);
+    void removeUsersInClass(String classID);
 
     ResponseEntity<Boolean> addClass(ClassDTO classDTO);
 
@@ -21,4 +24,5 @@ public interface IClassService {
     ResponseEntity<Boolean> addUserToClass(String classID, String userEmail, String role);
 
     ResponseEntity<Boolean> removeUser(String classID, String userEmail);
+    boolean userInInstitution(User user, Institution institution);
 }

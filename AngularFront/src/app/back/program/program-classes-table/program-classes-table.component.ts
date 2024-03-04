@@ -5,6 +5,7 @@ import {UserListDTO} from "../../../model/user/UserListDTO";
 import {ClassDTO} from "../../../model/program/ClassDTO";
 import {ProgramService} from "../../../service/program/program.service";
 import {ClassListDTO} from "../../../model/program/ClassListDTO";
+import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
 
 @Component({
   selector: 'app-program-classes-table',
@@ -13,11 +14,13 @@ import {ClassListDTO} from "../../../model/program/ClassListDTO";
 })
 export class ProgramClassesTableComponent implements OnInit{
   classDTOS: ClassDTO[] = [];
+  selectedClass: ClassDTO = {};
   messageSuccess: string = "";
   messageError: string = "";
   addForm: boolean = false;
   @Input() @Output() programID: string = '';
-  @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() updateClassTable: EventEmitter<boolean> = new EventEmitter<boolean>();
+  updateForm: boolean = false;
   @Input() role: string = "";
   selectedClassUsers : string ="";
   totalPages: number = 0;
@@ -33,7 +36,7 @@ export class ProgramClassesTableComponent implements OnInit{
   }
 
   close() {
-    this.updateForm.emit(false)
+    this.updateClassTable.emit(false)
   }
 
   ngOnInit(): void {
@@ -43,7 +46,9 @@ export class ProgramClassesTableComponent implements OnInit{
   resetSuccessAlert() {
     this.messageSuccess = "";
   }
-
+  handleUpdateFormToggle(message: boolean) {
+    this.updateForm = message;
+  }
   resetErrorAlert() {
     this.messageError = "";
   }
@@ -91,7 +96,10 @@ export class ProgramClassesTableComponent implements OnInit{
       }
     );
   }
-
+  showUpdateForm(classDTO: ClassDTO) {
+    this.selectedClass = classDTO;
+    this.updateForm = true
+  }
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }

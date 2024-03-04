@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {UserResponse} from "../../../model/user/UserResponse";
-import {InstitutionService} from "../../../service/program/institution.service";
-import {UserListDTO} from "../../../model/user/UserListDTO";
+import {UserResponse} from "../../../../model/user/UserResponse";
+import {InstitutionService} from "../../../../service/program/institution.service";
+import {UserListDTO} from "../../../../model/user/UserListDTO";
 
 @Component({
   selector: 'app-institution-users-table',

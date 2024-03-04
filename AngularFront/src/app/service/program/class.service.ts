@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserListDTO} from "../../model/user/UserListDTO";
+import {ClassDTO} from "../../model/program/ClassDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,8 @@ export class ClassService {
       .set('page', page.toString())
       .set('sizePerPage', itemsPerPage.toString());
     return this.http.get<UserListDTO>(`${this.baseUrl}/getClassUsers/${role}`, {params});
+  }
+  updateClass(classDTO: ClassDTO): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/update`, classDTO);
   }
 }

@@ -3,13 +3,14 @@ package com.courzelo.lms.services;
 import com.courzelo.lms.dto.ClassDTO;
 import com.courzelo.lms.dto.UserDTO;
 import com.courzelo.lms.dto.UserListDTO;
+import com.courzelo.lms.entities.*;
 import com.courzelo.lms.entities.Class;
-import com.courzelo.lms.entities.Institution;
-import com.courzelo.lms.entities.Role;
-import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.InstitutionNotFoundException;
+import com.courzelo.lms.exceptions.ProgramNotFoundException;
 import com.courzelo.lms.repositories.ClassRepository;
+import com.courzelo.lms.repositories.InstitutionRepository;
+import com.courzelo.lms.repositories.ProgramRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ import java.util.Objects;
 public class ClassService implements IClassService {
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
+    private final InstitutionRepository institutionRepository;
+    private final ProgramRepository programRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -51,10 +54,23 @@ public class ClassService implements IClassService {
         Class aClass = classRepository.findById(classID)
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
         if (aClass != null) {
+            removeUsersInClass(classID);
             classRepository.deleteById(classID);
             return ResponseEntity.ok().body(true);
         }
         return ResponseEntity.badRequest().body(false);
+    }
+
+    public void removeUsersInClass(String classID) {
+        Class aClass = classRepository.findById(classID)
+                .orElseThrow(()-> new ClassNotFoundException("Class not found"));
+            List<User> users = userRepository.findByStclass(aClass);
+            if (!users.isEmpty()) {
+                for (User user : users) {
+                    user.setStclass(null);
+                    userRepository.save(user);
+                }
+            }
     }
 
     @Override
@@ -72,9 +88,10 @@ public class ClassService implements IClassService {
     @Override
     public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
         log.info("Update class :" + classDTO.getId());
-        classRepository.findById(classDTO.getId())
+        Class aClass =  classRepository.findById(classDTO.getId())
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classDTO.getId() + " not found"));
-        Class aClass = modelMapper.map(classDTO, Class.class);
+        aClass.setName(classDTO.getName());
+        aClass.setCapacity(classDTO.getCapacity());
         Class savedClass = classRepository.save(aClass);
         if (savedClass.getId() != null) {
             return ResponseEntity.ok().body(true);
@@ -95,7 +112,7 @@ public class ClassService implements IClassService {
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
         } else if (userr.getInstitution() != null) {
-            Class aClass = classRepository.findById(userr.getAClass().getId())
+            Class aClass = classRepository.findById(userr.getStclass().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
         }
@@ -105,41 +122,63 @@ public class ClassService implements IClassService {
 
     @Override
     public ResponseEntity<Boolean> addUserToClass(String classID, String userEmail, String role) {
-        log.info("adding user !");
+        log.info("Adding user!");
+
         Class aClass = classRepository.findById(classID)
-                    .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
+                .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
+
         User target = userRepository.findUserByEmail(userEmail);
-        if (target != null) {
-            if (Objects.equals(role, "Teachers")) {
-                if (!aClass.getTeachers().contains(target) && target.getAClass() == null) {
-                    aClass.getTeachers().add(target);
-                    target.setAClass(aClass);
-                    target.getRoles().add(Role.TEACHER);
-                    userRepository.save(target);
-                    classRepository.save(aClass);
-                    log.info("teacher added !");
-                    return ResponseEntity.ok().body(true);
-                } else if (aClass.getTeachers().contains(target)) {
-                    log.info("teacher already added !");
-                    return ResponseEntity.ok().body(true);
-                }
-            } else {
-                if (!aClass.getStudents().contains(target) && target.getAClass() == null) {
-                    aClass.getStudents().add(target);
-                    target.setAClass(aClass);
-                    target.getRoles().add(Role.STUDENT);
-                    userRepository.save(target);
-                    classRepository.save(aClass);
-                    log.info("Student added !");
-                    return ResponseEntity.ok().body(true);
-                } else if (aClass.getStudents().contains(target)) {
-                    log.info("Student already added !");
-                    return ResponseEntity.ok().body(true);
-                }
+        if (target == null) {
+            log.info("User not found!");
+            return ResponseEntity.badRequest().body(false);
+        }
+
+        Program program = programRepository.findById(aClass.getProgram().getId())
+                .orElseThrow(()-> new ProgramNotFoundException("Program Not Found"));
+
+        Institution institution = institutionRepository.findById(program.getInstitution().getId())
+                .orElseThrow(()-> new InstitutionNotFoundException("Institution Not found"));
+
+        if (!userInInstitution(target, institution)) {
+            log.info("User is not part of the institution!");
+            return ResponseEntity.badRequest().body(false);
+        }
+        if (Objects.equals(role, "Teachers")) {
+            if (aClass.getTeachers().contains(target)) {
+                log.info("Teacher already added to the class!");
+                return ResponseEntity.ok().body(true);
+            }
+            aClass.getTeachers().add(target);
+            target.setStclass(aClass);
+            if(!target.getRoles().contains(Role.TEACHER)) {
+                target.getRoles().add(Role.TEACHER);
+            }
+            if(!institution.getTeachers().contains(target)) {
+                institution.getTeachers().add(target);
+            }
+        } else if (Objects.equals(role, "Students")) {
+            if (aClass.getStudents().contains(target)) {
+                log.info("Student already added to the class!");
+                return ResponseEntity.ok().body(true);
+            }
+            aClass.getStudents().add(target);
+            target.setStclass(aClass);
+            if(!target.getRoles().contains(Role.STUDENT)) {
+                target.getRoles().add(Role.STUDENT);
+            }
+            if(!institution.getStudents().contains(target)) {
+                institution.getStudents().add(target);
             }
         }
-        return ResponseEntity.badRequest().body(false);
+        userRepository.save(target);
+        institutionRepository.save(institution);
+        classRepository.save(aClass);
+
+        log.info("User added to the class!");
+        return ResponseEntity.ok().body(true);
     }
+
+
 
     @Override
     public ResponseEntity<Boolean> removeUser(String classID, String userEmail) {
@@ -152,7 +191,7 @@ public class ClassService implements IClassService {
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
         if (aClass.getTeachers().contains(user)) {
             aClass.getTeachers().remove(user);
-            user.setAClass(null);
+            user.setStclass(null);
             user.getRoles().remove(Role.TEACHER);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -160,7 +199,7 @@ public class ClassService implements IClassService {
         }
         if (aClass.getStudents().contains(user)) {
             aClass.getStudents().remove(user);
-            user.setAClass(null);
+            user.setStclass(null);
             user.getRoles().remove(Role.STUDENT);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -168,6 +207,17 @@ public class ClassService implements IClassService {
         }
 
         return ResponseEntity.badRequest().body(false);
+    }
+
+    @Override
+    public boolean userInInstitution(User user, Institution institution) {
+        if(user.getInstitution()!= null) {
+            log.info("user institution id = " + user.getInstitution().getId());
+            log.info("institution id = " + institution.getId());
+
+            return Objects.equals(user.getInstitution().getId(), institution.getId());
+        }
+        return false;
     }
 
     private ResponseEntity<UserListDTO> getUserListDTOResponseEntity(Class aClass, Principal principal, String role, int page, int sizePerPage) {

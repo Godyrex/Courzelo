@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     User findUserByVerificationCode(int code);
-    List<User> findByAClass(Class classe);
+    List<User> findByStclass(Class classe);
     List<User> findByInstitution(Institution institution);
 
     User findUserByEmailVerificationCode(String code);

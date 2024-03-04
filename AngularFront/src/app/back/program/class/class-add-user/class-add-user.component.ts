@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../service/program/institution.service";
-import {ClassService} from "../../../service/program/class.service";
+import {InstitutionService} from "../../../../service/program/institution.service";
+import {ClassService} from "../../../../service/program/class.service";
 
 @Component({
   selector: 'app-class-add-user',

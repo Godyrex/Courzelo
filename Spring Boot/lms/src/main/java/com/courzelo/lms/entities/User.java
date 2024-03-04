@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @DBRef
     private Institution institution;
     @DBRef
-    private Class aClass;
+    private Class stclass;
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;

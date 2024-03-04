@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {InstitutionService} from "../../../service/program/institution.service";
+import {InstitutionService} from "../../../../service/program/institution.service";
 import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({

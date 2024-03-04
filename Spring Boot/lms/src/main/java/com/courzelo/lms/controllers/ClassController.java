@@ -34,7 +34,7 @@ public class ClassController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
+    public ResponseEntity<Boolean> updateClass(@RequestBody ClassDTO classDTO) {
         return iClassService.updateClass(classDTO);
     }
     @PreAuthorize("hasRole('ADMIN')")
@@ -44,12 +44,11 @@ public class ClassController {
                                                            @PathVariable String role,
                                                            @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "2") int sizePerPage) {
-
         return iClassService.getClassUsers(classID, principal, role, page, sizePerPage);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add/user/{userEmail}/{role}")
-    public ResponseEntity<Boolean> addUserToInstitution(@RequestParam String id, @PathVariable String userEmail, @PathVariable String role) {
+    public ResponseEntity<Boolean> addUserToClass(@RequestParam String id, @PathVariable String userEmail, @PathVariable String role) {
         return iClassService.addUserToClass(id, userEmail, role);
     }
 

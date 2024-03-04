@@ -54,6 +54,9 @@
                 </button>
               </td>
               <td>
+                <button (click)="showUpdateForm(classe)" class="btn btn-info btn-sm">Update</button>
+              </td>
+              <td>
                 <button (click)="removeClass(classe.id!)" class="btn btn-danger btn-sm">Delete</button>
               </td>
             </tr>
@@ -89,6 +92,13 @@
         *ngIf="addForm">
         >
       </app-program-add-class>
+      <app-class-update
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        (updateForm)="handleUpdateFormToggle($event)"
+        *ngIf="updateForm"
+        [classToUpdate]="selectedClass">
+      </app-class-update>
       <app-program-class-users-table
         (updateForm)="handleUsersTableToggle($event)"
         *ngIf="usersTable"

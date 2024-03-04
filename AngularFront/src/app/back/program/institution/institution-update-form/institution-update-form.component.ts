@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
-import {InstitutionService} from "../../../service/program/institution.service";
+import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
+import {InstitutionService} from "../../../../service/program/institution.service";
 import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({

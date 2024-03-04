@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../service/program/institution.service";
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
+import {InstitutionService} from "../../../../service/program/institution.service";
+import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 
 @Component({
   selector: 'app-institution-add-form',

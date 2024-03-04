@@ -1,7 +1,7 @@
 import {Component, OnInit, Output} from '@angular/core';
-import {InstitutionService} from "../../../service/program/institution.service";
-import {InstitutionUsersCountDTO} from "../../../model/program/institutionUsersCountDTO";
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
+import {InstitutionService} from "../../../../service/program/institution.service";
+import {InstitutionUsersCountDTO} from "../../../../model/program/institutionUsersCountDTO";
+import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 
 @Component({
   selector: 'app-institution-panel',
