@@ -40,9 +40,6 @@ public class User implements UserDetails {
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;
-    private String emailVerificationCode;
-    private Integer verificationCode;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" + role1.name())).toList();

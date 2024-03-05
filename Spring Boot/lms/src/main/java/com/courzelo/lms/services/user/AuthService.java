@@ -6,15 +6,12 @@ import com.courzelo.lms.dto.user.LoginDTO;
 import com.courzelo.lms.dto.user.RecoverPasswordDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
-import com.courzelo.lms.entities.user.PasswordResetToken;
-import com.courzelo.lms.entities.user.RefreshToken;
-import com.courzelo.lms.entities.user.Role;
-import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.entities.user.*;
 import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.*;
 import com.courzelo.lms.repositories.ClassRepository;
 import com.courzelo.lms.repositories.InstitutionRepository;
-import com.courzelo.lms.repositories.PasswordResetTokenRepository;
+import com.courzelo.lms.repositories.VerificationTokenRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
@@ -48,6 +45,7 @@ import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -59,7 +57,7 @@ public class AuthService implements IAuthService {
     private final IRefreshTokenService iRefreshTokenService;
     private final AuthenticationManager authenticationManager;
     private final InstitutionRepository institutionRepository;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
     private final ClassRepository classRepository;
     private final JWTUtils jwtUtils;
     private final CookieUtil cookieUtil;
@@ -83,7 +81,15 @@ public class AuthService implements IAuthService {
                 return authenticateUser(authentication, response, loginDTO);
             } else {
                 try {
-                    emailService.sendVerificationCode(checkUser, emailService.generateVerificationCode(checkUser));
+                    Random random = new Random();
+                    int verificationCode = random.nextInt(9000) + 1000;
+                    VerificationToken verificationToken = new VerificationToken(
+                            String.valueOf(verificationCode),
+                            checkUser,
+                            VerificationTokenType.DEVICE_VERIFICATION
+                    );
+                    verificationTokenRepository.save(verificationToken);
+                    emailService.sendVerificationCode(checkUser, verificationToken);
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     throw new RuntimeException(e);
                 }
@@ -157,7 +163,11 @@ public class AuthService implements IAuthService {
     public ResponseEntity<?> confirmDevice(String userAgent, @NonNull HttpServletResponse response, LoginDTO loginDTO, Integer code) {
         log.info("Started Confirming Device...");
         User user = userRepository.findUserByEmail(loginDTO.getEmail());
-        if (Objects.equals(code, user.getVerificationCode())) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(String.valueOf(code));
+        if(verificationToken == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Wrong Verification Code"));
+        }
+        if (Objects.equals(verificationToken.getUser().getId(), user.getId())) {
             try {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
@@ -182,11 +192,22 @@ public class AuthService implements IAuthService {
     public ResponseEntity<Response> verifyAccount(String code) {
         log.info("Started Verifying...");
         log.info(code);
-        User user = userRepository.findUserByEmailVerificationCode(code);
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(code);
+        if (verificationToken == null) {
+            throw new PasswordResetTokenNotFoundException("PasswordResetToken Not Found " + code);
+        }
+        if (!verificationToken.getVerificationTokenType().equals(VerificationTokenType.EMAIL_VERIFICATION)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Response("Token not valid"));
+        }
+        if (verificationToken.getExpiryDate().isBefore(Instant.now())) {
+            throw new PasswordResetTokenExpiredException("PasswordResetToken Expired " + verificationToken.getExpiryDate());
+        }
+        User user = userRepository.findUserById(verificationToken.getUser().getId());
         if (user != null) {
             log.info(user.getEmail());
             user.setEnabled(true);
-            user.setVerificationCode(null);
             userRepository.save(user);
             log.info("Finished Verifying...");
             return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
@@ -223,9 +244,9 @@ public class AuthService implements IAuthService {
             throw new UserNotFoundException("User " + email + " not found");
         }
         log.info("User found");
-        PasswordResetToken passwordResetToken = new PasswordResetToken(UUID.randomUUID().toString(), user);
-        passwordResetTokenRepository.save(passwordResetToken);
-        emailService.sendPasswordChangeEmail(user, passwordResetToken);
+        VerificationToken verificationToken = new VerificationToken(UUID.randomUUID().toString(), user, VerificationTokenType.FORGOT_PASSWORD);
+        verificationTokenRepository.save(verificationToken);
+        emailService.sendPasswordChangeEmail(user, verificationToken);
         return ResponseEntity
                 .ok()
                 .body(new Response("Email sent to " + email));
@@ -233,20 +254,25 @@ public class AuthService implements IAuthService {
 
     @Override
     public ResponseEntity<Response> recoverPassword(String token, RecoverPasswordDTO passwordDTO) {
-        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
-        if (passwordResetToken == null) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
+        if (verificationToken == null) {
             throw new PasswordResetTokenNotFoundException("PasswordResetToken Not Found " + token);
         }
-        if (passwordResetToken.getExpiryDate().isBefore(Instant.now())) {
-            throw new PasswordResetTokenExpiredException("PasswordResetToken Expired " + passwordResetToken.getExpiryDate());
+        if (!verificationToken.getVerificationTokenType().equals(VerificationTokenType.FORGOT_PASSWORD)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Response("Token not valid"));
         }
-        User user = userRepository.findUserById(passwordResetToken.getUser().getId());
+        if (verificationToken.getExpiryDate().isBefore(Instant.now())) {
+            throw new PasswordResetTokenExpiredException("PasswordResetToken Expired " + verificationToken.getExpiryDate());
+        }
+        User user = userRepository.findUserById(verificationToken.getUser().getId());
         if (user == null) {
-            throw new UserNotFoundException("User Not Found with id " + passwordResetToken.getUser().getId());
+            throw new UserNotFoundException("User Not Found with id " + verificationToken.getUser().getId());
         }
         user.setPassword(encoder.encode(passwordDTO.getPassword()));
         userRepository.save(user);
-        passwordResetTokenRepository.delete(passwordResetToken);
+        verificationTokenRepository.delete(verificationToken);
         return ResponseEntity
                 .ok()
                 .body(new Response("Password Changed!"));
@@ -263,12 +289,17 @@ public class AuthService implements IAuthService {
         user.getRoles().add(Role.STUDENT);
         user.setEnabled(false);
         user.setBan(false);
-        String randomCode = RandomString.make(64);
-        user.setEmailVerificationCode(randomCode);
         userRepository.save(user);
+        String randomCode = RandomString.make(64);
+        VerificationToken verificationToken = new VerificationToken(
+                randomCode,
+                user,
+                VerificationTokenType.EMAIL_VERIFICATION
+        );
+        verificationTokenRepository.save(verificationToken);
         iDeviceMetadataService.saveDeviceDetails(userAgent, user);
         try {
-            emailService.sendVerificationEmail(user);
+            emailService.sendVerificationEmail(user,verificationToken);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

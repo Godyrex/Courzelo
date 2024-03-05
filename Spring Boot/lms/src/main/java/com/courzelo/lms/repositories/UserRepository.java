@@ -10,15 +10,11 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-    User findUserByVerificationCode(int code);
-
     User findUserById(String id);
 
     List<User> findByStclass(Class classe);
 
     List<User> findByInstitution(Institution institution);
-
-    User findUserByEmailVerificationCode(String code);
 
     User findUserByEmail(String email);
 

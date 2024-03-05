@@ -50,7 +50,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 "/api/v1/auth/logout",
                 "/api/v1/auth/refreshToken",
                 "/api/v1/auth/verify",
-                "/api/v1/auth/confirmDevice/"
+                "/api/v1/auth/confirmDevice/",
+                "/api/v1/auth/recover-password"
         );
 
         String requestUri = request.getRequestURI();
