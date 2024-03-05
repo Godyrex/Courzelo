@@ -30,7 +30,7 @@ export class ProfileComponent {
     email: ['', [Validators.email]],
   });
   photoForm = this.formBuilder.group({
-    photo: ['', [Validators.email]],
+    photo: ['', [Validators.required]],
   });
   verificationForm = this.formBuilder.group({
     code: ['', [Validators.maxLength(4), Validators.minLength(4)]],
@@ -113,12 +113,17 @@ export class ProfileComponent {
         .subscribe(progress => {
           this.uploadProgress = progress;
           if (progress === 100) {
-            alert("File upload completed")
+            this.messageSuccess = "File upload completed";
+            this.messageError = "";
             this.selectedFile = null!;
           }
         });
     }
 
+  }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
   }
 
   confirmDelete(): void {
@@ -142,10 +147,7 @@ export class ProfileComponent {
       });
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    console.log(this.selectedFile);
-  }
+
 
   changePassword() {
     if (this.passwordForm.valid) {

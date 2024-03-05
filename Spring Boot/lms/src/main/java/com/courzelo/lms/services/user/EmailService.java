@@ -1,6 +1,6 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.entities.user.PasswordResetToken;
+import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.UserRepository;
 import jakarta.mail.MessagingException;
@@ -35,7 +35,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendPasswordChangeEmail(User user, PasswordResetToken passwordResetToken)
+    public void sendPasswordChangeEmail(User user, VerificationToken verificationToken)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";
@@ -81,7 +81,7 @@ public class EmailService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
-        String changeURL = "localhost:4200" + "/recover-password?token=" + passwordResetToken.getToken();
+        String changeURL = "localhost:4200" + "/recover-password?token=" + verificationToken.getToken();
 
         content = content.replace("[[URL]]", changeURL);
 
@@ -90,7 +90,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendVerificationEmail(User user)
+    public void sendVerificationEmail(User user,VerificationToken verificationToken)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";
@@ -136,7 +136,7 @@ public class EmailService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
-        String verifyURL = "localhost:4200" + "/verify?code=" + user.getEmailVerificationCode();
+        String verifyURL = "localhost:4200" + "/verify?code=" + verificationToken.getToken();
 
         content = content.replace("[[URL]]", verifyURL);
 
@@ -145,7 +145,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendVerificationCode(User user, int verificationCode)
+    public void sendVerificationCode(User user,VerificationToken verificationToken)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";
@@ -219,21 +219,10 @@ public class EmailService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
-        content = content.replace("[[verificationCode]]", String.valueOf(verificationCode));
+        content = content.replace("[[verificationCode]]", verificationToken.getToken());
 
         helper.setText(content, true);
 
         mailSender.send(message);
-    }
-
-    public int generateVerificationCode(User user) {
-        log.info("generateVerificationCode : Generating verification code ...");
-        Random random = new Random();
-        int verificationCode = random.nextInt(9000) + 1000;
-        log.info("generateVerificationCode : Verification code is " + verificationCode);
-        user.setVerificationCode(verificationCode);
-        userRepository.save(user);
-        log.info("generateVerificationCode : Generating complete ...");
-        return verificationCode;
     }
 }

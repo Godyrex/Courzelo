@@ -5,8 +5,13 @@ import com.courzelo.lms.dto.user.PasswordDTO;
 import com.courzelo.lms.dto.user.ProfileDTO;
 import com.courzelo.lms.dto.user.UpdateEmailDTO;
 import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.entities.user.VerificationToken;
+import com.courzelo.lms.entities.user.VerificationTokenType;
+import com.courzelo.lms.exceptions.PasswordResetTokenExpiredException;
+import com.courzelo.lms.exceptions.PasswordResetTokenNotFoundException;
 import com.courzelo.lms.exceptions.UserNotFoundException;
 import com.courzelo.lms.repositories.UserRepository;
+import com.courzelo.lms.repositories.VerificationTokenRepository;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.time.Instant;
+import java.util.Objects;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -35,13 +43,15 @@ public class UserService implements UserDetailsService {
     private final EmailService emailService;
     private final IPhotoService iPhotoService;
     private final IAuthService iAuthService;
+    private final VerificationTokenRepository verificationTokenRepository;
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService) {
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
         this.iPhotoService = iPhotoService;
         this.iAuthService = iAuthService;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     @Override
@@ -112,7 +122,15 @@ public class UserService implements UserDetailsService {
     public ResponseEntity<HttpStatus> sendVerificationCode(Principal principal) {
         User user = userRepository.findUserByEmail(principal.getName());
         try {
-            emailService.sendVerificationCode(user, emailService.generateVerificationCode(user));
+            Random random = new Random();
+            int verificationCode = random.nextInt(9000) + 1000;
+            VerificationToken verificationToken = new VerificationToken(
+                    String.valueOf(verificationCode),
+                    user,
+                    VerificationTokenType.UPDATE_EMAIL
+            );
+            verificationTokenRepository.save(verificationToken);
+            emailService.sendVerificationCode(user, verificationToken);
             return ResponseEntity.ok().build();
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
@@ -121,9 +139,18 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<HttpStatus> updateEmail(UpdateEmailDTO updateEmailDTO, Principal principal) {
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user.getVerificationCode() == updateEmailDTO.getCode()) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(String.valueOf(updateEmailDTO.getCode()));
+        if (verificationToken == null) {
+            throw new PasswordResetTokenNotFoundException("PasswordResetToken Not Found " + updateEmailDTO.getCode());
+        }
+        if (!verificationToken.getVerificationTokenType().equals(VerificationTokenType.UPDATE_EMAIL)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (verificationToken.getExpiryDate().isBefore(Instant.now())) {
+            throw new PasswordResetTokenExpiredException("PasswordResetToken Expired " + verificationToken.getExpiryDate());
+        }
+        if (Objects.equals(user.getId(), verificationToken.getUser().getId())) {
             user.setEmail(updateEmailDTO.getEmail());
-            user.setVerificationCode(null);
             userRepository.save(user);
             return ResponseEntity.ok().build();
         }
