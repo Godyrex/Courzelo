@@ -40,10 +40,6 @@ public class User implements UserDetails {
     private boolean rememberMe;
     private String emailVerificationCode;
     private Integer verificationCode;
-    private String grade;
-    private String speciality;
-    private List<String> courses;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

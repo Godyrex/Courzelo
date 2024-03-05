@@ -1,11 +1,17 @@
 package com.courzelo.lms.services;
 
 
-import com.courzelo.lms.dto.DeviceDTO;
+import com.courzelo.lms.dto.DeviceResDTO;
 import com.courzelo.lms.dto.LoginDTO;
+import com.courzelo.lms.entities.Class;
+import com.courzelo.lms.entities.Institution;
 import com.courzelo.lms.entities.RefreshToken;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
+import com.courzelo.lms.exceptions.ClassNotFoundException;
+import com.courzelo.lms.exceptions.InstitutionNotFoundException;
+import com.courzelo.lms.repositories.ClassRepository;
+import com.courzelo.lms.repositories.InstitutionRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
@@ -47,6 +53,8 @@ public class AuthService implements IAuthService {
     private final PasswordEncoder encoder;
     private final IRefreshTokenService iRefreshTokenService;
     private final AuthenticationManager authenticationManager;
+    private final InstitutionRepository institutionRepository;
+    private final ClassRepository classRepository;
     private final JWTUtils jwtUtils;
     private final CookieUtil cookieUtil;
     private final EmailService emailService;
@@ -74,7 +82,7 @@ public class AuthService implements IAuthService {
                     throw new RuntimeException(e);
                 }
                 log.info("Finished Logging in...");
-                return ResponseEntity.status(HttpStatus.OK).body(new DeviceDTO(true));
+                return ResponseEntity.status(HttpStatus.OK).body(new DeviceResDTO(true));
             }
         } catch (DisabledException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response("Please verify your email"));
@@ -89,42 +97,56 @@ public class AuthService implements IAuthService {
         log.info("Starting Authentication...");
         log.info("Email :" + loginDTO.getEmail());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String accessToken = jwtUtils.generateJwtToken(authentication.getName());
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken, jwtExpirationMs).toString());
+
         User userDetails = (User) authentication.getPrincipal();
+        RefreshToken refreshToken = null;
+
         if (loginDTO.isRememberMe()) {
-            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshRememberMeExpirationMs);
-            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshRememberMeExpirationMs).toString());
+            refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshRememberMeExpirationMs);
             userDetails.setRememberMe(true);
             log.info("RememberMe : On");
         } else {
-            RefreshToken refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshExpirationMs);
-            response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), refreshExpirationMs).toString());
+            refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshExpirationMs);
             userDetails.setRememberMe(false);
             log.info("RememberMe : Off");
         }
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), loginDTO.isRememberMe() ? refreshRememberMeExpirationMs : refreshExpirationMs).toString());
+
         userRepository.save(userDetails);
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
+
         log.info("Authentication finished!");
-        if (userDetails.getPhoto() != null) {
-            return ResponseEntity.ok(new JwtResponse(
-                    userDetails.getEmail(),
-                    userDetails.getName(),
-                    userDetails.getLastName(),
-                    roles,
-                    userDetails.getPhoto().getId()
-            ));
-        } else {
-            return ResponseEntity.ok(new JwtResponse(
-                    userDetails.getEmail(),
-                    userDetails.getName(),
-                    userDetails.getLastName(),
-                    roles
-            ));
+        Institution institution = null;
+        Class institutionClass = null;
+        if(userDetails.getInstitution() != null){
+            institution = institutionRepository.findById(userDetails.getInstitution().getId())
+                    .orElseThrow(()->new InstitutionNotFoundException("Institution not found"));
         }
+        if(userDetails.getStclass() != null){
+            institutionClass = classRepository.findById(userDetails.getStclass().getId())
+                    .orElseThrow(()->new ClassNotFoundException("Class not found"));
+        }
+
+        JwtResponse jwtResponse = new JwtResponse(
+                userDetails.getEmail(),
+                userDetails.getName(),
+                userDetails.getLastName(),
+                roles,
+                userDetails.getPhoto() != null ? userDetails.getPhoto().getId() : null,
+                institution != null ? institution.getName() : null,
+                institutionClass != null ? institutionClass.getName() : null
+                );
+
+        return ResponseEntity.ok(jwtResponse);
     }
+
 
     public ResponseEntity<?> confirmDevice(String userAgent, @NonNull HttpServletResponse response, LoginDTO loginDTO, Integer code) {
         log.info("Started Confirming Device...");

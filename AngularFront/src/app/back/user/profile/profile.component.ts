@@ -14,7 +14,7 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
   deleteAccountRequest: DeleteAccountRequest = {};
@@ -22,14 +22,10 @@ export class ProfileComponent implements OnInit {
   message = '';
   messageSuccess = '';
   user: LoginResponse = {};
-  userPhotoUrl: any;
   uploadProgress: number = 0;
   selectedFile: File | undefined;
   showVerification: boolean = false;
   showEmailForm: boolean = true;
-  fullName: string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
-  role: string = `${this.token.getUser().roles}`
-  email: string = `${this.token.getUser().email}`
   emailForm = this.formBuilder.group({
     email: ['', [Validators.email]],
   });
@@ -76,15 +72,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  getImage() {
-    this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.userPhotoUrl = reader.result;
-      };
-      reader.readAsDataURL(data);
-    });
-  }
+
 
   changeName() {
     if (this.nameForm.valid) {
@@ -203,8 +191,6 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.getImage();
-  }
+
 
 }

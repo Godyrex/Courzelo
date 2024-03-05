@@ -42,7 +42,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,@NonNull HttpServletResponse response,@NonNull FilterChain filterChain)
             throws ServletException, IOException {
         List<String> excludedEndpoints = Arrays.asList(
                 "/api/v1/auth/signing",
@@ -52,48 +52,48 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 "/api/v1/auth/verify",
                 "/api/v1/auth/confirmDevice/"
         );
+
         String requestUri = request.getRequestURI();
-        log.info("doFilterInternal :requestUri " + requestUri);
-        boolean isExcludedEndpoint = false;
-        for (String endpoint : excludedEndpoints) {
-            if (requestUri.startsWith(endpoint)) {
-                isExcludedEndpoint = true;
-                break;
-            }
-        }
-        log.info("doFilterInternal : isExcludedEndpoint " + isExcludedEndpoint);
-        if (isExcludedEndpoint) {
-            log.info("doFilterInternal :Excluded! ");
+        log.info("Request URI: " + requestUri);
+
+        if (isExcludedEndpoint(requestUri, excludedEndpoints)) {
+            log.info("Excluded endpoint: " + requestUri);
             filterChain.doFilter(request, response);
             return;
         }
         String accessToken = cookieUtil.getAccessTokenFromCookies(request);
         String refreshToken = cookieUtil.getRefreshTokenFromCookies(request);
-        log.info("doFilterInternal :Finished Getting tokens ");
+        log.info("Tokens retrieved");
+
         try {
             if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
                 String email = jwtUtils.getEmailFromJwtToken(accessToken);
-                UserDetails userDetails = userDetailsService.loadUserByEmail(email);
                 if (userDetailsService.ValidUser(email)) {
+                    UserDetails userDetails = userDetailsService.loadUserByEmail(email);
                     setAuthenticationInSecurityContext(request, userDetails);
                 }
             } else if (refreshToken != null) {
                 RefreshToken token = iRefreshTokenService.findByToken(refreshToken);
                 iRefreshTokenService.verifyExpiration(token);
                 authService.refreshToken(response, token.getUser().getEmail());
-                UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
                 if (userDetailsService.ValidUser(token.getUser().getEmail())) {
-                    log.info("doFilterInternal : " + token.getUser().getEmail() + " is valid!");
+                    log.info("Valid refresh token for user: " + token.getUser().getEmail());
+                    UserDetails userDetails = userDetailsService.loadUserByEmail(token.getUser().getEmail());
                     setAuthenticationInSecurityContext(request, userDetails);
                 }
             }
-
         } catch (Exception e) {
-            jwtLogger.error("Cannot set user authentication: {}", e.getMessage());
+            jwtLogger.error("Error during authentication: {}", e.getMessage());
         }
-
+        log.info("Request Filter almost completed");
         filterChain.doFilter(request, response);
+        log.info("Request Filter Finished");
     }
+
+    private boolean isExcludedEndpoint(String requestUri, List<String> excludedEndpoints) {
+        return excludedEndpoints.stream().anyMatch(requestUri::startsWith);
+    }
+
 
     private void setAuthenticationInSecurityContext(HttpServletRequest request, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,

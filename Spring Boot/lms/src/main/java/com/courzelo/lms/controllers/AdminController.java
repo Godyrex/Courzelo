@@ -1,6 +1,7 @@
 package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.UserDTO;
+import com.courzelo.lms.dto.UserListDTO;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.IAdminService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ public class AdminController {
     private final IAdminService iAdminService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getUsers() {
-        return iAdminService.getUsers();
+    public ResponseEntity<UserListDTO> getUsers(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "2") int sizePerPage) {
+        return iAdminService.getUsers(page, sizePerPage);
     }
 
     @PostMapping("/add/{userID}/{role}")

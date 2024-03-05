@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserResponse} from "../../../model/user/UserResponse";
 import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
+import {UserListDTO} from "../../../model/user/UserListDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,11 @@ export class PanelService {
   constructor(private http: HttpClient) {
   }
 
-  getUsers(): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>(`${this.baseUrl}/users`);
+  getUsers(page: number, itemsPerPage: number): Observable<UserListDTO> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('sizePerPage', itemsPerPage.toString());
+    return this.http.get<UserListDTO>(`${this.baseUrl}/users`, {params});
   }
 
   addRole(userRoleRequest: UserRoleRequest): Observable<any> {

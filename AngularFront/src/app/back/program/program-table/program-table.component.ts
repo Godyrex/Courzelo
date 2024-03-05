@@ -86,7 +86,7 @@ export class ProgramTableComponent implements OnInit{
         }
       },
       error => {
-        console.log("add program error :", error)
+        console.log("delete program error :", error)
         this.messageSuccess = "";
         this.messageError = "an error has occurred";
       });

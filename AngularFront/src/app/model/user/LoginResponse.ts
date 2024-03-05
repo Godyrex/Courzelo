@@ -4,4 +4,6 @@ export interface LoginResponse {
   lastname?: string;
   roles?: string[];
   photoID?: string;
+  institution?: string;
+  institutionClass?: string;
 }

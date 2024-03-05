@@ -1,16 +1,20 @@
 package com.courzelo.lms.security;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class JwtResponse {
     private String email;
     private String name;
     private String lastname;
     private List<String> roles;
     private String photoID;
+    private String institution;
+    private String institutionClass;
 
     public JwtResponse(String email, String name, String lastname, List<String> roles) {
         this.email = email;
@@ -26,4 +30,5 @@ public class JwtResponse {
         this.roles = roles;
         this.photoID = photoID;
     }
+
 }
