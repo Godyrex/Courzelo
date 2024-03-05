@@ -147,7 +147,7 @@ public class InstitutionService implements IInstitutionService {
         User user = userRepository.findUserByEmail(principal.getName());
         log.info("institution id : "+institutionID);
         User target = userRepository.findUserByEmail(userEmail);
-        if (user.getRoles().contains(Role.SUPERADMIN) && institutionID != null) {
+        if (user.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(institutionID, "")) {
             Institution institution = institutionRepository.findById(institutionID)
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionID + " not found"));
             if (!isAdminInInstitution(principal, institutionID)) {
@@ -326,7 +326,7 @@ public class InstitutionService implements IInstitutionService {
         log.info("sizeperpage = " + sizePerPage);
 
         User userr = userRepository.findUserByEmail(principal.getName());
-        if (userr.getRoles().contains(Role.SUPERADMIN) && institutionID != null) {
+        if (userr.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(institutionID, "")) {
             Institution institution = institutionRepository.findById(institutionID)
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(institution, principal, role, page, sizePerPage);
