@@ -15,6 +15,13 @@ export class SidebarComponent implements OnInit {
   isMenuOpen: boolean = false;
   isSuperAdminMenuOpen: boolean = false;
   isAdminMenuOpen: boolean = false;
+
+  constructor(
+    private token: TokenStorageService,
+    private updateService: UpdateService
+  ) {
+  }
+
   toggleSuperAdminMenu() {
     this.isSuperAdminMenuOpen = !this.isSuperAdminMenuOpen;
   }
@@ -22,13 +29,9 @@ export class SidebarComponent implements OnInit {
   toggleAdminMenu() {
     this.isAdminMenuOpen = !this.isAdminMenuOpen;
   }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-  }
-  constructor(
-    private token: TokenStorageService,
-    private updateService: UpdateService
-  ) {
   }
 
   getImage() {
@@ -42,6 +45,6 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.getImage();
+    this.getImage();
   }
 }

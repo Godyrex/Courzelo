@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
+import {Component, OnInit} from '@angular/core';
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramListDTO} from "../../../model/program/ProgramListDTO";
 import {ProgramService} from "../../../service/program/program.service";
@@ -9,7 +8,7 @@ import {ProgramService} from "../../../service/program/program.service";
   templateUrl: './program-table.component.html',
   styleUrls: ['./program-table.component.css']
 })
-export class ProgramTableComponent implements OnInit{
+export class ProgramTableComponent implements OnInit {
   programDTOS: ProgramDTO[] = [];
   selectedProgram: ProgramDTO = {};
   selectedProgramClass: string = "";
@@ -27,7 +26,7 @@ export class ProgramTableComponent implements OnInit{
   ) {
   }
 
-  showClassesTable( ProgramID: string) {
+  showClassesTable(ProgramID: string) {
     this.classesTable = true;
     this.selectedProgramClass = ProgramID;
   }

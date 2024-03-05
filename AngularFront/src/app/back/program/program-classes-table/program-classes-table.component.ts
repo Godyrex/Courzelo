@@ -1,18 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UserResponse} from "../../../model/user/UserResponse";
-import {InstitutionService} from "../../../service/program/institution.service";
-import {UserListDTO} from "../../../model/user/UserListDTO";
 import {ClassDTO} from "../../../model/program/ClassDTO";
 import {ProgramService} from "../../../service/program/program.service";
 import {ClassListDTO} from "../../../model/program/ClassListDTO";
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
 
 @Component({
   selector: 'app-program-classes-table',
   templateUrl: './program-classes-table.component.html',
   styleUrls: ['./program-classes-table.component.css']
 })
-export class ProgramClassesTableComponent implements OnInit{
+export class ProgramClassesTableComponent implements OnInit {
   classDTOS: ClassDTO[] = [];
   selectedClass: ClassDTO = {};
   messageSuccess: string = "";
@@ -22,7 +18,7 @@ export class ProgramClassesTableComponent implements OnInit{
   @Output() updateClassTable: EventEmitter<boolean> = new EventEmitter<boolean>();
   updateForm: boolean = false;
   @Input() role: string = "";
-  selectedClassUsers : string ="";
+  selectedClassUsers: string = "";
   totalPages: number = 0;
   currentPage: number = 0;
   pageSize: number = 2;
@@ -46,15 +42,17 @@ export class ProgramClassesTableComponent implements OnInit{
   resetSuccessAlert() {
     this.messageSuccess = "";
   }
+
   handleUpdateFormToggle(message: boolean) {
     this.updateForm = message;
   }
+
   resetErrorAlert() {
     this.messageError = "";
   }
 
   removeClass(id: string) {
-    this.programService.removeClassFromProgram( id).subscribe(
+    this.programService.removeClassFromProgram(id).subscribe(
       data => {
         if (data) {
           this.classDTOS = this.classDTOS.filter(inst => inst.id !== id);
@@ -77,7 +75,8 @@ export class ProgramClassesTableComponent implements OnInit{
     console.log("page changed from paginator " + page)
     this.loadClasses();
   }
-  showClassesUsersTable(role : string , id : string){
+
+  showClassesUsersTable(role: string, id: string) {
     this.usersTable = true;
     this.role = role
     this.selectedClassUsers = id;
@@ -96,10 +95,12 @@ export class ProgramClassesTableComponent implements OnInit{
       }
     );
   }
+
   showUpdateForm(classDTO: ClassDTO) {
     this.selectedClass = classDTO;
     this.updateForm = true
   }
+
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }
@@ -107,6 +108,7 @@ export class ProgramClassesTableComponent implements OnInit{
   handleAddFormToggle(message: boolean) {
     this.addForm = message;
   }
+
   handleUsersTableToggle(message: boolean) {
     this.usersTable = message;
   }

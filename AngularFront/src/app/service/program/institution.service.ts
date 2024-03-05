@@ -37,13 +37,13 @@ export class InstitutionService {
   addUserToInstitution(institutionID: string, role: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
       .set('institutionID', institutionID)
-    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null,{params});
+    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null, {params});
   }
 
   removeUserFromInstitution(institutionID: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
       .set('institutionID', institutionID)
-    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${userEmail}`, null,{params});
+    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${userEmail}`, null, {params});
   }
 
   getInstitutionUsers(institutionID: string, role: string, page: number, itemsPerPage: number): Observable<UserListDTO> {

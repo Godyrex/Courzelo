@@ -1,15 +1,12 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.UserDTO;
-import com.courzelo.lms.dto.UserListDTO;
+import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IAdminService;
+import com.courzelo.lms.services.user.IAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/admin")

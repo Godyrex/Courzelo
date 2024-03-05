@@ -23,10 +23,15 @@
         <label class="col-sm-2 col-form-label">Description</label>
         <div class="col-sm-10">
           <input class="form-control" formControlName="description" placeholder="Description" type="text">
-          <div *ngIf="programForm.controls.description.touched && programForm.controls.description?.invalid" class="text-danger">
+          <div *ngIf="programForm.controls.description.touched && programForm.controls.description?.invalid"
+               class="text-danger">
             <div *ngIf="programForm.get('description')?.errors?.['required']">Description is required.</div>
-            <div *ngIf="programForm.get('description')?.errors?.['maxlength']">Description must be less than 20 characters.</div>
-            <div *ngIf="programForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters.</div>
+            <div *ngIf="programForm.get('description')?.errors?.['maxlength']">Description must be less than 20
+              characters.
+            </div>
+            <div *ngIf="programForm.get('description')?.errors?.['minlength']">Description must be at least 10
+              characters.
+            </div>
           </div>
         </div>
       </div>
@@ -37,7 +42,8 @@
             <option value="PUBLIC">Public</option>
             <option value="PRIVATE">Private</option>
           </select>
-          <div *ngIf="programForm.controls.programType.touched && programForm.controls.programType?.invalid" class="text-danger">
+          <div *ngIf="programForm.controls.programType.touched && programForm.controls.programType?.invalid"
+               class="text-danger">
             <div *ngIf="programForm.get('description')?.errors?.['required']">Visibility is required.</div>
           </div>
         </div>

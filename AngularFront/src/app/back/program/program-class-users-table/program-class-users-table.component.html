@@ -71,8 +71,8 @@
         (addForm)="handleAddFormToggle($event)"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
-        [classToUpdate]="classID"
         *ngIf="addForm"
+        [classToUpdate]="classID"
         [role]="role">
         >
       </app-class-add-user>

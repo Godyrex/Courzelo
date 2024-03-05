@@ -2,7 +2,7 @@ package com.courzelo.lms.security;
 
 import com.courzelo.lms.security.jwt.AuthEntryPointJwt;
 import com.courzelo.lms.security.jwt.AuthTokenFilter;
-import com.courzelo.lms.services.UserService;
+import com.courzelo.lms.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

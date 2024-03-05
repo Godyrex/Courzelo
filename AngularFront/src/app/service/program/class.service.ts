@@ -12,17 +12,19 @@ export class ClassService {
 
   constructor(private http: HttpClient) {
   }
+
   addUserToClass(classID: string, role: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
       .set('id', classID)
-    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null,{params});
+    return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null, {params});
   }
 
   removeUserFromClass(classID: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
       .set('classID', classID)
-    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${userEmail}`, null,{params});
+    return this.http.post<boolean>(`${this.baseUrl}/remove/user/${userEmail}`, null, {params});
   }
+
   getClassUsers(classID: string, role: string, page: number, itemsPerPage: number): Observable<UserListDTO> {
     const params = new HttpParams()
       .set('classID', classID)
@@ -30,6 +32,7 @@ export class ClassService {
       .set('sizePerPage', itemsPerPage.toString());
     return this.http.get<UserListDTO>(`${this.baseUrl}/getClassUsers/${role}`, {params});
   }
+
   updateClass(classDTO: ClassDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/update`, classDTO);
   }

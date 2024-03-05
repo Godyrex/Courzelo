@@ -1,6 +1,6 @@
 package com.courzelo.lms.repositories;
 
-import com.courzelo.lms.entities.Photo;
+import com.courzelo.lms.entities.user.Photo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

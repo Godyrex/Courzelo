@@ -1,11 +1,13 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.LoginDTO;
-import com.courzelo.lms.dto.RegisterDTO;
-import com.courzelo.lms.entities.Role;
-import com.courzelo.lms.entities.User;
+import com.courzelo.lms.dto.user.LoginDTO;
+import com.courzelo.lms.dto.user.RecoverPasswordDTO;
+import com.courzelo.lms.dto.user.RegisterDTO;
+import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IAuthService;
+import com.courzelo.lms.services.user.IAuthService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 
@@ -62,5 +65,15 @@ public class AuthController {
     @GetMapping("/getRole")
     public ResponseEntity<List<Role>> getRole(Principal principal) {
         return iAuthService.getRole(principal);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Response> forgotPassword(@RequestParam("email") String email) throws MessagingException, UnsupportedEncodingException {
+        return iAuthService.forgotPassword(email);
+    }
+
+    @PostMapping("/recover-password")
+    public ResponseEntity<Response> recoverPassword(@RequestParam("token") String token, @RequestBody RecoverPasswordDTO passwordDTO) {
+        return iAuthService.recoverPassword(token, passwordDTO);
     }
 }

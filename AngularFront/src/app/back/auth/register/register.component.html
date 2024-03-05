@@ -21,7 +21,8 @@
           </div>
         </div>
         <div class="input-group mb-1">
-          <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email?.invalid" class="text-danger">
+          <div *ngIf="registerForm.controls['email'].touched && registerForm.controls['email']?.invalid"
+               class="text-danger">
             email must be a valid email address
           </div>
         </div>
@@ -32,7 +33,8 @@
               <span class="fas fa-user"></span>
             </div>
           </div>
-          <div *ngIf="registerForm.controls.name.touched && registerForm.controls.name?.invalid" class="text-danger">
+          <div *ngIf="registerForm.controls['name'].touched && registerForm.controls['name']?.invalid"
+               class="text-danger">
             name must be at least 3 characters and maximum 20 characters
           </div>
         </div>
@@ -43,7 +45,7 @@
               <span class="fas fa-user"></span>
             </div>
           </div>
-          <div *ngIf="registerForm.controls.lastname.touched && registerForm.controls.lastname?.invalid"
+          <div *ngIf="registerForm.controls['lastname'].touched && registerForm.controls['lastname']?.invalid"
                class="text-danger">
             lastname must be at least 3 characters and maximum 20 characters
           </div>
@@ -55,7 +57,7 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
-          <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password?.invalid"
+          <div *ngIf="registerForm.controls['password'].touched && registerForm.controls['password']?.invalid"
                class="text-danger">
             Password must be at least 8 characters and maximum 50 characters
           </div>
@@ -69,7 +71,7 @@
           </div>
         </div>
         <div class="input-group mb-1">
-          <div *ngIf="registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword?.invalid"
+          <div *ngIf="registerForm.controls['confirmPassword'].errors?.['confirmedValidator']"
                class="text-danger">
             Passwords must match
           </div>

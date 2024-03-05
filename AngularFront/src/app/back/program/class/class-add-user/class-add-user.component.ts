@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../../service/program/institution.service";
 import {ClassService} from "../../../../service/program/class.service";
 
 @Component({
@@ -31,8 +30,8 @@ export class ClassAddUserComponent {
   addUserToClass() {
     if (this.emailForm.valid) {
       console.log(this.emailForm.value);
-      console.log("class :"+this.classToUpdate);
-      console.log("role :"+this.role);
+      console.log("class :" + this.classToUpdate);
+      console.log("role :" + this.role);
       this.classService.addUserToClass(this.classToUpdate, this.role, this.emailForm.controls['email'].value!)
         .subscribe(data => {
             console.log(data)

@@ -1,8 +1,8 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.ClassDTO;
-import com.courzelo.lms.dto.UserListDTO;
-import com.courzelo.lms.services.IClassService;
+import com.courzelo.lms.dto.program.ClassDTO;
+import com.courzelo.lms.dto.user.UserListDTO;
+import com.courzelo.lms.services.program.IClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,15 +38,17 @@ public class ClassController {
     public ResponseEntity<Boolean> updateClass(@RequestBody ClassDTO classDTO) {
         return iClassService.updateClass(classDTO);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getClassUsers/{role}")
     public ResponseEntity<UserListDTO> getClassUsers(@RequestParam(required = false) String classID,
-                                                           Principal principal,
-                                                           @PathVariable String role,
-                                                           @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "2") int sizePerPage) {
+                                                     Principal principal,
+                                                     @PathVariable String role,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "2") int sizePerPage) {
         return iClassService.getClassUsers(classID, principal, role, page, sizePerPage);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add/user/{userEmail}/{role}")
     public ResponseEntity<Boolean> addUserToClass(@RequestParam String id, @PathVariable String userEmail, @PathVariable String role) {

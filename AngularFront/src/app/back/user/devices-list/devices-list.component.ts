@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UserResponse} from "../../../model/user/UserResponse";
 import {DeviceService} from "../../../service/user/profile/device.service";
-import {UserListDTO} from "../../../model/user/UserListDTO";
 import {DeviceListDTO} from "../../../model/user/DeviceListDTO";
 import {DeviceDTO} from "../../../model/user/DeviceDTO";
 
@@ -10,11 +8,12 @@ import {DeviceDTO} from "../../../model/user/DeviceDTO";
   templateUrl: './devices-list.component.html',
   styleUrls: ['./devices-list.component.css']
 })
-export class DevicesListComponent implements OnInit{
+export class DevicesListComponent implements OnInit {
   deviceDTOS: DeviceDTO[] = []
   totalPages: number = 0;
   currentPage: number = 0;
   pageSize: number = 2;
+
   constructor(private deviceService: DeviceService) {
   }
 
@@ -22,6 +21,7 @@ export class DevicesListComponent implements OnInit{
     this.loadDevices();
 
   }
+
   onPageChange(page: number): void {
     this.currentPage = page;
     console.log("page changed from paginator" + page)
@@ -41,11 +41,12 @@ export class DevicesListComponent implements OnInit{
       }
     );
   }
-  deleteDevice(id : string){
+
+  deleteDevice(id: string) {
     this.deviceService.deleteDevice(id).subscribe(
       data => {
-          this.deviceDTOS = this.deviceDTOS.filter(dev => dev.id !== id);
-        },error => {
+        this.deviceDTOS = this.deviceDTOS.filter(dev => dev.id !== id);
+      }, error => {
         console.log("delete Device error :", error)
 
       });

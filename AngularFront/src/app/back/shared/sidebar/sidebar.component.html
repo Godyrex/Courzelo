@@ -34,8 +34,8 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
-        <li class="nav-item menu-close" >
-          <a class="nav-link active" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" (click)="toggleMenu()">
+        <li class="nav-item menu-close">
+          <a (click)="toggleMenu()" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Settings
@@ -58,7 +58,8 @@
           </ul>
         </li>
         <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item menu-close">
-          <a class="nav-link" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}" (click)="toggleSuperAdminMenu()">
+          <a (click)="toggleSuperAdminMenu()" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}"
+             class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               SuperAdmin
@@ -82,7 +83,7 @@
         </li>
 
         <li *ngIf="userRoles && userRoles.includes('ROLE_ADMIN')" class="nav-item menu-close">
-          <a class="nav-link" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" (click)="toggleAdminMenu()">
+          <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Admin

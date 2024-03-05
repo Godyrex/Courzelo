@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -19,7 +19,7 @@ export class ProfileComponent {
   emailRequest: EmailRequest = {};
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
-  message = '';
+  messageError = '';
   messageSuccess = '';
   user: LoginResponse = {};
   uploadProgress: number = 0;
@@ -40,11 +40,13 @@ export class ProfileComponent {
     lastName: ['', [Validators.maxLength(20), Validators.minLength(3)]],
   });
   passwordForm = this.formBuilder.group({
-    password: ['', [Validators.required]],
-    newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
-    confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
-    validator: this.checkingPasswords
-  });
+      password: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+    },
+    {
+      validator: this.ConfirmedValidator('newPassword', 'confirmPassword'),
+    });
   deleteForm = this.formBuilder.group({
     password: ['', [Validators.required]],
   });
@@ -57,22 +59,28 @@ export class ProfileComponent {
   ) {
   }
 
-  public checkingPasswords(formGroup: FormGroup) {
-
-    const newPassword = formGroup.get('newPassword')!.value;
-    const confirmPassword = formGroup.get('confirmPassword')!.value;
-
-    // Check if new password and confirm password match
-    if (newPassword === confirmPassword) {
-      // If passwords match, clear the error on confirmPassword control
-      formGroup.get('confirmPassword')!.setErrors(null);
-    } else {
-      // If passwords don't match, set 'notMatched' error on confirmPassword control
-      formGroup.get('confirmPassword')!.setErrors({notMatched: true});
-    }
+  ConfirmedValidator(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (matchingControl.errors) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({confirmedValidator: true});
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
   }
 
+  resetSuccessAlert() {
+    this.messageSuccess = "";
+  }
 
+  resetErrorAlert() {
+    this.messageError = "";
+  }
 
   changeName() {
     if (this.nameForm.valid) {
@@ -86,12 +94,12 @@ export class ProfileComponent {
             this.user.name = this.nameForm.value.name!;
             this.user.lastname = this.nameForm.value.lastName!;
             this.token.saveUser(this.user);
-            this.message = "";
+            this.messageError = "";
           },
           error => {
             console.log("update name error :", error)
             this.messageSuccess = "";
-            this.message = error.error.msg;
+            this.messageError = error.error.msg;
           });
     }
   }
@@ -147,13 +155,13 @@ export class ProfileComponent {
       this.updateService.changePassword(this.passwordRequest)
         .subscribe(data => {
             console.log(data)
-            this.message = "";
+            this.messageError = "";
             this.messageSuccess = data.msg!;
           },
           error => {
             console.log("update password error :", error)
             this.messageSuccess = "";
-            this.message = error.error.msg;
+            this.messageError = error.error.msg;
           });
     }
   }
@@ -190,7 +198,6 @@ export class ProfileComponent {
       );
     }
   }
-
 
 
 }

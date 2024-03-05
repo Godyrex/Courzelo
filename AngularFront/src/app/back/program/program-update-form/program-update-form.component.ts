@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../service/program/institution.service";
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramService} from "../../../service/program/program.service";
 
@@ -10,7 +8,7 @@ import {ProgramService} from "../../../service/program/program.service";
   templateUrl: './program-update-form.component.html',
   styleUrls: ['./program-update-form.component.css']
 })
-export class ProgramUpdateFormComponent implements OnChanges{
+export class ProgramUpdateFormComponent implements OnChanges {
   programRequest: ProgramDTO = {};
   @Input() programToUpdate: ProgramDTO = {};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
@@ -20,7 +18,7 @@ export class ProgramUpdateFormComponent implements OnChanges{
     id: [this.programToUpdate.id, [Validators.required]],
     name: [this.programToUpdate.name, [Validators.required, Validators.maxLength(40)]],
     description: [this.programToUpdate.description, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
-    programType: [this.programToUpdate.programType,[Validators.required]],
+    programType: [this.programToUpdate.programType, [Validators.required]],
   });
 
   constructor(

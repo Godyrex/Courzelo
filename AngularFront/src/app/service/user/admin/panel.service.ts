@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {UserResponse} from "../../../model/user/UserResponse";
 import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
 import {UserListDTO} from "../../../model/user/UserListDTO";
 

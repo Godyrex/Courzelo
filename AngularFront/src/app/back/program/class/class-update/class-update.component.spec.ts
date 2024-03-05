@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ClassUpdateComponent } from './class-update.component';
+import {ClassUpdateComponent} from './class-update.component';
 
 describe('ClassUpdateComponent', () => {
   let component: ClassUpdateComponent;
@@ -8,9 +8,9 @@ describe('ClassUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClassUpdateComponent ]
+      declarations: [ClassUpdateComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ClassUpdateComponent);
     component = fixture.componentInstance;

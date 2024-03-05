@@ -4,6 +4,7 @@ import {RegisterRequest} from "../../../model/RegisterRequest";
 import {JsonResponse} from "../../../model/user/JsonResponse";
 import {LoginRequest} from "../../../model/user/LoginRequest";
 import {Observable} from "rxjs";
+import {RecoverPasswordRequest} from "../../../model/user/RecoverPasswordRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,14 @@ export class AuthenticationService {
 
   verifyAccount(code: string) {
     return this.http.get<JsonResponse>(`${this.baseUrl}/verify?code=${code}`);
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post<JsonResponse>(`${this.baseUrl}/forgot-password?email=${email}`, null);
+  }
+
+  recoverPassword(token: string, password: RecoverPasswordRequest) {
+    return this.http.post<JsonResponse>(`${this.baseUrl}/recover-password?token=${token}`, password);
   }
 
   confirmDevice(loginRequest: LoginRequest, code: number): Observable<any> {

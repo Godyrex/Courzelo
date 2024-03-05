@@ -16,12 +16,14 @@ export class UsersTableComponent implements OnInit {
   totalPages: number = 0;
   currentPage: number = 0;
   pageSize: number = 2;
+
   constructor(private panelService: PanelService) {
   }
 
   ngOnInit(): void {
     this.loadUsers();
   }
+
   onPageChange(page: number): void {
     this.currentPage = page;
     console.log("page changed from paginator" + page)
