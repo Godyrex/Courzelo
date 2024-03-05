@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/class")
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class ClassController {
     private final IClassService iClassService;
 

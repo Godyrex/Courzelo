@@ -16,26 +16,26 @@ import java.security.Principal;
 @RequestMapping("/api/v1/institution")
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('SUPERADMIN')")
 public class InstitutionController {
     private final IInstitutionService iInstitutionService;
 
+    @PreAuthorize("hasRole('SUPERADMIN')")
     @GetMapping("/all")
     public ResponseEntity<InstitutionListDTO> getInstitutions(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "2") int sizePerPage) {
         return iInstitutionService.getInstitutions(page, sizePerPage);
     }
-
+    @PreAuthorize("hasRole('SUPERADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Boolean> addInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.addInstitution(institutionDTO);
     }
-
+    @PreAuthorize("hasRole('SUPERADMIN')")
     @GetMapping("/get/{institutionID}")
     public ResponseEntity<InstitutionDTO> getInstitutionByID(@PathVariable String institutionID) {
         return iInstitutionService.getInstitutionByID(institutionID);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getMyInstitution")
     public ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal) {
         return iInstitutionService.getMyInstitution(principal);
@@ -46,7 +46,7 @@ public class InstitutionController {
     public ResponseEntity<InstitutionDTO> getInstitutionForAdmin(Principal principal) {
         return iInstitutionService.getInstitution(principal.getName());
     }
-
+    @PreAuthorize("hasRole('SUPERADMIN')")
     @DeleteMapping("/{institutionID}")
     public ResponseEntity<Boolean> deleteInstitution(@PathVariable String institutionID) {
         return iInstitutionService.deleteInstitution(institutionID);
@@ -56,7 +56,7 @@ public class InstitutionController {
     public ResponseEntity<Boolean> updateInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.updateInstitution(institutionDTO);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/updateMine")
     public ResponseEntity<Boolean> updateMyInstitution(@RequestBody InstitutionDTO institutionDTO, Principal principal) {
         return iInstitutionService.updateMyInstitution(institutionDTO, principal);
@@ -90,7 +90,7 @@ public class InstitutionController {
     public ResponseEntity<Boolean> removeUserFromInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/countUsers")
     public ResponseEntity<InstitutionUsersCountDTO> countUsers(Principal principal) {
         return iInstitutionService.countUsers(principal);

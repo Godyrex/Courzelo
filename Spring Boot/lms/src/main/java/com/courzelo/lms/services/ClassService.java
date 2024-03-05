@@ -107,14 +107,26 @@ public class ClassService implements IClassService {
         log.info("sizeperpage = " + sizePerPage);
 
         User userr = userRepository.findUserByEmail(principal.getName());
-        if (userr.getRoles().contains(Role.SUPERADMIN) && classID != null) {
+        if (userr.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(classID, "")) {
             Class aClass = classRepository.findById(classID)
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
         } else if (userr.getInstitution() != null) {
-            Class aClass = classRepository.findById(userr.getStclass().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
-            return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
+            log.info("Checking class");
+            Institution institution = institutionRepository.findById(userr.getInstitution().getId())
+                    .orElseThrow(()-> new InstitutionNotFoundException("Institution not found"));
+            log.info("Class id : "+classID);
+            Class aClass = classRepository.findById(classID)
+                    .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
+            log.info("Program id : "+aClass.getProgram().getId());
+            Program program = programRepository.findById(aClass.getProgram().getId())
+                    .orElseThrow(()-> new ClassNotFoundException("Class not found"));
+            Institution programInstitution = institutionRepository.findById(program.getInstitution().getId())
+                    .orElseThrow(()-> new InstitutionNotFoundException("Institution not found"));
+            log.info("finished checking");
+            if(Objects.equals(institution.getId(), programInstitution.getId())) {
+                return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
+            }
         }
 
         return ResponseEntity.badRequest().body(null);

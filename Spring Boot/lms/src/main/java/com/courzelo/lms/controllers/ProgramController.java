@@ -13,6 +13,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/program")
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class ProgramController {
     private final IProgramService iProgramService;
 
