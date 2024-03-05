@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a class="brand-link" routerLink="/">
-    <img alt="AdminLTE Logo" class="brand-image img-circle elevation-3" src="dist/img/AdminLTELogo.png"
+    <img alt="Courzelo Logo" class="brand-image img-circle elevation-3" src="assets/Courzelo.png"
          style="opacity: .8">
     <span class="brand-text font-weight-light">Courzelo</span>
   </a>
@@ -34,8 +34,8 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
-        <li class="nav-item menu-open" [ngClass]="{'menu-open': isMenuOpen, 'menu-close': !isMenuOpen}">
-          <a class="nav-link" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" (click)="toggleMenu()">
+        <li class="nav-item menu-close" >
+          <a class="nav-link active" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" (click)="toggleMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Settings
@@ -57,7 +57,7 @@
             </li>
           </ul>
         </li>
-        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item" [ngClass]="{'menu-open': isSuperAdminMenuOpen, 'menu-close': !isSuperAdminMenuOpen}">
+        <li *ngIf="userRoles && userRoles.includes('ROLE_SUPERADMIN')" class="nav-item menu-close">
           <a class="nav-link" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}" (click)="toggleSuperAdminMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -81,7 +81,7 @@
           </ul>
         </li>
 
-        <li *ngIf="userRoles && userRoles.includes('ROLE_ADMIN')" class="nav-item" [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
+        <li *ngIf="userRoles && userRoles.includes('ROLE_ADMIN')" class="nav-item menu-close">
           <a class="nav-link" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" (click)="toggleAdminMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
