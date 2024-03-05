@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../../service/program/institution.service";
 import {ClassDTO} from "../../../../model/program/ClassDTO";
 import {ClassService} from "../../../../service/program/class.service";
 
@@ -10,7 +8,7 @@ import {ClassService} from "../../../../service/program/class.service";
   templateUrl: './class-update.component.html',
   styleUrls: ['./class-update.component.css']
 })
-export class ClassUpdateComponent implements  OnChanges{
+export class ClassUpdateComponent implements OnChanges {
   classDTO: ClassDTO = {};
   @Input() classToUpdate: ClassDTO = {};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();

@@ -1,9 +1,9 @@
 package com.courzelo.lms.security.jwt;
 
-import com.courzelo.lms.entities.RefreshToken;
-import com.courzelo.lms.services.AuthService;
-import com.courzelo.lms.services.IRefreshTokenService;
-import com.courzelo.lms.services.UserService;
+import com.courzelo.lms.entities.user.RefreshToken;
+import com.courzelo.lms.services.user.AuthService;
+import com.courzelo.lms.services.user.IRefreshTokenService;
+import com.courzelo.lms.services.user.UserService;
 import com.courzelo.lms.utils.CookieUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +42,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,@NonNull HttpServletResponse response,@NonNull FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         List<String> excludedEndpoints = Arrays.asList(
                 "/api/v1/auth/signing",

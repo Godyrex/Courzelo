@@ -3,12 +3,11 @@
   <div class="login-logo">
     <a routerLink="/"><b>Cour</b>zelo</a>
   </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+  <ng-container *ngIf="!verification; else verificationCodeInput">
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Sign in to start your session</p>
 
-      <ng-container *ngIf="!verification; else verificationCodeInput">
         <form (ngSubmit)="login()" [formGroup]="loginForm">
           <div *ngIf="message" class="text-danger">{{message}}.</div>
           <div class="input-group mb-3">
@@ -50,9 +49,22 @@
         </form>
         <!-- /.social-auth-links -->
 
-      </ng-container>
 
-      <ng-template #verificationCodeInput>
+        <p class="mb-1">
+          <a routerLink="/forgot-password">I forgot my password</a>
+        </p>
+        <p class="mb-0">
+          <a class="text-center" routerLink="/signup">Register a new membership</a>
+        </p>
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+  </ng-container>
+
+  <ng-template #verificationCodeInput>
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Verify your email</p>
         <!-- Show input field for verification code -->
         <form (ngSubmit)="submitVerificationCode()" [formGroup]="verificationForm">
           <div *ngIf="messageSuccess" class="message-container" id="message-sucess">{{messageSuccess}}</div>
@@ -77,13 +89,9 @@
             <!-- /.col -->
           </div>
         </form>
-      </ng-template>
-
-      <p class="mb-0">
-        <a class="text-center" routerLink="/signup">Register a new membership</a>
-      </p>
+      </div>
+      <!-- /.login-card-body -->
     </div>
-    <!-- /.login-card-body -->
-  </div>
+  </ng-template>
 </div>
 </body>

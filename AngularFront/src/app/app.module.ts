@@ -7,7 +7,6 @@ import {HomeComponent} from './front/home/home.component';
 import {HeaderComponent} from './back/header/header.component';
 import {SidebarComponent} from './back/shared/sidebar/sidebar.component';
 import {FooterComponent} from './back/footer/footer.component';
-import {DashboardComponent} from './back/dashboard/dashboard.component';
 import {FrontheaderComponent} from './front/frontheader/frontheader.component';
 import {FrontfooterComponent} from './front/frontfooter/frontfooter.component';
 import {RegisterComponent} from './back/auth/register/register.component';
@@ -22,22 +21,34 @@ import {PanelComponent} from './back/shared/panel/panel.component';
 import {InstitutionTableComponent} from './back/program/institution/institution-table/institution-table.component';
 import {UsersTableComponent} from './back/user/users-table/users-table.component';
 import {RouterOutlet} from "@angular/router";
-import {InstitutionAddFormComponent} from './back/program/institution/institution-add-form/institution-add-form.component';
-import {InstitutionUpdateFormComponent} from './back/program/institution/institution-update-form/institution-update-form.component';
+import {
+  InstitutionAddFormComponent
+} from './back/program/institution/institution-add-form/institution-add-form.component';
+import {
+  InstitutionUpdateFormComponent
+} from './back/program/institution/institution-update-form/institution-update-form.component';
 import {PaginationComponent} from './back/shared/pagination/pagination.component';
 import {InstitutionPanelComponent} from './back/program/institution/institution-panel/institution-panel.component';
-import {InstitutionUsersTableComponent} from './back/program/institution/institution-users-table/institution-users-table.component';
-import {InstitutionAddUserComponent} from './back/program/institution/institution-add-user/institution-add-user.component';
-import { ProgramTableComponent } from './back/program/program-table/program-table.component';
-import { ProgramAddFormComponent } from './back/program/program-add-form/program-add-form.component';
-import { ProgramUpdateFormComponent } from './back/program/program-update-form/program-update-form.component';
-import { ProgramClassesTableComponent } from './back/program/program-classes-table/program-classes-table.component';
-import { ProgramAddClassComponent } from './back/program/program-add-class/program-add-class.component';
-import { ProgramClassUsersTableComponent } from './back/program/program-class-users-table/program-class-users-table.component';
-import { ClassAddUserComponent } from './back/program/class/class-add-user/class-add-user.component';
-import { ClassUpdateComponent } from './back/program/class/class-update/class-update.component';
-import { UserProfileComponent } from './back/user/user-profile/user-profile.component';
-import { DevicesListComponent } from './back/user/devices-list/devices-list.component';
+import {
+  InstitutionUsersTableComponent
+} from './back/program/institution/institution-users-table/institution-users-table.component';
+import {
+  InstitutionAddUserComponent
+} from './back/program/institution/institution-add-user/institution-add-user.component';
+import {ProgramTableComponent} from './back/program/program-table/program-table.component';
+import {ProgramAddFormComponent} from './back/program/program-add-form/program-add-form.component';
+import {ProgramUpdateFormComponent} from './back/program/program-update-form/program-update-form.component';
+import {ProgramClassesTableComponent} from './back/program/program-classes-table/program-classes-table.component';
+import {ProgramAddClassComponent} from './back/program/program-add-class/program-add-class.component';
+import {
+  ProgramClassUsersTableComponent
+} from './back/program/program-class-users-table/program-class-users-table.component';
+import {ClassAddUserComponent} from './back/program/class/class-add-user/class-add-user.component';
+import {ClassUpdateComponent} from './back/program/class/class-update/class-update.component';
+import {UserProfileComponent} from './back/user/user-profile/user-profile.component';
+import {DevicesListComponent} from './back/user/devices-list/devices-list.component';
+import {ForgotPasswordComponent} from './back/auth/forgot-password/forgot-password.component';
+import {RecoverPasswordComponent} from './back/auth/recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +57,6 @@ import { DevicesListComponent } from './back/user/devices-list/devices-list.comp
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-    DashboardComponent,
     FrontheaderComponent,
     FrontfooterComponent,
     RegisterComponent,
@@ -72,7 +82,9 @@ import { DevicesListComponent } from './back/user/devices-list/devices-list.comp
     ClassAddUserComponent,
     ClassUpdateComponent,
     UserProfileComponent,
-    DevicesListComponent
+    DevicesListComponent,
+    ForgotPasswordComponent,
+    RecoverPasswordComponent
   ],
   imports: [
     BrowserModule,

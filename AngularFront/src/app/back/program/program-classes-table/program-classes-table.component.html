@@ -88,8 +88,8 @@
         (addForm)="handleAddFormToggle($event)"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
-        [programID] ="programID"
-        *ngIf="addForm">
+        *ngIf="addForm"
+        [programID]="programID">
         >
       </app-program-add-class>
       <app-class-update

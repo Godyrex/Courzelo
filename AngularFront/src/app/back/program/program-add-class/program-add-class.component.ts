@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../service/program/institution.service";
 import {ProgramService} from "../../../service/program/program.service";
 import {ClassDTO} from "../../../model/program/ClassDTO";
 
@@ -11,7 +10,7 @@ import {ClassDTO} from "../../../model/program/ClassDTO";
 })
 export class ProgramAddClassComponent {
   @Input() programID: string = '';
-  classRequest : ClassDTO = {};
+  classRequest: ClassDTO = {};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() addForm: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -37,7 +36,7 @@ export class ProgramAddClassComponent {
       this.programService.addClassToProgram(this.programID, this.classRequest)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit( " Class Added");
+            this.successMessage.emit(" Class Added");
             this.errorMessage.emit("");
           },
           error => {

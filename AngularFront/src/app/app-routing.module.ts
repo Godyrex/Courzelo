@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./front/home/home.component";
-import {DashboardComponent} from "./back/dashboard/dashboard.component";
 import {RegisterComponent} from "./back/auth/register/register.component";
 import {LoginComponent} from "./back/auth/login/login.component";
 import {LogoutComponent} from "./back/auth/logout/logout.component";
@@ -15,15 +14,13 @@ import {RoleGuardService} from "./service/user/guard/role-guard.service";
 import {ProgramTableComponent} from "./back/program/program-table/program-table.component";
 import {AuthGuardService} from "./service/user/guard/auth-guard.service";
 import {DevicesListComponent} from "./back/user/devices-list/devices-list.component";
+import {ForgotPasswordComponent} from "./back/auth/forgot-password/forgot-password.component";
+import {RecoverPasswordComponent} from "./back/auth/recover-password/recover-password.component";
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent
   },
   {
     path: 'signup',
@@ -36,6 +33,14 @@ const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'recover-password',
+    component: RecoverPasswordComponent
   },
   {
     path: 'settings',
@@ -59,10 +64,10 @@ const routes: Routes = [
   {
     path: 'superAdmin',
     component: PanelComponent,
-     canActivate: [RoleGuardService],
-     data: {
-       expectedRole: 'SUPERADMIN'
-     },
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: 'SUPERADMIN'
+    },
     children: [
       {
         path: 'users',

@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {InstitutionDTO} from "../../../model/program/InstitutionDTO";
 import {FormBuilder, Validators} from "@angular/forms";
-import {InstitutionService} from "../../../service/program/institution.service";
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramService} from "../../../service/program/program.service";
 
@@ -18,7 +16,7 @@ export class ProgramAddFormComponent {
   programForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(40)]],
     description: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
-    programType: ['',[Validators.required]],
+    programType: ['', [Validators.required]],
   });
 
   constructor(

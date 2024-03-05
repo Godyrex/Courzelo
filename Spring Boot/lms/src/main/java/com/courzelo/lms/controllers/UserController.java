@@ -1,11 +1,11 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.dto.*;
+import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.security.Response;
-import com.courzelo.lms.services.IDeviceMetadataService;
-import com.courzelo.lms.services.IPhotoService;
-import com.courzelo.lms.services.UserService;
+import com.courzelo.lms.services.user.IDeviceMetadataService;
+import com.courzelo.lms.services.user.IPhotoService;
+import com.courzelo.lms.services.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -85,17 +85,19 @@ public class UserController {
     public ResponseEntity<HttpStatus> deleteAccount(@Valid @RequestBody DeleteAccountDTO dto, Principal principal, HttpServletRequest request, HttpServletResponse response) {
         return userService.deleteAccount(dto, principal, request, response);
     }
+
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/device")
-    public ResponseEntity<HttpStatus> deleteDevice(@RequestParam String id){
+    public ResponseEntity<HttpStatus> deleteDevice(@RequestParam String id) {
         return iDeviceMetadataService.deleteDevice(id);
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/devices")
     public ResponseEntity<DeviceListDTO> getDevices(@RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "2") int sizePerPage,
-                                                 Principal principal
-                                                 ){
-        return iDeviceMetadataService.getDevices(page,sizePerPage,principal);
+                                                    @RequestParam(defaultValue = "2") int sizePerPage,
+                                                    Principal principal
+    ) {
+        return iDeviceMetadataService.getDevices(page, sizePerPage, principal);
     }
 }

@@ -1,10 +1,10 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.InstitutionDTO;
-import com.courzelo.lms.dto.InstitutionListDTO;
-import com.courzelo.lms.dto.InstitutionUsersCountDTO;
-import com.courzelo.lms.dto.UserListDTO;
-import com.courzelo.lms.services.IInstitutionService;
+import com.courzelo.lms.dto.program.InstitutionDTO;
+import com.courzelo.lms.dto.program.InstitutionListDTO;
+import com.courzelo.lms.dto.program.InstitutionUsersCountDTO;
+import com.courzelo.lms.dto.user.UserListDTO;
+import com.courzelo.lms.services.program.IInstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,16 +25,19 @@ public class InstitutionController {
                                                               @RequestParam(defaultValue = "2") int sizePerPage) {
         return iInstitutionService.getInstitutions(page, sizePerPage);
     }
+
     @PreAuthorize("hasRole('SUPERADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Boolean> addInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.addInstitution(institutionDTO);
     }
+
     @PreAuthorize("hasRole('SUPERADMIN')")
     @GetMapping("/get/{institutionID}")
     public ResponseEntity<InstitutionDTO> getInstitutionByID(@PathVariable String institutionID) {
         return iInstitutionService.getInstitutionByID(institutionID);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getMyInstitution")
     public ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal) {
@@ -46,6 +49,7 @@ public class InstitutionController {
     public ResponseEntity<InstitutionDTO> getInstitutionForAdmin(Principal principal) {
         return iInstitutionService.getInstitution(principal.getName());
     }
+
     @PreAuthorize("hasRole('SUPERADMIN')")
     @DeleteMapping("/{institutionID}")
     public ResponseEntity<Boolean> deleteInstitution(@PathVariable String institutionID) {
@@ -56,6 +60,7 @@ public class InstitutionController {
     public ResponseEntity<Boolean> updateInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.updateInstitution(institutionDTO);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/updateMine")
     public ResponseEntity<Boolean> updateMyInstitution(@RequestBody InstitutionDTO institutionDTO, Principal principal) {
@@ -90,6 +95,7 @@ public class InstitutionController {
     public ResponseEntity<Boolean> removeUserFromInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/countUsers")
     public ResponseEntity<InstitutionUsersCountDTO> countUsers(Principal principal) {

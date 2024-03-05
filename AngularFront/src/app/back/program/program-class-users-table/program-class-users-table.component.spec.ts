@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProgramClassUsersTableComponent } from './program-class-users-table.component';
+import {ProgramClassUsersTableComponent} from './program-class-users-table.component';
 
 describe('ProgramClassUsersTableComponent', () => {
   let component: ProgramClassUsersTableComponent;
@@ -8,9 +8,9 @@ describe('ProgramClassUsersTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProgramClassUsersTableComponent ]
+      declarations: [ProgramClassUsersTableComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ProgramClassUsersTableComponent);
     component = fixture.componentInstance;

@@ -1,7 +1,7 @@
 package com.courzelo.lms.repositories;
 
-import com.courzelo.lms.entities.Institution;
-import com.courzelo.lms.entities.Program;
+import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.institution.Program;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
