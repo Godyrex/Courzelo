@@ -3,6 +3,7 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.*;
 import com.courzelo.lms.security.Response;
+import com.courzelo.lms.services.IDeviceMetadataService;
 import com.courzelo.lms.services.IPhotoService;
 import com.courzelo.lms.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
     private final IPhotoService photoService;
+    private final IDeviceMetadataService iDeviceMetadataService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -83,5 +85,17 @@ public class UserController {
     public ResponseEntity<HttpStatus> deleteAccount(@Valid @RequestBody DeleteAccountDTO dto, Principal principal, HttpServletRequest request, HttpServletResponse response) {
         return userService.deleteAccount(dto, principal, request, response);
     }
-
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/delete/device")
+    public ResponseEntity<HttpStatus> deleteDevice(@RequestParam String id){
+        return iDeviceMetadataService.deleteDevice(id);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/devices")
+    public ResponseEntity<DeviceListDTO> getDevices(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "2") int sizePerPage,
+                                                 Principal principal
+                                                 ){
+        return iDeviceMetadataService.getDevices(page,sizePerPage,principal);
+    }
 }

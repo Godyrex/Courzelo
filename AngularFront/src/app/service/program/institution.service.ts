@@ -15,21 +15,11 @@ export class InstitutionService {
   constructor(private http: HttpClient) {
   }
 
-  getAllInstitutions(): Observable<InstitutionDTO[]> {
-    return this.http.get<InstitutionDTO[]>(`${this.baseUrl}/all`);
-  }
 
   addInstitution(institution: InstitutionDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/add`, institution);
   }
 
-  getInstitutionById(institutionID: string): Observable<InstitutionDTO> {
-    return this.http.get<InstitutionDTO>(`${this.baseUrl}/get/${institutionID}`);
-  }
-
-  getInstitutionForAdmin(): Observable<InstitutionDTO> {
-    return this.http.get<InstitutionDTO>(`${this.baseUrl}/`);
-  }
 
   countUsers(): Observable<InstitutionUsersCountDTO> {
     return this.http.get<InstitutionUsersCountDTO>(`${this.baseUrl}/countUsers`);
@@ -43,9 +33,6 @@ export class InstitutionService {
     return this.http.post<boolean>(`${this.baseUrl}/update`, institution);
   }
 
-  updateMyInstitution(institution: InstitutionDTO): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/updateMine`, institution);
-  }
 
   addUserToInstitution(institutionID: string, role: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()

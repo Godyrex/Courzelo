@@ -1,6 +1,9 @@
 package com.courzelo.lms.services;
 
+import com.courzelo.lms.dto.InstitutionDTO;
+import com.courzelo.lms.dto.InstitutionListDTO;
 import com.courzelo.lms.dto.UserDTO;
+import com.courzelo.lms.dto.UserListDTO;
 import com.courzelo.lms.entities.Role;
 import com.courzelo.lms.entities.User;
 import com.courzelo.lms.exceptions.UserNotFoundException;
@@ -11,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +86,37 @@ public class AdminService implements IAdminService {
         userRepository.save(user);
         return ResponseEntity.ok().body(new Response("Role removed!"));
     }
+
+    @Override
+    public ResponseEntity<UserListDTO> getUsers(int page, int sizePerPage) {
+        log.info("Getting all users");
+        try {
+            if (page < 0 || sizePerPage <= 0) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Pageable pageable = PageRequest.of(page, sizePerPage);
+            long totalItems = userRepository.count();
+            log.info("Total users: {}", totalItems);
+
+            int totalPages = (int) Math.ceil((double) totalItems / sizePerPage);
+            log.info("Total pages: {}", totalPages);
+
+            List<UserDTO> userDTOList = userRepository.findAll(pageable)
+                    .stream()
+                    .map(user -> modelMapper.map(user, UserDTO.class))
+                    .toList();
+
+            log.info("Users in page {}: {}", page, userDTOList);
+            UserListDTO userListDTO = new UserListDTO(userDTOList, totalPages);
+
+            return ResponseEntity.ok().body(userListDTO);
+        } catch (Exception e) {
+            log.error("Error retrieving users: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     private Boolean roleExist(String role) {
         boolean roleExists = false;

@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from './front/home/home.component';
 import {HeaderComponent} from './back/header/header.component';
-import {SidebarComponent} from './back/sidebar/sidebar.component';
+import {SidebarComponent} from './back/shared/sidebar/sidebar.component';
 import {FooterComponent} from './back/footer/footer.component';
 import {DashboardComponent} from './back/dashboard/dashboard.component';
 import {FrontheaderComponent} from './front/frontheader/frontheader.component';
@@ -18,7 +18,7 @@ import {LogoutComponent} from './back/auth/logout/logout.component';
 import {ProfileComponent} from './back/user/profile/profile.component';
 import {Interceptor} from "./service/user/auth/Interceptor";
 import {VerifyComponent} from './back/auth/verify/verify.component';
-import {AdminPanelComponent} from './back/user/admin-panel/admin-panel.component';
+import {PanelComponent} from './back/shared/panel/panel.component';
 import {InstitutionTableComponent} from './back/program/institution/institution-table/institution-table.component';
 import {UsersTableComponent} from './back/user/users-table/users-table.component';
 import {RouterOutlet} from "@angular/router";
@@ -36,6 +36,8 @@ import { ProgramAddClassComponent } from './back/program/program-add-class/progr
 import { ProgramClassUsersTableComponent } from './back/program/program-class-users-table/program-class-users-table.component';
 import { ClassAddUserComponent } from './back/program/class/class-add-user/class-add-user.component';
 import { ClassUpdateComponent } from './back/program/class/class-update/class-update.component';
+import { UserProfileComponent } from './back/user/user-profile/user-profile.component';
+import { DevicesListComponent } from './back/user/devices-list/devices-list.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,7 @@ import { ClassUpdateComponent } from './back/program/class/class-update/class-up
     LogoutComponent,
     ProfileComponent,
     VerifyComponent,
-    AdminPanelComponent,
+    PanelComponent,
     InstitutionTableComponent,
     UsersTableComponent,
     InstitutionAddFormComponent,
@@ -68,7 +70,9 @@ import { ClassUpdateComponent } from './back/program/class/class-update/class-up
     ProgramAddClassComponent,
     ProgramClassUsersTableComponent,
     ClassAddUserComponent,
-    ClassUpdateComponent
+    ClassUpdateComponent,
+    UserProfileComponent,
+    DevicesListComponent
   ],
   imports: [
     BrowserModule,

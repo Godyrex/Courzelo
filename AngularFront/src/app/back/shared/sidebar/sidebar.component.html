@@ -38,15 +38,21 @@
           <a class="nav-link" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" (click)="toggleMenu()">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              User
+              Settings
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li *ngIf="auth" class="nav-item">
-              <a class="nav-link" routerLink="/profile" routerLinkActive="active">
+              <a class="nav-link" routerLink="/settings/profile" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Profile</p>
+                <p>My profile</p>
+              </a>
+            </li>
+            <li *ngIf="auth" class="nav-item">
+              <a class="nav-link" routerLink="/settings/devices" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>My devices</p>
               </a>
             </li>
           </ul>
