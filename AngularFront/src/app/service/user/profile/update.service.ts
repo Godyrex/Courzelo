@@ -6,6 +6,7 @@ import {NameRequest} from "../../../model/user/NameRequest";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {map, Observable} from "rxjs";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
+import {LoginResponse} from "../../../model/user/LoginResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,9 @@ export class UpdateService {
 
   getPhoto(photoId: string) {
     return this.http.get(`${this.baseUrl}/photo/${photoId}`, {responseType: 'blob'});
+  }
+  getMyInfo() {
+    return this.http.get<LoginResponse>(`${this.baseUrl}/myInfo`);
   }
 
   deleteAccount(password: DeleteAccountRequest) {

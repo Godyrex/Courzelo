@@ -7,16 +7,16 @@
            class="profile-user-img img-fluid img-circle">
     </div>
 
-    <h3 class="profile-username text-center">{{fullName}}</h3>
+    <h3 class="profile-username text-center">{{loginResponse.name+" "+loginResponse.lastname }}</h3>
 
-    <p class="text-muted text-center">{{email}}</p>
+    <p class="text-muted text-center">{{loginResponse.email}}</p>
 
     <ul class="list-group list-group-unbordered mb-3">
-      <li *ngIf="institutionName" class="list-group-item">
-        <b>Institution</b> <a class="float-right">{{ institutionName }}</a>
+      <li *ngIf="loginResponse.institution" class="list-group-item">
+        <b>Institution</b> <a class="float-right">{{ loginResponse.institution }}</a>
       </li>
-      <li *ngIf="institutionClassName" class="list-group-item">
-        <b>Class</b> <a class="float-right">{{ institutionClassName }}</a>
+      <li *ngIf="loginResponse.institutionClass" class="list-group-item">
+        <b>Class</b> <a class="float-right">{{ loginResponse.institutionClass }}</a>
       </li>
     </ul>
   </div>

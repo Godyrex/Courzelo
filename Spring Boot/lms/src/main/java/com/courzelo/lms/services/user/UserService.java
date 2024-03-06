@@ -4,14 +4,21 @@ import com.courzelo.lms.dto.user.DeleteAccountDTO;
 import com.courzelo.lms.dto.user.PasswordDTO;
 import com.courzelo.lms.dto.user.ProfileDTO;
 import com.courzelo.lms.dto.user.UpdateEmailDTO;
+import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.entities.user.VerificationTokenType;
+import com.courzelo.lms.exceptions.ClassNotFoundException;
+import com.courzelo.lms.exceptions.InstitutionNotFoundException;
 import com.courzelo.lms.exceptions.PasswordResetTokenExpiredException;
 import com.courzelo.lms.exceptions.PasswordResetTokenNotFoundException;
 import com.courzelo.lms.exceptions.UserNotFoundException;
+import com.courzelo.lms.repositories.ClassRepository;
+import com.courzelo.lms.repositories.InstitutionRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.repositories.VerificationTokenRepository;
+import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +39,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -44,14 +53,18 @@ public class UserService implements UserDetailsService {
     private final IPhotoService iPhotoService;
     private final IAuthService iAuthService;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final ClassRepository classRepository;
+    private final InstitutionRepository institutionRepository;
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository) {
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
         this.iPhotoService = iPhotoService;
         this.iAuthService = iAuthService;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.classRepository = classRepository;
+        this.institutionRepository = institutionRepository;
     }
 
     @Override
@@ -94,6 +107,32 @@ public class UserService implements UserDetailsService {
     public User getUserByID(String userID) {
         return userRepository.findById(userID)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
+    }
+    public JwtResponse getMyInfo(String email) {
+     User user= userRepository.findUserByEmail(email);
+        List<String> roles = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        Institution institution = null;
+        Class institutionClass = null;
+        if (user.getInstitution() != null) {
+            institution = institutionRepository.findById(user.getInstitution().getId())
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
+        }
+        if (user.getStclass() != null) {
+            institutionClass = classRepository.findById(user.getStclass().getId())
+                    .orElseThrow(() -> new ClassNotFoundException("Class not found"));
+        }
+        log.info(user.getPhoto().getId());
+        return new JwtResponse(
+                user.getEmail(),
+                user.getName(),
+                user.getLastName(),
+                roles,
+                user.getPhoto() != null ? user.getPhoto().getId() : null,
+                institution != null ? institution.getName() : null,
+                institutionClass != null ? institutionClass.getName() : null
+                );
     }
 
     public ResponseEntity<Response> changePassword(PasswordDTO passwordDTO, String email) {
