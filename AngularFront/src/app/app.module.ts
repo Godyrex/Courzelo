@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-<<<<<<< Updated upstream
 import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [
-    AppComponent
-=======
+
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from './front/home/home.component';
@@ -54,49 +50,12 @@ import { UpdateTComponent } from './front/typereclamation/update-t/update-t.comp
 import { ListReclamationComponent } from './front/typereclamation/reclamation/list-reclamation/list-reclamation.component';
 import { EditReclamationComponent } from './front/typereclamation/reclamation/edit-reclamation/edit-reclamation.component';
 
+
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    HeaderComponent,
-    SidebarComponent,
-    FooterComponent,
-    DashboardComponent,
-    FrontheaderComponent,
-    FrontfooterComponent,
-    RegisterComponent,
-    LoginComponent,
-    LogoutComponent,
-    ProfileComponent,
-    VerifyComponent,
-    PanelComponent,
-    InstitutionTableComponent,
-    UsersTableComponent,
-    InstitutionAddFormComponent,
-    InstitutionUpdateFormComponent,
-    PaginationComponent,
-    InstitutionPanelComponent,
-    InstitutionUsersTableComponent,
-    InstitutionAddUserComponent,
-    ProgramTableComponent,
-    ProgramAddFormComponent,
-    ProgramUpdateFormComponent,
-    ProgramClassesTableComponent,
-    ProgramAddClassComponent,
-    ProgramClassUsersTableComponent,
-    ClassAddUserComponent,
-    ClassUpdateComponent,
-    UserProfileComponent,
-    DevicesListComponent,
-    AddReclamationComponent,
-    ListReclamationsComponent,
-    UpdateReclamationComponent,
-    ListTypesComponent,
-    AddTypeComponent,
-    UpdateTComponent,
-    ListReclamationComponent,
-    EditReclamationComponent
->>>>>>> Stashed changes
+    declarations: [
+      HomeComponent,
+      
   ],
   imports: [
     BrowserModule
