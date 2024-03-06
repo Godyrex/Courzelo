@@ -7,6 +7,7 @@ import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.exceptions.DeviceNotFoundException;
 import com.courzelo.lms.repositories.DeviceMetadataRepository;
 import com.courzelo.lms.repositories.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -16,10 +17,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +72,34 @@ public class DeviceMetadataService implements IDeviceMetadataService {
         }
         log.info("Device not found!");
         return true;
+    }
+
+    private static final List<String> POSSIBLE_IP_HEADERS = List.of(
+            "X-Forwarded-For",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENT_IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "HTTP_VIA",
+            "REMOTE_ADDR"
+    );
+    public String getIpAddressFromHeader(HttpServletRequest request) {
+        for (String ipHeader : POSSIBLE_IP_HEADERS) {
+            String headerValue = Collections.list(request.getHeaders(ipHeader)).stream()
+                    .filter(StringUtils::hasLength)
+                    .findFirst()
+                    .orElse(null);
+
+            if (headerValue != null) {
+                return headerValue;
+            }
+        }
+
+        return null;
     }
 
     @Override

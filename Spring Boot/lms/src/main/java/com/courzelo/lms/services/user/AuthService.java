@@ -17,6 +17,7 @@ import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.security.jwt.JWTUtils;
 import com.courzelo.lms.utils.CookieUtil;
+import com.courzelo.lms.utils.GeoIPService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,6 +64,7 @@ public class AuthService implements IAuthService {
     private final CookieUtil cookieUtil;
     private final EmailService emailService;
     private final IDeviceMetadataService iDeviceMetadataService;
+    private final GeoIPService geoIPService;
     @Value("${Security.app.jwtExpirationMs}")
     private long jwtExpirationMs;
     @Value("${Security.app.refreshExpirationMs}")
@@ -70,12 +72,19 @@ public class AuthService implements IAuthService {
     @Value("${Security.app.refreshRememberMeExpirationMs}")
     private long refreshRememberMeExpirationMs;
 
-    public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response, String userAgent) {
+    public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response,@NonNull HttpServletRequest request, String userAgent) {
         log.info("Starting Logging in...");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
+            String ip =iDeviceMetadataService.getIpAddressFromHeader(request);
+            log.info("ip :"+request.getRemoteAddr());
+            log.info("host :"+request.getRemoteHost());
+            log.info("user :"+request.getRemoteUser());
+                String city = geoIPService.cityName(ip);
+                log.info("city :"+city);
+
             if (!iDeviceMetadataService.isNewDevice(userAgent, checkUser)) {
                 iDeviceMetadataService.updateDeviceLastLogin(userAgent, checkUser);
                 log.info("Finished Logging in...");

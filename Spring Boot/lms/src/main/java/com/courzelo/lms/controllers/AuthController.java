@@ -14,6 +14,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ public class AuthController {
     }
 
     @PostMapping("/signing")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {
-        return iAuthService.loginUser(loginDTO, response, userAgent);
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response,HttpServletRequest request, @RequestHeader(value = "User-Agent") String userAgent) {
+        return iAuthService.loginUser(loginDTO, response,request, userAgent);
     }
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user, @RequestHeader(value = "User-Agent") String userAgent) {

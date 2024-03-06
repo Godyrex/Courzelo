@@ -9,6 +9,7 @@ import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 
 import java.io.UnsupportedEncodingException;
@@ -20,7 +21,7 @@ public interface IAuthService {
 
     ResponseEntity<?> confirmDevice(String userAgent, HttpServletResponse response, LoginDTO loginDTO, Integer code);
 
-    ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response, String userAgent);
+    ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response,HttpServletRequest request, String userAgent);
 
     void logout(HttpServletResponse response);
 
