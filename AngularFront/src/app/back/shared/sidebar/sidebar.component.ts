@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {UpdateService} from "../../../service/user/profile/update.service";
+import {LoginResponse} from "../../../model/user/LoginResponse";
 
 @Component({
   selector: 'app-sidebar',
@@ -8,13 +9,12 @@ import {UpdateService} from "../../../service/user/profile/update.service";
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  fullName: string = `${this.token.getUser().name} ${this.token.getUser().lastname}`;
-  userRoles = this.token.getUser().roles!;
   auth = this.token.isAuthenticated();
   userPhotoUrl: any;
   isMenuOpen: boolean = false;
   isSuperAdminMenuOpen: boolean = false;
   isAdminMenuOpen: boolean = false;
+  loginResponse : LoginResponse = {}
 
   constructor(
     private token: TokenStorageService,
@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
   }
 
   getImage() {
-    this.updateService.getPhoto(this.token.getUser().photoID!).subscribe((data: Blob) => {
+    this.updateService.getPhoto(this.loginResponse.photoID!).subscribe((data: Blob) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.userPhotoUrl = reader.result;
@@ -43,8 +43,16 @@ export class SidebarComponent implements OnInit {
       reader.readAsDataURL(data);
     });
   }
-
+  getMyInfo(){
+    this.updateService.getMyInfo().subscribe(
+      response => {
+        this.loginResponse = response;
+        this.getImage();
+        console.log(response);
+      }
+    )
+  }
   ngOnInit(): void {
-    this.getImage();
+this.getMyInfo()
   }
 }

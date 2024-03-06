@@ -2,6 +2,7 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.user.*;
+import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IDeviceMetadataService;
 import com.courzelo.lms.services.user.IPhotoService;
@@ -43,6 +44,11 @@ public class UserController {
     @GetMapping("/{userID}")
     public UserDTO getUserByID(@PathVariable String userID) {
         return modelMapper.map(userService.getUserByID(userID), UserDTO.class);
+    }
+    @GetMapping("/myInfo")
+    public JwtResponse getMyInfo(Principal principal) {
+
+        return userService.getMyInfo(principal.getName());
     }
 
     @DeleteMapping("/{userID}")
