@@ -1,0 +1,36 @@
+
+<div class="wrapper">
+
+    <div class="error-404 d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="card py-5">
+                <div class="row g-0">
+                    <div class="col col-xl-5">
+                        <div class="card-body p-4" *ngIf="valeur !='notAccess'">
+                            <h1 class="display-1"><span class="text-primary">4</span><span class="text-danger">0</span><span class="text-success">4</span></h1>
+                            <h2 class="font-weight-bold display-4">Lost in Space</h2>
+                            <p>You have reached the edge of the universe.
+                                <br>The page you requested could not be found.
+                                <br>Dont'worry and return to the previous page.</p>
+                            <div class="mt-5"> <button class="btn btn-primary btn-lg px-md-5 radius-30" (click)="goHome()">Go Home</button>
+                            </div>
+                        </div>
+                        <div class="card-body p-4" *ngIf="valeur =='notAccess'">
+                          <h1 class="display-1"><span class="text-primary">4</span><span class="text-danger">0</span><span class="text-success">3</span></h1>
+                          <h2 class="font-weight-bold display-4">ACCESS DENIED</h2>
+                          <p> Oops, You don't have permission to access this page.
+                              <br> A web server may return a 403 Forbidden HTTP status code in response to a request from a client for a web page or resource to indicate that the server can be reached and understood the request, but refuses to take any further action. Status code 403 responses are the result of the web server being configured to deny access, for some reason, to the requested resource by the client.</p>
+                          <div class="mt-5"> <button class="btn btn-primary btn-lg px-md-5 radius-30" (click)="goHome()">Go Home</button>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-7">
+                        <img src="" class="img-fluid" alt="">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,34 @@
+<!-- Add University Form -->
+<div class="row">
+    <div class="col-xl-12 mx-auto">
+        <form [formGroup]="formGroup" class="row mb-2">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="name">Nom de publication</label>
+                    <input type="text" class="form-control" id="name" name="name" formControlName="name" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" formControlName="description"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="userId">userId</label>
+                    <input type="text" class="form-control" id="userId" name="userId"
+                        formControlName="userId" required>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" (click)="edit()">Modifer</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- /.card -->
