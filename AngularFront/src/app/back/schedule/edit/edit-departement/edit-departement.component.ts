@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Departement} from "../../../model/schedule/departement";
+
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {DepartmentService} from "../../../service/schedule/department.service";
+
 import {ActivatedRoute, Router} from "@angular/router";
 import Swal from "sweetalert2";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {DepartmentService} from "../../../../service/schedule/department.service";
+import {Departement} from "../../../../model/schedule/departement";
 
 @Component({
   selector: 'app-edit-departement',
@@ -28,7 +30,7 @@ export class EditDepartementComponent implements OnChanges{
     this.editDepartFormGroup = this.fb.group({
       name: [this.departmentToUpdate.name, [Validators.required, Validators.maxLength(40)]],
       chefDepartment: [this.departmentToUpdate.chefDepartment, [Validators.required, Validators.maxLength(80)]],
-      fieldOfStudies: [this.departmentToUpdate.fieldOfStudies, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
+     // fieldOfStudies: [this.departmentToUpdate.fieldOfStudies, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
     });
   }
   close() {
@@ -63,7 +65,7 @@ export class EditDepartementComponent implements OnChanges{
     this.editDepartFormGroup.patchValue({
       name: this.departmentToUpdate.name,
       chefDepartment: this.departmentToUpdate.chefDepartment,
-      fieldOfStudies: this.departmentToUpdate.fieldOfStudies
+      //fieldOfStudies: this.departmentToUpdate.fieldOfStudies
     });
   }
 

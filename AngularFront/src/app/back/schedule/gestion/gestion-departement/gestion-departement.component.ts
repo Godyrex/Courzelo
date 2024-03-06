@@ -1,11 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Departement} from "../../../model/schedule/departement";
-import {DepartmentService} from "../../../service/schedule/department.service";
+
 import {Router} from "@angular/router";
 import Swal from "sweetalert2";
 
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {AddDepartementComponent} from "../../add/add-departement/add-departement.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Departement} from "../../../../model/schedule/departement";
+import {DepartmentService} from "../../../../service/schedule/department.service";
 
 @Component({
   selector: 'app-gestion-departement',
@@ -37,7 +40,10 @@ export class GestionDepartementComponent {
 
 constructor(private departmentService: DepartmentService,
             private fb: FormBuilder,
-            private router: Router) {
+            private router: Router,
+            private dialog: MatDialog,
+)
+{
 }
 
   ngOnInit(): void {
@@ -182,7 +188,16 @@ constructor(private departmentService: DepartmentService,
       this.handleSearchDepartments();
     }
   }
+  openAddDepartmentDialog(): void {
+    const dialogRef = this.dialog.open(AddDepartementComponent, {
+      width: '600px' // Set width as per your requirement
+    });
 
+    dialogRef.componentInstance.departmentAdded.subscribe((newDepart: Departement) => {
+      // Handle department added event if needed
+      this.departments.push(newDepart);
+    });
+  }
 
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, map, Observable, of, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, Observable, of, throwError} from "rxjs";
 import {Departement} from "../../model/schedule/departement";
 import {environment} from "../../../environment/environment";
 import {JsonResponse} from "../../model/user/JsonResponse";
@@ -12,6 +12,8 @@ import {FieldOfStudy} from "../../model/schedule/field-of-study";
 export class DepartmentService {
     private baseUrl = 'http://localhost:8081/api/departments';
   departments: Departement[] = [];
+  private departmentsSubject = new BehaviorSubject<Departement[]>([]);
+  departments$: Observable<Departement[]> = this.departmentsSubject.asObservable();
 
   constructor(private http: HttpClient) { }
   /*  public getDepartment(id: number): Observable<Departement> {
@@ -21,6 +23,12 @@ export class DepartmentService {
       console.log('Departments:', this.departments);
         return this.http.get<Departement[]>(this.baseUrl);
     }
+
+  addDepartment(department: Departement): void {
+    const currentDepartments = this.departmentsSubject.value;
+    const updatedDepartments = [...currentDepartments, department];
+    this.departmentsSubject.next(updatedDepartments);
+  }
  public getDepartementByID(id: string): Observable<Departement> {
     return this.http.get<Departement>(`${this.baseUrl}/${id}`);
   }

@@ -38,10 +38,10 @@
                 <h3 class="page-title">Departments</h3>
               </div>
               <div class="col-auto text-end float-end ms-auto download-grp">
-                <a (click)="showAddForm()"  class="btn btn-primary">
+                <button mat-button (click)="openAddDepartmentDialog()">Add Department</button>
 
                   <i class="fas fa-plus"></i>
-                </a>
+
               </div>
             </div>
             <div class="row align-items-center">
@@ -114,13 +114,8 @@
       <div class="row">
         <div class="col-12">
 
-          <app-add-departement>
-            *ngIf="addFormVisible"
-            (addForm)=" handleAddFormToggle($event)"
-            (errorMessage)="handleErrorMessage($event)"
-            (successMessage)="handleSuccessMessage($event)"
 
-          </app-add-departement>
+
           <app-edit-departement
             *ngIf="isEditFormVisible"
             [departmentToUpdate]=" selectedDepartment"

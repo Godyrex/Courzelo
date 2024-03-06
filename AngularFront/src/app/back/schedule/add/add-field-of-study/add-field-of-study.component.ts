@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import {Departement} from "../../../model/schedule/departement";
+
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 
-import {FieldOfstudyService} from "../../../service/schedule/field-ofstudy.service";
+
 import Swal from "sweetalert2";
-import {FieldOfStudy} from "../../../model/schedule/field-of-study";
-import {DepartmentService} from "../../../service/schedule/department.service";
+import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
+import {Departement} from "../../../../model/schedule/departement";
+import {DepartmentService} from "../../../../service/schedule/department.service";
+import {FieldOfStudy} from "../../../../model/schedule/field-of-study";
+
 
 @Component({
   selector: 'app-add-field-of-study',
