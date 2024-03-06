@@ -26,7 +26,7 @@ public interface IAuthService {
 
     ResponseEntity<Response> verifyAccount(String code);
 
-    ResponseEntity<Boolean> isAuthenticated(HttpServletRequest request);
+    ResponseEntity<Boolean> isAuthenticated(Principal principal);
 
     ResponseEntity<List<Role>> getRole(Principal principal);
 

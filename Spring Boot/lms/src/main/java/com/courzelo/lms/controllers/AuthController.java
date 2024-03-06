@@ -62,8 +62,8 @@ public class AuthController {
     }
 
     @GetMapping("/isAuthenticated")
-    public ResponseEntity<Boolean> isAuthenticated(HttpServletRequest request) {
-        return iAuthService.isAuthenticated(request);
+    public ResponseEntity<Boolean> isAuthenticated(Principal principal) {
+        return iAuthService.isAuthenticated(principal);
     }
 
     @GetMapping("/getRole")

@@ -37,9 +37,22 @@ public class DeviceMetadataService implements IDeviceMetadataService {
         DeviceMetadata deviceMetadata = new DeviceMetadata();
         deviceMetadata.setDeviceDetails(device);
         deviceMetadata.setUser(user);
-        deviceMetadata.setLastLoggedIn(Instant.now());
+        deviceMetadata.setLastLoggedIn(Instant.now().plusSeconds(3600));
         deviceMetadataRepository.save(deviceMetadata);
         log.info("Device Saved!");
+    }
+
+    @Override
+    public void updateDeviceLastLogin(String userAgent, User user) {
+        log.info("Searching for Device...");
+        List<DeviceMetadata> devices = deviceMetadataRepository.findByUser(user);
+        for (DeviceMetadata device : devices) {
+            if (device.getDeviceDetails().equals(userAgent)) {
+                device.setLastLoggedIn(Instant.now().plusSeconds(3600));
+                deviceMetadataRepository.save(device);
+                log.info("Device updated!");
+            }
+        }
     }
 
     @Override

@@ -77,6 +77,7 @@ public class AuthService implements IAuthService {
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
             if (!iDeviceMetadataService.isNewDevice(userAgent, checkUser)) {
+                iDeviceMetadataService.updateDeviceLastLogin(userAgent, checkUser);
                 log.info("Finished Logging in...");
                 return authenticateUser(authentication, response, loginDTO);
             } else {
@@ -217,9 +218,8 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public ResponseEntity<Boolean> isAuthenticated(@NonNull HttpServletRequest request) {
-        String accessToken = cookieUtil.getAccessTokenFromCookies(request);
-        if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+    public ResponseEntity<Boolean> isAuthenticated(Principal principal) {
+        if (principal != null) {
             log.info("User authenticated");
             return ResponseEntity.ok().body(true);
         }
