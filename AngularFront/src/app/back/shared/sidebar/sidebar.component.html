@@ -15,7 +15,7 @@
         <img [src]="userPhotoUrl" alt="User Image" class="img-circle elevation-2">
       </div>
       <div class="info">
-        <a class="d-block" routerLink="/profile">{{loginResponse.name+" "+loginResponse.lastname }}</a>
+        <a class="d-block" routerLink="/settings/profile">{{loginResponse.name+" "+loginResponse.lastname }}</a>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
-        <li class="nav-item menu-close">
+        <li class="nav-item " [ngClass]="{'menu-open': isMenuOpen, 'menu-close': !isMenuOpen}">
           <a (click)="toggleMenu()" [ngClass]="{'active': isMenuOpen, '': !isMenuOpen}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -43,13 +43,13 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li *ngIf="auth" class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" routerLink="/settings/profile" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>My profile</p>
               </a>
             </li>
-            <li *ngIf="auth" class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" routerLink="/settings/devices" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>My devices</p>
@@ -57,7 +57,7 @@
             </li>
           </ul>
         </li>
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_SUPERADMIN')" class="nav-item menu-close">
+        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_SUPERADMIN')" class="nav-item" [ngClass]="{'menu-open': isSuperAdminMenuOpen, 'menu-close': !isSuperAdminMenuOpen}">
           <a (click)="toggleSuperAdminMenu()" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}"
              class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -82,7 +82,7 @@
           </ul>
         </li>
 
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item menu-close">
+        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item" [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
           <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>

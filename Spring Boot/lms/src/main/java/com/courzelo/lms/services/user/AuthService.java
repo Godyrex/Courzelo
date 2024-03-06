@@ -220,8 +220,10 @@ public class AuthService implements IAuthService {
     public ResponseEntity<Boolean> isAuthenticated(@NonNull HttpServletRequest request) {
         String accessToken = cookieUtil.getAccessTokenFromCookies(request);
         if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+            log.info("User authenticated");
             return ResponseEntity.ok().body(true);
         }
+        log.info("User not authenticated");
         return ResponseEntity.ok().body(false);
     }
 

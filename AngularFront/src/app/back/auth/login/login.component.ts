@@ -61,8 +61,7 @@ export class LoginComponent {
             console.log(this.loginRequest.rememberMe)
             this.message = '';
             this.loginResponse = response;
-            this.token.saveUser(response);
-            this.router.navigate(['']);
+            this.router.navigate(['settings/profile']);
           }
         },
         error => {

@@ -5,6 +5,7 @@ import com.courzelo.lms.dto.program.InstitutionListDTO;
 import com.courzelo.lms.dto.program.InstitutionUsersCountDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.services.program.IInstitutionService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/institution")
 @RestController
 @RequiredArgsConstructor
+@RateLimiter(name = "backend")
 public class InstitutionController {
     private final IInstitutionService iInstitutionService;
 
@@ -78,19 +80,19 @@ public class InstitutionController {
         return iInstitutionService.getInstitutionUsers(institutionID, principal, role, page, sizePerPage);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/add/user/{userEmail}/{role}")
     public ResponseEntity<Boolean> addUserToInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, @PathVariable String role, Principal principal) {
         return iInstitutionService.addUserToInstitution(institutionID, userEmail, role, principal);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{institutionID}/{userEmail}")
     public ResponseEntity<Boolean> removeUser(@PathVariable String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{userEmail}")
     public ResponseEntity<Boolean> removeUserFromInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);

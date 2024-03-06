@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../service/user/auth/token-storage.service";
+import {AuthGuardService} from "../../service/user/guard/auth-guard.service";
+import {UpdateService} from "../../service/user/profile/update.service";
+import {LoginResponse} from "../../model/user/LoginResponse";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-frontheader',
@@ -7,16 +11,24 @@ import {TokenStorageService} from "../../service/user/auth/token-storage.service
   styleUrls: ['./frontheader.component.css']
 })
 export class FrontheaderComponent implements OnInit {
-  userRoles: string[] = [];
-  auth: boolean = false;
+  userRoles: LoginResponse = {};
+  auth: any = false;
 
-  constructor(private tokenStorageService: TokenStorageService) {
+  constructor(private updateService : UpdateService,
+     private authGuardService: AuthGuardService) {
   }
 
   ngOnInit(): void {
-    this.userRoles = this.tokenStorageService.getUser().roles!;
-    this.auth = this.tokenStorageService.isAuthenticated();
-    console.log(this.auth)
+  this.getMyInfo();
+  this.auth = this.authGuardService.canActivate();
+  console.log("User Authenticated : "+this.auth)
   }
-
+  getMyInfo(){
+    this.updateService.getMyInfo().subscribe(
+      response => {
+        this.userRoles = response;
+        console.log(response);
+      }
+    )
+  }
 }
