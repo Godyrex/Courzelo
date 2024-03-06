@@ -1,0 +1,93 @@
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a routerLink="/"><b>Cour</b>zelo</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">Register a new membership</p>
+
+      <form (ngSubmit)="registerUser()" [formGroup]="registerForm">
+        <div *ngIf="messageSuccess" class="message-container" id="message-sucess">{{messageSuccess}}</div>
+        <div *ngIf="message" class="text-danger" id="message-error">{{message}}</div>
+        <div class="input-group mb-3">
+          <input class="form-control"
+                 formControlName="email" placeholder="Email" type="email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-1">
+          <div *ngIf="registerForm.controls['email'].touched && registerForm.controls['email']?.invalid"
+               class="text-danger">
+            email must be a valid email address
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input class="form-control" formControlName="name" placeholder="Name" type="text">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <div *ngIf="registerForm.controls['name'].touched && registerForm.controls['name']?.invalid"
+               class="text-danger">
+            name must be at least 3 characters and maximum 20 characters
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input class="form-control" formControlName="lastname" placeholder="Lastname" type="text">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <div *ngIf="registerForm.controls['lastname'].touched && registerForm.controls['lastname']?.invalid"
+               class="text-danger">
+            lastname must be at least 3 characters and maximum 20 characters
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input class="form-control" formControlName="password" placeholder="Password" type="password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+          <div *ngIf="registerForm.controls['password'].touched && registerForm.controls['password']?.invalid"
+               class="text-danger">
+            Password must be at least 8 characters and maximum 50 characters
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input class="form-control" formControlName="confirmPassword" placeholder="Retype password" type="password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-1">
+          <div *ngIf="registerForm.controls['confirmPassword'].errors?.['confirmedValidator']"
+               class="text-danger">
+            Passwords must match
+          </div>
+        </div>
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-4">
+            <button class="btn btn-primary btn-block" type="submit">Register</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      <a class="text-center" routerLink="/login">I already have a membership</a>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+</body>

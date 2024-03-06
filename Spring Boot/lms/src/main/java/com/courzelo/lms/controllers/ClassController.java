@@ -1,43 +1,63 @@
 package com.courzelo.lms.controllers;
 
-
-import com.courzelo.lms.entities.Class;
-import com.courzelo.lms.entities.Program;
-import com.courzelo.lms.services.ClassService;
-import com.courzelo.lms.services.ProgramService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.courzelo.lms.dto.program.ClassDTO;
+import com.courzelo.lms.dto.user.UserListDTO;
+import com.courzelo.lms.services.program.IClassService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
+@RequestMapping("/api/v1/class")
 @RestController
-@RequestMapping("/class")
-@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class ClassController {
+    private final IClassService iClassService;
 
-    @Autowired
-    ClassService classService;
+    @PostMapping("/add")
+    public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
+        return iClassService.addClass(classDTO);
+    }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<ClassDTO>> getClasses() {
+        return iClassService.getClasses();
+    }
 
-    @PostMapping()
-    public void saveClass(@RequestBody Class classe){
-        classService.saveClass(classe);
+    @DeleteMapping("/delete/{classID}")
+    public ResponseEntity<Boolean> deleteClass(@PathVariable String classID) {
+        return iClassService.deleteClass(classID);
     }
-    @PutMapping()
-    public void updateClass(@RequestBody Class classe){
-        classService.updateClass(classe);
+
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateClass(@RequestBody ClassDTO classDTO) {
+        return iClassService.updateClass(classDTO);
     }
-    @GetMapping("/{classId}")
-    public Class getClassByID(@PathVariable String classId){
-        return classService.getClassByID(classId);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getClassUsers/{role}")
+    public ResponseEntity<UserListDTO> getClassUsers(@RequestParam(required = false) String classID,
+                                                     Principal principal,
+                                                     @PathVariable String role,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "2") int sizePerPage) {
+        return iClassService.getClassUsers(classID, principal, role, page, sizePerPage);
     }
-    @GetMapping()
-    public List<Class> getClasss(){
-        return  classService.getClasss();
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/add/user/{userEmail}/{role}")
+    public ResponseEntity<Boolean> addUserToClass(@RequestParam String id, @PathVariable String userEmail, @PathVariable String role) {
+        return iClassService.addUserToClass(id, userEmail, role);
     }
-    @DeleteMapping("/{id}")
-    public String  DeleteClasss(@PathVariable String id){
-        classService.deleteClass(id);
-        return  "delete";
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/remove/user/{userEmail}")
+    public ResponseEntity<Boolean> removeUser(@RequestParam String classID, @PathVariable String userEmail) {
+        return iClassService.removeUser(classID, userEmail);
     }
 }

@@ -1,0 +1,111 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">Class</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <!-- Notification area -->
+      <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
+        <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
+        {{ messageSuccess }}
+      </div>
+      <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
+        <button (click)="resetErrorAlert()" class="close" type="button">×</button>
+        {{ messageError }}
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Classes Table</h3>
+          <div class="card-tools">
+            <button (click)="close()" class="btn btn-tool" type="button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover text-nowrap">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Capacity</th>
+              <th>Teachers</th>
+              <th>Students</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let classe of classDTOS">
+              <td>{{ classe.id }}</td>
+              <td>{{ classe.name }}</td>
+              <td>{{ classe.capacity }}</td>
+              <td>
+                <button (click)="showClassesUsersTable(teachers,classe.id!)" class="btn btn-link">
+                  <i class="fas fa-user-shield mr-1" style="color: blue;"></i>Teachers
+                </button>
+              </td>
+              <td>
+                <button (click)="showClassesUsersTable(students,classe.id!)" class="btn btn-link">
+                  <i class="fas fa-chalkboard-teacher mr-1" style="color: green;"></i>Students
+                </button>
+              </td>
+              <td>
+                <button (click)="showUpdateForm(classe)" class="btn btn-info btn-sm">Update</button>
+              </td>
+              <td>
+                <button (click)="removeClass(classe.id!)" class="btn btn-danger btn-sm">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <button (click)="showAddForm()" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add class
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination
+          (pageChanged)="onPageChange($event)"
+          [totalPages]="totalPages">
+        </app-pagination>
+        <!-- /.card-body -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-program-add-class
+        (addForm)="handleAddFormToggle($event)"
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        *ngIf="addForm"
+        [programID]="programID">
+        >
+      </app-program-add-class>
+      <app-class-update
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        (updateForm)="handleUpdateFormToggle($event)"
+        *ngIf="updateForm"
+        [classToUpdate]="selectedClass">
+      </app-class-update>
+      <app-program-class-users-table
+        (updateForm)="handleUsersTableToggle($event)"
+        *ngIf="usersTable"
+        [classID]="selectedClassUsers"
+        [role]="role"
+      ></app-program-class-users-table>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+

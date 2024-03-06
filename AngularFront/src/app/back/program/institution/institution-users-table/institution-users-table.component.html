@@ -1,0 +1,83 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">{{role}}</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <!-- Notification area -->
+      <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
+        <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
+        {{ messageSuccess }}
+      </div>
+      <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
+        <button (click)="resetErrorAlert()" class="close" type="button">×</button>
+        {{ messageError }}
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">{{role}} Table</h3>
+          <div class="card-tools">
+            <button (click)="close()" class="btn btn-tool" type="button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover text-nowrap">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of usersResponse">
+              <td>{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <button (click)="removeUser(user.email!)" class="btn btn-danger btn-sm">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <button (click)="showAddForm()" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add {{role}}
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination
+          (pageChanged)="onPageChange($event)"
+          [totalPages]="totalPages">
+        </app-pagination>
+        <!-- /.card-body -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-institution-add-user
+        (addForm)="handleAddFormToggle($event)"
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        *ngIf="addForm"
+        [institutionToUpdate]="institutionID"
+        [role]="role"
+      >
+        >
+      </app-institution-add-user>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+
