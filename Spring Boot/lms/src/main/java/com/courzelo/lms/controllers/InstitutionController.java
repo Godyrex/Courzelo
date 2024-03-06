@@ -7,6 +7,8 @@ import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.services.program.IInstitutionService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ public class InstitutionController {
 
     @PreAuthorize("hasRole('SUPERADMIN')")
     @GetMapping("/all")
+    @Cacheable(value = "InstitutionList", key = "#page + '-' + #sizePerPage")
     public ResponseEntity<InstitutionListDTO> getInstitutions(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "2") int sizePerPage) {
         return iInstitutionService.getInstitutions(page, sizePerPage);
@@ -30,6 +33,7 @@ public class InstitutionController {
 
     @PreAuthorize("hasRole('SUPERADMIN')")
     @PostMapping("/add")
+    @CacheEvict(value = "InstitutionList", allEntries = true)
     public ResponseEntity<Boolean> addInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.addInstitution(institutionDTO);
     }
@@ -42,6 +46,7 @@ public class InstitutionController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getMyInstitution")
+    @Cacheable(value = "MyInstitution", key = "#principal.name")
     public ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal) {
         return iInstitutionService.getMyInstitution(principal);
     }
@@ -59,18 +64,21 @@ public class InstitutionController {
     }
 
     @PostMapping("/update")
+    @CacheEvict(value = {"UsersList"}, allEntries = true)
     public ResponseEntity<Boolean> updateInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.updateInstitution(institutionDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/updateMine")
+    @CacheEvict(value = "MyInstitution", key = "#principal.name")
     public ResponseEntity<Boolean> updateMyInstitution(@RequestBody InstitutionDTO institutionDTO, Principal principal) {
         return iInstitutionService.updateMyInstitution(institutionDTO, principal);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getInstitutionUsers/{role}")
+    @Cacheable(value = "InstitutionUsers", key = "#page + '-' + #sizePerPage + '-' + #role")
     public ResponseEntity<UserListDTO> getInstitutionUsers(@RequestParam(required = false) String institutionID,
                                                            Principal principal,
                                                            @PathVariable String role,
@@ -82,18 +90,21 @@ public class InstitutionController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/add/user/{userEmail}/{role}")
+    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
     public ResponseEntity<Boolean> addUserToInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, @PathVariable String role, Principal principal) {
         return iInstitutionService.addUserToInstitution(institutionID, userEmail, role, principal);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{institutionID}/{userEmail}")
+    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
     public ResponseEntity<Boolean> removeUser(@PathVariable String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{userEmail}")
+    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
     public ResponseEntity<Boolean> removeUserFromInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
