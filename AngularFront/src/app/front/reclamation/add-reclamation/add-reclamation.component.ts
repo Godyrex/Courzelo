@@ -13,7 +13,7 @@ import { reclamation } from 'src/app/model/reclamation/reclamation';
 })
 export class AddReclamationComponent implements OnInit{
   reclamation!: reclamation;
-  type:typereclamation[] = [];
+  type=["NOTE","ABSANCE","FINANACE"];
   status = ["EN_COURS","EN_ATTENTE","ClOTURE"];
     reclamationForm: FormGroup = new FormGroup({});
     constructor(private reclamationservice: ReclamationService,private typeservice:TypereclamationService,
@@ -21,15 +21,12 @@ export class AddReclamationComponent implements OnInit{
       ){}
     ngOnInit(): void {
       this.createForm();
-      this.typeservice.getTypeList().subscribe(res =>{
-        this.type = res;
-      });
     }
     createForm() {
       this.reclamationForm = this.formBuilder.group({
         sujet: ['', Validators.required],
         details: ['', Validators.required],
-        type: [''],
+        type: ['',Validators.required],
         status: ['', Validators.required],
       });
     }

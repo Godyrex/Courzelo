@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { reclamation } from 'src/app/model/reclamation/reclamation';
 import Swal from 'sweetalert2';
+import {MatDialog} from '@angular/material/dialog';
+import { UpdateReclamationComponent } from '../update-reclamation/update-reclamation.component';
 
 @Component({
   selector: 'app-list-reclamations',
@@ -13,7 +15,7 @@ export class ListReclamationsComponent implements OnInit{
   reclamation:reclamation []=[];
 
   constructor(private reclamationservice: ReclamationService,
-    private router: Router) { }
+    private router: Router,public dialog: MatDialog) { }
 
     ngOnInit(): void {
       this.getReclamation();
@@ -24,6 +26,17 @@ export class ListReclamationsComponent implements OnInit{
         this.reclamation=data;
       console.log(data);
       })
+    }
+
+    update(id:any){
+      const dialogRef = this.dialog.open(UpdateReclamationComponent,{
+        width : "40%",
+        height: "80%",
+        data: { reclamation:id}
+      });
+      dialogRef.afterClosed().subscribe(res =>{
+       this.ngOnInit();
+      })   
     }
 
     delete(id:any){
@@ -37,7 +50,7 @@ export class ListReclamationsComponent implements OnInit{
         confirmButtonText: 'Oui, supprimez-le!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.reclamationservice.deleteReclamation(id).subscribe((res:any) =>{
+          this.reclamationservice.deleteReclamation1(id).subscribe((res:any) =>{
             if (res.message){
               Swal.fire({
                 icon: 'success',
@@ -63,6 +76,7 @@ export class ListReclamationsComponent implements OnInit{
           }
           )
         }
+        this.ngOnInit();
       }
       )
     }

@@ -22,9 +22,13 @@
                     <td> {{ reclamation.type }} </td>
                     <td> {{ reclamation.status }} </td>
                     <td>
-                        <button (click)="delete(reclamation.id)" class="btn btn-link">Delete
+                        <button (click)="delete(reclamation.id)" class="btn btn-danger btn-block">Delete
                         </button>
-                      </td>                  </tr>
+                      </td>     
+                      <button mat-raised-button color="primary" (click)="update(reclamation.id)" class="btn btn-primary btn-block">
+                        Modifier 
+                      </button>
+                    </tr>
                   </tbody>
                 </table>
               </div>

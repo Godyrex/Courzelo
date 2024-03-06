@@ -1,0 +1,26 @@
+
+  <!-- Profile Image -->
+  <div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+      <div class="text-center">
+        <img [src]="userPhotoUrl"
+             alt="User profile picture"
+             class="profile-user-img img-fluid img-circle">
+      </div>
+
+      <h3 class="profile-username text-center">{{fullName}}</h3>
+
+      <p class="text-muted text-center">{{email}}</p>
+
+      <ul class="list-group list-group-unbordered mb-3">
+        <li class="list-group-item" *ngIf="institutionName">
+          <b>Institution</b> <a class="float-right">{{ institutionName }}</a>
+        </li>
+        <li class="list-group-item" *ngIf="institutionClassName">
+          <b>Class</b> <a class="float-right">{{ institutionClassName }}</a>
+        </li>
+      </ul>
+    </div>
+    <!-- /.card-body -->
+  </div>
+

@@ -1,8 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
@@ -49,18 +46,68 @@ import { AddTypeComponent } from './front/typereclamation/add-type/add-type.comp
 import { UpdateTComponent } from './front/typereclamation/update-t/update-t.component';
 import { ListReclamationComponent } from './front/typereclamation/reclamation/list-reclamation/list-reclamation.component';
 import { EditReclamationComponent } from './front/typereclamation/reclamation/edit-reclamation/edit-reclamation.component';
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-    declarations: [
-      HomeComponent,
-      
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+    DashboardComponent,
+    FrontheaderComponent,
+    FrontfooterComponent,
+    RegisterComponent,
+    LoginComponent,
+    LogoutComponent,
+    ProfileComponent,
+    VerifyComponent,
+    PanelComponent,
+    InstitutionTableComponent,
+    UsersTableComponent,
+    InstitutionAddFormComponent,
+    InstitutionUpdateFormComponent,
+    PaginationComponent,
+    InstitutionPanelComponent,
+    InstitutionUsersTableComponent,
+    InstitutionAddUserComponent,
+    ProgramTableComponent,
+    ProgramAddFormComponent,
+    ProgramUpdateFormComponent,
+    ProgramClassesTableComponent,
+    ProgramAddClassComponent,
+    ProgramClassUsersTableComponent,
+    ClassAddUserComponent,
+    ClassUpdateComponent,
+    UserProfileComponent,
+    DevicesListComponent,
+    AddReclamationComponent,
+    ListReclamationsComponent,
+    UpdateReclamationComponent,
+    ListTypesComponent,
+    AddTypeComponent,
+    UpdateTComponent,
+    ListReclamationComponent,
+    EditReclamationComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterOutlet,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [HttpClient, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

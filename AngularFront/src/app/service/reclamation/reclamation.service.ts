@@ -1,4 +1,4 @@
-import { reclamation } from './../../model/reclamation/reclamation';
+import { reclamation } from 'src/app/model/reclamation/reclamation';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -14,8 +14,9 @@ export class ReclamationService {
       return this.http.get<reclamation[]>(`${this.baseURL}/all`);    }
 
   addReclamation(reclamation: reclamation): Observable<Object>{
-    return this.http.post(`${this.baseURL}`, reclamation);
+    return this.http.post(`${this.baseURL}/add`, reclamation);
   }
+
 
   getReclamationById(id: string): Observable<reclamation>{
     return this.http.get<reclamation>(`${this.baseURL}/get/${id}`);
@@ -23,6 +24,13 @@ export class ReclamationService {
 
   updateReclamation(reclamation: reclamation): Observable<Object>{
     return this.http.put(`${this.baseURL}/update`, reclamation);
+  }
+
+  updateReclamation1(reclamation: reclamation): Observable<Object>{
+    return this.http.put(`${this.baseURL}/rec`, reclamation);
+  }
+  deleteReclamation1(id: string): Observable<Object>{
+    return this.http.delete(`${this.baseURL}/delete1/${id}`);
   }
 
   deleteReclamation(id: string): Observable<Object>{
