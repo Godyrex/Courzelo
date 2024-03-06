@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-8">
+            <h3 class="card-title">Liste of courses content</h3>
+          </div>
+          <div class="col-4">
+            <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                <a class="btn btn-app" (click)="addVisibility=true" style="color: blue"> <i class="fas fa-plus" ></i> add </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <p-table
+          #dt2
+          [value]="courses"
+          styleClass="p-datatable-gridlines"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          selectionMode="single"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['id', 'description','path']"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>nom</th>
+              <th>description</th>
+              <th>path</th>
+              <th>action</th>
+            </tr>
+            <tr >
+              <th>
+                <p-columnFilter
+                  type="text"
+                  field="description"
+                ></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="description"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="path"></p-columnFilter>
+              </th>
+              <th>
+
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-courseContent>
+            <tr [pSelectableRow]="courseContent" (click)="getItemSelected(courseContent)">
+              <td>{{ courseContent.nom }}</td>
+              <td>{{ courseContent.description }}</td>
+              <td>{{ courseContent.path }}</td>
+              <td>
+                <span class="mr-1">
+                  <a class="btn btn-app" style="color: darkorange" (click)="getItemSelected(courseContent);editVisibility=true"> <i class="fas fa-edit"></i> Edit </a>
+                </span>
+                <span>
+                  <a class="btn btn-app" style="color: firebrick" (click)="deleteItem(courseContent)">
+                    <i class="fas fa-trash danger"></i> delete
+                  </a>
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No courses found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+ <!-- /.card-body-->
+<p-dialog
+  [modal]="true"
+  [(visible)]="editVisibility"
+  [style]="{ width: '1000px'}"
+>
+  <app-edit-course-content [courseContentInput]="selectedCourse" (edited)="getAllCourses();editVisibility=$event"></app-edit-course-content>
+</p-dialog>
+
+
+<p-dialog
+  [modal]="true"
+  [(visible)]="addVisibility"
+  [style]="{ width: '1000px'}"
+>
+  <app-add-course-content [courseInput]="coursesInput" (added)="getAllCourses();addVisibility=$event;"></app-add-course-content>
+</p-dialog>

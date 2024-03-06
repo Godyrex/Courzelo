@@ -1,0 +1,26 @@
+
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form class="form-horizontal" [formGroup]="addForm">
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="titre" class="col-sm-2 col-form-label">titre<span style="color:red">*</span></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" formControlName="titre" id="titre" placeholder="description">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="date" class="col-sm-2 col-form-label">date<span style="color:red">*</span></label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" formControlName="date" id="date" placeholder="description">
+              </div>
+            </div>
+
+          </div>
+          <!-- /.card-body -->
+          <div>
+            <button class="btn btn-info float-right" (click)="add()">Add</button>
+          </div>
+          <!-- /.card-footer -->
+        </form>
+

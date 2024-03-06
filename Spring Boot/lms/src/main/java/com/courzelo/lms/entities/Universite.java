@@ -17,5 +17,7 @@ public class Universite {
     private String id ;
     private String name ;
     private  String location ;
+    private String description ;
+    private String website ;
 
 }

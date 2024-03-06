@@ -1,0 +1,122 @@
+<!--contentCours-->
+<div class="col-md-12">
+  <!-- Box Comment -->
+  <div class="card card-widget">
+    <div class="card-header">
+      <div class="user-block">
+        <span class="username"><a href="#">Edit course</a></span>
+        <span class="description">identifiant: {{ courseInput.id }}</span>
+      </div>
+      <!-- /.user-block -->
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <!-- /.card-tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <form class="form-horizontal" [formGroup]="editForm">
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="Identifiant" class="col-sm-2 col-form-label"
+              >Identifiant</label
+            >
+            <div class="col-sm-10">
+              <input
+                readonly
+                type="text"
+                class="form-control"
+                formControlName="id"
+                id="Identifiant"
+                placeholder="Identifiant"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="description" class="col-sm-2 col-form-label"
+              >description</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="description"
+                id="description"
+                placeholder="description"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+        <div>
+          <button class="btn btn-info float-right" (click)="edit()">
+            Update
+          </button>
+        </div>
+        <!-- /.card-footer -->
+      </form>
+    </div>
+  </div>
+</div>
+<p-tabView>
+  <p-tabPanel header="List of teacher">
+    <p-table
+    #dt2
+    [value]="teacherList"
+    styleClass="p-datatable-gridlines"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    selectionMode="single"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['id', 'speciality']"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>identifiant</th>
+        <th>speciality</th>
+      </tr>
+      <tr >
+        <th>
+          <p-columnFilter type="text" field="id"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="speciality"
+          ></p-columnFilter>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-teacher>
+      <tr [pSelectableRow]="teacher">
+        <td>
+          {{ teacher.id}}
+        </td>
+        <td>
+          {{ teacher.speciality}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No teachers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </p-tabPanel>
+  <p-tabPanel header="CourseContent">
+    <app-list-course-content
+      [coursesInput]="courseInput"
+    ></app-list-course-content>
+  </p-tabPanel>
+  <p-tabPanel header="Assignement">
+    <app-list-assignement
+      [coursesInput]="courseInput"
+    ></app-list-assignement>
+  </p-tabPanel>
+</p-tabView>

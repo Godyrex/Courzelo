@@ -1,0 +1,55 @@
+<!--contentCours-->
+<div class="col-md-12">
+  <!-- Box Comment -->
+  <div class="card card-widget">
+    <div class="card-header">
+      <div class="user-block">
+        <span class="username"><a href="#">Edit Exams</a></span>
+        <span class="description">identifiant: {{ exams.id }}</span>
+      </div>
+      <!-- /.user-block -->
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <!-- /.card-tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <form class="form-horizontal" [formGroup]="editForm">
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="titre" class="col-sm-2 col-form-label">titre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" formControlName="titre" id="titre" placeholder="description">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date" class="col-sm-2 col-form-label">date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" formControlName="date" id="date" placeholder="description">
+            </div>
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div>
+          <button class="btn btn-info float-right" (click)="edit()">
+            Update
+          </button>
+        </div>
+        <!-- /.card-footer -->
+      </form>
+    </div>
+  </div>
+</div>
+<p-tabView>
+  <p-tabPanel header="List of question">
+    <app-list-question [exams]="exams"></app-list-question>
+  </p-tabPanel>
+  <p-tabPanel header="List of grades">
+    <app-list-grades [exam]="exams"></app-list-grades>
+  </p-tabPanel>
+
+</p-tabView>

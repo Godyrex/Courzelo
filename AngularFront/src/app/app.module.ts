@@ -13,13 +13,15 @@ import { FrontfooterComponent } from './front/frontfooter/frontfooter.component'
 import { RegisterComponent } from './back/register/register.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    HeaderComponent,
-    SidebarComponent,
+   // HeaderComponent,
+    //SidebarComponent,
     FooterComponent,
     DashboardComponent,
     FrontheaderComponent,
@@ -31,9 +33,12 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+
   ],
   providers: [HttpClient],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

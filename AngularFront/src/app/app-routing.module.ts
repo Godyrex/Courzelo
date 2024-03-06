@@ -7,7 +7,7 @@ import {RegisterComponent} from "./back/register/register.component";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/principleDashboard',
     pathMatch: 'full'
   },
   {
@@ -22,6 +22,12 @@ const routes: Routes = [
     path: 'signup',
     component: RegisterComponent
   },
+  {
+    path: 'principleDashboard',
+    loadChildren: () =>
+      import('./back/features/dashboard/dashboard.module').then((m) => m.DashboardModule)
+  },
+
 ];
 
 @NgModule({

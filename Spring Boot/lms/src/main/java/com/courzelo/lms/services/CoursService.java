@@ -2,7 +2,7 @@ package com.courzelo.lms.services;
 
 import com.courzelo.lms.entities.Course;
 import com.courzelo.lms.repositories.CoursRepository;
-import com.courzelo.lms.services.ICourseService;
+import com.courzelo.lms.services.IService.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
