@@ -7,12 +7,15 @@ import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IDeviceMetadataService;
 import com.courzelo.lms.services.user.IPhotoService;
 import com.courzelo.lms.services.user.UserService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +31,7 @@ import java.util.function.Consumer;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('SUPERADMIN')")
+@RateLimiter(name = "backend")
 public class UserController {
     private final UserService userService;
     private final IPhotoService photoService;
@@ -37,6 +41,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/update/name")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user, Principal principal) {
         return userService.updateUserProfile(user, principal.getName());
     }
@@ -46,8 +51,8 @@ public class UserController {
         return modelMapper.map(userService.getUserByID(userID), UserDTO.class);
     }
     @GetMapping("/myInfo")
+    @Cacheable(value = "MyInfo", key = "#principal.name")
     public JwtResponse getMyInfo(Principal principal) {
-
         return userService.getMyInfo(principal.getName());
     }
 
@@ -71,36 +76,42 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/email")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<HttpStatus> changeEmail(@Valid @RequestBody UpdateEmailDTO updateEmailDTO, Principal principal) {
         return userService.updateEmail(updateEmailDTO, principal);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/update/photo")
+    @CacheEvict(value = {"UsersList", "MyInfo", "MyPhoto"}, allEntries = true)
     public ResponseEntity<HttpStatus> changePhoto(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         return userService.updatePhoto(file, principal);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/photo/{photoId}")
+    @Cacheable(value = "MyPhoto", key = "#photoId")
     public ResponseEntity<byte[]> getPhoto(@PathVariable String photoId) {
         return photoService.getPhoto(photoId);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<HttpStatus> deleteAccount(@Valid @RequestBody DeleteAccountDTO dto, Principal principal, HttpServletRequest request, HttpServletResponse response) {
         return userService.deleteAccount(dto, principal, request, response);
     }
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/device")
+    @CacheEvict(value = "Devices", allEntries = true)
     public ResponseEntity<HttpStatus> deleteDevice(@RequestParam String id) {
         return iDeviceMetadataService.deleteDevice(id);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/devices")
+    @Cacheable(value = "Devices", key = "#page + '-' + #sizePerPage")
     public ResponseEntity<DeviceListDTO> getDevices(@RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "2") int sizePerPage,
                                                     Principal principal

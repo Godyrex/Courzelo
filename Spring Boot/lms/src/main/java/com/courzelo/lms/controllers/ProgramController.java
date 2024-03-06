@@ -5,6 +5,7 @@ import com.courzelo.lms.dto.program.ClassListDTO;
 import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.program.ProgramListDTO;
 import com.courzelo.lms.services.program.IProgramService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
+@RateLimiter(name = "backend")
 public class ProgramController {
     private final IProgramService iProgramService;
 

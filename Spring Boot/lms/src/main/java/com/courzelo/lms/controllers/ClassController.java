@@ -3,6 +3,7 @@ package com.courzelo.lms.controllers;
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.services.program.IClassService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
+@RateLimiter(name = "backend")
 public class ClassController {
     private final IClassService iClassService;
 
