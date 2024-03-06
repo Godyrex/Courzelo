@@ -1,0 +1,22 @@
+package com.courzelo.lms.dto;
+
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+public class FieldOfStudyDTO {
+
+    private Long id;
+
+    @Size(max = 255)
+    private String name;
+
+    private Integer numbrWeeks;
+
+    @Size(max = 255)
+    private String chefField;
+
+}
