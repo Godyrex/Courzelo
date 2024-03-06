@@ -3,6 +3,10 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+      <profile default="true" name="Default" enabled="true" />
+>>>>>>> Stashed changes
 =======
       <profile default="true" name="Default" enabled="true" />
 >>>>>>> Stashed changes

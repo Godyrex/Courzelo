@@ -1,0 +1,31 @@
+<h2> Type List</h2>
+<table class = "table table-striped">
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th> ID </th>
+                    <th> sujet </th>
+                    <th> details </th>
+                    <th> dateCreation </th>
+                    <th> Type </th>
+                    <th> status </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let reclamation of reclamation">
+                    <td> {{ reclamation.id }} </td>
+                    <td> {{ reclamation.sujet }} </td>
+                    <td> {{ reclamation.details }} </td>
+                    <td> {{ reclamation.dateCreation }} </td>
+                    <td> {{ reclamation.type }} </td>
+                    <td> {{ reclamation.status }} </td>
+                    <td>
+                        <button (click)="delete(reclamation.id)" class="btn btn-link">Delete
+                        </button>
+                      </td>                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->

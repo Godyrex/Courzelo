@@ -1,0 +1,25 @@
+<div class="card-body">
+    <p class="login-box-msg">Ajouter un'appartment</p>
+
+    <form [formGroup]="TypeForm" (ngSubmit)="onSubmit()">
+      <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Type" formControlName="type">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-money-bill"></span>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-6">
+          <button type="submit" [disabled]="TypeForm.invalid"  class="btn btn-primary btn-block">Ajouter</button>
+        </div>
+        <div class="col-6">
+          <button type="reset" class="btn btn-danger btn-block">Annuler</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+  </div>
+  <!-- /.form-box -->

@@ -1,5 +1,6 @@
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 l
 <lms/src/main/java/com/courzelo/lms/entities/Reclamation.java,0\b\0b20e11ebf683efae8ded5c3efbdab589bc87b15
 p
@@ -31,4 +32,8 @@ b
 2src/main/java/com/courzelo/lms/LmsApplication.java,3\0\30ab816902b1cc7a66dcb26be3b97e18b93bc4da
 l
 <src/main/java/com/courzelo/lms/entities/TypeReclamation.java,a\6\a6f60e3ae944acb0f2dbf0770b7ad652673280dd
+>>>>>>> Stashed changes
+=======
+b
+2src/main/java/com/courzelo/lms/LmsApplication.java,3\0\30ab816902b1cc7a66dcb26be3b97e18b93bc4da
 >>>>>>> Stashed changes
