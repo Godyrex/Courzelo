@@ -54,7 +54,7 @@ public class NonDisponibilityService {
 
     private NonDisponibilityDTO mapToDTO(final NonDisponibility nonDisponibility,
             final NonDisponibilityDTO nonDisponibilityDTO) {
-        nonDisponibilityDTO.setId(nonDisponibilityDTO.getId());
+        nonDisponibilityDTO.setId(nonDisponibility.getId());
         nonDisponibilityDTO.setDay(nonDisponibility.getDay());
         nonDisponibilityDTO.setPeriod(nonDisponibility.getPeriod());
         return nonDisponibilityDTO;

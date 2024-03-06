@@ -28,6 +28,8 @@ public class NonDisponibilityController {
         return ResponseEntity.ok(nonDisponibilityService.findAll());
     }
 
+
+
     @GetMapping("/{id}")
     public ResponseEntity<NonDisponibilityDTO> getNonDisponibility(
             @PathVariable(name = "id") final String id) {

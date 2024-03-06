@@ -17,7 +17,7 @@ export class NonDisponibilityService {
 
   constructor(private http: HttpClient) { }
   public getAllNDB(): Observable<NonDisponibility[]> {
-    console.log('Departments:', this.nonDisponibilities);
+    console.log('nonDisponibilities:', this.nonDisponibilities);
     return this.http.get<NonDisponibility[]>(this.baseUrl);
   }
 
@@ -66,7 +66,7 @@ export class NonDisponibilityService {
   }
 
   public updateNdb(id:string, nonDisponibility: NonDisponibility): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/${id}`, nonDisponibility).pipe(
+    return this.http.put<boolean>(`${this.baseUrl}/${id}`, nonDisponibility).pipe(
       catchError((error: any) => {
         console.error('Error updating Non disponibility:', error);
         return of(false);

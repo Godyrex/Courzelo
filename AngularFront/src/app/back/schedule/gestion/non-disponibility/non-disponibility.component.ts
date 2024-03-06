@@ -62,7 +62,7 @@ export class NonDisponibilityComponent {
       .subscribe(nonDisponibilities => {
         this.nonDisponibilities = nonDisponibilities;
         console.log('NonDisponibilities:', this.nonDisponibilities);
-        console.log('NonDisponibilities')
+        console.log('NonDisponibilities:',nonDisponibilities);
       });
   }
 
