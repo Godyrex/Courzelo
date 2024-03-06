@@ -1,10 +1,23 @@
 
-]	java:S125*"<This block of commented-out lines of code should be removed.(ıÑüúÿÿÿÿ8¯Á°Ïß1
-]	java:S125P"<This block of commented-out lines of code should be removed.(ÛàÒ©ùÿÿÿÿ8¯Á°Ïß1
-X
-java:S1068!";Remove this unused "elementModuleRepository" private field.(’¡Ü¬8´Á°Ïß1
+{
+java:S1192U"^Define a constant instead of duplicating this literal "TimeTable not found with id: " 3 times.(ÚÚõÄ8Ø˜Ïà1
+A
+java:S1640h"Convert this Map to an EnumMap.(Ó…áıÿÿÿÿ8”Ø˜Ïà1
+<
+java:S1640j"Convert this Map to an EnumMap.(‰»éñ8”Ø˜Ïà1
+_
+java:S1854,"BRemove this useless assignment to local variable "elementModules".(Í±¬8Ä£­Ïà1
+P
+java:S1481,"3Remove this unused "elementModules" local variable.(Í±¬8Ä£­Ïà1
+R
+java:S11721"5Remove this unused method parameter "elementModules".(½Ü¤×8ÏØ˜Ïà1
+>
+java:S1116E"Remove this empty statement.(Åñ­õşÿÿÿÿ8ÔØ˜Ïà1
+L
+java:S1172’"/Remove this unused method parameter "schedule".(ßä8èØ˜Ïà1
 Z
-java:S1068#"8Remove this unused "elementModuleService" private field.(–Òùäüÿÿÿÿ8´Á°Ïß1
+java:S1068"8Remove this unused "elementModuleService" private field.(–Òùäüÿÿÿÿ8éØ˜Ïà1
 N
-java:S1068%",Remove this unused "schedule" private field.(–²‡ıÿÿÿÿÿ8´Á°Ïß1
-qsecrets:S6694"PMake sure this MongoDB database password gets changed and removed from the code.(ğ¯ÅÔ8úÓöŠß1
+java:S1068",Remove this unused "schedule" private field.(–²‡ıÿÿÿÿÿ8êØ˜Ïà1
+R
+java:S1144}"0Remove this unused private "setSchedule" method.(Şá˜ûÿÿÿÿ8êØ˜Ïà1

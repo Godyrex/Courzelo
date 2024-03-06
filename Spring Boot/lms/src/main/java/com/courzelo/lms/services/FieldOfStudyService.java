@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,7 +62,7 @@ public class FieldOfStudyService {
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
         fieldOfStudyDTO.setChefField(fieldOfStudy.getChefField());
-         fieldOfStudyDTO.setDepartment(fieldOfStudy.getDepartment());
+         fieldOfStudyDTO.setDepartments(fieldOfStudy.getDepartments());
         return fieldOfStudyDTO;
     }
 
@@ -70,8 +71,15 @@ public class FieldOfStudyService {
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
-       fieldOfStudy.setDepartment(fieldOfStudyDTO.getDepartment());
+       fieldOfStudy.setDepartments(fieldOfStudyDTO.getDepartments());
         return fieldOfStudy;
+    }
+    public List<FieldOfStudyDTO> getFields(String departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NotFoundException("Department not found"));
+        return department.getFieldOfStudies().stream()
+                .map(fieldOfStudy -> mapToDTO(fieldOfStudy, new FieldOfStudyDTO()))
+                .collect(Collectors.toList());
     }
 
 }

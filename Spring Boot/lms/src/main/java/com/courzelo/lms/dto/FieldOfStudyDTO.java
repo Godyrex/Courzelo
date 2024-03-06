@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.List;
+
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
@@ -24,6 +26,6 @@ public class FieldOfStudyDTO {
 
     @Size(max = 255)
     private String chefField;
-    private Department department;
+    private List<Department> departments;
 
 }

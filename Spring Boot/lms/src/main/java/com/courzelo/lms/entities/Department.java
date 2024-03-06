@@ -26,6 +26,8 @@ public class Department {
     private String name;
     @NotNull
     private String chefDepartment;
+    @DBRef
+    private List<FieldOfStudy>fieldOfStudies;
 
 
 

@@ -2,6 +2,7 @@ package com.courzelo.lms.services;
 
 
 import com.courzelo.lms.dto.DepartmentDTO;
+import com.courzelo.lms.dto.FieldOfStudyDTO;
 import com.courzelo.lms.entities.Department;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
@@ -12,6 +13,7 @@ import com.courzelo.lms.entities.FieldOfStudy;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -49,6 +51,15 @@ public class DepartmentService {
 
 
     }
+    public void update(final String id, final DepartmentDTO departmentDTO) {
+        final Department department = departmentRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        mapToEntity(departmentDTO, department);
+        departmentRepository.save(department);
+    }
+
+
+
     /*public String create1(final DepartmentDTO departmentDTO ) {
 
         Department department = new Department();
@@ -79,12 +90,7 @@ public class DepartmentService {
 
 
 
-    public void update(final String id, final DepartmentDTO departmentDTO) {
-        final Department department = departmentRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        mapToEntity(departmentDTO, department);
-        departmentRepository.save(department);
-    }
+
 
     public void delete(final String id) {
         departmentRepository.deleteById(id);
@@ -92,18 +98,20 @@ public class DepartmentService {
 
     private DepartmentDTO mapToDTO(final Department departement,
                                    final DepartmentDTO departmentDTO) {
-
+        departmentDTO.setId(departement.getId());
         departmentDTO.setName(departement.getName());
         departmentDTO.setChefDepartment(departement.getChefDepartment());
+        departmentDTO.setFieldOfStudies(departement.getFieldOfStudies());
 
         return departmentDTO;
     }
 
     private Department mapToEntity(final DepartmentDTO departmentDTO,
                                    final Department department) {
+
         department.setName(departmentDTO.getName());
         department.setChefDepartment(departmentDTO.getChefDepartment());
-
+        department.setFieldOfStudies(departmentDTO.getFieldOfStudies());
 
 
 
@@ -112,5 +120,29 @@ public class DepartmentService {
     public long countDepartements() {
         return departmentRepository.count();
     }
+    public List<DepartmentDTO> searchDepartments(String name) {
+        List<Department> departments = departmentRepository.findByName(name);
+        if (!departments.isEmpty()) {
+            return departments.stream()
+                    .map(department -> mapToDTO(department, new DepartmentDTO()))
+                    .collect(Collectors.toList());
+        } else {
+            throw new NotFoundException("Department not found");
+        }
+    }
+    public List<DepartmentDTO> getDepartmentsByFieldOfStudy(String id) {
+        FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Field of study not found"));
+        List<Department> departments = fieldOfStudy.getDepartments();
+        if (departments == null) {
+            return Collections.emptyList();
+        }
+        return departments.stream()
+                .map(department -> mapToDTO(department, new DepartmentDTO()))
+                .collect(Collectors.toList());
+    }
+
+
+
 
 }

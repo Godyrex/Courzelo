@@ -91,3 +91,17 @@ q
 ASpring Boot/lms/src/main/java/com/courzelo/lms/entities/Role.java,f\2\f2b45ba651dc4c2df7f107b283224859bd194618
 w
 GSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Universite.java,e\9\e904ba8beffde4045983b0e499ec867cad4fd276
+ƒ
+SSpring Boot/lms/src/main/java/com/courzelo/lms/repositories/SemesterRepository.java,6\7\675c6a6b21a2434fc62fe753a7e463e5086e29b5
+…
+USpring Boot/lms/src/main/java/com/courzelo/lms/repositories/DepartmentRepository.java,5\4\546e775f2717931cdd91222ec149f8aedd7a817a
+x
+HSpring Boot/lms/src/main/java/com/courzelo/lms/services/AuthService.java,1\2\1231c3d4749c298d31cd8d75e5e6337b6d419c51
+x
+HSpring Boot/lms/src/main/java/com/courzelo/lms/services/UserService.java,8\1\818ad78b0478278453562f17ec60c218beb74f7d
+~
+NSpring Boot/lms/src/main/java/com/courzelo/lms/controllers/UserController.java,4\2\42405dfc510c6ee1724d170e62380f42f89ca8f2
+{
+KSpring Boot/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java,d\0\d0d44414b1a1e085efcbcae5aa14ffede851417d
+s
+CSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Course.java,4\0\402c2b40377de1563c0d499ba3ab3a14ff4e30db

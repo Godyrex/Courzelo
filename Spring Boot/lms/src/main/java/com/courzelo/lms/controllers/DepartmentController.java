@@ -3,14 +3,16 @@ package com.courzelo.lms.controllers;
 import com.courzelo.lms.dto.DepartmentDTO;
 
 import com.courzelo.lms.dto.FieldOfStudyDTO;
-import com.courzelo.lms.entities.FieldOfStudy;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.services.DepartmentService;
+import com.courzelo.lms.services.FieldOfStudyService;
+import com.courzelo.lms.utils.NotFoundException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +21,12 @@ import java.util.List;
 @RequestMapping(value = "/api/departments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DepartmentController {
     private final DepartmentService departmentService;
+    private final FieldOfStudyService fieldOfStudyService;
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentController(final DepartmentService departementService, DepartmentRepository departmentRepository) {
+    public DepartmentController(final DepartmentService departementService, FieldOfStudyService fieldOfStudyService, DepartmentRepository departmentRepository) {
         this.departmentService = departementService;
+        this.fieldOfStudyService = fieldOfStudyService;
         this.departmentRepository = departmentRepository;
     }
 
@@ -45,13 +49,13 @@ public class DepartmentController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateDepartment(@PathVariable(name = "id") final String id,
+    @PostMapping("/{id}")
+    public ResponseEntity<String> updateDepartment(@PathVariable String id,
                                                    @RequestBody @Valid final DepartmentDTO departmentDTO) {
         departmentService.update(id, departmentDTO);
         return ResponseEntity.ok(id);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/{id}")
     @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteDepartment(@PathVariable(name = "id") final String id) {
@@ -62,6 +66,25 @@ public class DepartmentController {
     public ResponseEntity<Long> countDepartments() {
         long departmentCount = departmentService.countDepartements();
         return ResponseEntity.ok(departmentCount);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DepartmentDTO>> searchDepartments(@RequestParam String name) {
+        try {
+            List<DepartmentDTO> searchedDepartments = departmentService.searchDepartments(name);
+            return new ResponseEntity<>(searchedDepartments, HttpStatus.OK);
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/{id}/fields")
+    public ResponseEntity<List<DepartmentDTO>> getFields(@PathVariable String id) {
+        try {
+            List<DepartmentDTO> departments = departmentService.getDepartmentsByFieldOfStudy(id);
+            return new ResponseEntity<>(departments, HttpStatus.OK);
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

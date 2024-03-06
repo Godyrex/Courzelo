@@ -1,5 +1,5 @@
 
-R
-java:S1128	"0Remove this unused import 'java.time.DayOfWeek'.(Óò»¸þÿÿÿÿ8Ã“ˆÏß1
+A
+java:S1640#"Convert this Map to an EnumMap.(êÐÓ„ÿÿÿÿÿ8³”ŸÍà1
 K
-java:S1128".Remove this unused import 'java.util.Objects'.(¼¸õ›8Ã“ˆÏß1
+java:S1128".Remove this unused import 'java.util.Objects'.(¼¸õ›8È”ŸÍà1

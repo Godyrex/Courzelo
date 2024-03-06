@@ -8,18 +8,30 @@ import {
   GestionDepartementComponent
 } from "./scheduleComponent/gestion/gestion-departement/gestion-departement.component";
 import {AddFieldOfStudyComponent} from "./scheduleComponent/add/add-field-of-study/add-field-of-study.component";
+import {EditDepartementComponent} from "./scheduleComponent/edit/edit-departement/edit-departement.component";
+import {TimeTableComponent} from "./scheduleComponent/time-table/time-table.component";
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
   },
-  { path :'departments' ,
-    component: GestionDepartementComponent
+  {
+    path: 'departments',
+    component: GestionDepartementComponent,
+    children: [
+      { path: 'add', component: AddDepartementComponent },
+      { path: 'edit', component: EditDepartementComponent }
+    ]
   },
-  { path :'departments/add' ,
-    component: AddDepartementComponent
+  {path:'departments',
+  component:GestionDepartementComponent
   },
+  {path:'timetable',
+    component:TimeTableComponent
+  },
+
+
   { path :'FieldOfStudy/add' ,
     component: AddFieldOfStudyComponent
   },

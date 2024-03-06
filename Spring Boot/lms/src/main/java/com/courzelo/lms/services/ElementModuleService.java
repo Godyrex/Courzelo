@@ -1,22 +1,41 @@
 package com.courzelo.lms.services;
 
+import com.courzelo.lms.dto.DepartmentDTO;
 import com.courzelo.lms.dto.ElementModuleDTO;
+import com.courzelo.lms.dto.SemesterDTO;
+import com.courzelo.lms.entities.Department;
 import com.courzelo.lms.entities.ElementModule;
+import com.courzelo.lms.entities.Semester;
+import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.ElementModuleRepository;
+import com.courzelo.lms.repositories.SemesterRepository;
 import com.courzelo.lms.utils.NotFoundException;
+import jakarta.persistence.PostPersist;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class ElementModuleService {
 
     private final ElementModuleRepository elementModuleRepository;
+    private final SemesterRepository semesterRepository ;
+    private final DepartmentRepository departmentRepository ;
 
-    public ElementModuleService(final ElementModuleRepository elementModuleRepository) {
+
+    public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository) {
         this.elementModuleRepository = elementModuleRepository;
+        this.semesterRepository = semesterRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     public List<ElementModuleDTO> findAll() {
@@ -73,6 +92,8 @@ public class ElementModuleService {
         elementModule.setModule(elementModuleDTO.getModule());
         elementModule.setSemesters(elementModuleDTO.getSemesters());
         elementModule.setDepartments(elementModuleDTO.getDepartments());
+        elementModule.setNumSemesters(elementModuleDTO.getNumSemesters());
+        elementModule.setNumDepartments(elementModuleDTO.getNumDepartments());
         return elementModule;
     }
 
@@ -83,5 +104,44 @@ public class ElementModuleService {
    /* public List<ElementModule>getEmploisByClass(String classe){
         return elementModuleRepository.findByClasse(classe);
     }*/
+   /* @PostPersist
+   public ElementModule createElementModule(@Valid ElementModuleDTO elementModuleDTO) {
+        ElementModule elementModule = new ElementModule();
+       List<Department> departmentList = departmentRepository.findAll();
+       elementModuleDTO.setDepartments(departmentList);
+       List<Semester>semesterList =semesterRepository.findAll();
+       elementModuleDTO.setSemesters(semesterList);
 
-}
+       elementModule = mapToEntity(elementModuleDTO, elementModule);
+
+       return elementModuleRepository.save( elementModule);
+   }*/
+
+
+
+    /*public ElementModule createElementModule(@Valid ElementModuleDTO elementModuleDTO) {
+        ElementModule elementModule = new ElementModule();
+        List<Department> departments = new ArrayList<>();
+        for (Department departmentDTO : elementModuleDTO.getDepartments()) {
+            Department department = departmentRepository.findById(departmentDTO.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Department not found for ID: " + departmentDTO.getId()));
+            departments.add(department);
+        }
+        List<Semester> semesters = new ArrayList<>();
+        for (Semester semesterDTO : elementModuleDTO.getSemesters()) {
+            Semester semester = semesterRepository.findById(semesterDTO.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Semester not found for ID: " + semesterDTO.getId()));
+            semesters.add(semester);
+        }
+        elementModule.setDepartments(departments);
+        elementModule.setSemesters(semesters);
+        mapToEntity(elementModuleDTO, elementModule);
+        return elementModuleRepository.save(elementModule);
+    }
+*/
+
+    }
+
+
+
+

@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
@@ -18,12 +20,14 @@ import java.util.List;
 @Setter
 public class TimeTableDTO {
     private String id;
+    private String name;
 
     private List<Semester>semesters;
-
+private String classe;
     private List<Department>departments;
 
     private List<ElementModule>elementModules;
+    private Map<DayOfWeek, Map<Period, List<ElementModule>>> schedule;
 
 
 

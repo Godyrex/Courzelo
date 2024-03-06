@@ -1,8 +1,10 @@
 package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.ElementModuleDTO;
+import com.courzelo.lms.entities.Period;
 import com.courzelo.lms.services.ElementModuleService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.persistence.PostPersist;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,13 +33,15 @@ public class ElementModuleController {
         return ResponseEntity.ok(elementModuleService.get(id));
     }
 
-    @PostMapping
+  /*  @PostMapping
+    @PostPersist
     @ApiResponse(responseCode = "201")
     public ResponseEntity<String> createElementModule(
             @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
         final String createdId = elementModuleService.create(elementModuleDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
-    }
+    }*/
+
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateElementModule(@PathVariable(name = "id") final String id,
@@ -58,4 +62,17 @@ public class ElementModuleController {
     public ResponseEntity<DayOfWeek[]> getDaysOfWeek() {
         return ResponseEntity.ok(DayOfWeek.values());
     }*/
+   @PostMapping
+   @PostPersist
+   @ApiResponse(responseCode = "201")
+   public ResponseEntity<String> createElementModule1(
+           @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
+       final String createdId = String.valueOf(elementModuleService.create(elementModuleDTO));
+       return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+   }
+    @GetMapping("/enums")
+    public ResponseEntity<Period[]> getEnums() {
+        return ResponseEntity.ok(Period.values());
+    }
+
 }

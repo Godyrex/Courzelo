@@ -34,4 +34,8 @@ public class ElementModuleDTO {
     private String module;
     private List<Semester> semesters;
     private List<Department> departments;
+    private int numSemesters;
+    private int numDepartments;
+
+
 }

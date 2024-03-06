@@ -1,4 +1,32 @@
 
-X	java:S125;"<This block of commented-out lines of code should be removed.(íå®¨8ß©æÓß1
-]	java:S125H"<This block of commented-out lines of code should be removed.(ÿ¶òúÿÿÿÿ8â©æÓß1
-]	java:S125S"<This block of commented-out lines of code should be removed.(ÑÛùÁùÿÿÿÿ8‘µŞÓß1
+X	java:S125N"<This block of commented-out lines of code should be removed.(íå®¨8°©ïşß1
+]	java:S125["<This block of commented-out lines of code should be removed.(ÿ¶òúÿÿÿÿ8·©ïşß1
+]	java:S125h"<This block of commented-out lines of code should be removed.(ÑÛùÁùÿÿÿÿ8¿©ïşß1
+]	java:S125l"<This block of commented-out lines of code should be removed.(¬ÅÁ‡ıÿÿÿÿ8À©ïşß1
+W	java:S125z"<This block of commented-out lines of code should be removed.(‰úæs8Ä©ïşß1
+a
+java:S1128"?Remove this unused import 'com.courzelo.lms.dto.DepartmentDTO'.(¿°Èïúÿÿÿÿ8«î«à1
+_
+java:S1128"=Remove this unused import 'com.courzelo.lms.dto.SemesterDTO'.(ğÛÉ»şÿÿÿÿ8«î«à1
+^
+java:S1128"ARemove this unused import 'com.courzelo.lms.entities.Department'.(ûˆí°8«î«à1
+a
+java:S1128"?Remove this unused import 'com.courzelo.lms.entities.Semester'.(”§Àäşÿÿÿÿ8¬î«à1
+^
+java:S1128"<Remove this unused import 'jakarta.persistence.PostPersist'.(¾¼­‚ÿÿÿÿÿ8¬î«à1
+W
+java:S1128"5Remove this unused import 'jakarta.validation.Valid'.(ÀãÅ”ûÿÿÿÿ8­î«à1
+e
+java:S1128"CRemove this unused import 'jakarta.validation.constraints.NotNull'.(Àª•ıÿÿÿÿ8­î«à1
+u
+java:S1128"SRemove this unused import 'org.springframework.beans.factory.annotation.Autowired'.(¡¸Îùÿÿÿÿ8­î«à1
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8®î«à1
+T
+java:S1128"2Remove this unused import 'java.util.Collections'.(¢³ïÓşÿÿÿÿ8®î«à1
+Q
+java:S1128"/Remove this unused import 'java.util.Optional'.(¨˜ëİüÿÿÿÿ8®î«à1
+X
+java:S1068"6Remove this unused "semesterRepository" private field.(ÆÂ³¼øÿÿÿÿ8É©ïşß1
+U
+java:S1068 "8Remove this unused "departmentRepository" private field.(Ç‘øí8É©ïşß1
