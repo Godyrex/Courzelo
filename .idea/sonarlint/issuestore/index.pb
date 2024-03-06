@@ -29,16 +29,6 @@ s
 CSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Period.java,e\6\e6b8e819d7781c253486393e4d83560ed93fce5f
 n
 >AngularFront/src/app/service/schedule/field-ofstudy.service.ts,9\9\9964b08378d83f277b4ea796bd9dee731633b885
-y
-IAngularFront/src/app/scheduleComponent/time-table/time-table.component.ts,6\1\614f2ba50e45077f1966e50f1f9800a47a768b72
-ì
-cAngularFront/src/app/scheduleComponent/gestion/gestion-departement/gestion-departement.component.ts,a\7\a716296a341b5e9a3db2c42f36f190e9164e0288
-ò
-hAngularFront/src/app/scheduleComponent/gestion/gestion-departement/gestion-departement.component.spec.ts,f\b\fbe758da8e637a6b2cb370b1419732865a768358
-ï
-eAngularFront/src/app/scheduleComponent/gestion/gestion-departement/gestion-departement.component.html,8\8\885baaa9fde5d900fff962121c9496d48c3f689d
-ô
-iAngularFront/src/app/scheduleComponent/gestion/gestion-field-of-study/gestion-field-of-study.component.ts,e\e\eee295294086dee25df33f3279022cc7c9a3a7d1
 z
 JSpring Boot/lms/src/main/java/com/courzelo/lms/entities/ElementModule.java,c\6\c613061c9c5c115b87a669060e3587ca52d570a9
 Å
@@ -105,3 +95,9 @@ NSpring Boot/lms/src/main/java/com/courzelo/lms/controllers/UserController.java
 KSpring Boot/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java,d\0\d0d44414b1a1e085efcbcae5aa14ffede851417d
 s
 CSpring Boot/lms/src/main/java/com/courzelo/lms/entities/Course.java,4\0\402c2b40377de1563c0d499ba3ab3a14ff4e30db
+ä
+ZSpring Boot/lms/src/main/java/com/courzelo/lms/controllers/NonDisponibilityController.java,c\a\cad79d381aaee8d9e7598073b056290a642699b3
+p
+@Spring Boot/lms/src/main/java/com/courzelo/lms/dto/LoginDTO.java,a\b\abe9cf3d8cbfe9672cf083e2835ece0672fc403a
+ã
+[Spring Boot/lms/src/main/java/com/courzelo/lms/repositories/NonDisponibilityRepository.java,7\b\7bec11e16af9027c5dcd4712a4e264fa498520a8

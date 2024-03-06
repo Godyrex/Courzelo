@@ -55,11 +55,16 @@ public class NonDisponibilityService {
     private NonDisponibilityDTO mapToDTO(final NonDisponibility nonDisponibility,
             final NonDisponibilityDTO nonDisponibilityDTO) {
         nonDisponibilityDTO.setId(nonDisponibilityDTO.getId());
+        nonDisponibilityDTO.setDay(nonDisponibility.getDay());
+        nonDisponibilityDTO.setPeriod(nonDisponibility.getPeriod());
         return nonDisponibilityDTO;
     }
 
     private NonDisponibility mapToEntity(final NonDisponibilityDTO nonDisponibilityDTO,
             final NonDisponibility nonDisponibility) {
+        nonDisponibility.setId(nonDisponibility.getId());
+        nonDisponibility.setDay(nonDisponibility.getDay());
+        nonDisponibility.setPeriod(nonDisponibility.getPeriod());
         return nonDisponibility;
     }
 

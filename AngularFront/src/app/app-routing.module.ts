@@ -8,6 +8,15 @@ import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-d
 import {EditDepartementComponent} from "./back/schedule/edit/edit-departement/edit-departement.component";
 import {TimeTableComponent} from "./back/schedule/gestion/time-table/time-table.component";
 import {AddFieldOfStudyComponent} from "./back/schedule/add/add-field-of-study/add-field-of-study.component";
+import {EditFieldOfStudyComponent} from "./back/schedule/edit/edit-field-of-study/edit-field-of-study.component";
+import {
+  GestionFieldOfStudyComponent
+} from "./back/schedule/gestion/gestion-field-of-study/gestion-field-of-study.component";
+import {NonDisponibilityComponent} from "./back/schedule/gestion/non-disponibility/non-disponibility.component";
+import {AddNonDisponibilityComponent} from "./add-non-disponibility/add-non-disponibility.component";
+import {
+  EditNonDisponibilityComponent
+} from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
 
 const routes: Routes = [
   {
@@ -31,8 +40,21 @@ const routes: Routes = [
   },
 
 
-  { path :'FieldOfStudy/add' ,
-    component: AddFieldOfStudyComponent
+  {
+    path: 'fieldOfStudies',
+    component: GestionFieldOfStudyComponent,
+    children: [
+      { path: 'add', component: AddFieldOfStudyComponent },
+      { path: 'edit', component: EditFieldOfStudyComponent }
+    ]
+  },
+  {
+    path: 'NonDisponibilities',
+    component: NonDisponibilityComponent,
+    children: [
+      { path: 'add', component: AddNonDisponibilityComponent },
+      { path: 'edit', component: EditNonDisponibilityComponent }
+    ]
   },
 
   {
@@ -52,6 +74,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
+  declarations: [
+
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

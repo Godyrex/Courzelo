@@ -21,6 +21,7 @@ public class Department {
     @Id
     private String id;
 
+    @Getter
     @Size(max = 255)
     @NotNull
     private String name;
@@ -28,7 +29,6 @@ public class Department {
     private String chefDepartment;
     @DBRef
     private List<FieldOfStudy>fieldOfStudies;
-
 
 
 

@@ -1,4 +1,8 @@
 
+^
+java:S1128"ARemove this unused import 'com.courzelo.lms.entities.Department'.(ûˆí°8ÍÑ×£á1
 m
 java:S1128
-"PRemove this unused import 'org.springframework.data.mongodb.core.mapping.DBRef'.(°‘íâ8¾Ý® à1
+"PRemove this unused import 'org.springframework.data.mongodb.core.mapping.DBRef'.(°‘íâ8ÎÑ×£á1
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ÏÑ×£á1

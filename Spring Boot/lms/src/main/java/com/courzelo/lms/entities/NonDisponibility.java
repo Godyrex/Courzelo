@@ -22,10 +22,8 @@ public class NonDisponibility {
     @Id
     private  String id;
     @NotNull
-    private DayOfWeek dayOfWeek;
+   private String day;
     @NotNull
-    private List<Role> roles;
-    @NotNull
-    private Period period;
+   private String period;
 
 }

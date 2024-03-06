@@ -28,6 +28,11 @@ import {
 import {NonDisponibilityComponent} from "./back/schedule/gestion/non-disponibility/non-disponibility.component";
 import {TimeTableComponent} from "./back/schedule/gestion/time-table/time-table.component";
 import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-departement.component";
+import { AddNonDisponibilityComponent } from './back/schedule/add/add-non-disponibility/add-non-disponibility.component';
+import {
+  EditNonDisponibilityComponent
+} from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
+
 
 @NgModule({
   declarations: [
@@ -43,12 +48,16 @@ import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-d
     AddDepartementComponent,
     AddFieldOfStudyComponent,
     EditDepartementComponent,
-
+    EditNonDisponibilityComponent,
     EditFieldOfStudyComponent,
     GestionDepartementComponent,
     GestionFieldOfStudyComponent,
     NonDisponibilityComponent,
-    TimeTableComponent
+    TimeTableComponent,
+    AddNonDisponibilityComponent,
+    EditNonDisponibilityComponent,
+    EditNonDisponibilityComponent,
+
   ],
     imports: [
         BrowserModule,

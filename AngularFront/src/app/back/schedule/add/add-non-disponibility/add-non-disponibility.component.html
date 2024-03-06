@@ -1,0 +1,37 @@
+<div class="container-fluid h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="col-lg-8"> <!-- Increased width -->
+      <div class="card shadow-lg border-0" style="width:100%; max-width: 100000px;">
+        <div class="card-body">
+          <form [formGroup]="newNDBFormGroup" (ngSubmit)="handleAddNDB()">
+            <div class="text-center mb-4">
+              <h2 class="form-title text-primary">ADD Non Disponibility</h2>
+            </div>
+            <div class="form-group">
+              <label for="day">Day <span class="text-danger">*</span></label>
+              <input class="form-control" id="day" type="text" formControlName="day" placeholder="Enter Day">
+            </div>
+            <div class="form-group">
+              <label for="period">Chef Department <span class="text-danger">*</span></label>
+              <input class="form-control" id="period" type="text" formControlName="period" placeholder="Enter period">
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary"   style="background-color: darkgreen; color: white;">Submit</button>
+
+              <button type="button" class="btn btn-secondary" style="background-color: darkred; color: white;" (click)="onCancelClick()">Close</button> <!-- Close button added -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ndb of nonDisponibilities">
+          <span class="font-weight-bold">{{ ndb.day }}</span> (ID: {{ ndb.id }}) - Period: {{ ndb.period}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

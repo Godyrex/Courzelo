@@ -11,7 +11,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -40,8 +42,12 @@ public class FieldOfStudyService {
     }
 
     public String create(final FieldOfStudyDTO fieldOfStudyDTO) {
+
+
         final FieldOfStudy fieldOfStudy = new FieldOfStudy();
+
         mapToEntity(fieldOfStudyDTO, fieldOfStudy);
+
         return fieldOfStudyRepository.save(fieldOfStudy).getId();
     }
 
@@ -58,24 +64,27 @@ public class FieldOfStudyService {
 
     private FieldOfStudyDTO mapToDTO(final FieldOfStudy fieldOfStudy,
             final FieldOfStudyDTO fieldOfStudyDTO) {
-        //fieldOfStudyDTO.setId(fieldOfStudy.getId());
+        fieldOfStudyDTO.setId(fieldOfStudy.getId());
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
         fieldOfStudyDTO.setChefField(fieldOfStudy.getChefField());
-         fieldOfStudyDTO.setDepartments(fieldOfStudy.getDepartments());
+        fieldOfStudyDTO.setDepartmentID(fieldOfStudy.getDepartment().getId());
         return fieldOfStudyDTO;
     }
 
     private FieldOfStudy mapToEntity(final FieldOfStudyDTO fieldOfStudyDTO,
             final FieldOfStudy fieldOfStudy) {
+        fieldOfStudy.setId(fieldOfStudyDTO.getId());
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
-       fieldOfStudy.setDepartments(fieldOfStudyDTO.getDepartments());
+        Department department=departmentRepository.findById(fieldOfStudyDTO.getDepartmentID())
+                .orElseThrow(()->new RuntimeException("department not found"));
+        fieldOfStudy.setDepartment(department);
         return fieldOfStudy;
     }
-    public List<FieldOfStudyDTO> getFields(String departmentId) {
-        Department department = departmentRepository.findById(departmentId)
+    public List<FieldOfStudyDTO> getFields(String departmentID) {
+        Department department = departmentRepository.findById(departmentID)
                 .orElseThrow(() -> new NotFoundException("Department not found"));
         return department.getFieldOfStudies().stream()
                 .map(fieldOfStudy -> mapToDTO(fieldOfStudy, new FieldOfStudyDTO()))

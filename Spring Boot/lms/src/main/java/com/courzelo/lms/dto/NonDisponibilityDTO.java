@@ -3,6 +3,7 @@ package com.courzelo.lms.dto;
 import com.courzelo.lms.entities.Period;
 import com.courzelo.lms.entities.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,9 @@ import java.util.List;
 public class NonDisponibilityDTO {
 
     private String  id;
-    private DayOfWeek dayOfWeek;
-    private List<Role>roles;
-    private Period period;
+
+    private String day;
+
+    private String period;
 
 }

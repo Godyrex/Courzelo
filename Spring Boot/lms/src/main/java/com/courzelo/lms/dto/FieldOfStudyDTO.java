@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 public class FieldOfStudyDTO {
 
-
+    private String id;
     @Size(max = 255)
     private String name;
 
@@ -26,6 +26,6 @@ public class FieldOfStudyDTO {
 
     @Size(max = 255)
     private String chefField;
-    private List<Department> departments;
+    private String departmentID;
 
 }

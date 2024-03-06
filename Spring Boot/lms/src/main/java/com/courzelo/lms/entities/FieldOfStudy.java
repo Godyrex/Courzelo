@@ -28,7 +28,7 @@ public class FieldOfStudy {
     @Size(max = 255)
     private String chefField;
     @DBRef
-    private List<Department> departments;
+    private Department department;
 
 
 

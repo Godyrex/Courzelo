@@ -190,11 +190,11 @@ constructor(private departmentService: DepartmentService,
   }
   openAddDepartmentDialog(): void {
     const dialogRef = this.dialog.open(AddDepartementComponent, {
-      width: '600px' // Set width as per your requirement
+      width: '600px'
     });
 
     dialogRef.componentInstance.departmentAdded.subscribe((newDepart: Departement) => {
-      // Handle department added event if needed
+
       this.departments.push(newDepart);
     });
   }

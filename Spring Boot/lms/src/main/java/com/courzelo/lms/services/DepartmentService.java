@@ -133,7 +133,7 @@ public class DepartmentService {
     public List<DepartmentDTO> getDepartmentsByFieldOfStudy(String id) {
         FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Field of study not found"));
-        List<Department> departments = fieldOfStudy.getDepartments();
+        List<Department> departments = (List<Department>) fieldOfStudy.getDepartment();
         if (departments == null) {
             return Collections.emptyList();
         }

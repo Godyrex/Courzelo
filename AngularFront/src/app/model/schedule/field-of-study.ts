@@ -1,11 +1,10 @@
 import {Departement} from "./departement";
 
 export interface FieldOfStudy {
-
-  name:string;
-
+  id?: string; // Optional if id is generated on the server side
+  name: string;
   numbrWeeks: number;
-  chefField:string;
-  department:Departement;
+  chefField: string;
+  departmentID: string;
 
 }
