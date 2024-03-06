@@ -27,7 +27,7 @@ export class AddNonDisponibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.newNDBFormGroup = this.fb.group({
-      id: ['', Validators.required],
+
      day: ['', Validators.required],
       period:['', Validators.required]
     });

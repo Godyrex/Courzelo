@@ -17,8 +17,6 @@ import {AddNonDisponibilityComponent} from "../../add/add-non-disponibility/add-
 })
 export class NonDisponibilityComponent {
   nonDisponibilities: NonDisponibility[] = [];
-
-
   errorMessage!: string;
   searchFormGroup!: FormGroup;
   page: number = 0;
@@ -64,6 +62,7 @@ export class NonDisponibilityComponent {
       .subscribe(nonDisponibilities => {
         this.nonDisponibilities = nonDisponibilities;
         console.log('NonDisponibilities:', this.nonDisponibilities);
+        console.log('NonDisponibilities')
       });
   }
 

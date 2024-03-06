@@ -1,6 +1,6 @@
 export interface NonDisponibility {
 
-id:string;
+ id:string;
   day:      string;
 
   period:   string;
