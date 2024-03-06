@@ -1,7 +1,5 @@
 package com.courzelo.lms.services.IService;
 
-import com.courzelo.lms.entities.Class;
-
 import java.util.List;
 
 public interface IClassService {

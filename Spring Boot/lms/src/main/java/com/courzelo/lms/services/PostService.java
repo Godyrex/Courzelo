@@ -1,10 +1,7 @@
 package com.courzelo.lms.services;
 
-import com.courzelo.lms.entities.Class;
 import com.courzelo.lms.entities.Post;
-import com.courzelo.lms.repositories.ClassRepository;
 import com.courzelo.lms.repositories.PostRepository;
-import com.courzelo.lms.services.IService.IClassService;
 import com.courzelo.lms.services.IService.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
