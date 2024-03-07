@@ -7,10 +7,14 @@ import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IAuthService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.security.Principal;
 import java.util.List;
 
@@ -27,6 +32,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("permitAll()")
+@RateLimiter(name = "backend")
 public class AuthController {
     private final IAuthService iAuthService;
     @Autowired
@@ -38,10 +44,9 @@ public class AuthController {
     }
 
     @PostMapping("/signing")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {
-        return iAuthService.loginUser(loginDTO, response, userAgent);
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response,HttpServletRequest request, @RequestHeader(value = "User-Agent") String userAgent) {
+        return iAuthService.loginUser(loginDTO, response,request, userAgent);
     }
-
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user, @RequestHeader(value = "User-Agent") String userAgent) {
         return iAuthService.saveUser(modelMapper.map(user, User.class), userAgent);
@@ -58,8 +63,8 @@ public class AuthController {
     }
 
     @GetMapping("/isAuthenticated")
-    public ResponseEntity<Boolean> isAuthenticated(HttpServletRequest request) {
-        return iAuthService.isAuthenticated(request);
+    public ResponseEntity<Boolean> isAuthenticated(Principal principal) {
+        return iAuthService.isAuthenticated(principal);
     }
 
     @GetMapping("/getRole")

@@ -12,7 +12,7 @@ import {UserListDTO} from "../../../model/user/UserListDTO";
 export class UsersTableComponent implements OnInit {
   userResponse: UserResponse[] = []
   selectedRole: string = "";
-  availableRoles: string[] = ['STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN']
+  availableRoles: string[] = ['SUPERADMIN']
   totalPages: number = 0;
   currentPage: number = 0;
   pageSize: number = 2;
