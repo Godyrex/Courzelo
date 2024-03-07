@@ -52,7 +52,7 @@ fields: FieldOfStudy[] = [];
     );
   }
   public updateField(id: string | undefined, field: FieldOfStudy): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/${id}`, field).pipe(
+    return this.http.put<boolean>(`${this.baseUrl}/${id}`, field).pipe(
       catchError((error: any) => {
         console.error('Error updating field:', error);
         return of(false);
