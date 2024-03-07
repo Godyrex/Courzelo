@@ -2,7 +2,7 @@ package com.courzelo.lms.security;
 
 import com.courzelo.lms.security.jwt.AuthEntryPointJwt;
 import com.courzelo.lms.security.jwt.AuthTokenFilter;
-import com.courzelo.lms.services.AuthService;
+import com.courzelo.lms.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    AuthService authService;
+    UserService userService;
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -34,7 +34,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(authService);
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -44,6 +44,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -52,25 +53,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(unauthorizedHandler)
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("**")
+                        .requestMatchers("/api/v1/auth/**")
                         .permitAll()
-                        .requestMatchers("/api/auth/**")
-                        .permitAll()
-                        .requestMatchers("/api/user/**")
-                        .permitAll()
-                        .requestMatchers("/api/departments")
-                        .permitAll()
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**")
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
                         .permitAll()
                         .anyRequest().authenticated());
-
         http.authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

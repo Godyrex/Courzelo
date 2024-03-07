@@ -1,0 +1,79 @@
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Users Table</h3>
+          <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <input class="form-control float-right" name="table_search" placeholder="Search" type="text">
+
+              <div class="input-group-append">
+                <button class="btn btn-default" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover text-nowrap">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Roles</th>
+              <th>Ban</th>
+              <th>Enabled</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of userResponse">
+              <td>{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.lastname }}</td>
+              <td>
+                <ul>
+                  <li *ngFor="let role of user.roles">{{ role}}</li>
+                </ul>
+              </td>
+              <td>
+                <button (click)="toggleBan(user)" [ngClass]="{'btn-danger': user.ban, 'btn-success': !user.ban}"
+                        class="btn btn-sm">
+                  {{ user.ban ? 'Unban' : 'Ban' }}
+                </button>
+              </td>
+              <td>
+                <button (click)="toggleEnable(user)"
+                        [ngClass]="{'btn-danger': !user.enabled, 'btn-success': user.enabled}"
+                        class="btn btn-sm">
+                  {{ user.enabled ? 'Disable' : 'Enable' }}
+                </button>
+              </td>
+              <td>
+                <form (ngSubmit)="changeUserRole(user)">
+                  <div class="form-group">
+                    <select [(ngModel)]="selectedRole" class="form-control" name="role">
+                      <option *ngFor="let role of availableRoles" [value]="role">{{ role }}</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary" type="submit">Add/Remove Role</button>
+                </form>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination
+          (pageChanged)="onPageChange($event)"
+          [totalPages]="totalPages">
+        </app-pagination>
+        <!-- /.card-body -->
+      </div>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
