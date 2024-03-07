@@ -1,4 +1,4 @@
-import {Component, numberAttribute} from '@angular/core';
+import {Component} from '@angular/core';
 import {DepartmentService} from "../../../../service/schedule/department.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
