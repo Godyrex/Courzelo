@@ -1,0 +1,12 @@
+
+Z
+java:S1172"=Remove this unused method parameter "fieldOfStudyRepository".(ÅóÂÌ8ışø°à1
+]	java:S125?"<This block of commented-out lines of code should be removed.(úµ»øÿÿÿÿ8•ãÊà1
+p
+java:S6204€"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8¬š£á1
+p
+java:S6204"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8•¬š£á1
+c
+java:S1128"ARemove this unused import 'com.courzelo.lms.dto.FieldOfStudyDTO'.(ÄüşÉúÿÿÿÿ8™¬š£á1
+Y
+java:S1068"7Remove this unused "fieldOfStudyService" private field.(ÆÃ¿Úıÿÿÿÿ8ˆÿø°à1

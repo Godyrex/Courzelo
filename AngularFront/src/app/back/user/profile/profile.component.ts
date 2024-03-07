@@ -121,6 +121,7 @@ export class ProfileComponent {
     }
 
   }
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     console.log(this.selectedFile);
@@ -146,7 +147,6 @@ export class ProfileComponent {
         console.log(error)
       });
   }
-
 
 
   changePassword() {

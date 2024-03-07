@@ -4,7 +4,7 @@
       <button (click)="navigateToPage(1)" class="page-link">&laquo;</button>
     </li>
     <li *ngFor="let page of pageNumbers" class="page-item">
-      <button (click)="navigateToPage(page)" class="page-link">{{ page+1 }}</button>
+      <button (click)="navigateToPage(page)" class="page-link">{{ page + 1 }}</button>
     </li>
     <li class="page-item">
       <button (click)="navigateToPage(totalPages-1)" class="page-link">&raquo;</button>

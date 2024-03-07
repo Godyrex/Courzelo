@@ -1,0 +1,209 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="index3.html" class="brand-link">
+    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+         style="opacity: .8">
+    <span class="brand-text font-weight-light">AdminLTE 3</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a href="#" class="d-block">Alexander Pierce</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-table"></i>
+            <p>
+              Manage
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a href="departments" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Departments</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="timetable" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>timetable</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="fieldOfStudies" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Field of Study</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="NonDisponibilities" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Non Disponibilities</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="student-group-form">
+        <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchField()">
+          <!-- Search form -->
+          <div class="row">
+            <div class="col-lg-8 col-md-6">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search by Name ..."
+                  formControlName="keyword"
+                />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="search-student-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="max-width: 800px; margin: 0 auto">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="page-header">
+            <div class="row align-items-center">
+              <div class="col">
+                <h3 class="page-title">Field of studies</h3>
+              </div>
+              <div class="col-auto text-end float-end ms-auto download-grp">
+                <button mat-button (click)="openAddFieldDialog()">Add Field</button>
+
+                <i class="fas fa-plus"></i>
+
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col">
+                <span class="m-2">Display</span>
+                <select class="form-select form-select-sm w-auto">
+                  <option selected="" value="10">5</option>
+                  <option value="25">10</option>
+                  <option value="50">20</option>
+                  <option value="100">100</option>
+                </select>
+                <span class="m-2">Entries</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+              <thead class="student-thread">
+              <tr>
+                <th>
+                  <div class="form-check check-tables">
+                    <input class="form-check-input" type="checkbox" value="something"/>
+                  </div>
+                </th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Chef Field</th>
+                <th>NumberOfWeeks</th>
+                <th scope="col" class="text-center">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let field of fields">
+                <td>
+                  <div class="form-check check-tables">
+                    <input class="form-check-input" type="checkbox" value="something"/>
+                  </div>
+                </td>
+                <td>{{ field.id }}</td>
+                <td>{{ field.name }}</td>
+                <td>{{ field.chefField }}</td>
+                <td>{{ field.numbrWeeks }}</td>
+
+                <td class="text-center">
+                  <a (click)="showUpdateForm(field)" class="btn btn-sm bg-success-light me-2">
+                    <i class="fas fa-edit"></i>
+
+                  </a>
+                  <a (click)="handleDeleteField(field)" class="btn btn-sm bg-danger-light">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <ul class="pagination justify-content-end mt-4">
+            <li class="page-item" [ngClass]="{ disabled: currentPage === 0 }">
+              <a class="page-link" tabindex="-1" (click)="goToPreviousSet()">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of displayedPages" [class.selected]="currentPage === page">
+              <a class="page-link" (click)="gotoPage(page)">{{ page + 1 }}</a>
+            </li>
+            <li class="page-item" [ngClass]="{ disabled: currentPage >= totalPages - 1 }">
+              <button class="page-link" [disabled]="currentPage >= totalPages - 1" (click)="goToNextSet()">Next</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+
+
+          <app-edit-field-of-study
+            *ngIf="isEditFormVisible"
+            [fieldToUpdate]=" selectedField"
+            (errorMessage)="handleErrorMessage($event)"
+            (successMessage)="handleSuccessMessage($event)"
+            (updateForm)="handleUpdateFormToggle($event)">
+          </app-edit-field-of-study>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

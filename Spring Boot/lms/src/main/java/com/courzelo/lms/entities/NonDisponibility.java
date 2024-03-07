@@ -1,31 +1,22 @@
 package com.courzelo.lms.entities;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
 
-
-@Document
+@Document(collection = "NonDisponibility")
 @Getter
 @Setter
 public class NonDisponibility {
 
     @Id
-    private Long id;
-
-    @CreatedDate
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
-
-    @Version
-    private Integer version;
+    private  String id;
+    @NotNull
+   private String day;
+    @NotNull
+   private String period;
 
 }

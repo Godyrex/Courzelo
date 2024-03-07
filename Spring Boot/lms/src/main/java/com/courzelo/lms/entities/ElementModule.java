@@ -1,44 +1,48 @@
 package com.courzelo.lms.entities;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.DayOfWeek;
-import java.time.OffsetDateTime;
+import java.util.List;
 
 
-@Document
+@Document(collection = "elementModule")
 @Getter
 @Setter
 public class ElementModule {
-
     @Id
-    private Long id;
-
+    private  String id;
+    @NotNull
     private Integer nmbrHours;
-
+    @NotNull
     @Size(max = 255)
     private String name;
+    @NotNull
+    private List<DayOfWeek> dayOfWeeks;
+    @NotNull
+    private List<Period> periods;
+    @NotNull
+   // private List<Class>classes;
+    @NotNull
+    private String module;
+    @NotNull
+   // @DBRef
+    private List<Semester> semesters ;
+    //@DBRef
+    @NotNull
+    private List<Department> departments;
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
+    @NotNull
+    private int numSemesters;
 
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
+    @NotNull
+    private int numDepartments;
 
-    @Version
-    private Integer version;
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek jour;
-    @Enumerated(EnumType.STRING)
-    private Period period;
+
 
 }
