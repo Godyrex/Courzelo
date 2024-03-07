@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {TokenStorageService} from "../../service/user/auth/token-storage.service";
 import {AuthGuardService} from "../../service/user/guard/auth-guard.service";
 import {UpdateService} from "../../service/user/profile/update.service";
 import {LoginResponse} from "../../model/user/LoginResponse";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-frontheader',
@@ -14,16 +12,17 @@ export class FrontheaderComponent implements OnInit {
   userRoles: LoginResponse = {};
   auth: any = false;
 
-  constructor(private updateService : UpdateService,
-     private authGuardService: AuthGuardService) {
+  constructor(private updateService: UpdateService,
+              private authGuardService: AuthGuardService) {
   }
 
   ngOnInit(): void {
-  this.getMyInfo();
-  this.auth = this.authGuardService.canActivate();
-  console.log("User Authenticated : "+this.auth)
+    this.getMyInfo();
+    this.auth = this.authGuardService.canActivate();
+    console.log("User Authenticated : " + this.auth)
   }
-  getMyInfo(){
+
+  getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.userRoles = response;

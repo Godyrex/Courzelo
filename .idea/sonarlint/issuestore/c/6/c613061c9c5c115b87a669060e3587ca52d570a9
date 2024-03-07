@@ -1,0 +1,23 @@
+
+X	java:S125("<This block of commented-out lines of code should be removed.(¥ÊÖÀ8îÒåÓß1
+V
+java:S1128"9Remove this unused import 'jakarta.persistence.EnumType'.(…÷Íà8Ÿß® à1
+]
+java:S1128";Remove this unused import 'jakarta.persistence.Enumerated'.(àèòùÿÿÿÿ8Ÿß® à1
+u
+java:S1128	"SRemove this unused import 'org.springframework.beans.factory.annotation.Autowired'.(¡¸Îùÿÿÿÿ8Ÿß® à1
+n
+java:S1128
+"LRemove this unused import 'org.springframework.data.annotation.CreatedDate'.(Éå¥°ÿÿÿÿÿ8Ÿß® à1
+n
+java:S1128"QRemove this unused import 'org.springframework.data.annotation.LastModifiedDate'.(Æğ¼‰8 ß® à1
+e
+java:S1128"HRemove this unused import 'org.springframework.data.annotation.Version'.(¨Şíú8 ß® à1
+r
+java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.MongoTemplate'.(áÌ¨âÿÿÿÿÿ8 ß® à1
+m
+java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.mapping.DBRef'.(°‘íâ8 ß® à1
+R
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿ8 ß® à1
+R
+java:S1128"5Remove this unused import 'java.time.OffsetDateTime'.(ûùˆı8 ß® à1
