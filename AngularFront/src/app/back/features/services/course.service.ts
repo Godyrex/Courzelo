@@ -1,28 +1,31 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Course } from '../model/course';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Course} from '../model/course';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
-public urlCourse="http://localhost:8085/cours"
-constructor(private httpClient:HttpClient) { }
+  public urlCourse = "http://localhost:8085/cours"
 
-public getAll() :Observable<Course[]> {
-  return this.httpClient.get<Course[]>(this.urlCourse);
-}
+  constructor(private httpClient: HttpClient) {
+  }
 
-public edit(id: any, data: any): Observable<void> {
-  return this.httpClient.put<void>(this.urlCourse, data);
-}
-public  add(data: any): Observable<void> {
-  return this.httpClient.post<void>(this.urlCourse, data);
-}
+  public getAll(): Observable<Course[]> {
+    return this.httpClient.get<Course[]>(this.urlCourse);
+  }
 
-public delete(id: any):Observable<any> {
-  return this.httpClient.delete<any>(this.urlCourse+"/" + id);
-}
+  public edit(id: any, data: any): Observable<void> {
+    return this.httpClient.put<void>(this.urlCourse, data);
+  }
+
+  public add(data: any): Observable<void> {
+    return this.httpClient.post<void>(this.urlCourse, data);
+  }
+
+  public delete(id: any): Observable<any> {
+    return this.httpClient.delete<any>(this.urlCourse + "/" + id);
+  }
 
 }

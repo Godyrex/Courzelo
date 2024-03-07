@@ -1,42 +1,43 @@
-import { Injectable } from '@angular/core';
-import { Course } from '../model/course';
-import { Exams } from '../model/exams';
-import { Assignement } from '../model/assignement';
+import {Injectable} from '@angular/core';
+import {Course} from '../model/course';
+import {Exams} from '../model/exams';
+import {Assignement} from '../model/assignement';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedDataService {
 
-constructor() { }
+  constructor() {
+  }
 
-private course!:Course;
-private  exams!:Exams;
-private  assignement! :Assignement;
+  private course!: Course;
+  private exams!: Exams;
+  private assignement!: Assignement;
 
 
-setCourse(course:Course):void{
-  this.course=course;
-}
+  setCourse(course: Course): void {
+    this.course = course;
+  }
 
-getCourse():Course{
-  return this.course;
-}
+  getCourse(): Course {
+    return this.course;
+  }
 
-setExam(exams:Exams):void{
-  this.exams=exams;
-}
+  setExam(exams: Exams): void {
+    this.exams = exams;
+  }
 
-getExam():Exams{
-  return this.exams;
-}
+  getExam(): Exams {
+    return this.exams;
+  }
 
-setAssignement(assignement:Assignement):void{
-  this.assignement=assignement;
-}
+  setAssignement(assignement: Assignement): void {
+    this.assignement = assignement;
+  }
 
-getAssignement():Assignement{
-  return this.assignement;
-}
+  getAssignement(): Assignement {
+    return this.assignement;
+  }
 
 }

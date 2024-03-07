@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Exams } from 'src/app/back/features/model/exams';
-import { QuestionService } from 'src/app/back/features/services/question.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Exams} from 'src/app/back/features/model/exams';
+import {QuestionService} from 'src/app/back/features/services/question.service';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-add-question',
   templateUrl: './add-question.component.html',
@@ -10,33 +11,35 @@ import Swal from 'sweetalert2';
 })
 export class AddQuestionComponent implements OnInit {
 
-  @Input()exams!:Exams;
+  @Input() exams!: Exams;
   @Output() added: EventEmitter<any> = new EventEmitter();
   public addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private questService$: QuestionService) {}
+  constructor(private fb: FormBuilder, private questService$: QuestionService) {
+  }
+
   ngOnInit(): void {
     this.addForm = this.fb.group({
-      description:['',Validators.required],
-      sugg1:['',Validators.required],
-      sugg2:['',Validators.required],
-      sugg3:['',Validators.required],
-      wrSugg:['',Validators.required],
-      note:['',Validators.required],
-      idExamen:['',Validators.required],
+      description: ['', Validators.required],
+      sugg1: ['', Validators.required],
+      sugg2: ['', Validators.required],
+      sugg3: ['', Validators.required],
+      wrSugg: ['', Validators.required],
+      note: ['', Validators.required],
+      idExamen: ['', Validators.required],
     });
 
     this.addForm.patchValue({
-      idExamen:this.exams.id,
+      idExamen: this.exams.id,
     });
   }
+
   ngOnChanges() {
 
   }
 
   add() {
-    if(this.addForm.invalid)
-    {
+    if (this.addForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',

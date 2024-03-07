@@ -1,9 +1,7 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListAssignementComponent } from './list-assignement.component';
+import {ListAssignementComponent} from './list-assignement.component';
 
 describe('ListAssignementComponent', () => {
   let component: ListAssignementComponent;
@@ -11,9 +9,9 @@ describe('ListAssignementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListAssignementComponent ]
+      declarations: [ListAssignementComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

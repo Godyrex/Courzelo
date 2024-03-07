@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Course } from 'src/app/back/features/model/course';
-import { CourseContent } from 'src/app/back/features/model/course-content';
-import { CourseContentService } from 'src/app/back/features/services/course-content.service';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CourseContent} from 'src/app/back/features/model/course-content';
+import {CourseContentService} from 'src/app/back/features/services/course-content.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,11 +10,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./edit-course-content.component.css']
 })
 export class EditCourseContentComponent implements OnInit, OnChanges {
-  @Input()courseContentInput!:CourseContent;
+  @Input() courseContentInput!: CourseContent;
   @Output() edited: EventEmitter<any> = new EventEmitter();
   public editForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private courseService$: CourseContentService) {}
+  constructor(private fb: FormBuilder, private courseService$: CourseContentService) {
+  }
+
   ngOnInit(): void {
     this.editForm = this.fb.group({
       id: [''],
@@ -25,13 +26,14 @@ export class EditCourseContentComponent implements OnInit, OnChanges {
       coursId: [''],
     });
   }
+
   ngOnChanges() {
     this.editForm.patchValue({
       id: this.courseContentInput.id,
-      description:  this.courseContentInput.description,
-      nom:  this.courseContentInput.nom,
-      path:  this.courseContentInput.path,
-      coursId:  this.courseContentInput.coursId,
+      description: this.courseContentInput.description,
+      nom: this.courseContentInput.nom,
+      path: this.courseContentInput.path,
+      coursId: this.courseContentInput.coursId,
     });
   }
 
@@ -42,7 +44,7 @@ export class EditCourseContentComponent implements OnInit, OnChanges {
       this.editForm.value
     );
     this.courseService$
-      .edit(this.courseContentInput.id,this.editForm.value)
+      .edit(this.courseContentInput.id, this.editForm.value)
       .subscribe(() => {
         console.log(
           '%cedit-cours.component.ts line: added success',

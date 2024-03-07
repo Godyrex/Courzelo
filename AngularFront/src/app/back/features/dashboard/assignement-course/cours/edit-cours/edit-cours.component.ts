@@ -1,17 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Course } from 'src/app/back/features/model/course';
-import { Teacher } from 'src/app/back/features/model/teacher';
-import { CourseService } from 'src/app/back/features/services/course.service';
-import { SharedDataService } from 'src/app/back/features/shared/shared-data.service';
+import {Component, EventEmitter, OnChanges, OnInit, Output,} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Course} from 'src/app/back/features/model/course';
+import {Teacher} from 'src/app/back/features/model/teacher';
+import {CourseService} from 'src/app/back/features/services/course.service';
+import {SharedDataService} from 'src/app/back/features/shared/shared-data.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class EditCoursComponent implements OnInit, OnChanges {
   public courseInput!: Course;
-  public teacherList!:Teacher[];
+  public teacherList!: Teacher[];
   @Output() edited: EventEmitter<any> = new EventEmitter();
   public editForm!: FormGroup;
 
@@ -29,7 +21,9 @@ export class EditCoursComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private courseService$: CourseService,
     private sharedDataService$: SharedDataService
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this.courseInput = this.sharedDataService$.getCourse();
     console.log(
@@ -37,7 +31,7 @@ export class EditCoursComponent implements OnInit, OnChanges {
       'color: #007acc;',
       this.courseInput
     );
-    this.teacherList=this.courseInput.teacherList;
+    this.teacherList = this.courseInput.teacherList;
     this.editForm = this.fb.group({
       id: [''],
       description: ['', Validators.required],
@@ -47,7 +41,9 @@ export class EditCoursComponent implements OnInit, OnChanges {
       description: this.courseInput.description,
     });
   }
-  ngOnChanges() {}
+
+  ngOnChanges() {
+  }
 
   edit() {
     {

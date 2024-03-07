@@ -9,7 +9,7 @@
           <div class="col-4">
             <div class="flex">
               <span class="p-input-icon-left ml-auto">
-                <a class="btn btn-app" (click)="addVisibility=true" style="color: blue"> <i class="fas fa-plus" ></i> add </a>
+                <a class="btn btn-app" (click)="addVisibility=true" style="color: blue"> <i class="fas fa-plus"></i> add </a>
               </span>
             </div>
           </div>
@@ -37,7 +37,7 @@
               <th>type</th>
               <th>action</th>
             </tr>
-            <tr >
+            <tr>
               <th>
                 <p-columnFilter
                   type="text"
@@ -62,7 +62,8 @@
               <td>{{ assignment.type }}</td>
               <td>
                 <span class="mr-1">
-                  <a class="btn btn-app" style="color: darkorange" (click)="getItemSelected(assignment);editVisibility=true"> <i class="fas fa-edit"></i> Edit </a>
+                  <a class="btn btn-app" style="color: darkorange"
+                     (click)="getItemSelected(assignment);editVisibility=true"> <i class="fas fa-edit"></i> Edit </a>
                 </span>
                 <span>
                   <a class="btn btn-app" style="color: firebrick" (click)="deleteItem(assignment)">
@@ -84,14 +85,15 @@
     </div>
   </div>
 </div>
- <!-- /.card-body-->
+<!-- /.card-body-->
 <p-dialog
   [modal]="true"
   [(visible)]="editVisibility"
   [style]="{ width: '1000px'}"
 >
- <app-edit-assignement [assignementInput]="selectedAssignement" (edited)="getAssignementByCourse();editVisibility=$event"></app-edit-assignement>
- {{selectedAssignement|json}}
+  <app-edit-assignement [assignementInput]="selectedAssignement"
+                        (edited)="getAssignementByCourse();editVisibility=$event"></app-edit-assignement>
+  {{selectedAssignement|json}}
 </p-dialog>
 
 
@@ -100,5 +102,6 @@
   [(visible)]="addVisibility"
   [style]="{ width: '1000px'}"
 >
-  <app-add-assignement [courseInput]="coursesInput" (added)="getAssignementByCourse();addVisibility=$event;"></app-add-assignement>
+  <app-add-assignement [courseInput]="coursesInput"
+                       (added)="getAssignementByCourse();addVisibility=$event;"></app-add-assignement>
 </p-dialog>

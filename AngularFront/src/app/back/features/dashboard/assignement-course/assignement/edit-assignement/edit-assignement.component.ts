@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Assignement } from 'src/app/back/features/model/assignement';
-import { AssignementService } from 'src/app/back/features/services/assignement.service';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Assignement} from 'src/app/back/features/model/assignement';
+import {AssignementService} from 'src/app/back/features/services/assignement.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './edit-assignement.component.html',
   styleUrls: ['./edit-assignement.component.css']
 })
-export class EditAssignementComponent implements OnInit,OnChanges {
+export class EditAssignementComponent implements OnInit, OnChanges {
   @Input() assignementInput!: Assignement;
   @Output() edited: EventEmitter<any> = new EventEmitter();
   public editForm!: FormGroup;
@@ -17,6 +17,7 @@ export class EditAssignementComponent implements OnInit,OnChanges {
   constructor(private fb: FormBuilder, private assignementService$: AssignementService) {
     console.log("teeeeeeeeeeeeeeest")
   }
+
   ngOnInit(): void {
     console.log('%cedit-assignement.component.ts:20 this.selectedAssignement', 'color: #007acc;', this.assignementInput);
     this.editForm = this.fb.group({
@@ -26,14 +27,15 @@ export class EditAssignementComponent implements OnInit,OnChanges {
       type: ['', Validators.required],
       coursId: [''],
     });
-   /* this.editForm.patchValue({
-      id: this.assignementInput.id,
-      description:  this.assignementInput.description,
-      deadline:  this.assignementInput.deadline,
-      type:  this.assignementInput.type,
-      coursId:  this.assignementInput.coursId,
-    });*/
+    /* this.editForm.patchValue({
+       id: this.assignementInput.id,
+       description:  this.assignementInput.description,
+       deadline:  this.assignementInput.deadline,
+       type:  this.assignementInput.type,
+       coursId:  this.assignementInput.coursId,
+     });*/
   }
+
   ngOnChanges() {
     console.log('%cedit-assignement.component.ts:20 this.selectedAssignement', 'color: #007acc;', this.assignementInput);
     this.editForm = this.fb.group({
@@ -45,10 +47,10 @@ export class EditAssignementComponent implements OnInit,OnChanges {
     });
     this.editForm.patchValue({
       id: this.assignementInput.id,
-      description:  this.assignementInput.description,
-      deadline:  this.assignementInput.deadline,
-      type:  this.assignementInput.type,
-      coursId:  this.assignementInput.coursId,
+      description: this.assignementInput.description,
+      deadline: this.assignementInput.deadline,
+      type: this.assignementInput.type,
+      coursId: this.assignementInput.coursId,
     });
   }
 
@@ -59,7 +61,7 @@ export class EditAssignementComponent implements OnInit,OnChanges {
       this.editForm.value
     );
     this.assignementService$
-      .edit(this.assignementInput.id,this.editForm.value)
+      .edit(this.assignementInput.id, this.editForm.value)
       .subscribe(() => {
         console.log(
           '%cedit-cours.component.ts line: added success',

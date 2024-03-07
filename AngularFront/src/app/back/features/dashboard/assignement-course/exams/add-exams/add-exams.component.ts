@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ExamsService } from 'src/app/back/features/services/exams.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ExamsService} from 'src/app/back/features/services/exams.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,7 +13,8 @@ export class AddExamsComponent implements OnInit {
   @Output() added: EventEmitter<any> = new EventEmitter();
   public addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private examsService$: ExamsService) {}
+  constructor(private fb: FormBuilder, private examsService$: ExamsService) {
+  }
 
   ngOnInit(): void {
     this.addForm = this.fb.group({
@@ -21,13 +22,13 @@ export class AddExamsComponent implements OnInit {
       date: ['', Validators.required],
     });
   }
+
   ngOnChanges() {
 
   }
 
   add() {
-    if(this.addForm.invalid)
-    {
+    if (this.addForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',

@@ -1,19 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Course } from 'src/app/back/features/model/course';
-import { AssignementService } from 'src/app/back/features/services/assignement.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Course} from 'src/app/back/features/model/course';
+import {AssignementService} from 'src/app/back/features/services/assignement.service';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-add-assignement',
   templateUrl: './add-assignement.component.html',
   styleUrls: ['./add-assignement.component.css']
 })
 export class AddAssignementComponent implements OnInit {
-  @Input()courseInput!:Course;
+  @Input() courseInput!: Course;
   @Output() added: EventEmitter<any> = new EventEmitter();
   public addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder,private assignementService$:AssignementService) {}
+  constructor(private fb: FormBuilder, private assignementService$: AssignementService) {
+  }
+
   ngOnInit(): void {
     this.addForm = this.fb.group({
       description: ['', Validators.required],
@@ -23,16 +26,16 @@ export class AddAssignementComponent implements OnInit {
     });
 
     this.addForm.patchValue({
-      coursId:this.courseInput.id,
+      coursId: this.courseInput.id,
     });
   }
+
   ngOnChanges() {
 
   }
 
   add() {
-    if(this.addForm.invalid)
-    {
+    if (this.addForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',

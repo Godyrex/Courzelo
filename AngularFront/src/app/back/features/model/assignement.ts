@@ -3,6 +3,6 @@ export class Assignement {
   public coursId!: string;
   public id_students!: string;
   public description!: string;
-  public deadline!:Date;
+  public deadline!: Date;
   public type!: string;
 }

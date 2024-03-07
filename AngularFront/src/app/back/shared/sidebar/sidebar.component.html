@@ -15,7 +15,7 @@
         <img [src]="userPhotoUrl" alt="User Image" class="img-circle elevation-2">
       </div>
       <div class="info">
-        <a class="d-block" routerLink="/settings/profile">{{loginResponse.name+" "+loginResponse.lastname }}</a>
+        <a class="d-block" routerLink="/settings/profile">{{loginResponse.name + " " + loginResponse.lastname }}</a>
       </div>
     </div>
 
@@ -57,7 +57,8 @@
             </li>
           </ul>
         </li>
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_SUPERADMIN')" class="nav-item" [ngClass]="{'menu-open': isSuperAdminMenuOpen, 'menu-close': !isSuperAdminMenuOpen}">
+        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_SUPERADMIN')" class="nav-item"
+            [ngClass]="{'menu-open': isSuperAdminMenuOpen, 'menu-close': !isSuperAdminMenuOpen}">
           <a (click)="toggleSuperAdminMenu()" [ngClass]="{'active': isSuperAdminMenuOpen, '': !isSuperAdminMenuOpen}"
              class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -82,7 +83,8 @@
           </ul>
         </li>
 
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item" [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
+        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item"
+            [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
           <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>

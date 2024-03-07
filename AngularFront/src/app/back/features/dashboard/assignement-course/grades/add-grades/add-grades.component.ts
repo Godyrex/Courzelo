@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Exams } from 'src/app/back/features/model/exams';
-import { GradesService } from 'src/app/back/features/services/grades.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Exams} from 'src/app/back/features/model/exams';
+import {GradesService} from 'src/app/back/features/services/grades.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,37 +11,39 @@ import Swal from 'sweetalert2';
 })
 export class AddGradesComponent implements OnInit {
 
-  @Input()exams!:Exams;
+  @Input() exams!: Exams;
   @Output() added: EventEmitter<any> = new EventEmitter();
   public addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private gradeService$: GradesService) {}
+  constructor(private fb: FormBuilder, private gradeService$: GradesService) {
+  }
+
   ngOnInit(): void {
     this.addForm = this.fb.group({
-      note:['',Validators.required],
-      datePass:['',Validators.required],
-      idExamen:['',Validators.required],
+      note: ['', Validators.required],
+      datePass: ['', Validators.required],
+      idExamen: ['', Validators.required],
     });
 
     this.addForm.patchValue({
-      idExamen:this.exams.id,
+      idExamen: this.exams.id,
     });
   }
+
   ngOnChanges() {
     this.addForm = this.fb.group({
-      note:['',Validators.required],
-      datePass:['',Validators.required],
-      idExamen:['',Validators.required],
+      note: ['', Validators.required],
+      datePass: ['', Validators.required],
+      idExamen: ['', Validators.required],
     });
 
     this.addForm.patchValue({
-      idExamen:this.exams.id,
+      idExamen: this.exams.id,
     });
   }
 
   add() {
-    if(this.addForm.invalid)
-    {
+    if (this.addForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',

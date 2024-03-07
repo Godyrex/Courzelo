@@ -1,15 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CourseService } from 'src/app/back/features/services/course.service';
+import {Component, EventEmitter, OnChanges, OnInit, Output,} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CourseService} from 'src/app/back/features/services/course.service';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
@@ -19,21 +12,25 @@ export class AddCourseComponent implements OnInit, OnChanges {
   @Output() added: EventEmitter<any> = new EventEmitter();
   public addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private courseService$: CourseService) {}
+  constructor(private fb: FormBuilder, private courseService$: CourseService) {
+  }
+
   ngOnInit(): void {
     this.addForm = this.fb.group({
       description: ['', Validators.required],
     });
   }
+
   ngOnChanges() {
 
   }
 
-  get formControl() { return this.addForm.controls; }
+  get formControl() {
+    return this.addForm.controls;
+  }
 
   add() {
-    if(this.addForm.invalid)
-    {
+    if (this.addForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',

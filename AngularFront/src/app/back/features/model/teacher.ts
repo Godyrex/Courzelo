@@ -1,4 +1,4 @@
 export class Teacher {
-  public id!:String;
-  public speciality!:String;
+  public id!: String;
+  public speciality!: String;
 }
