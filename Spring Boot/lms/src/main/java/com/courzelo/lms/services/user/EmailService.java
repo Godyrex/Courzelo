@@ -1,7 +1,7 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.repositories.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -13,7 +13,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Random;
 
 @Service
 @Slf4j

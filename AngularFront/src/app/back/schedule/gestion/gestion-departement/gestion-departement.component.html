@@ -2,7 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="index3.html" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+         style="opacity: .8">
     <span class="brand-text font-weight-light">AdminLTE 3</span>
   </a>
 
@@ -71,8 +72,8 @@
   <!-- /.sidebar -->
 </aside>
 
-<div class="container" >
-  <div class="row justify-content-center" >
+<div class="container">
+  <div class="row justify-content-center">
     <div class="col-lg-8">
       <div class="student-group-form">
         <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchDepartments()">
@@ -113,7 +114,7 @@
               <div class="col-auto text-end float-end ms-auto download-grp">
                 <button mat-button (click)="openAddDepartmentDialog()">Add Department</button>
 
-                  <i class="fas fa-plus"></i>
+                <i class="fas fa-plus"></i>
 
               </div>
             </div>
@@ -137,7 +138,7 @@
               <tr>
                 <th>
                   <div class="form-check check-tables">
-                    <input class="form-check-input" type="checkbox" value="something" />
+                    <input class="form-check-input" type="checkbox" value="something"/>
                   </div>
                 </th>
                 <th>ID</th>
@@ -150,14 +151,14 @@
               <tr *ngFor="let department of departments">
                 <td>
                   <div class="form-check check-tables">
-                    <input class="form-check-input" type="checkbox" value="something" />
+                    <input class="form-check-input" type="checkbox" value="something"/>
                   </div>
                 </td>
                 <td>{{ department.id }}</td>
                 <td>{{ department.name }}</td>
                 <td>{{ department.chefDepartment }}</td>
                 <td class="text-center">
-                  <a (click)="showUpdateForm(department)" class="btn btn-sm bg-success-light me-2" >
+                  <a (click)="showUpdateForm(department)" class="btn btn-sm bg-success-light me-2">
                     <i class="fas fa-edit"></i>
 
                   </a>
@@ -188,7 +189,6 @@
         <div class="col-12">
 
 
-
           <app-edit-departement
             *ngIf="isEditFormVisible"
             [departmentToUpdate]=" selectedDepartment"
@@ -198,9 +198,9 @@
           </app-edit-departement>
 
         </div>
+      </div>
+
+
     </div>
-
-
-</div>
   </div>
 </div>

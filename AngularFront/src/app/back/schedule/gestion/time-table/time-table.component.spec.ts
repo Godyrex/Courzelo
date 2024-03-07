@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TimeTableComponent } from './time-table.component';
+import {TimeTableComponent} from './time-table.component';
 
 describe('TimeTableComponent', () => {
   let component: TimeTableComponent;

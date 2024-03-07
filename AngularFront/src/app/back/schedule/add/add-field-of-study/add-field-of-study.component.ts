@@ -17,9 +17,9 @@ import {MatDialogRef} from "@angular/material/dialog";
   templateUrl: './add-field-of-study.component.html',
   styleUrls: ['./add-field-of-study.component.css']
 })
-export class AddFieldOfStudyComponent implements OnInit{
+export class AddFieldOfStudyComponent implements OnInit {
   newfieldOfstudyFormGroup!: FormGroup;
- fields: FieldOfStudy[] = [];
+  fields: FieldOfStudy[] = [];
   @Output() fieldAdded: EventEmitter<FieldOfStudy> = new EventEmitter<FieldOfStudy>();
   departments: Departement[] = [];
 
@@ -29,7 +29,9 @@ export class AddFieldOfStudyComponent implements OnInit{
     private departmentService: DepartmentService,
     public dialogRef: MatDialogRef<AddFieldOfStudyComponent>,
     private router: Router
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this.newfieldOfstudyFormGroup = this.fb.group({
       name: ['', Validators.required],
@@ -41,31 +43,29 @@ export class AddFieldOfStudyComponent implements OnInit{
     });
 
 
-
     this.fetchDepartments();
   }
 
 
+  /* handleAddFieldOfStudy() {
+     if (this.newfieldOfstudyFormGroup.valid) {
+       const fieldOfStudy: FieldOfStudy = Object.assign({}, this.newfieldOfstudyFormGroup.value);
 
- /* handleAddFieldOfStudy() {
-    if (this.newfieldOfstudyFormGroup.valid) {
-      const fieldOfStudy: FieldOfStudy = Object.assign({}, this.newfieldOfstudyFormGroup.value);
+       this.fieldOfstudyService.saveFieldOfStudy(fieldOfStudy).subscribe({
+         next: data => {
+           console.log(data);
+           Swal.fire('Success', 'field of study added successfully', 'success');
 
-      this.fieldOfstudyService.saveFieldOfStudy(fieldOfStudy).subscribe({
-        next: data => {
-          console.log(data);
-          Swal.fire('Success', 'field of study added successfully', 'success');
-
-        },
-        error: err => {
-          console.error('Save field of study error:', err);
-          Swal.fire('Error', 'An error occurred while saving the field of study', 'error');
-        }
-      });
-    } else {
-      Swal.fire('Error', 'Please fill in all fields of the form correctly', 'error');
-    }
-  }*/
+         },
+         error: err => {
+           console.error('Save field of study error:', err);
+           Swal.fire('Error', 'An error occurred while saving the field of study', 'error');
+         }
+       });
+     } else {
+       Swal.fire('Error', 'Please fill in all fields of the form correctly', 'error');
+     }
+   }*/
   handleAddFieldOfStudy() {
     if (this.newfieldOfstudyFormGroup.valid) {
       const fieldOfStudy: FieldOfStudy = Object.assign({}, this.newfieldOfstudyFormGroup.value);
@@ -89,6 +89,7 @@ export class AddFieldOfStudyComponent implements OnInit{
       Swal.fire('Error', 'Please fill in all fields of the form correctly', 'error');
     }
   }
+
   onCancelClick() {
     this.dialogRef.close();
   }
@@ -102,9 +103,9 @@ export class AddFieldOfStudyComponent implements OnInit{
         console.error('Error fetching departments:', error);
 
       }
-
     );
   }
+
   handleSuccessMessage(message: string) {
     Swal.fire('Success', message, 'success');
   }

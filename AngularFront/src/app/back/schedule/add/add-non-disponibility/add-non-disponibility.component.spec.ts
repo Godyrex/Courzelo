@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddNonDisponibilityComponent } from './add-non-disponibility.component';
+import {AddNonDisponibilityComponent} from './add-non-disponibility.component';
 
 describe('AddNonDisponibilityComponent', () => {
   let component: AddNonDisponibilityComponent;

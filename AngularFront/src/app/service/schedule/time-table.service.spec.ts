@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TimeTableService } from './time-table.service';
+import {TimeTableService} from './time-table.service';
 
 describe('TimeTableService', () => {
   let service: TimeTableService;

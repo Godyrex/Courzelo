@@ -1,6 +1,6 @@
 import {Departement} from "./departement";
 
-export interface DepartmentList{
-  departements?:Departement[];
+export interface DepartmentList {
+  departements?: Departement[];
   totalPages?: number;
 }

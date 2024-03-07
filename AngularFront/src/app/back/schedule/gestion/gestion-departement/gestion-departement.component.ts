@@ -1,10 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 import {Router} from "@angular/router";
 import Swal from "sweetalert2";
-
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {AddDepartementComponent} from "../../add/add-departement/add-departement.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Departement} from "../../../../model/schedule/departement";
@@ -38,13 +36,12 @@ export class GestionDepartementComponent {
   selectedDepartment: Departement = {chefDepartment: "", fieldOfStudies: [], id: "", name: ""};
   isEditFormVisible = false;
 
-constructor(private departmentService: DepartmentService,
-            private fb: FormBuilder,
-            private router: Router,
-            private dialog: MatDialog,
-)
-{
-}
+  constructor(private departmentService: DepartmentService,
+              private fb: FormBuilder,
+              private router: Router,
+              private dialog: MatDialog,
+  ) {
+  }
 
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({
@@ -54,9 +51,11 @@ constructor(private departmentService: DepartmentService,
     this.departmentService.getAllDepartements();
     this.fetchDepartments();
   }
+
   toggleAddFormVisibility(): void {
     this.addFormVisible = !this.addFormVisible;
   }
+
   handleUpdateFormToggle(isVisible: boolean) {
     this.isEditFormVisible = isVisible;
   }
@@ -75,11 +74,11 @@ constructor(private departmentService: DepartmentService,
   }
 
 
-
   handleChangeSize($event: Event) {
     this.size = parseInt((<HTMLInputElement>$event.target).value);
     this.handleSearchDepartments();
   }
+
   handleSearchDepartments(): void {
     const keyword = this.searchFormGroup.value.keyword.trim().toLowerCase();
     if (!keyword) {
@@ -129,6 +128,7 @@ constructor(private departmentService: DepartmentService,
       }
     });
   }
+
   onPageChange(page: number): void {
     this.currentPage = page;
     console.log("page changed from paginator" + page)
@@ -160,9 +160,11 @@ constructor(private departmentService: DepartmentService,
   resetErrorAlert() {
     this.messageError = "";
   }
+
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }
+
   handleAddFormToggle(message: boolean) {
     this.addForm = message;
   }
@@ -188,6 +190,7 @@ constructor(private departmentService: DepartmentService,
       this.handleSearchDepartments();
     }
   }
+
   openAddDepartmentDialog(): void {
     const dialogRef = this.dialog.open(AddDepartementComponent, {
       width: '600px'

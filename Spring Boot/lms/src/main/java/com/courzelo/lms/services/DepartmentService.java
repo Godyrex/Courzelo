@@ -2,14 +2,13 @@ package com.courzelo.lms.services;
 
 
 import com.courzelo.lms.dto.DepartmentDTO;
-import com.courzelo.lms.dto.FieldOfStudyDTO;
 import com.courzelo.lms.entities.Department;
+import com.courzelo.lms.entities.FieldOfStudy;
+import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
-import com.courzelo.lms.repositories.DepartmentRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.courzelo.lms.entities.FieldOfStudy;
 
 import java.util.Collections;
 import java.util.List;

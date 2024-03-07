@@ -1,8 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./front/home/home.component";
-import {DashboardComponent} from "./back/dashboard/dashboard.component";
-import {RegisterComponent} from "./back/register/register.component";
 import {GestionDepartementComponent} from "./back/schedule/gestion/gestion-departement/gestion-departement.component";
 import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-departement.component";
 import {EditDepartementComponent} from "./back/schedule/edit/edit-departement/edit-departement.component";
@@ -17,66 +15,145 @@ import {AddNonDisponibilityComponent} from "./add-non-disponibility/add-non-disp
 import {
   EditNonDisponibilityComponent
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
+import {RegisterComponent} from "./back/auth/register/register.component";
+import {PanelComponent} from "./back/shared/panel/panel.component";
+import {InstitutionPanelComponent} from "./back/program/institution/institution-panel/institution-panel.component";
+import {RoleGuardService} from "./service/user/guard/role-guard.service";
+import {ProgramTableComponent} from "./back/program/program-table/program-table.component";
+import {InstitutionTableComponent} from "./back/program/institution/institution-table/institution-table.component";
+import {UsersTableComponent} from "./back/user/users-table/users-table.component";
+import {VerifyComponent} from "./back/auth/verify/verify.component";
+import {DevicesListComponent} from "./back/user/devices-list/devices-list.component";
+import {ProfileComponent} from "./back/user/profile/profile.component";
+import {AuthGuardService} from "./service/user/guard/auth-guard.service";
+import {RecoverPasswordComponent} from "./back/auth/recover-password/recover-password.component";
+import {ForgotPasswordComponent} from "./back/auth/forgot-password/forgot-password.component";
+import {LogoutComponent} from "./back/auth/logout/logout.component";
+import {LoginComponent} from "./back/auth/login/login.component";
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    component: HomeComponent
   },
   {
     path: 'departments',
     component: GestionDepartementComponent,
     children: [
-      { path: 'add', component: AddDepartementComponent },
-      { path: 'edit', component: EditDepartementComponent }
+      {path: 'add', component: AddDepartementComponent},
+      {path: 'edit', component: EditDepartementComponent}
     ]
   },
-  {path:'departments',
-  component:GestionDepartementComponent
+  {
+    path: 'departments',
+    component: GestionDepartementComponent
   },
-  {path:'timetable',
-    component:TimeTableComponent
+  {
+    path: 'timetable',
+    component: TimeTableComponent
   },
-
-
   {
     path: 'fieldOfStudies',
     component: GestionFieldOfStudyComponent,
     children: [
-      { path: 'add', component: AddFieldOfStudyComponent },
-      { path: 'edit', component: EditFieldOfStudyComponent }
+      {path: 'add', component: AddFieldOfStudyComponent},
+      {path: 'edit', component: EditFieldOfStudyComponent}
     ]
   },
   {
     path: 'NonDisponibilities',
     component: NonDisponibilityComponent,
     children: [
-      { path: 'add', component: AddNonDisponibilityComponent },
-      { path: 'edit', component: EditNonDisponibilityComponent }
+      {path: 'add', component: AddNonDisponibilityComponent},
+      {path: 'edit', component: EditNonDisponibilityComponent}
     ]
-  },
-
-  {
-    path: 'home',
-    component: HomeComponent
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent
   },
   {
     path: 'signup',
     component: RegisterComponent
   },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'recover-password',
+    component: RecoverPasswordComponent
+  },
+  {
+    path: 'settings',
+    component: PanelComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
+        path: 'devices',
+        component: DevicesListComponent
+      }
+    ]
+  },
+  {
+    path: 'verify',
+    component: VerifyComponent
+  },
+  {
+    path: 'superAdmin',
+    component: PanelComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: 'SUPERADMIN'
+    },
+    children: [
+      {
+        path: 'users',
+        component: UsersTableComponent
+      },
+      {
+        path: 'institutions',
+        component: InstitutionTableComponent
+      }
+    ]
+  },
+  {
+    path: 'organisation',
+    component: PanelComponent,
+    children: [
+      {
+        path: 'institution',
+        component: InstitutionPanelComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'ADMIN'
+        },
+      },
+      {
+        path: 'programs',
+        component: ProgramTableComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'ADMIN'
+        },
+      }
+    ]
+  }
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  declarations: [
-
-  ],
+  declarations: [],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

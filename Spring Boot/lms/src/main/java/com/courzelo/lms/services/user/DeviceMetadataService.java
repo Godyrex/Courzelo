@@ -24,8 +24,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Objects.nonNull;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j

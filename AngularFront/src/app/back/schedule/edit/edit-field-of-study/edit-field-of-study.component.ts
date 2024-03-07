@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Departement} from "../../../../model/schedule/departement";
 import {FieldOfStudy} from "../../../../model/schedule/field-of-study";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DepartmentService} from "../../../../service/schedule/department.service";
 import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
 import Swal from "sweetalert2";
 
@@ -12,18 +10,21 @@ import Swal from "sweetalert2";
   templateUrl: './edit-field-of-study.component.html',
   styleUrls: ['./edit-field-of-study.component.css']
 })
-export class EditFieldOfStudyComponent implements  OnChanges{
+export class EditFieldOfStudyComponent implements OnChanges {
   editFieldFormGroup!: FormGroup;
-  @Input() fieldToUpdate: FieldOfStudy = {id: "", name: "", numbrWeeks: 0, chefField: "",departmentID:''} ;
+  @Input() fieldToUpdate: FieldOfStudy = {id: "", name: "", numbrWeeks: 0, chefField: "", departmentID: ''};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private fieldOfstudyService:FieldOfstudyService
-  ) {}
+    private fieldOfstudyService: FieldOfstudyService
+  ) {
+  }
+
   ngOnInit(): void {
     this.editFieldFormGroup = this.fb.group({
       name: [this.fieldToUpdate.name, [Validators.required, Validators.maxLength(40)]],
@@ -33,15 +34,19 @@ export class EditFieldOfStudyComponent implements  OnChanges{
       // fieldOfStudies: [this.departmentToUpdate.fieldOfStudies, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
     });
   }
+
   close() {
     this.updateForm.emit(false);
   }
+
   handleSuccessMessage(message: string) {
     Swal.fire('Success', message, 'success');
   }
+
   handleErrorMessage(message: string) {
     Swal.fire('Error', message, 'error');
   }
+
   handleUpdateField() {
     if (this.editFieldFormGroup.valid) {
       const updatedField: FieldOfStudy = {
@@ -56,16 +61,18 @@ export class EditFieldOfStudyComponent implements  OnChanges{
       });
     }
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fieldToUpdate'] && changes['fieldToUpdate'].currentValue) {
       this.initializeForm();
     }
   }
+
   private initializeForm(): void {
     this.editFieldFormGroup.patchValue({
       name: this.fieldToUpdate.name,
       chefDepartment: this.fieldToUpdate.chefField,
-      numbrWeeks:this.fieldToUpdate.numbrWeeks,
+      numbrWeeks: this.fieldToUpdate.numbrWeeks,
 
       //fieldOfStudies: this.departmentToUpdate.fieldOfStudies
     });

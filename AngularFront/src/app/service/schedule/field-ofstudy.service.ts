@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
 import {FieldOfStudy} from "../../model/schedule/field-of-study";
 
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Departement} from "../../model/schedule/departement";
 
 
 @Injectable({
@@ -12,9 +11,11 @@ import {Departement} from "../../model/schedule/departement";
 export class FieldOfstudyService {
   private baseUrl = 'http://localhost:8081/api/fieldOfStudies';
   private fieldsSubject = new BehaviorSubject<FieldOfStudy[]>([]);
-fields: FieldOfStudy[] = [];
+  fields: FieldOfStudy[] = [];
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
+
   getAllFilieres(): Observable<FieldOfStudy[]> {
     console.log('Fetching field of studies...');
     return this.http.get<FieldOfStudy[]>(this.baseUrl); // Use http.get with FieldOfStudy[] type
@@ -29,6 +30,7 @@ fields: FieldOfStudy[] = [];
         })
       );
   }
+
   searchFields(name: string): Observable<FieldOfStudy[]> {
     if (!name.trim()) {
       return of([]);
@@ -51,6 +53,7 @@ fields: FieldOfStudy[] = [];
       })
     );
   }
+
   public updateField(id: string | undefined, field: FieldOfStudy): Observable<boolean> {
     return this.http.put<boolean>(`${this.baseUrl}/${id}`, field).pipe(
       catchError((error: any) => {

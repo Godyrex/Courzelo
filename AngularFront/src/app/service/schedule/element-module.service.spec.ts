@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ElementModuleService } from './element-module.service';
+import {ElementModuleService} from './element-module.service';
 
 describe('ElementModuleService', () => {
   let service: ElementModuleService;

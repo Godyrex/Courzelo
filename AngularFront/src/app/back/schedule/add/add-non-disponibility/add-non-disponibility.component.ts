@@ -1,7 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Departement} from "../../../../model/schedule/departement";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {DepartmentService} from "../../../../service/schedule/department.service";
 import {Router} from "@angular/router";
 import {MatDialogRef} from "@angular/material/dialog";
 import Swal from "sweetalert2";
@@ -20,16 +18,17 @@ export class AddNonDisponibilityComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private nonDisponibilityService:NonDisponibilityService,
+    private nonDisponibilityService: NonDisponibilityService,
     private router: Router,
     public dialogRef: MatDialogRef<AddNonDisponibilityComponent>
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.newNDBFormGroup = this.fb.group({
 
-     day: ['', Validators.required],
-      period:['', Validators.required]
+      day: ['', Validators.required],
+      period: ['', Validators.required]
     });
   }
 

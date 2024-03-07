@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
-import {Departement} from "../../model/schedule/departement";
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
 import {NonDisponibility} from "../../model/schedule/non-disponibility";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {FieldOfStudy} from "../../model/schedule/field-of-study";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,9 @@ export class NonDisponibilityService {
   nonDisponibilities$: Observable<NonDisponibility[]> = this.nonDisponibilitiesSubject.asObservable();
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
+
   public getAllNDB(): Observable<NonDisponibility[]> {
     console.log('nonDisponibilities:', this.nonDisponibilities);
     return this.http.get<NonDisponibility[]>(this.baseUrl);
@@ -26,17 +26,20 @@ export class NonDisponibilityService {
     const updatedNdb = [...currentNdb, nonDisponibilities];
     this.nonDisponibilitiesSubject.next(updatedNdb);
   }
+
   public getNdbByID(id: string): Observable<NonDisponibility> {
     return this.http.get<NonDisponibility>(`${this.baseUrl}/${id}`);
   }
 
-    saveNdb(nonDisponibilities: NonDisponibility): Observable<any> {
+  saveNdb(nonDisponibilities: NonDisponibility): Observable<any> {
     return this.http.post<any>(this.baseUrl, nonDisponibilities).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error occurred:', error);
         return throwError(error);
       })
-    );}
+    );
+  }
+
   getDepartmentCount(): Observable<any> {
     return this.http.get(`${this.baseUrl}/count`);
   }
@@ -65,7 +68,7 @@ export class NonDisponibilityService {
     );
   }
 
-  public updateNdb(id:string, nonDisponibility: NonDisponibility): Observable<boolean> {
+  public updateNdb(id: string, nonDisponibility: NonDisponibility): Observable<boolean> {
     return this.http.put<boolean>(`${this.baseUrl}/${id}`, nonDisponibility).pipe(
       catchError((error: any) => {
         console.error('Error updating Non disponibility:', error);

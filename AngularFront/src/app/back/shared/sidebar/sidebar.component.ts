@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
   isMenuOpen: boolean = false;
   isSuperAdminMenuOpen: boolean = false;
   isAdminMenuOpen: boolean = false;
-  loginResponse : LoginResponse = {}
+  loginResponse: LoginResponse = {}
 
   constructor(
     private token: TokenStorageService,
@@ -43,7 +43,8 @@ export class SidebarComponent implements OnInit {
       reader.readAsDataURL(data);
     });
   }
-  getMyInfo(){
+
+  getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
@@ -52,7 +53,8 @@ export class SidebarComponent implements OnInit {
       }
     )
   }
+
   ngOnInit(): void {
-this.getMyInfo()
+    this.getMyInfo()
   }
 }

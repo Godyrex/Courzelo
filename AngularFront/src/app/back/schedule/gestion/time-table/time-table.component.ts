@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-
-import Swal from "sweetalert2";
+import {Component} from '@angular/core';
 import {Departement} from "../../../../model/schedule/departement";
 import {FieldOfStudy} from "../../../../model/schedule/field-of-study";
 import {Semester} from "../../../../model/schedule/semester";
@@ -17,21 +15,23 @@ import {TimeTableService} from "../../../../service/schedule/time-table.service"
 export class TimeTableComponent {
   prof!: boolean;
 
-  public departements:Departement[] = [];
-  public fields:FieldOfStudy[] = [];
-  public semesters:Semester[] = [];
-  public elementModule:ElementModule[] = [];
+  public departements: Departement[] = [];
+  public fields: FieldOfStudy[] = [];
+  public semesters: Semester[] = [];
+  public elementModule: ElementModule[] = [];
   ready: any;
   spinnerExport: any;
 
 
-  constructor(private departmentService: DepartmentService,private TimeTableService:TimeTableService,private elementModuleService: ElementModuleService) {
+  constructor(private departmentService: DepartmentService, private TimeTableService: TimeTableService, private elementModuleService: ElementModuleService) {
   }
+
   ngOnInit() {
 
     this.getDepartements();
 
   }
+
   getDepartements() {
     this.departmentService.searchDepartments("")
       .subscribe(
@@ -43,7 +43,6 @@ export class TimeTableComponent {
         }
       );
   }
-
 
 
 }

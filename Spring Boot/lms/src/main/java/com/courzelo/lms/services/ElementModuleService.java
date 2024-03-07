@@ -1,27 +1,15 @@
 package com.courzelo.lms.services;
 
-import com.courzelo.lms.dto.DepartmentDTO;
 import com.courzelo.lms.dto.ElementModuleDTO;
-import com.courzelo.lms.dto.SemesterDTO;
-import com.courzelo.lms.entities.Department;
 import com.courzelo.lms.entities.ElementModule;
-import com.courzelo.lms.entities.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.SemesterRepository;
 import com.courzelo.lms.utils.NotFoundException;
-import jakarta.persistence.PostPersist;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

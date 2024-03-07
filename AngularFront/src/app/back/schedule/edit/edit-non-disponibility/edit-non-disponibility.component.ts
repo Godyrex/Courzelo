@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Departement} from "../../../../model/schedule/departement";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DepartmentService} from "../../../../service/schedule/department.service";
 import Swal from "sweetalert2";
 import {NonDisponibility} from "../../../../model/schedule/non-disponibility";
 import {NonDisponibilityService} from "../../../../service/schedule/non-disponibility.service";
@@ -12,9 +10,9 @@ import {NonDisponibilityService} from "../../../../service/schedule/non-disponib
   templateUrl: './edit-non-disponibility.component.html',
   styleUrls: ['./edit-non-disponibility.component.css']
 })
-export class EditNonDisponibilityComponent implements OnChanges{
+export class EditNonDisponibilityComponent implements OnChanges {
   editNDBFormGroup!: FormGroup;
-  @Input() NDBToUpdate: NonDisponibility = {id:'',day:"",period:''};
+  @Input() NDBToUpdate: NonDisponibility = {id: '', day: "", period: ''};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -23,8 +21,10 @@ export class EditNonDisponibilityComponent implements OnChanges{
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private nonDisponibilityService:NonDisponibilityService
-  ) {}
+    private nonDisponibilityService: NonDisponibilityService
+  ) {
+  }
+
   ngOnInit(): void {
     this.editNDBFormGroup = this.fb.group({
       day: [this.NDBToUpdate.day, [Validators.required, Validators.maxLength(40)]],
@@ -32,18 +32,22 @@ export class EditNonDisponibilityComponent implements OnChanges{
       // fieldOfStudies: [this.departmentToUpdate.fieldOfStudies, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
     });
   }
+
   close() {
     this.updateForm.emit(false);
   }
+
   handleSuccessMessage(message: string) {
     Swal.fire('Success', message, 'success');
   }
+
   handleErrorMessage(message: string) {
     Swal.fire('Error', message, 'error');
   }
+
   handleUpdateNdb() {
     if (this.editNDBFormGroup.valid) {
-      const updatedNDB:NonDisponibility = {
+      const updatedNDB: NonDisponibility = {
         ...this.NDBToUpdate,
         ...this.editNDBFormGroup.value
       };
@@ -55,11 +59,13 @@ export class EditNonDisponibilityComponent implements OnChanges{
       });
     }
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['NDBToUpdate'] && changes['NDBToUpdate'].currentValue) {
       this.initializeForm();
     }
   }
+
   private initializeForm(): void {
     this.editNDBFormGroup.patchValue({
       name: this.NDBToUpdate.day,

@@ -14,7 +14,7 @@ import {DepartmentService} from "../../../../service/schedule/department.service
   styleUrls: ['./add-departement.component.css']
 })
 
-  export class AddDepartementComponent implements OnInit {
+export class AddDepartementComponent implements OnInit {
   departments: Departement[] = [];
   @Output() departmentAdded: EventEmitter<Departement> = new EventEmitter<Departement>();
   newDepartementFormGroup!: FormGroup;
@@ -24,7 +24,8 @@ import {DepartmentService} from "../../../../service/schedule/department.service
     private dpService: DepartmentService,
     private router: Router,
     public dialogRef: MatDialogRef<AddDepartementComponent>
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.newDepartementFormGroup = this.fb.group({

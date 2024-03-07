@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 
@@ -9,8 +8,8 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-loginResponse : LoginResponse = {}
-  userPhotoUrl : any
+  loginResponse: LoginResponse = {}
+  userPhotoUrl: any
 
   constructor(
     private updateService: UpdateService
@@ -28,9 +27,10 @@ loginResponse : LoginResponse = {}
   }
 
   ngOnInit(): void {
-  this.getMyInfo();
+    this.getMyInfo();
   }
-  getMyInfo(){
+
+  getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;

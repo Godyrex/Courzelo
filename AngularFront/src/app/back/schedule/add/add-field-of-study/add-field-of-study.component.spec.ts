@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddFieldOfStudyComponent } from './add-field-of-study.component';
+import {AddFieldOfStudyComponent} from './add-field-of-study.component';
 
 describe('AddFieldOfStudyComponent', () => {
   let component: AddFieldOfStudyComponent;

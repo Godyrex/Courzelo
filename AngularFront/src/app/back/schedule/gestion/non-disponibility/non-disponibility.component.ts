@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
-import {Departement} from "../../../../model/schedule/departement";
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {DepartmentService} from "../../../../service/schedule/department.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import Swal from "sweetalert2";
-import {AddDepartementComponent} from "../../add/add-departement/add-departement.component";
 import {NonDisponibility} from "../../../../model/schedule/non-disponibility";
 import {NonDisponibilityService} from "../../../../service/schedule/non-disponibility.service";
 import {AddNonDisponibilityComponent} from "../../add/add-non-disponibility/add-non-disponibility.component";
@@ -31,15 +28,14 @@ export class NonDisponibilityComponent {
   messageSuccess: string = "";
   messageError: string = "";
   addFormVisible: boolean = false;
-  selectedNDB: NonDisponibility = {id:'',day:"",period:''};
+  selectedNDB: NonDisponibility = {id: '', day: "", period: ''};
   isEditFormVisible = false;
 
   constructor(private nonDisponibilityService: NonDisponibilityService,
               private fb: FormBuilder,
               private router: Router,
               private dialog: MatDialog,
-  )
-  {
+  ) {
   }
 
   ngOnInit(): void {
@@ -50,9 +46,11 @@ export class NonDisponibilityComponent {
     this.nonDisponibilityService.getAllNDB();
     this.fetchNDB();
   }
+
   toggleAddFormVisibility(): void {
     this.addFormVisible = !this.addFormVisible;
   }
+
   handleUpdateFormToggle(isVisible: boolean) {
     this.isEditFormVisible = isVisible;
   }
@@ -62,21 +60,21 @@ export class NonDisponibilityComponent {
       .subscribe(nonDisponibilities => {
         this.nonDisponibilities = nonDisponibilities;
         console.log('NonDisponibilities:', this.nonDisponibilities);
-        console.log('NonDisponibilities:',nonDisponibilities);
+        console.log('NonDisponibilities:', nonDisponibilities);
       });
   }
 
-  showUpdateForm(nonDisponibility:NonDisponibility) {
+  showUpdateForm(nonDisponibility: NonDisponibility) {
     this.selectedNDB = nonDisponibility;
     this.isEditFormVisible = true;
   }
-
 
 
   handleChangeSize($event: Event) {
     this.size = parseInt((<HTMLInputElement>$event.target).value);
     this.handleSearchNDB();
   }
+
   handleSearchNDB(): void {
     const keyword = this.searchFormGroup.value.keyword.trim().toLowerCase();
     if (!keyword) {
@@ -86,7 +84,7 @@ export class NonDisponibilityComponent {
     }
     this.nonDisponibilityService.searchNdb(keyword).subscribe(
       (data) => {
-        this.nonDisponibilities= data;
+        this.nonDisponibilities = data;
         this.setDisplayedPages();
       },
       (error) => {
@@ -126,6 +124,7 @@ export class NonDisponibilityComponent {
       }
     });
   }
+
   onPageChange(page: number): void {
     this.currentPage = page;
     console.log("page changed from paginator" + page)
@@ -157,9 +156,11 @@ export class NonDisponibilityComponent {
   resetErrorAlert() {
     this.messageError = "";
   }
+
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }
+
   handleAddFormToggle(message: boolean) {
     this.addForm = message;
   }
@@ -185,6 +186,7 @@ export class NonDisponibilityComponent {
       this.handleSearchNDB();
     }
   }
+
   openAddNDBDialog(): void {
     const dialogRef = this.dialog.open(AddNonDisponibilityComponent, {
       width: '600px'

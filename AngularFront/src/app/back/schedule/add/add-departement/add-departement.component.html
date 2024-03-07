@@ -9,16 +9,21 @@
             </div>
             <div class="form-group">
               <label for="name">Name <span class="text-danger">*</span></label>
-              <input class="form-control" id="name" type="text" formControlName="name" placeholder="Enter department name">
+              <input class="form-control" id="name" type="text" formControlName="name"
+                     placeholder="Enter department name">
             </div>
             <div class="form-group">
               <label for="chefDepartment">Chef Department <span class="text-danger">*</span></label>
-              <input class="form-control" id="chefDepartment" type="text" formControlName="chefDepartment" placeholder="Enter chef department">
+              <input class="form-control" id="chefDepartment" type="text" formControlName="chefDepartment"
+                     placeholder="Enter chef department">
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary"   style="background-color: darkgreen; color: white;">Submit</button>
+              <button type="submit" class="btn btn-primary" style="background-color: darkgreen; color: white;">Submit
+              </button>
 
-              <button type="button" class="btn btn-secondary" style="background-color: darkred; color: white;" (click)="onCancelClick()">Close</button> <!-- Close button added -->
+              <button type="button" class="btn btn-secondary" style="background-color: darkred; color: white;"
+                      (click)="onCancelClick()">Close
+              </button> <!-- Close button added -->
             </div>
           </form>
         </div>
@@ -29,7 +34,8 @@
     <div class="col">
       <ul class="list-group">
         <li class="list-group-item" *ngFor="let department of departments">
-          <span class="font-weight-bold">{{ department.name }}</span> (ID: {{ department.id }}) - Chef: {{ department.chefDepartment }}
+          <span class="font-weight-bold">{{ department.name }}</span> (ID: {{ department.id }}) -
+          Chef: {{ department.chefDepartment }}
         </li>
       </ul>
     </div>

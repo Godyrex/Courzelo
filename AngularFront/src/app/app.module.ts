@@ -49,11 +49,6 @@ import {UserProfileComponent} from './back/user/user-profile/user-profile.compon
 import {DevicesListComponent} from './back/user/devices-list/devices-list.component';
 import {ForgotPasswordComponent} from './back/auth/forgot-password/forgot-password.component';
 import {RecoverPasswordComponent} from './back/auth/recover-password/recover-password.component';
-
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from "@angular/material/button";
-import {MatDialogModule} from "@angular/material/dialog";
 import {AddFieldOfStudyComponent} from "./back/schedule/add/add-field-of-study/add-field-of-study.component";
 import {EditDepartementComponent} from "./back/schedule/edit/edit-departement/edit-departement.component";
 import {EditFieldOfStudyComponent} from "./back/schedule/edit/edit-field-of-study/edit-field-of-study.component";
@@ -64,10 +59,12 @@ import {
 import {NonDisponibilityComponent} from "./back/schedule/gestion/non-disponibility/non-disponibility.component";
 import {TimeTableComponent} from "./back/schedule/gestion/time-table/time-table.component";
 import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-departement.component";
-import { AddNonDisponibilityComponent } from './back/schedule/add/add-non-disponibility/add-non-disponibility.component';
+import {AddNonDisponibilityComponent} from './back/schedule/add/add-non-disponibility/add-non-disponibility.component';
 import {
   EditNonDisponibilityComponent
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -126,7 +123,9 @@ import {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterOutlet
+    RouterOutlet,
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,

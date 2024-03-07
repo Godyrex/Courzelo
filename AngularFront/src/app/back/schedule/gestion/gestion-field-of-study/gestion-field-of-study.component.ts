@@ -1,17 +1,10 @@
 import {Component} from '@angular/core';
-import {DepartmentService} from "../../../../service/schedule/department.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
-import {Departement} from "../../../../model/schedule/departement";
 import {FieldOfStudy} from "../../../../model/schedule/field-of-study";
-import {FieldOfStudyList} from "../../../../model/schedule/FieldOfStudyList";
 import Swal from "sweetalert2";
-import {AddDepartementComponent} from "../../add/add-departement/add-departement.component";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-
-import {Falsy} from "rxjs";
 import {AddFieldOfStudyComponent} from "../../add/add-field-of-study/add-field-of-study.component";
 
 @Component({
@@ -22,7 +15,7 @@ import {AddFieldOfStudyComponent} from "../../add/add-field-of-study/add-field-o
 export class GestionFieldOfStudyComponent {
   fields: FieldOfStudy[] = [];
   isEditFormVisible = false;
-  selectedField: FieldOfStudy = {id: "", name: "", numbrWeeks: 0, chefField: "", departmentID:'' };
+  selectedField: FieldOfStudy = {id: "", name: "", numbrWeeks: 0, chefField: "", departmentID: ''};
   private errorMessage: any;
   displayedPages: number[] = [];
   totalPages: number = 0;
@@ -34,18 +27,17 @@ export class GestionFieldOfStudyComponent {
   page: number = 0;
   size: number = 6;
   searchFormGroup!: FormGroup;
-  private addForm=false;
+  private addForm = false;
   updateForm = false;
-
 
 
   constructor(private fieldOfstudyService: FieldOfstudyService,
               private fb: FormBuilder,
               private router: Router,
               private dialog: MatDialog,
-  )
-  {
+  ) {
   }
+
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({
       keyword: this.fb.control('')
@@ -56,7 +48,6 @@ export class GestionFieldOfStudyComponent {
   }
 
 
-
   private fetchFields() {
     this.fieldOfstudyService.getAllFilieres()
       .subscribe(fields => {
@@ -64,10 +55,12 @@ export class GestionFieldOfStudyComponent {
         console.log('Fields:', this.fields);
       });
   }
-  showUpdateForm(fieldOfStudy:FieldOfStudy) {
+
+  showUpdateForm(fieldOfStudy: FieldOfStudy) {
     this.selectedField = fieldOfStudy;
     this.isEditFormVisible = true;
   }
+
   handleSearchField(): void {
     const keyword = this.searchFormGroup.value.keyword.trim().toLowerCase();
     if (!keyword) {
@@ -86,9 +79,11 @@ export class GestionFieldOfStudyComponent {
       }
     );
   }
+
   handleUpdateFormToggle(isVisible: boolean) {
     this.isEditFormVisible = isVisible;
   }
+
   gotoPage(page: number): void {
     this.currentPage = page;
     this.page = page;
@@ -132,9 +127,11 @@ export class GestionFieldOfStudyComponent {
       this.displayedPages.push(i);
     }
   }
+
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }
+
   handleAddFormToggle(message: boolean) {
     this.addForm = message;
   }
@@ -160,12 +157,13 @@ export class GestionFieldOfStudyComponent {
       this.handleSearchField();
     }
   }
+
   openAddFieldDialog(): void {
     const dialogRef = this.dialog.open(AddFieldOfStudyComponent, {
       width: '600px'
     });
 
-    dialogRef.componentInstance.fieldAdded.subscribe((newField:FieldOfStudy) => {
+    dialogRef.componentInstance.fieldAdded.subscribe((newField: FieldOfStudy) => {
 
       this.fields.push(newField);
     });

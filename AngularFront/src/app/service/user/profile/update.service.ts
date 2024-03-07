@@ -47,6 +47,7 @@ export class UpdateService {
   getPhoto(photoId: string) {
     return this.http.get(`${this.baseUrl}/photo/${photoId}`, {responseType: 'blob'});
   }
+
   getMyInfo() {
     return this.http.get<LoginResponse>(`${this.baseUrl}/myInfo`);
   }

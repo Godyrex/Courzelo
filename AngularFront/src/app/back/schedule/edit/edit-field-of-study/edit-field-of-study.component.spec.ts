@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditFieldOfStudyComponent } from './edit-field-of-study.component';
+import {EditFieldOfStudyComponent} from './edit-field-of-study.component';
 
 describe('EditFieldOfStudyComponent', () => {
   let component: EditFieldOfStudyComponent;

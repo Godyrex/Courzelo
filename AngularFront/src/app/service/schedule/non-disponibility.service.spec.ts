@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { NonDisponibilityService } from './non-disponibility.service';
+import {NonDisponibilityService} from './non-disponibility.service';
 
 describe('NonDisponibilityService', () => {
   let service: NonDisponibilityService;

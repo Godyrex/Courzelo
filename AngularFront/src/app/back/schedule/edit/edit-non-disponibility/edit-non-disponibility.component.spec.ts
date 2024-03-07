@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditNonDisponibilityComponent } from './edit-non-disponibility.component';
+import {EditNonDisponibilityComponent} from './edit-non-disponibility.component';
 
 describe('EditNonDisponibilityComponent', () => {
   let component: EditNonDisponibilityComponent;

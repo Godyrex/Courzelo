@@ -2,7 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="index3.html" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+         style="opacity: .8">
     <span class="brand-text font-weight-light">AdminLTE 3</span>
   </a>
 
@@ -137,7 +138,7 @@
               <tr>
                 <th>
                   <div class="form-check check-tables">
-                    <input class="form-check-input" type="checkbox" value="something" />
+                    <input class="form-check-input" type="checkbox" value="something"/>
                   </div>
                 </th>
                 <th>ID</th>
@@ -150,14 +151,14 @@
               <tr *ngFor="let ndb of nonDisponibilities">
                 <td>
                   <div class="form-check check-tables">
-                    <input class="form-check-input" type="checkbox" value="something" />
+                    <input class="form-check-input" type="checkbox" value="something"/>
                   </div>
                 </td>
                 <td>{{ ndb.id }}</td>
                 <td>{{ ndb.day }}</td>
                 <td>{{ ndb.period}}</td>
                 <td class="text-center">
-                  <a (click)="showUpdateForm(ndb)" class="btn btn-sm bg-success-light me-2" >
+                  <a (click)="showUpdateForm(ndb)" class="btn btn-sm bg-success-light me-2">
                     <i class="fas fa-edit"></i>
 
                   </a>

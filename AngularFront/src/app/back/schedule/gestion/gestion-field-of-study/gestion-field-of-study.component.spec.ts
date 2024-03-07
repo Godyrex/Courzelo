@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GestionFieldOfStudyComponent } from './gestion-field-of-study.component';
+import {GestionFieldOfStudyComponent} from './gestion-field-of-study.component';
 
 describe('GestionFieldOfStudyComponent', () => {
   let component: GestionFieldOfStudyComponent;
