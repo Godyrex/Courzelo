@@ -59,12 +59,13 @@ public class InstitutionController {
 
     @PreAuthorize("hasRole('SUPERADMIN')")
     @DeleteMapping("/{institutionID}")
+    @CacheEvict(value = "InstitutionList", allEntries = true)
     public ResponseEntity<Boolean> deleteInstitution(@PathVariable String institutionID) {
         return iInstitutionService.deleteInstitution(institutionID);
     }
 
     @PostMapping("/update")
-    @CacheEvict(value = {"UsersList"}, allEntries = true)
+    @CacheEvict(value = {"InstitutionList"}, allEntries = true)
     public ResponseEntity<Boolean> updateInstitution(@RequestBody InstitutionDTO institutionDTO) {
         return iInstitutionService.updateInstitution(institutionDTO);
     }
