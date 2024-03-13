@@ -22,17 +22,19 @@ public class TimeTable {
     @NotNull
     private String name;
     @DBRef
-    private List<Semester>semesters;
+    private List<Semester> semesters;
     @DBRef
-    private List<Department>departments;
+    private List<Department> departments;
     @DBRef
-    private List<ElementModule>elementModules;
+    private List<ElementModule> elementModules;
     private String classe;
 
     private Map<DayOfWeek, Map<Period, List<ElementModule>>> schedule;
+
     public TimeTable() {
-       schedule = new HashMap<>();
+        schedule = new HashMap<>();
     }
+
     public void setSchedule(Map<DayOfWeek, Map<Period, List<ElementModule>>> scheduleMap) {
         for (Map.Entry<DayOfWeek, Map<Period, List<ElementModule>>> entry : scheduleMap.entrySet()) {
             DayOfWeek dayOfWeek = entry.getKey();
@@ -44,6 +46,7 @@ public class TimeTable {
             }
         }
     }
+
     private void setPeriodSchedule(DayOfWeek dayOfWeek, Period period, List<ElementModule> modules) {
         Map<Period, List<ElementModule>> daySchedule = schedule.computeIfAbsent(dayOfWeek, k -> new HashMap<>());
         daySchedule.put(period, modules);

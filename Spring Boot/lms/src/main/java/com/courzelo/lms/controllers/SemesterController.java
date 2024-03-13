@@ -42,7 +42,7 @@ public class SemesterController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateSemester(@PathVariable(name = "id") final String id,
-            @RequestBody @Valid final SemesterDTO semesterDTO) {
+                                                 @RequestBody @Valid final SemesterDTO semesterDTO) {
         semesterService.update(id, semesterDTO);
         return ResponseEntity.ok(id);
     }

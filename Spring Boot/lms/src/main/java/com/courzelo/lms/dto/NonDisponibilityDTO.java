@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class NonDisponibilityDTO {
 
-    private String  id;
+    private String id;
 
     private String day;
 

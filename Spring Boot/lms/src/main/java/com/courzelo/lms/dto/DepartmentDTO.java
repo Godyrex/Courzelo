@@ -17,10 +17,7 @@ public class DepartmentDTO {
     private String id;
     private String name;
     private String chefDepartment;
-    private List<FieldOfStudy>fieldOfStudies;
-
-
-
+    private List<FieldOfStudy> fieldOfStudies;
 
 
 }

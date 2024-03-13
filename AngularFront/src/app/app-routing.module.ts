@@ -30,6 +30,7 @@ import {RecoverPasswordComponent} from "./back/auth/recover-password/recover-pas
 import {ForgotPasswordComponent} from "./back/auth/forgot-password/forgot-password.component";
 import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {LoginComponent} from "./back/auth/login/login.component";
+import {CalendarComponent} from "./back/program/institution/calendar/calendar.component";
 
 const routes: Routes = [
   {
@@ -132,6 +133,14 @@ const routes: Routes = [
       {
         path: 'institution',
         component: InstitutionPanelComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'ADMIN'
+        },
+      },
+      {
+        path: 'calendar',
+        component: CalendarComponent,
         canActivate: [RoleGuardService],
         data: {
           expectedRole: 'ADMIN'

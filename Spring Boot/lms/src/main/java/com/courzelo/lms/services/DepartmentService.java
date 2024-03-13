@@ -20,7 +20,7 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final FieldOfStudyRepository fieldOfStudyRepository;
-    private final FieldOfStudyService fieldOfStudyService ;
+    private final FieldOfStudyService fieldOfStudyService;
 
     public DepartmentService(final DepartmentRepository departementRepository, FieldOfStudyRepository fieldOfStudyRepository, FieldOfStudyRepository fieldOfStudyRepository1, FieldOfStudyService fieldOfStudyService) {
         this.departmentRepository = departementRepository;
@@ -42,14 +42,14 @@ public class DepartmentService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public String create(final DepartmentDTO departmentDTO ) {
+    public String create(final DepartmentDTO departmentDTO) {
         final Department department = new Department();
         mapToEntity(departmentDTO, department);
         return departmentRepository.save(department).getId();
 
 
-
     }
+
     public void update(final String id, final DepartmentDTO departmentDTO) {
         final Department department = departmentRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -86,11 +86,6 @@ public class DepartmentService {
 */
 
 
-
-
-
-
-
     public void delete(final String id) {
         departmentRepository.deleteById(id);
     }
@@ -113,12 +108,13 @@ public class DepartmentService {
         department.setFieldOfStudies(departmentDTO.getFieldOfStudies());
 
 
-
         return department;
     }
+
     public long countDepartements() {
         return departmentRepository.count();
     }
+
     public List<DepartmentDTO> searchDepartments(String name) {
         List<Department> departments = departmentRepository.findByName(name);
         if (!departments.isEmpty()) {
@@ -129,6 +125,7 @@ public class DepartmentService {
             throw new NotFoundException("Department not found");
         }
     }
+
     public List<DepartmentDTO> getDepartmentsByFieldOfStudy(String id) {
         FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Field of study not found"));
@@ -140,8 +137,6 @@ public class DepartmentService {
                 .map(department -> mapToDTO(department, new DepartmentDTO()))
                 .collect(Collectors.toList());
     }
-
-
 
 
 }

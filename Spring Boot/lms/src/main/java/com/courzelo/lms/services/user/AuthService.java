@@ -72,18 +72,18 @@ public class AuthService implements IAuthService {
     @Value("${Security.app.refreshRememberMeExpirationMs}")
     private long refreshRememberMeExpirationMs;
 
-    public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response,@NonNull HttpServletRequest request, String userAgent) {
+    public ResponseEntity<?> loginUser(LoginDTO loginDTO, @NonNull HttpServletResponse response, @NonNull HttpServletRequest request, String userAgent) {
         log.info("Starting Logging in...");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
-            String ip =iDeviceMetadataService.getIpAddressFromHeader(request);
-            log.info("ip :"+request.getRemoteAddr());
-            log.info("host :"+request.getRemoteHost());
-            log.info("user :"+request.getRemoteUser());
-                String city = geoIPService.cityName(ip);
-                log.info("city :"+city);
+            String ip = iDeviceMetadataService.getIpAddressFromHeader(request);
+            log.info("ip :" + request.getRemoteAddr());
+            log.info("host :" + request.getRemoteHost());
+            log.info("user :" + request.getRemoteUser());
+            String city = geoIPService.cityName(ip);
+            log.info("city :" + city);
 
             if (!iDeviceMetadataService.isNewDevice(userAgent, checkUser)) {
                 iDeviceMetadataService.updateDeviceLastLogin(userAgent, checkUser);
@@ -174,7 +174,7 @@ public class AuthService implements IAuthService {
         log.info("Started Confirming Device...");
         User user = userRepository.findUserByEmail(loginDTO.getEmail());
         VerificationToken verificationToken = verificationTokenRepository.findByToken(String.valueOf(code));
-        if(verificationToken == null){
+        if (verificationToken == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Wrong Verification Code"));
         }
         if (Objects.equals(verificationToken.getUser().getId(), user.getId())) {
@@ -310,7 +310,7 @@ public class AuthService implements IAuthService {
         verificationTokenRepository.save(verificationToken);
         iDeviceMetadataService.saveDeviceDetails(userAgent, user);
         try {
-            emailService.sendVerificationEmail(user,verificationToken);
+            emailService.sendVerificationEmail(user, verificationToken);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

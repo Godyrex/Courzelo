@@ -47,7 +47,7 @@ public class FieldOfStudyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateFieldOfStudy(@PathVariable(name = "id") final String id,
-            @RequestBody @Valid final FieldOfStudyDTO fieldOfStudyDTO) {
+                                                     @RequestBody @Valid final FieldOfStudyDTO fieldOfStudyDTO) {
         fieldOfStudyService.update(id, fieldOfStudyDTO);
         return ResponseEntity.ok(id);
     }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 
 @RestController
@@ -46,7 +47,7 @@ public class ElementModuleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateElementModule(@PathVariable(name = "id") final String id,
-                                                    @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
+                                                      @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
         elementModuleService.update(id, elementModuleDTO);
         return ResponseEntity.ok(id);
     }
@@ -58,19 +59,20 @@ public class ElementModuleController {
         return ResponseEntity.noContent().build();
     }
 
-   // @RequestMapping("/api/days")
+    // @RequestMapping("/api/days")
    /* @GetMapping
     public ResponseEntity<DayOfWeek[]> getDaysOfWeek() {
         return ResponseEntity.ok(DayOfWeek.values());
     }*/
-   @PostMapping
-   @PostPersist
-   @ApiResponse(responseCode = "201")
-   public ResponseEntity<String> createElementModule1(
-           @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
-       final String createdId = String.valueOf(elementModuleService.create(elementModuleDTO));
-       return new ResponseEntity<>(createdId, HttpStatus.CREATED);
-   }
+    @PostMapping
+    @PostPersist
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<String> createElementModule1(
+            @RequestBody @Valid final ElementModuleDTO elementModuleDTO) {
+        final String createdId = String.valueOf(elementModuleService.create(elementModuleDTO));
+        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+    }
+
     @GetMapping("/enums")
     public ResponseEntity<Period[]> getEnums() {
         return ResponseEntity.ok(Period.values());

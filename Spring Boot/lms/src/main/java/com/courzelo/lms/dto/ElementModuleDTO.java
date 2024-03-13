@@ -20,7 +20,7 @@ import java.util.List;
 public class ElementModuleDTO {
 
     @Id
-    private  String id;
+    private String id;
     private Integer nmbrHours;
     @Size(max = 255)
     private String name;
