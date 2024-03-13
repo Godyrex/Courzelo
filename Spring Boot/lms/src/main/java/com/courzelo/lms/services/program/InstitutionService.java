@@ -111,10 +111,6 @@ public class InstitutionService implements IInstitutionService {
                     daysCell.setCellValue(j);
                     daysCell.setCellStyle(style);
                 }
-                Row januaryRow = sheet.getRow(5);
-                if (januaryRow == null) {
-                    januaryRow = sheet.createRow(5);
-                }
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         cell.setCellStyle(style);
@@ -133,15 +129,6 @@ public class InstitutionService implements IInstitutionService {
                     eventCell.setCellValue(event.getName());
                     eventCell.setCellStyle(style);
                 }
-                Cell january5thCell = januaryRow.createCell(1);
-                january5thCell.setCellValue("Free Day");
-
-                Row septemberRow = sheet.getRow(15);
-                if (septemberRow == null) {
-                    septemberRow = sheet.createRow(15);
-                }
-                Cell september15thCell = septemberRow.createCell(7);
-                september15thCell.setCellValue("Christmas");
             }
             try (FileOutputStream outputStream = new FileOutputStream(FILE_PATH)) {
                 workbook.write(outputStream);
