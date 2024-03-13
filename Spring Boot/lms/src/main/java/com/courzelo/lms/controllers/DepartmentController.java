@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RestController
 @RequestMapping(value = "/api/departments", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,6 +53,7 @@ public class DepartmentController {
         departmentService.update(id, departmentDTO);
         return ResponseEntity.ok(id);
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/{id}")
     @ApiResponse(responseCode = "204")
@@ -59,6 +61,7 @@ public class DepartmentController {
         departmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/count")
     public ResponseEntity<Long> countDepartments() {
         long departmentCount = departmentService.countDepartements();
@@ -74,6 +77,7 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/{id}/fields")
     public ResponseEntity<List<DepartmentDTO>> getFields(@PathVariable String id) {
         try {

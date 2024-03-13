@@ -85,6 +85,7 @@ public class DeviceMetadataService implements IDeviceMetadataService {
             "HTTP_VIA",
             "REMOTE_ADDR"
     );
+
     public String getIpAddressFromHeader(HttpServletRequest request) {
         for (String ipHeader : POSSIBLE_IP_HEADERS) {
             String headerValue = Collections.list(request.getHeaders(ipHeader)).stream()

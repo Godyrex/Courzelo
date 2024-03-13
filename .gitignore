@@ -160,3 +160,5 @@
 .idea/workspace.xml
 .idea/sonarlint/issuestore/d/7/d7df179dfe79ba6af5bac9bd6a67c9a0b6f2caea
 .idea/sonarlint/securityhotspotstore/d/7/d7df179dfe79ba6af5bac9bd6a67c9a0b6f2caea
+*.xlsx
+*.pdf

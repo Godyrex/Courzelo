@@ -5,6 +5,7 @@ import {InstitutionDTO} from "../../model/program/InstitutionDTO";
 import {InstitutionListDTO} from "../../model/program/InstitutionListDTO";
 import {UserListDTO} from "../../model/user/UserListDTO";
 import {InstitutionUsersCountDTO} from "../../model/program/institutionUsersCountDTO";
+import {CalendarDTO} from "../../model/program/CalendarDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,9 @@ export class InstitutionService {
 
   countUsers(): Observable<InstitutionUsersCountDTO> {
     return this.http.get<InstitutionUsersCountDTO>(`${this.baseUrl}/countUsers`);
+  }
+  generateExcel(generation : CalendarDTO[]) {
+    return this.http.post(`${this.baseUrl}/generateExcel`,generation);
   }
 
   deleteInstitution(institutionID: string): Observable<boolean> {

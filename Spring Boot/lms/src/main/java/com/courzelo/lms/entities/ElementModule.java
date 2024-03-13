@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class ElementModule {
     @Id
-    private  String id;
+    private String id;
     @NotNull
     private Integer nmbrHours;
     @NotNull
@@ -27,12 +27,12 @@ public class ElementModule {
     @NotNull
     private List<Period> periods;
     @NotNull
-   // private List<Class>classes;
+    // private List<Class>classes;
     @NotNull
     private String module;
     @NotNull
-   // @DBRef
-    private List<Semester> semesters ;
+    // @DBRef
+    private List<Semester> semesters;
     //@DBRef
     @NotNull
     private List<Department> departments;
@@ -42,7 +42,6 @@ public class ElementModule {
 
     @NotNull
     private int numDepartments;
-
 
 
 }

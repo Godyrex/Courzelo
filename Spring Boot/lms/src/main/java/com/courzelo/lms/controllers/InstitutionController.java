@@ -1,5 +1,6 @@
 package com.courzelo.lms.controllers;
 
+import com.courzelo.lms.dto.program.CalendarDTO;
 import com.courzelo.lms.dto.program.InstitutionDTO;
 import com.courzelo.lms.dto.program.InstitutionListDTO;
 import com.courzelo.lms.dto.program.InstitutionUsersCountDTO;
@@ -9,11 +10,13 @@ import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/institution")
@@ -114,5 +117,11 @@ public class InstitutionController {
     @GetMapping("/countUsers")
     public ResponseEntity<InstitutionUsersCountDTO> countUsers(Principal principal) {
         return iInstitutionService.countUsers(principal);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/generateExcel")
+    public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events) {
+        return iInstitutionService.generateExcel(events);
     }
 }

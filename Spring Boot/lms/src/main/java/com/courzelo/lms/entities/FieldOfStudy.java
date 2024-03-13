@@ -9,13 +9,13 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Document(collection =  "FieldOfStudy")
+@Document(collection = "FieldOfStudy")
 @Getter
 @Setter
 public class FieldOfStudy {
 
     @Id
-    private  String id;
+    private String id;
     @NotNull
     @Size(max = 255)
     private String name;
@@ -26,11 +26,6 @@ public class FieldOfStudy {
     private String chefField;
     @DBRef
     private Department department;
-
-
-
-
-
 
 
 }

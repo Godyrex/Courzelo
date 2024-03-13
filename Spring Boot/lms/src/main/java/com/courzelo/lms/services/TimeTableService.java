@@ -17,10 +17,10 @@ import java.util.Map;
 
 @Service
 public class TimeTableService {
-  
+
     private final ElementModuleRepository elementModuleRepository;
-    private final TimeTableRepository timeTableRepository ;
-    private  ElementModuleService elementModuleService;
+    private final TimeTableRepository timeTableRepository;
+    private ElementModuleService elementModuleService;
 
     private Map<DayOfWeek, Map<Period, String>> schedule;
 
@@ -33,15 +33,13 @@ public class TimeTableService {
     }
 
 
-
-
     public long countTimetables() {
         return elementModuleRepository.count();
     }
 
 
     public List<Map<String, List<ElementModule>>> generateTimetable() {
-        List<ElementModule> elementModules=elementModuleRepository.findAll();
+        List<ElementModule> elementModules = elementModuleRepository.findAll();
 
         return new ArrayList<>();
     }
@@ -52,26 +50,27 @@ public class TimeTableService {
     }
 
 
+    public String create(final TimeTableDTO timeTableDTO) {
+        final TimeTable timeTable = new TimeTable();
+        mapToEntity(timeTableDTO, timeTable);
+        return timeTableRepository.save(timeTable).getId();
+    }
 
-   public String create(final TimeTableDTO timeTableDTO ) {
-       final TimeTable timeTable = new TimeTable();
-       mapToEntity(timeTableDTO, timeTable);
-       return timeTableRepository.save(timeTable).getId();
-   }
     private TimeTable mapToEntity(final TimeTableDTO timeTableDTO,
-                                   final TimeTable timeTable) {
+                                  final TimeTable timeTable) {
         timeTable.setName(timeTableDTO.getName());
         timeTable.setSemesters(timeTableDTO.getSemesters());
         timeTable.setDepartments(timeTableDTO.getDepartments());
         timeTable.setElementModules(timeTableDTO.getElementModules());
         timeTable.setClasse(timeTableDTO.getClasse());
         timeTable.setSchedule(timeTableDTO.getSchedule());
-                ;
+        ;
         return timeTable;
     }
+
     private TimeTableDTO mapToDTO(final TimeTable timeTable,
                                   final TimeTableDTO timeTableDTO) {
-        timeTableDTO.setId( timeTable.getId());
+        timeTableDTO.setId(timeTable.getId());
         timeTableDTO.setDepartments(timeTable.getDepartments());
         timeTableDTO.setSemesters(timeTable.getSemesters());
         timeTableDTO.setClasse(timeTable.getClasse());
@@ -99,6 +98,7 @@ public class TimeTableService {
                 .orElseThrow(() -> new NotFoundException("TimeTable not found with id: " + id));
         timeTableRepository.delete(existingTimeTable);
     }
+
     public static TimeTable generateTimetable1(List<ElementModule> elementModules) {
         TimeTable timetable = new TimeTable();
         Map<DayOfWeek, Map<Period, List<ElementModule>>> scheduleMap = new HashMap<>();
@@ -122,6 +122,7 @@ public class TimeTableService {
             }
         }
     }
+
     private static void setSchedule(ElementModule elementModule, List<ElementModule> existingModules) {
         List<Period> schedule = elementModule.getPeriods();
         for (ElementModule existingModule : existingModules) {
@@ -132,6 +133,7 @@ public class TimeTableService {
             }
         }
     }
+
     private static boolean hasConflict(ElementModule module1, ElementModule module2) {
         List<Period> schedule1 = module1.getPeriods();
         List<Period> schedule2 = module2.getPeriods();
@@ -143,10 +145,10 @@ public class TimeTableService {
         }
         return false;
     }
+
     private static List<Period> generateNewSchedule(List<Period> schedule) {
         return new ArrayList<>();
     }
-
 
 
 }

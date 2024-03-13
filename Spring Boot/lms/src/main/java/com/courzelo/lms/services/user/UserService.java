@@ -105,8 +105,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userID)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
     }
+
     public JwtResponse getMyInfo(String email) {
-     User user= userRepository.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
@@ -129,7 +130,7 @@ public class UserService implements UserDetailsService {
                 user.getPhoto() != null ? user.getPhoto().getId() : null,
                 institution != null ? institution.getName() : null,
                 institutionClass != null ? institutionClass.getName() : null
-                );
+        );
     }
 
     public ResponseEntity<Response> changePassword(PasswordDTO passwordDTO, String email) {

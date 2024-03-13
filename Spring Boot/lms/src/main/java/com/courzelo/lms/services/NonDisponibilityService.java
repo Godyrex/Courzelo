@@ -19,7 +19,7 @@ public class NonDisponibilityService {
     public NonDisponibilityService(final NonDisponibilityRepository nonDisponibilityRepository) {
         this.nonDisponibilityRepository = nonDisponibilityRepository;
     }
-    
+
 
     public List<NonDisponibilityDTO> findAll() {
         final List<NonDisponibility> nonDisponibilities = nonDisponibilityRepository.findAll(Sort.by("id"));
@@ -53,7 +53,7 @@ public class NonDisponibilityService {
     }
 
     private NonDisponibilityDTO mapToDTO(final NonDisponibility nonDisponibility,
-            final NonDisponibilityDTO nonDisponibilityDTO) {
+                                         final NonDisponibilityDTO nonDisponibilityDTO) {
         nonDisponibilityDTO.setId(nonDisponibility.getId());
         nonDisponibilityDTO.setDay(nonDisponibility.getDay());
         nonDisponibilityDTO.setPeriod(nonDisponibility.getPeriod());
@@ -64,7 +64,7 @@ public class NonDisponibilityService {
     private NonDisponibility mapToEntity(final NonDisponibilityDTO nonDisponibilityDTO,
                                          final NonDisponibility nonDisponibility) {
         nonDisponibility.setId(nonDisponibilityDTO.getId());
-     nonDisponibility.setDay(nonDisponibilityDTO.getDay());
+        nonDisponibility.setDay(nonDisponibilityDTO.getDay());
         nonDisponibility.setPeriod(nonDisponibilityDTO.getPeriod());
         return nonDisponibility;
     }

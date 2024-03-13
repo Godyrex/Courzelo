@@ -89,7 +89,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendVerificationEmail(User user,VerificationToken verificationToken)
+    public void sendVerificationEmail(User user, VerificationToken verificationToken)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";
@@ -144,7 +144,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendVerificationCode(User user,VerificationToken verificationToken)
+    public void sendVerificationCode(User user, VerificationToken verificationToken)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "noreply@courzelo.com";

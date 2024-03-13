@@ -1,16 +1,21 @@
 package com.courzelo.lms.services.program;
 
 
+import com.courzelo.lms.dto.program.CalendarDTO;
 import com.courzelo.lms.dto.program.InstitutionDTO;
 import com.courzelo.lms.dto.program.InstitutionListDTO;
 import com.courzelo.lms.dto.program.InstitutionUsersCountDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.security.Principal;
+import java.util.List;
 
 public interface IInstitutionService {
     ResponseEntity<InstitutionListDTO> getInstitutions(int page, int sizePerPage);
+
+    ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events);
 
     ResponseEntity<InstitutionDTO> getInstitutionByID(String institutionID);
 

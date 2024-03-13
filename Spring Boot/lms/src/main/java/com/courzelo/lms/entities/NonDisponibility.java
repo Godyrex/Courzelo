@@ -13,10 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class NonDisponibility {
 
     @Id
-    private  String id;
+    private String id;
     @NotNull
-   private String day;
+    private String day;
     @NotNull
-   private String period;
+    private String period;
 
 }
