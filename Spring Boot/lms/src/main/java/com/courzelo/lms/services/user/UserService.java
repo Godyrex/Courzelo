@@ -6,6 +6,7 @@ import com.courzelo.lms.dto.user.ProfileDTO;
 import com.courzelo.lms.dto.user.UpdateEmailDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.schedule.Teacher;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.entities.user.VerificationTokenType;
@@ -215,5 +216,7 @@ public class UserService implements UserDetailsService {
         }
         return ResponseEntity.badRequest().build();
     }
-
+    public Teacher getProfById(String id) {
+        return (Teacher) userRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+    }
 }

@@ -1,13 +1,9 @@
 
-{
-java:S1192T"^Define a constant instead of duplicating this literal "TimeTable not found with id: " 3 times.(ÚÚõÄ8Ø˜Ïà1
+|
+java:S1192ƒ"^Define a constant instead of duplicating this literal "TimeTable not found with id: " 3 times.(ÚÚõÄ8½ş¼—æ1
 _
-java:S1854+"BRemove this useless assignment to local variable "elementModules".(Í±¬8Ä£­Ïà1
+java:S1854/"BRemove this useless assignment to local variable "elementModules".(Í±¬8Öş¼—æ1
 P
-java:S1481+"3Remove this unused "elementModules" local variable.(Í±¬8Ä£­Ïà1
-R
-java:S11720"5Remove this unused method parameter "elementModules".(½Ü¤×8ÏØ˜Ïà1
+java:S1481/"3Remove this unused "elementModules" local variable.(Í±¬8×ş¼—æ1
 >
-java:S1116D"Remove this empty statement.(Åñ­õşÿÿÿÿ8ÔØ˜Ïà1
-Z
-java:S1068"8Remove this unused "elementModuleService" private field.(–Òùäüÿÿÿÿ8éØ˜Ïà1
+java:S1116s"Remove this empty statement.(Åñ­õşÿÿÿÿ8ãş¼—æ1

@@ -1,34 +1,38 @@
 package com.courzelo.lms.services.schedule;
 
+import com.courzelo.lms.GAlgo.GAlgorithm;
+import com.courzelo.lms.GAlgo.UniversityTimetable;
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.TimeTableDTO;
-import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.Period;
-import com.courzelo.lms.entities.schedule.TimeTable;
+import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.entities.schedule.*;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.TimeTableRepository;
+import com.courzelo.lms.services.user.UserService;
 import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class TimeTableService {
-  
+    private final DataFromDB dataFromDb;
     private final ElementModuleRepository elementModuleRepository;
     private final TimeTableRepository timeTableRepository ;
     private ElementModuleService elementModuleService;
+    private UserService userService;
 
     private Map<DayOfWeek, Map<Period, String>> schedule;
 
-    public TimeTableService(ElementModuleRepository elementModuleRepository, final TimeTableRepository timeTableRepository, ElementModuleService elementModuleService, Map<DayOfWeek, Map<Period, String>> schedule) {
+    public TimeTableService(DataFromDB dataFromDb, ElementModuleRepository elementModuleRepository, final TimeTableRepository timeTableRepository, ElementModuleService elementModuleService) {
+        this.dataFromDb = dataFromDb;
         this.elementModuleRepository = elementModuleRepository;
         this.timeTableRepository = timeTableRepository;
         this.elementModuleService = elementModuleService;
-
-        this.schedule = schedule;
     }
 
 
@@ -45,11 +49,54 @@ public class TimeTableService {
         return new ArrayList<>();
     }
 
-    public List<Map<String, List<ElementModule>>> getAllEmplois(List<ElementModule> elementModules) {
-        // implementation to get all emplois
-        return new ArrayList<>();
-    }
 
+    public List<Map<String, List<ElementModule>>> getAllEmplois() {
+        List<Map<String, List<ElementModule>>> emplois = new ArrayList<>();
+        dataFromDb.loadDataFromDatabase();
+        // Retrieve all classes
+        List<ClassDTO> classes = DataFromDB.classDTOS;
+        for (ClassDTO classe : classes) {
+            Map<String, List<ElementModule>> emploi = new HashMap<>();
+            emploi.put(classe.getId(), elementModuleService.getEmploisByClasse(classe.getId()));
+            emplois.add(emploi);
+        }
+        return emplois;
+    }
+    public List<ElementModule> getEmploisByClasse(String id) {
+        return elementModuleService.getEmploisByClasse(id);
+    }
+    public List<Map<String, List<ElementModule>>> generateEmplois() {
+        List<Map<String, List<ElementModule>>> emplois = new ArrayList<>();
+        dataFromDb.loadDataFromDatabase();
+        GAlgorithm algorithm = new GAlgorithm();
+        UniversityTimetable universityTimetable = algorithm.generateTimetable();
+
+        for (int i = 0; i < universityTimetable.getNumberOfClasses(); i++) {
+            Map<String, List<ElementModule>> emploi = new HashMap<>();
+            emploi.put(universityTimetable.getClasses().get(i).getId(),universityTimetable.getTimetable(i));
+            emplois.add(emploi);
+        }
+
+        for (ElementModule elementDeModule : universityTimetable.getAllElements()) {
+            elementModuleService.addElementModule(elementDeModule);
+        }
+
+        return emplois;
+    }
+    public List<ElementModule> getEmploiByProf(String id) {
+
+        Teacher teacher = userService.getProfById(id);
+        // show only  element de module of S1 ou S3 or S5
+
+        List<ElementModule> elementModules = new ArrayList<>();
+        for (ElementModule elementModule : teacher.getElementModules()) {
+            if (elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S3 || elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S5 || elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S1) {
+                elementModules.add(elementModule);
+            }
+        }
+
+        return elementModules;
+    }
 
 
    public String create(final TimeTableDTO timeTableDTO ) {

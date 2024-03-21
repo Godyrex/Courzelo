@@ -1,4 +1,6 @@
 
-Q
-java:S3740""/Provide the parametrized type for this generic.(ò€ë÷ûÿÿÿÿ8ĞÁåìå1
 q	java:S116*"URename this field "ModuleName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÌÛ­8¼›Ößå1
+n
+java:S1128	"QRemove this unused import 'org.springframework.data.annotation.ReadOnlyProperty'.(³‡„ê8øÜä–æ1
+~
+java:S1128"\Remove this unused import 'org.springframework.data.mongodb.core.mapping.DocumentReference'.(¿÷÷˜üÿÿÿÿ8øÜä–æ1

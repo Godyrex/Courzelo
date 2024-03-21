@@ -64,7 +64,6 @@ public class ElementModuleService {
         elementModuleDTO.setDayOfWeek(elementModule.getDayOfWeek());
         elementModuleDTO.setPeriod(elementModule.getPeriod());
         elementModuleDTO.setClasses(elementModule.getClasses());
-
         elementModuleDTO.setSemesters(elementModule.getSemesters());
         elementModuleDTO.setDepartments(elementModule.getDepartments());
         return elementModuleDTO;
@@ -89,6 +88,13 @@ public class ElementModuleService {
         return elementModuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Module Element number " + id + " does not exist!"));
     }
 
+    public List<ElementModule> getEmploisByClasse(String id) {
+        return elementModuleRepository.getEmploisByClasses(id);
+    }
+
+    public ElementModule addElementModule(ElementModule elementDeModule) {
+        return elementModuleRepository.save(elementDeModule);
+    }
    /* public List<ElementModule>getEmploisByClass(String classe){
         return elementModuleRepository.findByClasse(classe);
     }*/

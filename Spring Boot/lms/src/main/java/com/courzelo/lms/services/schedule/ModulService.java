@@ -57,6 +57,9 @@ public class ModulService {
         modulDTO.setName(modul.getName());
         modulDTO.setIsSeperated(modul.getIsSeperated());
         modulDTO.setIsMetuale(modul.getIsMetuale());
+        modulDTO.setElementModules(modul.getElementModules());
+        modulDTO.setAClass(modul.getAClass());
+
         //modulDTO.setElement(modul.getElement() == null ? null : modul.getElement().getId());
         return modulDTO;
     }
@@ -66,6 +69,8 @@ public class ModulService {
         modul.setName(modulDTO.getName());
         modul.setIsSeperated(modulDTO.getIsSeperated());
         modul.setIsMetuale(modulDTO.getIsMetuale());
+        modul.setElementModules(modulDTO.getElementModules());
+        modul.setAClass(modulDTO.getAClass());
         /*final ElementModule element = modulDTO.getElement() == null ? null : elementModuleRepository.findById(modulDTO.getElement())
                 .orElseThrow(() -> new NotFoundException("element not found"));
         modul.setElement(element);*/

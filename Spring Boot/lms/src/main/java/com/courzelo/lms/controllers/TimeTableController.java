@@ -30,52 +30,48 @@ public class TimeTableController {
         this.timeTableService = timeTableService;
         this.elementModuleRepository = elementModuleRepository;
     }
-
-    /*@PostMapping
-    @ApiResponse(responseCode = "201")
-    public ResponseEntity<String> createTimeTable(
-            @RequestBody @Valid final TimeTableDTO timeTableDTO) {
-        final String createdId = timeTableService.create(timeTableDTO);
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
-    }*/
     @PostMapping
     @ApiResponse(responseCode = "201")
     public ResponseEntity<String> create(@Valid @RequestBody TimeTableDTO timeTableDTO) {
         String timeTableId = timeTableService.create(timeTableDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(timeTableId);
     }
-
+    //newTimetable
+    @GetMapping
+    public List<Map<String, List<ElementModule>>> getAllEmplois() {
+        return timeTableService.getAllEmplois();
+    }
+    //newTimetable
     @GetMapping("/{id}")
-    public ResponseEntity<TimeTableDTO> getById(@PathVariable String id) {
-        TimeTableDTO timeTableDTO = timeTableService.getById(id);
-        return ResponseEntity.ok(timeTableDTO);
+    public List<ElementModule> getEmploisByClasse(@PathVariable String id) {
+        return timeTableService.getEmploisByClasse(id);
     }
-
+    //newTimetable
     @GetMapping("/generate")
-    public ResponseEntity<List<Map<String, List<ElementModule>>>> generateTimetable1() {
-        List<Map<String, List<ElementModule>>> timetable = timeTableService.generateTimetable();
-        return ResponseEntity.ok(timetable);
+    public List<Map<String, List<ElementModule>>> generateEmplois() {
+        return timeTableService.generateEmplois();
     }
+    //newTimetable
+    //getEmploiByProf
+    @GetMapping("/prof/{id}")
+    public  List<ElementModule>getEmploiByProf(@PathVariable String id) {
 
-
+        return timeTableService.getEmploiByProf(id);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable String id, @Valid @RequestBody TimeTableDTO timeTableDTO) {
         timeTableService.update(id, timeTableDTO);
         return ResponseEntity.ok("TimeTable updated successfully");
     }
-
     @DeleteMapping("/{id}")
     @ApiResponse(responseCode = "201")
     public ResponseEntity<String> delete(@PathVariable String id) {
         timeTableService.delete(id);
         return ResponseEntity.ok("TimeTable deleted successfully");
     }
-
     @GetMapping("/count")
     public ResponseEntity<Long> countTimetables() {
         long timetableCount = timeTableService.countTimetables();
         return ResponseEntity.ok(timetableCount);
     }
-
-
 }
