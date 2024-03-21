@@ -1,0 +1,40 @@
+
+v
+java:S1104"TMake userDTOS a static final constant or non-public and provide accessors if needed.(ÔÍ»Üşÿÿÿÿ8Åğ””æ1
+u
+java:S1104"XMake semesterDTOS a static final constant or non-public and provide accessors if needed.(ĞÉíŒ8Æğ””æ1
+z
+java:S1104"]Make elementModuleDTOS a static final constant or non-public and provide accessors if needed.(İ×‹İ8Æğ””æ1
+y
+java:S1104"\Make fieldOfStudyDTOS a static final constant or non-public and provide accessors if needed.(‡¥·õ8Æğ””æ1
+w
+java:S1104"ZMake departmentDTOS a static final constant or non-public and provide accessors if needed.(Çå£8Æğ””æ1
+w
+java:S1104"UMake classDTOS a static final constant or non-public and provide accessors if needed.(ÜÆ¨Êûÿÿÿÿ8Æğ””æ1
+r
+java:S1104"UMake modulDTOS a static final constant or non-public and provide accessors if needed.(€§‘±8Æğ””æ1
+T
+java:S1444"7Make this "public static elementModuleDTOS" field final(İ×‹İ8Æğ””æ1
+S
+java:S1444"6Make this "public static fieldOfStudyDTOS" field final(‡¥·õ8Çğ””æ1
+Q
+java:S1444"4Make this "public static departmentDTOS" field final(Çå£8Çğ””æ1
+Q
+java:S1444"/Make this "public static classDTOS" field final(ÜÆ¨Êûÿÿÿÿ8Çğ””æ1
+L
+java:S1444"/Make this "public static modulDTOS" field final(€§‘±8Çğ””æ1
+N
+java:S2386"",Make member "elementModuleDTOS" "protected".(îü€şÿÿÿÿ8Øğ””æ1
+X
+java:S2696""6Make the enclosing method "static" or remove this set.(îü€şÿÿÿÿ8Ùğ””æ1
+]	java:S125!"<This block of commented-out lines of code should be removed.(ÆÏåÓùÿÿÿÿ8Ùğ””æ1
+H
+java:S2386#"+Make member "fieldOfStudyDTOS" "protected".(¿ó˜8Ùğ””æ1
+S
+java:S2696#"6Make the enclosing method "static" or remove this set.(¿ó˜8Ùğ””æ1
+F
+java:S2386$")Make member "departmentDTOS" "protected".(¥ÊÇ•8Úğ””æ1
+S
+java:S2696$"6Make the enclosing method "static" or remove this set.(¥ÊÇ•8Úğ””æ1
+X
+java:S2696%"6Make the enclosing method "static" or remove this set.(ìôŸĞıÿÿÿÿ8Úğ””æ1

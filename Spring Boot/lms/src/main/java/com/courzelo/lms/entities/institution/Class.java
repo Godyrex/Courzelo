@@ -1,5 +1,8 @@
 package com.courzelo.lms.entities.institution;
 
+import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Modul;
+import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.user.User;
 import jakarta.persistence.Id;
 import lombok.Data;
@@ -23,5 +26,11 @@ public class Class {
     private List<User> teachers = new ArrayList<>();
     @DBRef
     private List<User> students = new ArrayList<>();
+    @DBRef
+    private FieldOfStudy fieldOfStudy;
+    @DBRef
+    private List<Modul> moduls;
+    @DBRef
+    private Semester semester;
 
 }

@@ -50,7 +50,7 @@
               <div class="form-group local-forms">
                 <label>departments<span class="login-danger">*</span></label>
                 <select class="form-control" formControlName="departmentID">
-                  <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.id}}</option>
+                  <option *ngFor="let dep of departments" [value]="dep.name">{{ dep.name}}</option>
                 </select>
               </div>
             </div>

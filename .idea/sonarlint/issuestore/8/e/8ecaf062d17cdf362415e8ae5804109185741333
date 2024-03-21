@@ -1,0 +1,9 @@
+
+k
+java:S1206J"PThis class overrides "equals()" and should therefore also override "hashCode()".(İ¢êÍıÿÿÿÿ
+I
+java:S1948#"'Make "photo" transient or serializable.(›¡ÒÒşÿÿÿÿ8Œáå1
+J
+java:S1948%"-Make "institution" transient or serializable.(ÛÒÚ8áå1
+K
+java:S1948'")Make "stclass" transient or serializable.(”½’ûøÿÿÿÿ8áå1

@@ -1,7 +1,7 @@
 package com.courzelo.lms.repositories;
 
 
-import com.courzelo.lms.entities.ElementModule;
+import com.courzelo.lms.entities.schedule.ElementModule;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 

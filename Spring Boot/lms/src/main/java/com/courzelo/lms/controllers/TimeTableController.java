@@ -1,9 +1,9 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.TimeTableDTO;
-import com.courzelo.lms.entities.ElementModule;
+import com.courzelo.lms.dto.schedule.TimeTableDTO;
+import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.repositories.ElementModuleRepository;
-import com.courzelo.lms.services.TimeTableService;
+import com.courzelo.lms.services.schedule.TimeTableService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

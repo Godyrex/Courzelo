@@ -1,12 +1,9 @@
 package com.courzelo.lms;
 
-import com.courzelo.lms.entities.ElementModule;
-import com.courzelo.lms.services.ElementModuleService;
+import com.courzelo.lms.entities.schedule.ElementModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.mongodb.assertions.Assertions.assertFalse;
-import static com.mongodb.assertions.Assertions.assertTrue;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
