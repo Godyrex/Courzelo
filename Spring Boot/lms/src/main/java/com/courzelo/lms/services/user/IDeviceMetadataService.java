@@ -10,12 +10,14 @@ import java.security.Principal;
 
 public interface IDeviceMetadataService {
     void saveDeviceDetails(String userAgent, User user);
+
     void updateDeviceLastLogin(String userAgent, User user);
 
     boolean isNewDevice(String userAgent, User user);
+
     String getIpAddressFromHeader(HttpServletRequest request);
 
-        ResponseEntity<HttpStatus> deleteDevice(String id);
+    ResponseEntity<HttpStatus> deleteDevice(String id);
 
     ResponseEntity<DeviceListDTO> getDevices(int page, int sizePerPage, Principal principal);
 }

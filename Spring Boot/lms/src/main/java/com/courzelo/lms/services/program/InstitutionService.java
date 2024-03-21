@@ -1,6 +1,7 @@
 package com.courzelo.lms.services.program;
 
 
+import com.courzelo.lms.dto.program.CalendarDTO;
 import com.courzelo.lms.dto.program.InstitutionDTO;
 import com.courzelo.lms.dto.program.InstitutionListDTO;
 import com.courzelo.lms.dto.program.InstitutionUsersCountDTO;
@@ -19,16 +20,23 @@ import com.courzelo.lms.repositories.ProgramRepository;
 import com.courzelo.lms.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +51,8 @@ public class InstitutionService implements IInstitutionService {
     private final ClassRepository classRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    private static final String FILE_PATH = "school-year-calendar.xlsx"; // Change this to your desired file path
 
     @Override
     public ResponseEntity<InstitutionListDTO> getInstitutions(int page, int sizePerPage) {
@@ -61,6 +71,87 @@ public class InstitutionService implements IInstitutionService {
         return ResponseEntity
                 .ok()
                 .body(institutionListDTO);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events) {
+        log.info("Generating Calendar...");
+        try (Workbook workbook = new XSSFWorkbook()) {
+            CellStyle style = workbook.createCellStyle();
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            style.setBorderRight(BorderStyle.THIN);
+            style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            style.setBorderTop(BorderStyle.THIN);
+            style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            style.setAlignment(HorizontalAlignment.CENTER);
+            Sheet sheet = workbook.createSheet("School Year Calendar");
+            String[] MONTHS = {
+                    "January", "February", "March", "April", "May", "June", "July",
+                    "August", "September", "October", "November", "December"
+            };
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < MONTHS.length; i++) {
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, i * 3, (i * 3) + 2));
+                Cell headerCell = headerRow.createCell(i * 3);
+                headerCell.setCellValue(MONTHS[i]);
+                int daysInMonth = YearMonth.now().withMonth(i + 1).lengthOfMonth();
+
+                for (int j = 1; j <= daysInMonth; j++) {
+                    Row daysRow = sheet.getRow(j);
+                    if (daysRow == null) {
+                        daysRow = sheet.createRow(j);
+                    }
+                    int startColIndex = (i * 3) + 1;
+                    int endColIndex = (i * 3) + 2;
+                    sheet.addMergedRegion(new CellRangeAddress(j, j, startColIndex, endColIndex));
+                    Cell daysCell = daysRow.createCell(i * 3);
+                    daysCell.setCellValue(j);
+                    daysCell.setCellStyle(style);
+                }
+                Row januaryRow = sheet.getRow(5);
+                if (januaryRow == null) {
+                    januaryRow = sheet.createRow(5);
+                }
+                for (Row row : sheet) {
+                    for (Cell cell : row) {
+                        cell.setCellStyle(style);
+                    }
+                }
+                for (CalendarDTO event : events) {
+                    int monthIndex = event.getMonth() - 1;
+                    int rowIndex = event.getDay();
+                    int columnIndex = monthIndex * 3 + 1;
+
+                    Row eventRow = sheet.getRow(rowIndex);
+                    if (eventRow == null) {
+                        eventRow = sheet.createRow(rowIndex);
+                    }
+                    Cell eventCell = eventRow.createCell(columnIndex);
+                    eventCell.setCellValue(event.getName());
+                    eventCell.setCellStyle(style);
+                }
+                Cell january5thCell = januaryRow.createCell(1);
+                january5thCell.setCellValue("Free Day");
+
+                Row septemberRow = sheet.getRow(15);
+                if (septemberRow == null) {
+                    septemberRow = sheet.createRow(15);
+                }
+                Cell september15thCell = septemberRow.createCell(7);
+                september15thCell.setCellValue("Christmas");
+            }
+            try (FileOutputStream outputStream = new FileOutputStream(FILE_PATH)) {
+                workbook.write(outputStream);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Override

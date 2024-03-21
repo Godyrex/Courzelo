@@ -20,7 +20,7 @@ public interface IAuthService {
 
     ResponseEntity<?> confirmDevice(String userAgent, HttpServletResponse response, LoginDTO loginDTO, Integer code);
 
-    ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response,HttpServletRequest request, String userAgent);
+    ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response, HttpServletRequest request, String userAgent);
 
     void logout(HttpServletResponse response);
 

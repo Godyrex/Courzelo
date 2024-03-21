@@ -65,6 +65,7 @@ import {
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
+import { CalendarComponent } from './back/program/institution/calendar/calendar.component';
 
 
 @NgModule({
@@ -115,7 +116,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     UserProfileComponent,
     DevicesListComponent,
     ForgotPasswordComponent,
-    RecoverPasswordComponent
+    RecoverPasswordComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,

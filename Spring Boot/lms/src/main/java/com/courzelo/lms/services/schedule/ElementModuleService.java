@@ -16,8 +16,8 @@ import java.util.List;
 public class ElementModuleService {
 
     private final ElementModuleRepository elementModuleRepository;
-    private final SemesterRepository semesterRepository ;
-    private final DepartmentRepository departmentRepository ;
+    private final SemesterRepository semesterRepository;
+    private final DepartmentRepository departmentRepository;
 
 
     public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository) {
@@ -57,7 +57,7 @@ public class ElementModuleService {
     }
 
     private ElementModuleDTO mapToDTO(final ElementModule elementModule,
-            final ElementModuleDTO elementModuleDTO) {
+                                      final ElementModuleDTO elementModuleDTO) {
         elementModuleDTO.setId(elementModule.getId());
         elementModuleDTO.setNmbrHours(elementModule.getNmbrHours());
         elementModuleDTO.setName(elementModule.getName());
@@ -71,7 +71,7 @@ public class ElementModuleService {
     }
 
     private ElementModule mapToEntity(final ElementModuleDTO elementModuleDTO,
-            final ElementModule elementModule) {
+                                      final ElementModule elementModule) {
         elementModule.setNmbrHours(elementModuleDTO.getNmbrHours());
         elementModule.setName(elementModuleDTO.getName());
         elementModule.setDayOfWeek(elementModuleDTO.getDayOfWeek());
@@ -128,7 +128,7 @@ public class ElementModuleService {
     }
 */
 
-    }
+}
 
 
 

@@ -26,11 +26,7 @@ public class Department {
     @NotNull
     private String chefDepartment;
     @DBRef
-    private List<FieldOfStudy>fieldOfStudies;
-
-
-
-
+    private List<FieldOfStudy> fieldOfStudies;
 
 
 }

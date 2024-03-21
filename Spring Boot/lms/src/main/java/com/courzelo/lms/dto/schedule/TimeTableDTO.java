@@ -21,15 +21,12 @@ public class TimeTableDTO {
     private String id;
     private String name;
 
-    private List<Semester>semesters;
-private String classe;
-    private List<Department>departments;
+    private List<Semester> semesters;
+    private String classe;
+    private List<Department> departments;
 
-    private List<ElementModule>elementModules;
+    private List<ElementModule> elementModules;
     private Map<DayOfWeek, Map<Period, List<ElementModule>>> schedule;
-
-
-
 
 
 }

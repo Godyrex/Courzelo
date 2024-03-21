@@ -29,7 +29,6 @@ public class NonDisponibilityController {
     }
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<NonDisponibilityDTO> getNonDisponibility(
             @PathVariable(name = "id") final String id) {
@@ -46,7 +45,7 @@ public class NonDisponibilityController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateNonDisponibility(@PathVariable(name = "id") final String id,
-            @RequestBody @Valid final NonDisponibilityDTO nonDisponibilityDTO) {
+                                                         @RequestBody @Valid final NonDisponibilityDTO nonDisponibilityDTO) {
         nonDisponibilityService.update(id, nonDisponibilityDTO);
         return ResponseEntity.ok(id);
     }

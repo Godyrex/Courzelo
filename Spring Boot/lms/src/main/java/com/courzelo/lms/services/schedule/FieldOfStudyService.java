@@ -60,7 +60,7 @@ public class FieldOfStudyService {
     }
 
     private FieldOfStudyDTO mapToDTO(final FieldOfStudy fieldOfStudy,
-            final FieldOfStudyDTO fieldOfStudyDTO) {
+                                     final FieldOfStudyDTO fieldOfStudyDTO) {
         fieldOfStudyDTO.setId(fieldOfStudy.getId());
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
@@ -70,16 +70,17 @@ public class FieldOfStudyService {
     }
 
     private FieldOfStudy mapToEntity(final FieldOfStudyDTO fieldOfStudyDTO,
-            final FieldOfStudy fieldOfStudy) {
+                                     final FieldOfStudy fieldOfStudy) {
         fieldOfStudy.setId(fieldOfStudyDTO.getId());
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
-        Department department=departmentRepository.findById(fieldOfStudyDTO.getDepartmentID())
-                .orElseThrow(()->new RuntimeException("department not found"));
+        Department department = departmentRepository.findById(fieldOfStudyDTO.getDepartmentID())
+                .orElseThrow(() -> new RuntimeException("department not found"));
         fieldOfStudy.setDepartment(department);
         return fieldOfStudy;
     }
+
     public List<FieldOfStudyDTO> getFields(String departmentID) {
         Department department = departmentRepository.findById(departmentID)
                 .orElseThrow(() -> new NotFoundException("Department not found"));

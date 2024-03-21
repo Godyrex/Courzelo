@@ -1,0 +1,57 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">Generate Calendar</h3>
+  </div>
+  <div class="col-sm-6">
+    <!-- Notification area -->
+    <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
+      <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
+      {{ messageSuccess }}
+    </div>
+    <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
+      <button (click)="resetErrorAlert()" class="close" type="button">×</button>
+      {{ messageError }}
+    </div>
+  </div><!-- /.col -->
+  <form (ngSubmit)="generateExcel()" [formGroup]="generateForm" class="form-horizontal">
+    <div class="card-body">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Month</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="month" placeholder="Month" type="number">
+          <div *ngIf="generateForm.controls.month.touched && generateForm.controls.month?.invalid" class="text-danger">
+            <div *ngIf="generateForm.get('month')?.errors?.['required']">Month is required.</div>
+            <div *ngIf="generateForm.get('month')?.errors?.['minlength']">Month must be between 1 and 12</div>
+            <div *ngIf="generateForm.get('month')?.errors?.['maxlength']">Month must be between 1 and 12</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Day</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="day" placeholder="Day" type="number">
+          <div *ngIf="generateForm.controls.day.touched && generateForm.controls.day?.invalid" class="text-danger">
+            <div *ngIf="generateForm.get('day')?.errors?.['required']">Day is required.</div>
+            <div *ngIf="generateForm.get('day')?.errors?.['maxlength']">Day must be between 1 and 31</div>
+            <div *ngIf="generateForm.get('day')?.errors?.['minlength']">Day must be between 1 and 31</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="name" placeholder="Name" type="text">
+          <div *ngIf="generateForm.controls.name.touched && generateForm.controls.name?.invalid" class="text-danger">
+            <div *ngIf="generateForm.get('name')?.errors?.['required']">Name is required.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+
+</div>

@@ -26,9 +26,36 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/plugins/fullcalendar/main.css",
+              "src/assets/plugins/fontawesome-free/css/all.min.css",
+              "src/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
+              "src/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
+              "src/assets/plugins/jqvmap/jqvmap.min.css",
+              "src/assets/dist/css/adminlte.min.css",
+              "src/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
+              "src/assets/plugins/daterangepicker/daterangepicker.css",
+              "src/assets/plugins/summernote/summernote-bs4.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/plugins/jquery/jquery.min.js",
+              "src/assets/plugins/jquery-ui/jquery-ui.min.js",
+              "src/assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
+              "src/assets/plugins/chart.js/Chart.min.js",
+              "src/assets/plugins/sparklines/sparkline.js",
+              "src/assets/plugins/jqvmap/jquery.vmap.min.js",
+              "src/assets/plugins/jqvmap/maps/jquery.vmap.usa.js",
+              "src/assets/plugins/jquery-knob/jquery.knob.min.js",
+              "src/assets/plugins/moment/moment.min.js",
+              "src/assets/plugins/daterangepicker/daterangepicker.js",
+              "src/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js",
+              "src/assets/plugins/summernote/summernote-bs4.min.js",
+              "src/assets/dist/js/adminlte.min.js",
+              "src/assets/dist/js/adminlte.js",
+              "src/assets/dist/js/demo.js",
+              "src/assets/plugins/fullcalendar/main.js",
+              "src/assets/dist/js/pages/dashboard.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -85,38 +112,13 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/styles.css",
-              "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback",
-              "src/assets/plugins/fontawesome-free/css/all.min.css",
-              "https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css",
-              "src/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
-              "src/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
-              "src/assets/plugins/jqvmap/jqvmap.min.css",
-              "src/assets/dist/css/adminlte.min.css",
-              "src/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
-              "src/assets/plugins/daterangepicker/daterangepicker.css",
-              "src/assets/plugins/summernote/summernote-bs4.min.css"
+              "src/styles.css"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/plugins/jquery/jquery.min.js",
-              "src/assets/plugins/jquery-ui/jquery-ui.min.js",
-              "src/assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
-              "src/assets/plugins/chart.js/Chart.min.js",
-              "src/assets/plugins/sparklines/sparkline.js",
-              "src/assets/plugins/jqvmap/jquery.vmap.min.js",
-              "src/assets/plugins/jqvmap/maps/jquery.vmap.usa.js",
-              "src/assets/plugins/jquery-knob/jquery.knob.min.js",
-              "src/assets/plugins/moment/moment.min.js",
-              "src/assets/plugins/daterangepicker/daterangepicker.js",
-              "src/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js",
-              "src/assets/plugins/summernote/summernote-bs4.min.js",
-              "src/assets/dist/js/adminlte.js",
-              "src/assets/dist/js/demo.js",
-              "src/assets/dist/js/pages/dashboard.js"
             ]
           }
         }

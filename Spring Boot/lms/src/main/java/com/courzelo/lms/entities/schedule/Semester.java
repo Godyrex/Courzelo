@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Semester {
 
     @Id
-    private  String id;
+    private String id;
     @NotNull
 
     private LocalDate startDate;
@@ -28,7 +28,7 @@ public class Semester {
 
     @NotNull
     @NotNull
-    private SemesterNumber semesterNumber ;
+    private SemesterNumber semesterNumber;
 
 
 }

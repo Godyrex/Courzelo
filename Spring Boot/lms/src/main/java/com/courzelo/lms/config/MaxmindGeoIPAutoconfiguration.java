@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(prefix = MaxmindGeoIPProperties.PROPERTY_PREFIX, value = { "enabled" }, matchIfMissing = true)
+@ConditionalOnProperty(prefix = MaxmindGeoIPProperties.PROPERTY_PREFIX, value = {"enabled"}, matchIfMissing = true)
 @EnableConfigurationProperties(MaxmindGeoIPProperties.class)
 public class MaxmindGeoIPAutoconfiguration {
 
