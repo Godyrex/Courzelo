@@ -3,7 +3,9 @@ import {InstitutionService} from "../../../../service/program/institution.servic
 import {InstitutionUsersCountDTO} from "../../../../model/program/institutionUsersCountDTO";
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 import {ToastrService} from "ngx-toastr";
-
+import * as L from 'leaflet';
+import {UpdateService} from "../../../../service/user/profile/update.service";
+import {LoginResponse} from "../../../../model/user/LoginResponse";
 @Component({
   selector: 'app-institution-panel',
   templateUrl: './institution-panel.component.html',
@@ -18,16 +20,70 @@ export class InstitutionPanelComponent implements OnInit {
   teachers: string = "Teachers"
   students: string = "Students"
   myInstitution: InstitutionDTO = {};
-
+  private map: L.Map | undefined;
+  private marker: L.Marker | undefined;
+  latitude : number = 0;
+  longitude : number = 0;
+  loginResponse: LoginResponse = {}
   constructor(
     private institutionService: InstitutionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private updateService: UpdateService
   ) {
   }
-
   ngOnInit(): void {
     this.countUsers();
     this.getMyInstitution();
+    this.getMyInfo();
+  }
+  getMyInfo() {
+    this.updateService.getMyInfo().subscribe(
+      response => {
+        this.loginResponse = response;
+        console.log(response);
+      }
+    )
+  }
+  setLocation() {
+    if (this.map) {
+      this.map.remove();
+    }
+    console.log(this.myInstitution.name);
+    if (this.myInstitution.latitude == 0 || this.myInstitution.longitude == 0 ||
+      this.myInstitution.latitude == undefined || this.myInstitution.longitude == undefined) {
+      this.toastr.warning("You Don't have a location set, setting default location.");
+      this.myInstitution.latitude = 36.7832;
+      this.myInstitution.longitude = 10.1843;
+    }
+    this.map = L.map('map').setView([this.myInstitution.latitude!, this.myInstitution.longitude!], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      // ...
+    }).addTo(this.map);
+    // Add a marker to the map that the user can drag to set a new location
+    let marker = L.marker([this.myInstitution.latitude!, this.myInstitution.longitude!], {
+      draggable: true
+    }).addTo(this.map);
+    // Update the institution's latitude and longitude when the marker is dragged
+    marker.on('dragend', () => {
+      let position = marker.getLatLng();
+      this.latitude = position.lat;
+      this.longitude = position.lng;
+      console.log("Marker latitude",this.latitude);
+      console.log("Marker longitude",this.longitude);
+    });
+  }
+  saveLocation() {
+    this.myInstitution.latitude = this.latitude;
+    this.myInstitution.longitude = this.longitude;
+    this.institutionService.saveLocation(this.myInstitution).subscribe(
+      response => {
+        console.log("Location saved successfully.",this.myInstitution.latitude,this.myInstitution.longitude);
+        this.toastr.success("Location saved successfully.");
+      },
+      error => {
+        this.toastr.error("Error saving location.");
+      }
+    );
   }
   downloadExcel() {
     this.institutionService.downloadExcel().subscribe(
@@ -51,6 +107,7 @@ export class InstitutionPanelComponent implements OnInit {
       (response: InstitutionUsersCountDTO) => {
         this.usersCount = response;
         this.totalCount = this.usersCount.teachers! + this.usersCount.admins! + this.usersCount.students!;
+        console.log("Admins count: ", this.usersCount.admins);
         console.log(response)
         console.log(this.usersCount)
       },
@@ -64,7 +121,11 @@ export class InstitutionPanelComponent implements OnInit {
     this.institutionService.getMyInstitution().subscribe(
       (response: InstitutionDTO) => {
         this.myInstitution = response;
-        console.log(response)
+        console.log("My institution: ", this.myInstitution);
+        console.log("My institution latitude: ", this.myInstitution.latitude);
+        console.log("My institution longitude: ", this.myInstitution.longitude);
+        console.log("My institution second: ", this.myInstitution);
+        this.setLocation();
       },
       (error: any) => {
         console.error('Error fetching institution information:', error);

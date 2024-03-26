@@ -29,5 +29,7 @@ public class Institution {
     @DBRef
     private List<Program> programs = new ArrayList<>();
     private byte[] excelFile;
+    private double latitude;
+    private double longitude;
 
 }

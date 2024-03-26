@@ -39,7 +39,9 @@ export class InstitutionService {
   downloadExcel() {
     return this.http.get(`${this.baseUrl}/downloadExcel`, { responseType: 'blob' });
   }
-
+  saveLocation(institution: InstitutionDTO): Observable<any> {
+    return this.http.post(`${this.baseUrl}/saveLocation`, institution);
+  }
   addUserToInstitution(institutionID: string, role: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
       .set('institutionID', institutionID)

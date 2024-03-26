@@ -518,6 +518,20 @@ public class InstitutionService implements IInstitutionService {
         }
         return ResponseEntity.badRequest().build();
     }
+    @Override
+    public ResponseEntity<Boolean> saveLocation(InstitutionDTO institutionDTO) {
+        log.info("Saving location "+institutionDTO);
+        Institution institution = institutionRepository.findById(institutionDTO.getId()).orElse(null);
+        if (institution != null) {
+            institution.setLatitude(institutionDTO.getLatitude());
+            institution.setLongitude(institutionDTO.getLongitude());
+            institutionRepository.save(institution);
+            log.info("Location saved");
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
 
     private ResponseEntity<UserListDTO> getUserListDTOResponseEntity(Institution institution, Principal principal, String role, int page, int sizePerPage) {
 

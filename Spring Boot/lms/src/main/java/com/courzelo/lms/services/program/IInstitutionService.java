@@ -40,4 +40,6 @@ public interface IInstitutionService {
     ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal);
 
     ResponseEntity<byte[]> downloadExcel(Principal principal);
+
+    ResponseEntity<Boolean> saveLocation(InstitutionDTO institutionDTO);
 }
