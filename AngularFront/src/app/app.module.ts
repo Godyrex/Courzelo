@@ -66,6 +66,9 @@ import {
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import { CalendarComponent } from './back/program/institution/calendar/calendar.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {ToastrModule} from "ngx-toastr";
 
 
 @NgModule({
@@ -127,7 +130,12 @@ import { CalendarComponent } from './back/program/institution/calendar/calendar.
     ReactiveFormsModule,
     RouterOutlet,
     MatButtonModule,
-    MatDialogModule
+    BsDatepickerModule.forRoot(),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    ToastrModule.forRoot({
+      positionClass: "toast-top-right"
+    })
   ],
   providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,

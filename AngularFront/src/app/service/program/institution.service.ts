@@ -36,7 +36,9 @@ export class InstitutionService {
   updateInstitution(institution: InstitutionDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/update`, institution);
   }
-
+  downloadExcel() {
+    return this.http.get(`${this.baseUrl}/downloadExcel`, { responseType: 'blob' });
+  }
 
   addUserToInstitution(institutionID: string, role: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()

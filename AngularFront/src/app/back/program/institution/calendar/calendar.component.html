@@ -1,58 +1,89 @@
-<div class="card card-primary">
-  <div class="col-sm-6">
-    <!-- Notification area -->
-    <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
-      <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
-      {{ messageSuccess }}
-    </div>
-    <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
-      <button (click)="resetErrorAlert()" class="close" type="button">×</button>
-      {{ messageError }}
-    </div>
-  </div><!-- /.col -->
-  <div class="card-header">
-    <h3 class="card-title">Generate Calendar</h3>
-  </div>
+<link href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" rel="stylesheet" >
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Generate Calendar
+    </h1>
+  </section>
 
-  <form (ngSubmit)="generateExcel()" [formGroup]="generateForm" class="form-horizontal">
-    <div class="card-body">
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Month</label>
-        <div class="col-sm-10">
-          <input class="form-control" formControlName="month" placeholder="Month" type="number">
-          <div *ngIf="generateForm.controls.month.touched && generateForm.controls.month?.invalid" class="text-danger">
-            <div *ngIf="generateForm.get('month')?.errors?.['required']">Month is required.</div>
-            <div *ngIf="generateForm.get('month')?.errors?.['min']">Month must be between 1 and 12</div>
-            <div *ngIf="generateForm.get('month')?.errors?.['max']">Month must be between 1 and 12</div>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Event Details</h3>
           </div>
+          <form (ngSubmit)="generateExcel()" [formGroup]="generateForm">
+            <div class="box-body">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input class="form-control" placeholder="Date" bsDatepicker
+                       [bsValue]="bsValue"
+                       [minDate]="minDate"
+                       [maxDate]="maxDate"
+                       [daysDisabled]="[6,0]"
+                       [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" formControlName="startDate">
+                <div *ngIf="generateForm.controls['startDate'].touched && generateForm.controls['startDate']?.invalid" class="text-danger">
+                  <div *ngIf="generateForm.get('startDate')?.errors?.['required']">Start Date is required.</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Finish Date</label>
+                <input class="form-control" placeholder="Date" bsDatepicker
+                       [bsValue]="bsValue"
+                       [minDate]="minDate"
+                       [maxDate]="maxDate"
+                       [daysDisabled]="[6,0]"
+                       [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" formControlName="finishDate">
+                <div *ngIf="generateForm.controls['finishDate'].touched && generateForm.controls['finishDate']?.invalid" class="text-danger">
+                  <div *ngIf="generateForm.get('finishDate')?.errors?.['required']">Finish Date is required.</div>
+                </div>
+                <div *ngIf="generateForm.errors?.['differentMonth']" class="text-danger">
+                  Start and finish dates must be in the same month.
+                </div>
+                <div *ngIf="generateForm.errors?.['invalidDateOrder']" class="text-danger">
+                  Finish date cannot be before the start date.
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" formControlName="name" placeholder="Name" type="text">
+                <div *ngIf="generateForm.controls['name'].touched && generateForm.controls['name']?.invalid" class="text-danger">
+                  <div *ngIf="generateForm.get('name')?.errors?.['required']">Name is required.</div>
+                  <div *ngIf="generateForm.get('name')?.errors?.['maxlength']">Name must be less than 15 characters.</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Color</label>
+                <input class="form-control" formControlName="color" type="color">
+              </div>
+            </div>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" (click)="addEvent()" class="btn btn-success">Add Event</button>
+              <button type="button" (click)="downloadExcel()" class="btn btn-info">Download Calendar</button>
+            </div>
+          </form>
         </div>
       </div>
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Day</label>
-        <div class="col-sm-10">
-          <input class="form-control" formControlName="day" placeholder="Day" type="number">
-          <div *ngIf="generateForm.controls.day.touched && generateForm.controls.day?.invalid" class="text-danger">
-            <div *ngIf="generateForm.get('day')?.errors?.['required']">Day is required.</div>
-            <div *ngIf="generateForm.get('day')?.errors?.['max']">Day must be between 1 and 31</div>
-            <div *ngIf="generateForm.get('day')?.errors?.['min']">Day must be between 1 and 31</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Name</label>
-        <div class="col-sm-10">
-          <input class="form-control" formControlName="name" placeholder="Name" type="text">
-          <div *ngIf="generateForm.controls.name.touched && generateForm.controls.name?.invalid" class="text-danger">
-            <div *ngIf="generateForm.get('name')?.errors?.['required']">Name is required.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="offset-sm-2 col-sm-10">
-        <button class="btn btn-primary" type="submit">Submit</button>
-      </div>
-    </div>
-  </form>
 
+      <div class="col-md-6">
+        <div class="box box-primary" *ngIf="generationEventList.length > 0">
+          <div class="box-header with-border">
+            <h3 class="box-title">Added Events</h3>
+          </div>
+          <div class="box-body">
+            <ul class="products-list product-list-in-box">
+              <li *ngFor="let event of generationEventList" class="item">
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">{{ event.name }}
+                    <span class="label label-warning pull-right">{{ event.startDate | date: 'mediumDate' }} - {{ event.finishDate | date: 'mediumDate' }}</span></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

@@ -1,5 +1,6 @@
 export interface CalendarDTO {
-  month?: number;
-  day?: number;
+  startDate?: Date;
+  finishDate?: Date;
   name?: string;
+  color?: string;
 }

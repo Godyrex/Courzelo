@@ -15,7 +15,7 @@ import java.util.List;
 public interface IInstitutionService {
     ResponseEntity<InstitutionListDTO> getInstitutions(int page, int sizePerPage);
 
-    ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events);
+    ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events,Principal principal);
 
     ResponseEntity<InstitutionDTO> getInstitutionByID(String institutionID);
 
@@ -38,4 +38,6 @@ public interface IInstitutionService {
     ResponseEntity<UserListDTO> getInstitutionUsers(String institutionID, Principal principal, String role, int page, int sizePerPage);
 
     ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal);
+
+    ResponseEntity<byte[]> downloadExcel(Principal principal);
 }

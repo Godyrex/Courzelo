@@ -2,6 +2,7 @@ import {Component, OnInit, Output} from '@angular/core';
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {InstitutionUsersCountDTO} from "../../../../model/program/institutionUsersCountDTO";
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-institution-panel',
@@ -20,6 +21,7 @@ export class InstitutionPanelComponent implements OnInit {
 
   constructor(
     private institutionService: InstitutionService,
+    private toastr: ToastrService
   ) {
   }
 
@@ -27,7 +29,23 @@ export class InstitutionPanelComponent implements OnInit {
     this.countUsers();
     this.getMyInstitution();
   }
-
+  downloadExcel() {
+    this.institutionService.downloadExcel().subscribe(
+      response => {
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'file.xlsx'; // You can set your own file name here
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error => {
+        console.log("error downloading");
+        this.toastr.error("Error downloading Excel.");
+      }
+    )
+  }
   countUsers(): void {
     this.institutionService.countUsers().subscribe(
       (response: InstitutionUsersCountDTO) => {

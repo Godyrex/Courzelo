@@ -121,7 +121,12 @@ public class InstitutionController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/generateExcel")
-    public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events) {
-        return iInstitutionService.generateExcel(events);
+    public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events,Principal principal) {
+        return iInstitutionService.generateExcel(events,principal);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/downloadExcel")
+    public ResponseEntity<byte[]> downloadExcel(Principal principal) {
+        return iInstitutionService.downloadExcel(principal);
     }
 }

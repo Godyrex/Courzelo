@@ -28,5 +28,6 @@ public class Institution {
     private List<User> students = new ArrayList<>();
     @DBRef
     private List<Program> programs = new ArrayList<>();
+    private byte[] excelFile;
 
 }
