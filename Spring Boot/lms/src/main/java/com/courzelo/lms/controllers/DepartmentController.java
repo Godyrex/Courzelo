@@ -1,9 +1,9 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.DepartmentDTO;
+import com.courzelo.lms.dto.schedule.DepartmentDTO;
 import com.courzelo.lms.repositories.DepartmentRepository;
-import com.courzelo.lms.services.DepartmentService;
-import com.courzelo.lms.services.FieldOfStudyService;
+import com.courzelo.lms.services.schedule.DepartmentService;
+import com.courzelo.lms.services.schedule.FieldOfStudyService;
 import com.courzelo.lms.utils.NotFoundException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;

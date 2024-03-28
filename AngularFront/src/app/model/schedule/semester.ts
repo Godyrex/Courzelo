@@ -4,4 +4,5 @@ export interface Semester {
   startDate: Date;
   endDate: Date;
   universityYear: string;
+  semesterNumber?:string;
 }

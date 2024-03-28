@@ -1,0 +1,11 @@
+
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ì‚Ö8ºûº”æ1
+]
+java:S1128"@Remove this unused import 'com.courzelo.lms.entities.user.Role'.(›ãù8§Î‡„ç1
+]
+java:S1128"@Remove this unused import 'com.courzelo.lms.entities.user.User'.(Šâæ¤8§Î‡„ç1
+x
+java:S1128	"VRemove this unused import 'org.springframework.security.core.context.SecurityContext'.(ØıŞşÿÿÿÿ8§Î‡„ç1
+y
+java:S1128
+"\Remove this unused import 'org.springframework.security.core.context.SecurityContextHolder'.(ŒÄæë8¨Î‡„ç1

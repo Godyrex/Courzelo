@@ -1,0 +1,11 @@
+
+|
+java:S1192ƒ"^Define a constant instead of duplicating this literal "TimeTable not found with id: " 3 times.(ÚÚõÄ8½þ¼—æ1
+_
+java:S1854/"BRemove this useless assignment to local variable "elementModules".(ŽÍ±¬8Öþ¼—æ1
+P
+java:S1481/"3Remove this unused "elementModules" local variable.(ŽÍ±¬8×þ¼—æ1
+>
+java:S1116s"Remove this empty statement.(Åñ­õþÿÿÿÿ8ãþ¼—æ1
+e
+java:S1128"HRemove this unused import 'com.courzelo.lms.entities.institution.Class'.(†¼½©8·ö†€ç1

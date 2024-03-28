@@ -69,6 +69,7 @@ import { CalendarComponent } from './back/program/institution/calendar/calendar.
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
+import { ActionsComponent } from './back/schedule/actions/actions.component';
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import {ToastrModule} from "ngx-toastr";
     DevicesListComponent,
     ForgotPasswordComponent,
     RecoverPasswordComponent,
-    CalendarComponent
+    CalendarComponent,
+    ActionsComponent
   ],
   imports: [
     BrowserModule,

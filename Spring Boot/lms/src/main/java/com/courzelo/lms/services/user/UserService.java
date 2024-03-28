@@ -1,11 +1,9 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.dto.user.DeleteAccountDTO;
-import com.courzelo.lms.dto.user.PasswordDTO;
-import com.courzelo.lms.dto.user.ProfileDTO;
-import com.courzelo.lms.dto.user.UpdateEmailDTO;
+import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.entities.user.VerificationToken;
 import com.courzelo.lms.entities.user.VerificationTokenType;
@@ -36,9 +34,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import static com.courzelo.lms.entities.user.Role.TEACHER;
 
 @Service
 @Slf4j
@@ -215,5 +216,45 @@ public class UserService implements UserDetailsService {
         }
         return ResponseEntity.badRequest().build();
     }
+    public User getProfById(String id) {
+        return  userRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+    }
+    public List<Role> getUserRoles(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with id " + userId + " doesn't exist!"));
+        return user.getRoles();
+    }
+    public List<User> getProfsByRole() {
+        return  userRepository.findUsersByRoles(Collections.singletonList(TEACHER));
+    }
+    public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
+        return userRepository.findUsersByIdAndRolesContainsAndName(id,TEACHER, name);
+    }
+    public User findTeacherByNameAndRole(String id,String name, Role role) {
+        return userRepository.findUserByIdAndRolesContainsAndName(id,TEACHER, name);
+    }
 
+
+    public User addTeacher(User user) {
+        // Check if the user is a teacher
+        if (!user.getRoles().contains(Role.TEACHER)) {
+            throw new IllegalArgumentException("User must be a teacher");
+        }
+        // Check if the password is null
+        /*if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        // Encode the password
+        user.setPassword(encoder.encode(user.getPassword()));*/
+        // Save the user in the database
+        return userRepository.save(user);
+    }
+
+
+   /* public User addTeacher(User teacher) {
+        return userRepository.save(teacher);
+    }*/
+    public List<User> getTeachers() {
+        return userRepository.findByRolesContains(Role.TEACHER);
+    }
 }

@@ -2,9 +2,11 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
+import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.services.program.IClassService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ import java.util.List;
 @RateLimiter(name = "backend")
 public class ClassController {
     private final IClassService iClassService;
-
+    private ModelMapper modelMapper;
     @PostMapping("/add")
     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         return iClassService.addClass(classDTO);
@@ -62,4 +64,13 @@ public class ClassController {
     public ResponseEntity<Boolean> removeUser(@RequestParam String classID, @PathVariable String userEmail) {
         return iClassService.removeUser(classID, userEmail);
     }
+
+    @GetMapping("/searchBySemester")
+    public List<ClassDTO> searchClassesBySemester(@RequestParam SemesterNumber semesterNumber) {
+        return iClassService.searchClassesBySemester(semesterNumber)
+                .stream()
+                .map(classes -> modelMapper.map(classes, ClassDTO.class))
+                .toList();
+    }
+
 }

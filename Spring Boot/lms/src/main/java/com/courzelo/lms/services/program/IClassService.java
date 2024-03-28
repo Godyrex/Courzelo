@@ -2,7 +2,9 @@ package com.courzelo.lms.services.program;
 
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
+import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.User;
 import org.springframework.http.ResponseEntity;
 
@@ -27,4 +29,5 @@ public interface IClassService {
     ResponseEntity<Boolean> removeUser(String classID, String userEmail);
 
     boolean userInInstitution(User user, Institution institution);
+    List<Class> searchClassesBySemester(SemesterNumber semesterNumber);
 }

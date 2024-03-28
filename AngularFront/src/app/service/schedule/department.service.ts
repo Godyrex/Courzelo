@@ -47,7 +47,7 @@ export class DepartmentService {
     return this.http.get(`${this.baseUrl}/count`);
   }
 
-  searchDepartments(name: string): Observable<Departement[]> {
+    searchDepartments(name: string, number: number, number1: number): Observable<Departement[]> {
     if (!name.trim()) {
       return of([]);
     }
@@ -71,7 +71,7 @@ export class DepartmentService {
     );
   }
 
-  public getFilieres(id: number): Observable<FieldOfStudy[]> {
+  public getFilieres(id: string): Observable<FieldOfStudy[]> {
     return this.http.get<FieldOfStudy[]>(`${this.baseUrl}${id}/filieres`);
   }
 
