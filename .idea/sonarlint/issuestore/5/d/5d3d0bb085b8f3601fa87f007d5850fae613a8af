@@ -1,8 +1,16 @@
 
-]	java:S125b"<This block of commented-out lines of code should be removed.(ÑÛùÁùÿÿÿÿ8Šàä–æ1
-]	java:S125f"<This block of commented-out lines of code should be removed.(¬ÅÁ‡ıÿÿÿÿ8‹àä–æ1
-W	java:S125t"<This block of commented-out lines of code should be removed.(‰úæs8‹àä–æ1
+]	java:S125f"<This block of commented-out lines of code should be removed.(ÑÛùÁùÿÿÿÿ8Šàä–æ1
+]	java:S125j"<This block of commented-out lines of code should be removed.(¬ÅÁ‡ıÿÿÿÿ8ö–«€ç1
+W	java:S125x"<This block of commented-out lines of code should be removed.(‰úæs8¡µ®€ç1
+g
+java:S1128"JRemove this unused import 'com.courzelo.lms.entities.schedule.Department'.(Ôî¬¯8¢µ®€ç1
+e
+java:S1128"HRemove this unused import 'com.courzelo.lms.entities.schedule.Semester'.(¼®ğ8¢µ®€ç1
+^
+java:S1128"<Remove this unused import 'jakarta.persistence.PostPersist'.(¾¼­‚ÿÿÿÿÿ8¢µ®€ç1
+W
+java:S1128"5Remove this unused import 'jakarta.validation.Valid'.(ÀãÅ”ûÿÿÿÿ8£µ®€ç1
 X
-java:S1068"6Remove this unused "semesterRepository" private field.(ÆÂ³¼øÿÿÿÿ8Û¾–æ1
+java:S1068"6Remove this unused "semesterRepository" private field.(ÆÂ³¼øÿÿÿÿ8£µ®€ç1
 U
-java:S1068"8Remove this unused "departmentRepository" private field.(Ç‘øí8Œàä–æ1
+java:S1068"8Remove this unused "departmentRepository" private field.(Ç‘øí8¤µ®€ç1

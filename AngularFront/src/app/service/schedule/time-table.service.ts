@@ -12,25 +12,15 @@ export class TimeTableService {
   constructor(private http: HttpClient) {
   }
 
-  public getTimeTable(): Observable<ElementModule[]> {
-    return this.http.get<ElementModule[]>(this.baseUrl);
+  public getEmplois(): Observable<ElementModule[]> {
+    return this.http.get<ElementModule[]>(`${this.baseUrl}`);
+  }
+  getEmploiByProf(id: string) {
+    return this.http.get<ElementModule[]>(`${this.baseUrl}` + "/prof" + id);
   }
 
-  getTimetableByProf(idProf: number) {
-    return this.http.get<ElementModule[]>(this.baseUrl + idProf);
-  }
-
-  getTimetableByClasse(classeId: number) {
-    return this.http.get<ElementModule[]>(this.baseUrl + classeId);
-  }
-
-  public exportFile(): Observable<Blob> {
-    // Set the response type to 'blob' to receive binary data
-    return this.http.get(this.baseUrl + "/pdf/classes", {responseType: 'blob'});
-  }
-
-  public generateEmploi(): Observable<any> {
-    return this.http.get(this.baseUrl + "/generate");
+  getEmploisByClasse(id: string | undefined) {
+    return this.http.get<ElementModule[]>(`${this.baseUrl}` + id);
   }
 
 

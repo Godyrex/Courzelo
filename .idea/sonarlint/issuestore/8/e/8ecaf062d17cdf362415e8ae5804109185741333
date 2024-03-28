@@ -1,6 +1,6 @@
 
 k
-java:S1206J"PThis class overrides "equals()" and should therefore also override "hashCode()".(İ¢êÍıÿÿÿÿ
+java:S1206K"PThis class overrides "equals()" and should therefore also override "hashCode()".(İ¢êÍıÿÿÿÿ
 I
 java:S1948#"'Make "photo" transient or serializable.(›¡ÒÒşÿÿÿÿ8Œáå1
 J

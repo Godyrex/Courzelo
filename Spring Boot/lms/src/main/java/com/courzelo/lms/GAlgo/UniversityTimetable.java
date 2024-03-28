@@ -75,11 +75,11 @@ public class UniversityTimetable {
         return classes;
     }
 
-    public List<Teacher> getTeachers() {
-        List<Teacher> teachers = new ArrayList<>();
+    public List<User> getTeachers() {
+        List<User> teachers = new ArrayList<>();
         for (List<ElementModule> timetable :  universityTimetables) {
             for (ElementModule element : timetable) {
-                Teacher teacher = element.getTeacher();
+                User teacher = element.getTeacher();
                 if (teacher != null && !teachers.contains(teacher)) {
                     teachers.add(teacher);
                 }

@@ -1,6 +1,7 @@
 package com.courzelo.lms.entities.schedule;
 
 import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.entities.user.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,15 +41,15 @@ public class ElementModule {
     @NotNull
     private List<Department> departments;
     @NotNull
-    private  String ModuleName;
-
-    @NotNull
     private int numSemesters;
 
     @NotNull
     private int numDepartments;
+    @DBRef
     @NotNull
-    private Teacher teacher;
+    private User teacher;
+   // @DBRef
+  //  private List<User> teachers = new ArrayList<>();
     @DBRef
     private Modul modul;
 

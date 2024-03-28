@@ -4,6 +4,7 @@ package com.courzelo.lms.services.schedule;
 import com.courzelo.lms.dto.schedule.DepartmentDTO;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
@@ -136,6 +137,15 @@ public class DepartmentService {
         return departments.stream()
                 .map(department -> mapToDTO(department, new DepartmentDTO()))
                 .collect(Collectors.toList());
+    }
+    public Department getDepartmentById(String id) {
+        return departmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Department not found"));
+    }
+    public List<Department> findDepartmentByName(String name) {
+        return  departmentRepository.findByName(name);
+    }
+    public Department addDepartment(Department department ) {
+        return departmentRepository.save(department);
     }
 
 

@@ -1,6 +1,7 @@
 package com.courzelo.lms.GAlgo;
 
 import com.courzelo.lms.dto.program.ClassDTO;
+import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.Period;
@@ -63,7 +64,7 @@ public class GAlgorithm {
         }
         return elementModules;
     }
-    private List<ElementModule> getElementsForClasse(ClassDTO classe) {
+    private List<ElementModule> getElementsForClasse(Class classe) {
         List<ElementModule> elementModules = new ArrayList<>();
         for (Modul module : classe.getModuls()) {
             elementModules.addAll(module.getElementModules());
@@ -72,9 +73,9 @@ public class GAlgorithm {
     }
     public void initializePopulation() {
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            UniversityTimetable universityTimetable= new UniversityTimetable(DataFromDB.classDTOS.size());
-            for (int classIndex = 0; classIndex < DataFromDB.classDTOS.size(); classIndex++) {
-                ClassDTO classe=DataFromDB.classDTOS.get(classIndex);
+            UniversityTimetable universityTimetable= new UniversityTimetable(DataFromDB.classes.size());
+            for (int classIndex = 0; classIndex < DataFromDB.classes.size(); classIndex++) {
+               Class classe=DataFromDB.classes.get(classIndex);
                 List<ElementModule> elements = getElementsForClasse(classe);
                 Collections.shuffle(elements);
 

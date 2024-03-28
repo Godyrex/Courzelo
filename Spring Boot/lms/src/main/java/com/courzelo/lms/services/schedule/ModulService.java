@@ -1,23 +1,31 @@
 package com.courzelo.lms.services.schedule;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.ModulDTO;
+import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.entities.schedule.Department;
+import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
+import com.courzelo.lms.repositories.ClassRepository;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.ModulRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.courzelo.lms.utils.NotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ModulService {
     private final ModulRepository modulRepository;
     private final ElementModuleRepository elementModuleRepository;
+    private final ClassRepository classRepository;
 
     public ModulService(final ModulRepository modulRepository,
-                        final ElementModuleRepository elementModuleRepository) {
+                        final ElementModuleRepository elementModuleRepository, ClassRepository classRepository) {
         this.modulRepository = modulRepository;
         this.elementModuleRepository = elementModuleRepository;
+        this.classRepository = classRepository;
     }
 
     public List<ModulDTO> findAll() {
@@ -38,6 +46,28 @@ public class ModulService {
         mapToEntity(modulDTO, modul);
         modul.setId(modulDTO.getId());
         return modulRepository.save(modul).getId();
+    }
+    public Modul createModul(ModulDTO modulDTO) {
+        List<ElementModule> elementModules = modulDTO.getElementModules().stream()
+                .map(dto -> {
+                    ElementModule elementModule = new ElementModule();
+                    elementModule.setName(dto.getName());
+                    return elementModuleRepository.save(elementModule);
+                })
+                .collect(Collectors.toList());
+        Class classDTO = modulDTO.getAClass();
+        Class aClass = new Class();
+        if (classDTO != null) {
+            aClass.setName(classDTO.getName());
+        } else {
+            throw new IllegalArgumentException("ClassDTO is null");
+        }
+        aClass = classRepository.save(aClass);
+        Modul modul = new Modul();
+        modul.setName(modulDTO.getName());
+        modul.setElementModules(elementModules);
+        modul.setAClass(aClass);
+        return modulRepository.save(modul);
     }
 
     public void update(final String id, final ModulDTO modulDTO) {
@@ -79,6 +109,9 @@ public class ModulService {
 
     public boolean idExists(final String id) {
         return modulRepository.existsByIdIgnoreCase(id);
+    }
+    public Modul addModul(Modul modul ) {
+        return modulRepository.save(modul);
     }
 
 }

@@ -19,7 +19,7 @@ public class Class {
     @Id
     private String id;
     private String name;
-    private Long capacity;
+    private Integer capacity;
     @DBRef
     private Program program;
     @DBRef

@@ -1,6 +1,11 @@
 
-q	java:S116*"URename this field "ModuleName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã€è≠8ºõ÷ﬂÂ1
+X	java:S1254"<This block of commented-out lines of code should be removed.(ßÆüﬂ8å”êÇÁ1
+]
+java:S1128"@Remove this unused import 'com.courzelo.lms.entities.user.User'.(ä‚Ê§8ç”êÇÁ1
 n
-java:S1128	"QRemove this unused import 'org.springframework.data.annotation.ReadOnlyProperty'.(≥áÑÍ8¯‹‰ñÊ1
+java:S1128
+"QRemove this unused import 'org.springframework.data.annotation.ReadOnlyProperty'.(≥áÑÍ8¯‹‰ñÊ1
 ~
-java:S1128"\Remove this unused import 'org.springframework.data.mongodb.core.mapping.DocumentReference'.(ø˜˜ò¸ˇˇˇˇ8¯‹‰ñÊ1
+java:S1128"\Remove this unused import 'org.springframework.data.mongodb.core.mapping.DocumentReference'.(ø˜˜ò¸ˇˇˇˇ8¯‹‰ñÊ1
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(˜âÓÉ8é”êÇÁ1

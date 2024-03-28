@@ -1,5 +1,7 @@
 
-X	java:S125?"<This block of commented-out lines of code should be removed.(ÿ©»Ÿ8ô…ñ—æ1
-]	java:S125K"<This block of commented-out lines of code should be removed.(áß…Àøÿÿÿÿ8ö…ñ—æ1
-]
-java:S1068";Remove this unused "elementModuleRepository" private field.(İÓ¾˜şÿÿÿÿ8ö…ñ—æ1
+o
+java:S62048"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8‰±‘ç1
+X	java:S125\"<This block of commented-out lines of code should be removed.(ÿ©»Ÿ8‘±‘ç1
+]	java:S125h"<This block of commented-out lines of code should be removed.(áß…Àøÿÿÿÿ8“±‘ç1
+_
+java:S1128"BRemove this unused import 'com.courzelo.lms.dto.program.ClassDTO'.(€ß›8“±‘ç1

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DepartmentRepository extends MongoRepository<Department, String> {
     List<Department> findByName(String name);
+
 }

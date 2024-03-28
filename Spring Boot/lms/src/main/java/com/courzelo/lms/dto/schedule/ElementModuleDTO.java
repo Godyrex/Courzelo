@@ -31,7 +31,7 @@ public class ElementModuleDTO {
     private int numSemesters;
     private int numDepartments;
     private List<Class> classes;
-    private Teacher teacher;
+    private User teacher;
     private Modul modul;
 
 

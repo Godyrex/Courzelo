@@ -62,6 +62,9 @@ export class FieldOfstudyService {
       })
     );
   }
+    public getSemsterByField(id: string | undefined):Observable<any>{
+        return this.http.get(this.baseUrl+id+"/semesters");
+    }
 
 
 }

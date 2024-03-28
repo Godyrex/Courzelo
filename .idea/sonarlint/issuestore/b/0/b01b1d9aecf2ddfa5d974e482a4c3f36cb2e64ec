@@ -2,5 +2,9 @@
 S
 java:S1172"=Remove this unused method parameter "fieldOfStudyRepository".(ÅóÂÌ
 V	java:S125>"<This block of commented-out lines of code should be removed.(úµ»øÿÿÿÿ
+o
+java:S6204{"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8¯¯¯€ç1
+p
+java:S6204Š"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8±¯¯€ç1
 R
 java:S1068"7Remove this unused "fieldOfStudyService" private field.(ÆÃ¿Úýÿÿÿÿ

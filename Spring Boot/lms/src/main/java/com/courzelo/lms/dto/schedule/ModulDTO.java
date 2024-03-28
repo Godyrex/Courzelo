@@ -29,4 +29,12 @@ public class ModulDTO {
     private List<ElementModule> elementModules;
     private Class aClass;
     private Modul modul;
+
+    public boolean isMetuale() {
+        return false;
+    }
+
+    public boolean isSeperated() {
+        return false;
+    }
 }

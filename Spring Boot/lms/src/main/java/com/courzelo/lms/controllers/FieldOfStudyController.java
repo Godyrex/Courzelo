@@ -2,6 +2,7 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.schedule.FieldOfStudyDTO;
+import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.services.schedule.FieldOfStudyService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,6 +58,10 @@ public class FieldOfStudyController {
     public ResponseEntity<Void> deleteFieldOfStudy(@PathVariable(name = "id") final String id) {
         fieldOfStudyService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/{fieldOfStudyId}/semesters")
+    public List<Semester> getSemestersByFieldOfStudy(@PathVariable String id) {
+        return fieldOfStudyService.getSemestersByFieldOfStudy(id);
     }
 
 }

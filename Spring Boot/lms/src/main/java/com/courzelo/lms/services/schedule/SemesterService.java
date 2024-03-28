@@ -3,6 +3,7 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.dto.schedule.SemesterDTO;
 import com.courzelo.lms.entities.schedule.Semester;
+import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.repositories.SemesterRepository;
 import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.data.domain.Sort;
@@ -14,10 +15,10 @@ import java.util.List;
 @Service
 public class SemesterService {
 
-    private final SemesterRepository semesterRepository;
+    private static SemesterRepository semesterRepository = null;
 
     public SemesterService(final SemesterRepository semesterRepository) {
-        this.semesterRepository = semesterRepository;
+        SemesterService.semesterRepository = semesterRepository;
     }
 
     public List<SemesterDTO> findAll() {
@@ -58,13 +59,18 @@ public class SemesterService {
         semesterDTO.setSemesterNumber(semester.getSemesterNumber());
         return semesterDTO;
     }
-
     private Semester mapToEntity(final SemesterDTO semesterDTO, final Semester semester) {
         semester.setStartDate(semesterDTO.getStartDate());
         semester.setEndDate(semesterDTO.getEndDate());
         semester.setUniversityYear(semesterDTO.getUniversityYear());
         semester.setSemesterNumber(semesterDTO.getSemesterNumber());
         return semester;
+    }
+    public static List<Semester> findSemestreByNum(SemesterNumber semesterNumber) {
+        return semesterRepository.findSemesterBySemesterNumber(semesterNumber);
+    }
+    public Semester addSemestre(Semester semester ) {
+        return semesterRepository.save(semester);
     }
 
 }

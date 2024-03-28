@@ -1,5 +1,6 @@
 package com.courzelo.lms.entities.schedule;
 
+import com.courzelo.lms.dto.user.UserDTO;
 import com.courzelo.lms.entities.user.User;
 
 import lombok.Getter;
@@ -12,8 +13,9 @@ import java.util.List;
 @Document(collection = "Teacher")
 @Getter
 @Setter
-public class Teacher extends User {
-    private List<ElementModule>elementModules;
-    private List<NonDisponibility>nonDisponibilities;
+public class Teacher  {
+
+
+
 
 }

@@ -2,14 +2,17 @@ package com.courzelo.lms.services.schedule;
 
 
 import com.courzelo.lms.dto.schedule.FieldOfStudyDTO;
+import com.courzelo.lms.dto.schedule.SemesterDTO;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,5 +91,18 @@ public class FieldOfStudyService {
                 .map(fieldOfStudy -> mapToDTO(fieldOfStudy, new FieldOfStudyDTO()))
                 .collect(Collectors.toList());
     }
+    public FieldOfStudy addField(FieldOfStudy fieldOfStudy) {
+        return fieldOfStudyRepository.save(fieldOfStudy);
+    }
 
+    public List<Semester> getSemestersByFieldOfStudy(String id) {
+        FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Field of Study not found"));
+        List<Semester> semesters = new ArrayList<>();
+        fieldOfStudy.getClasses().forEach(classe -> {
+            semesters.add(classe.getSemester());
+        });
+
+        return semesters;
+    }
 }

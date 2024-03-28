@@ -1,6 +1,28 @@
 
+Y
+java:S4973Q"<Strings and Boxed types should be compared using "equals()".(¤³ì·8ÿü†„ç1
 v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ì‚Ö8¹£œ–æ1
 n
 java:S3776@"RRefactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.(é¶C8À£œ–æ1
+I
+java:S1905D"'Remove this unnecessary cast to "List".(Üô¢ñüÿÿÿÿ8È”‡„ç1
+I
+java:S1905G"'Remove this unnecessary cast to "List".( ¢éÎıÿÿÿÿ8É”‡„ç1
+I
+java:S1905L"'Remove this unnecessary cast to "List".(„¤¾úÿÿÿÿ8Ë”‡„ç1
+I
+java:S1905i"'Remove this unnecessary cast to "List".(Üô¢ñüÿÿÿÿ8Ñ”‡„ç1
+I
+java:S1905{"'Remove this unnecessary cast to "List".( ¢éÎıÿÿÿÿ8×”‡„ç1
 u
 java:S3776Œ"RRefactor this method to reduce its Cognitive Complexity from 92 to the 15 allowed.(ø‘ô¸øÿÿÿÿ8Ã£œ–æ1
+J
+java:S1905"'Remove this unnecessary cast to "List".(Üô¢ñüÿÿÿÿ8Ş”‡„ç1
+J
+java:S1905”"'Remove this unnecessary cast to "List".( ¢éÎıÿÿÿÿ8ß”‡„ç1
+J
+java:S1905›"'Remove this unnecessary cast to "List".(üÕûÿıÿÿÿÿ8â”‡„ç1
+J
+java:S1905Ÿ"'Remove this unnecessary cast to "List".(°ºúñùÿÿÿÿ8ã”‡„ç1
+[
+java:S1128"9Remove this unused import 'io.jsonwebtoken.lang.Classes'.(Ä”–Ñüÿÿÿÿ8å”‡„ç1

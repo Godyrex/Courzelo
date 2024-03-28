@@ -6,6 +6,7 @@ import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.TimeTableDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.*;
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.TimeTableRepository;
 import com.courzelo.lms.services.user.UserService;
@@ -54,8 +55,8 @@ public class TimeTableService {
         List<Map<String, List<ElementModule>>> emplois = new ArrayList<>();
         dataFromDb.loadDataFromDatabase();
         // Retrieve all classes
-        List<ClassDTO> classes = DataFromDB.classDTOS;
-        for (ClassDTO classe : classes) {
+        List<Class> classes = DataFromDB.classes;
+        for (Class classe : classes) {
             Map<String, List<ElementModule>> emploi = new HashMap<>();
             emploi.put(classe.getId(), elementModuleService.getEmploisByClasse(classe.getId()));
             emplois.add(emploi);
@@ -85,7 +86,7 @@ public class TimeTableService {
     }
     public List<ElementModule> getEmploiByProf(String id) {
 
-        Teacher teacher = userService.getProfById(id);
+        User teacher = userService.getProfById(id);
         // show only  element de module of S1 ou S3 or S5
 
         List<ElementModule> elementModules = new ArrayList<>();
