@@ -276,6 +276,17 @@ public class ClassService implements IClassService {
         return classRepository.findBySemester_SemesterNumber(semesterNumber);
     }
 
+    @Override
+    public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
+        log.info("Getting all classes without pagination");
+        return ResponseEntity
+                .ok()
+                .body(classRepository.findAll()
+                        .stream()
+                        .map(classes -> modelMapper.map(classes, ClassDTO.class))
+                        .toList());
+    }
+
     public List<Class> findAll() {
         return classRepository.findAll();
     }

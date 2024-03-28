@@ -9,4 +9,6 @@ public class InstitutionDTO {
     String location;
     String description;
     String website;
+    double latitude;
+    double longitude;
 }

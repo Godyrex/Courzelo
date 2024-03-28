@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.YearMonth;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,85 +79,134 @@ public class InstitutionService implements IInstitutionService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events) {
-        log.info("Generating Calendar...");
-        try (Workbook workbook = new XSSFWorkbook()) {
-            CellStyle style = workbook.createCellStyle();
-            style.setBorderBottom(BorderStyle.THIN);
-            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            style.setBorderLeft(BorderStyle.THIN);
-            style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            style.setBorderRight(BorderStyle.THIN);
-            style.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            style.setBorderTop(BorderStyle.THIN);
-            style.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            style.setAlignment(HorizontalAlignment.CENTER);
-            Sheet sheet = workbook.createSheet("School Year Calendar");
-            String[] MONTHS = {
-                    "January", "February", "March", "April", "May", "June", "July",
-                    "August", "September", "October", "November", "December"
-            };
-            Row headerRow = sheet.createRow(0);
-            for (int i = 0; i < MONTHS.length; i++) {
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, i * 3, (i * 3) + 2));
-                Cell headerCell = headerRow.createCell(i * 3);
-                headerCell.setCellValue(MONTHS[i]);
-                int daysInMonth = YearMonth.now().withMonth(i + 1).lengthOfMonth();
+    public ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events, Principal principal) {
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user != null && user.getInstitution() != null) {
+            String institutionId = user.getInstitution().getId();
+            Institution institution = institutionRepository.findById(institutionId)
+                    .orElseThrow(()->new InstitutionNotFoundException("Institution " + institutionId + " not found"));
+            try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                createCalendarSheet(workbook, events);
+                workbook.write(outputStream);
+                institution.setExcelFile(outputStream.toByteArray());
+                institutionRepository.save(institution);
+                return ResponseEntity.ok().build();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.badRequest().build();
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-                for (int j = 1; j <= daysInMonth; j++) {
-                    Row daysRow = sheet.getRow(j);
-                    if (daysRow == null) {
-                        daysRow = sheet.createRow(j);
-                    }
-                    int startColIndex = (i * 3) + 1;
-                    int endColIndex = (i * 3) + 2;
-                    sheet.addMergedRegion(new CellRangeAddress(j, j, startColIndex, endColIndex));
-                    Cell daysCell = daysRow.createCell(i * 3);
-                    daysCell.setCellValue(j);
-                    daysCell.setCellStyle(style);
-                }
-                Row januaryRow = sheet.getRow(5);
-                if (januaryRow == null) {
-                    januaryRow = sheet.createRow(5);
-                }
-                for (Row row : sheet) {
-                    for (Cell cell : row) {
-                        cell.setCellStyle(style);
-                    }
-                }
-                for (CalendarDTO event : events) {
-                    int monthIndex = event.getMonth() - 1;
-                    int rowIndex = event.getDay();
+    private void createCalendarSheet(Workbook workbook, List<CalendarDTO> events) {
+        Sheet sheet = workbook.createSheet("School Year Calendar");
+        CellStyle cellStyle = createCellStyle(workbook);
+        String[] MONTHS = {
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+        };
+        CellStyle headerStyle = createHeaderStyle(workbook);
+        Font font = workbook.createFont();
+        styleMonthHeader(headerStyle, font);
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < MONTHS.length; i++) {
+            int startColIndex = i * 3;
+            int endColIndex = (i * 3) + 2;
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, startColIndex, endColIndex));
+            Cell headerCell = headerRow.createCell(startColIndex);
+            headerCell.setCellValue(MONTHS[i]);
+            headerCell.setCellStyle(headerStyle);
+            createDaysInMonth(sheet, i, cellStyle);
+            createEvents(events, sheet, i, workbook,font);
+        }
+    }
+
+    private CellStyle createCellStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(BorderStyle.THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(BorderStyle.THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+    private CellStyle createEventStyle(Workbook workbook, CalendarDTO event) {
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        java.awt.Color awtColor = java.awt.Color.decode(event.getColor());
+        XSSFColor color = new XSSFColor(new java.awt.Color(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue()), new DefaultIndexedColorMap());
+        style.setFillForegroundColor(color);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+    private CellStyle createHeaderStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+    private void styleEvent(CellStyle style, Font font) {
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 13);
+        font.setColor(IndexedColors.BLACK.getIndex());
+        style.setFont(font);
+    }
+    private void styleMonthHeader(CellStyle style, Font font) {
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 15); 
+        font.setColor(IndexedColors.WHITE.getIndex());
+        style.setFont(font);
+    }
+    private void createDaysInMonth(Sheet sheet, int monthIndex, CellStyle style) {
+        int daysInMonth = YearMonth.now().withMonth(monthIndex + 1).lengthOfMonth();
+        for (int j = 1; j <= daysInMonth; j++) {
+            Row daysRow = sheet.getRow(j);
+            if (daysRow == null) {
+                daysRow = sheet.createRow(j);
+            }
+            Cell daysCell = daysRow.createCell(monthIndex * 3);
+            daysCell.setCellValue(j);
+            daysCell.setCellStyle(style);
+        }
+    }
+
+    private void createEvents(List<CalendarDTO> events, Sheet sheet, int monthIndex, Workbook workbook,Font font) {
+        Calendar cal = Calendar.getInstance();
+        for (CalendarDTO event : events) {
+            cal.setTime(event.getStartDate());
+            Calendar finishCal = Calendar.getInstance();
+            finishCal.setTime(event.getFinishDate());
+            if (cal.get(Calendar.MONTH)+1 == monthIndex + 1) {
+                int startRowIndex = cal.get(Calendar.DAY_OF_MONTH);
+                int endRowIndex = finishCal.get(Calendar.DAY_OF_MONTH);
+                for (int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
                     int columnIndex = monthIndex * 3 + 1;
-
                     Row eventRow = sheet.getRow(rowIndex);
                     if (eventRow == null) {
                         eventRow = sheet.createRow(rowIndex);
                     }
                     Cell eventCell = eventRow.createCell(columnIndex);
                     eventCell.setCellValue(event.getName());
-                    eventCell.setCellStyle(style);
+                    CellStyle eventStyle = createEventStyle(workbook, event);
+                    styleEvent(eventStyle, font);
+                    eventCell.setCellStyle(eventStyle);
                 }
-                Cell january5thCell = januaryRow.createCell(1);
-                january5thCell.setCellValue("Free Day");
-
-                Row septemberRow = sheet.getRow(15);
-                if (septemberRow == null) {
-                    septemberRow = sheet.createRow(15);
-                }
-                Cell september15thCell = septemberRow.createCell(7);
-                september15thCell.setCellValue("Christmas");
+                // Merge the cells after creating them
+                sheet.addMergedRegion(new CellRangeAddress(startRowIndex, endRowIndex, monthIndex * 3 + 1, monthIndex * 3 + 2));
             }
-            try (FileOutputStream outputStream = new FileOutputStream(FILE_PATH)) {
-                workbook.write(outputStream);
-            }
-
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
         }
     }
+
 
     @Override
     public ResponseEntity<InstitutionDTO> getInstitutionByID(String institutionID) {
@@ -446,6 +500,37 @@ public class InstitutionService implements IInstitutionService {
                     .body(modelMapper.map(institution, InstitutionDTO.class));
         }
         return ResponseEntity.badRequest().body(null);
+    }
+    public ResponseEntity<byte[]> downloadExcel(Principal principal) {
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user != null && user.getInstitution() != null) {
+            String institutionId = user.getInstitution().getId();
+            Institution institution = institutionRepository.findById(institutionId)
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionId + " not found"));
+            byte[] excelFile = institution.getExcelFile();
+            if (excelFile != null) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=school-year-calendar.xlsx");
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(excelFile);
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @Override
+    public ResponseEntity<Boolean> saveLocation(InstitutionDTO institutionDTO) {
+        log.info("Saving location "+institutionDTO);
+        Institution institution = institutionRepository.findById(institutionDTO.getId()).orElse(null);
+        if (institution != null) {
+            institution.setLatitude(institutionDTO.getLatitude());
+            institution.setLongitude(institutionDTO.getLongitude());
+            institutionRepository.save(institution);
+            log.info("Location saved");
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
     }
 
     private ResponseEntity<UserListDTO> getUserListDTOResponseEntity(Institution institution, Principal principal, String role, int page, int sizePerPage) {

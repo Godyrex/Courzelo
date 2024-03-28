@@ -4,4 +4,6 @@ export interface InstitutionDTO {
   location?: string;
   description?: string;
   website?: string;
+  latitude?: number;
+  longitude?: number;
 }
