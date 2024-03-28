@@ -66,6 +66,7 @@ import {
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import { CalendarComponent } from './back/program/institution/calendar/calendar.component';
+import { ActionsComponent } from './back/schedule/actions/actions.component';
 
 
 @NgModule({
@@ -117,7 +118,8 @@ import { CalendarComponent } from './back/program/institution/calendar/calendar.
     DevicesListComponent,
     ForgotPasswordComponent,
     RecoverPasswordComponent,
-    CalendarComponent
+    CalendarComponent,
+    ActionsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,8 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.dto.NonDisponibilityDTO;
-import com.courzelo.lms.services.NonDisponibilityService;
+import com.courzelo.lms.dto.schedule.NonDisponibilityDTO;
+import com.courzelo.lms.services.schedule.NonDisponibilityService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

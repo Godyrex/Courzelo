@@ -6,15 +6,15 @@ import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
+import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Semester;
+import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.InstitutionNotFoundException;
 import com.courzelo.lms.exceptions.ProgramNotFoundException;
-import com.courzelo.lms.repositories.ClassRepository;
-import com.courzelo.lms.repositories.InstitutionRepository;
-import com.courzelo.lms.repositories.ProgramRepository;
-import com.courzelo.lms.repositories.UserRepository;
+import com.courzelo.lms.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class ClassService implements IClassService {
     private final UserRepository userRepository;
     private final InstitutionRepository institutionRepository;
     private final ProgramRepository programRepository;
+    private final FieldOfStudyRepository fieldOfRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -94,7 +96,7 @@ public class ClassService implements IClassService {
         Class aClass = classRepository.findById(classDTO.getId())
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classDTO.getId() + " not found"));
         aClass.setName(classDTO.getName());
-        aClass.setCapacity(classDTO.getCapacity());
+        //aClass.setCapacity(classDTO.getCapacity());
         Class savedClass = classRepository.save(aClass);
         if (savedClass.getId() != null) {
             return ResponseEntity.ok().body(true);
@@ -258,5 +260,23 @@ public class ClassService implements IClassService {
 
         UserListDTO userListDTO = new UserListDTO(userDTOs, pageResult.getTotalPages());
         return ResponseEntity.ok().body(userListDTO);
+    }
+
+    public Class getClasseById(String id) {
+        return classRepository.findById(id)
+                .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
+    }
+
+    public Class addClasse(Class classe, String idField) {
+        FieldOfStudy fieldOfStudy = fieldOfRepository.findById(idField).orElseThrow(() -> new RuntimeException("Field with ID" + idField + " doesn't exist!"));
+        classe.setFieldOfStudy(fieldOfStudy);
+        return classRepository.save(classe);
+    }
+    public List<Class> searchClassesBySemester(SemesterNumber semesterNumber) {
+        return classRepository.findBySemester_SemesterNumber(semesterNumber);
+    }
+
+    public List<Class> findAll() {
+        return classRepository.findAll();
     }
 }

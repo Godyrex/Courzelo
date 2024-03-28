@@ -1,8 +1,8 @@
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.dto.ElementModuleDTO;
-import com.courzelo.lms.entities.Period;
-import com.courzelo.lms.services.ElementModuleService;
+import com.courzelo.lms.dto.schedule.ElementModuleDTO;
+import com.courzelo.lms.entities.schedule.Period;
+import com.courzelo.lms.services.schedule.ElementModuleService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.PostPersist;
 import jakarta.validation.Valid;

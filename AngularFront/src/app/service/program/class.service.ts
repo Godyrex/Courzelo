@@ -36,4 +36,11 @@ export class ClassService {
   updateClass(classDTO: ClassDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/update`, classDTO);
   }
+  searchClassesSem(semesterId: string, page: string, size: number): Observable<ClassDTO[]> {
+    const params = new HttpParams()
+      .set('semesterId', semesterId)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<ClassDTO[]>(`${this.baseUrl}/searchBySemester`, {params});
+  }
 }

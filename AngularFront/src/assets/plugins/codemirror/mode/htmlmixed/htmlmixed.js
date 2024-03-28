@@ -2,7 +2,7 @@
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
 (function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+  if (typeof exports == "object" && typeof Modulee == "object") // CommonJS
     mod(require("../../lib/codemirror"), require("../xml/xml"), require("../javascript/javascript"), require("../css/css"));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../javascript/javascript", "../css/css"], mod);
@@ -14,7 +14,7 @@
   var defaultTags = {
     script: [
       ["lang", /(javascript|babel)/i, "javascript"],
-      ["type", /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i, "javascript"],
+      ["type", /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^Modulee$|^$/i, "javascript"],
       ["type", /./, "text/plain"],
       [null, null, "javascript"]
     ],

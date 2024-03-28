@@ -31,6 +31,7 @@ import {ForgotPasswordComponent} from "./back/auth/forgot-password/forgot-passwo
 import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {LoginComponent} from "./back/auth/login/login.component";
 import {CalendarComponent} from "./back/program/institution/calendar/calendar.component";
+import {ActionsComponent} from "./back/schedule/actions/actions.component";
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
     component: TimeTableComponent
   },
   {
+    path: 'actions',
+    component: ActionsComponent
+  },
+  {
     path: 'fieldOfStudies',
     component: GestionFieldOfStudyComponent,
     children: [
@@ -69,6 +74,7 @@ const routes: Routes = [
       {path: 'edit', component: EditNonDisponibilityComponent}
     ]
   },
+
   {
     path: 'signup',
     component: RegisterComponent

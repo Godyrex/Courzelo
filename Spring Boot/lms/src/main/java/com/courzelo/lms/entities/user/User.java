@@ -2,11 +2,14 @@ package com.courzelo.lms.entities.user;
 
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.schedule.ElementModule;
+import com.courzelo.lms.entities.schedule.NonDisponibility;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,6 +43,12 @@ public class User implements UserDetails {
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;
+    private String speciality;
+    private String tel;
+    @DBRef
+    private List<ElementModule>elementModules;
+    @DBRef
+    private List<NonDisponibility>nonDisponibilities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

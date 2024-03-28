@@ -86,7 +86,7 @@ export class GestionDepartementComponent {
       this.setDisplayedPages();
       return;
     }
-    this.departmentService.searchDepartments(keyword).subscribe(
+    this.departmentService.searchDepartments(keyword, 0, 20).subscribe(
       (data) => {
         this.departments = data;
         this.setDisplayedPages();

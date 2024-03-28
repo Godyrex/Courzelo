@@ -1,8 +1,8 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.dto.SemesterDTO;
-import com.courzelo.lms.services.SemesterService;
+import com.courzelo.lms.dto.schedule.SemesterDTO;
+import com.courzelo.lms.services.schedule.SemesterService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
