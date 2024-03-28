@@ -118,10 +118,21 @@ public class InstitutionController {
     public ResponseEntity<InstitutionUsersCountDTO> countUsers(Principal principal) {
         return iInstitutionService.countUsers(principal);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/saveLocation")
+    @CacheEvict(value = "MyInstitution", allEntries = true)
+    public ResponseEntity<Boolean> saveLocation(@RequestBody InstitutionDTO institutionDTO) {
+        return iInstitutionService.saveLocation(institutionDTO);
+    }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/generateExcel")
-    public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events) {
-        return iInstitutionService.generateExcel(events);
+    @CacheEvict(value = "MyInstitution", allEntries = true)
+    public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events,Principal principal) {
+        return iInstitutionService.generateExcel(events,principal);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/downloadExcel")
+    public ResponseEntity<byte[]> downloadExcel(Principal principal) {
+        return iInstitutionService.downloadExcel(principal);
     }
 }
