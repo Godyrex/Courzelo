@@ -5,6 +5,7 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent {
     private authService: AuthenticationService,
     private router: Router,
     private token: TokenStorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
   }
 
@@ -54,19 +56,17 @@ export class LoginComponent {
             if (response.deviceIsNew) {
               console.log(this.loginRequest.rememberMe)
               this.verification = true;
-              this.message = '';
-              this.messageSuccess = '';
+            this.toastr.info('Please enter the verification code sent to your email', 'Verification Required');
             }
           } else {
             console.log(this.loginRequest.rememberMe)
-            this.message = '';
+            this.toastr.success('Welcome ' + response.name + ' ' + response.lastname, 'Login Successful');
             this.loginResponse = response;
             this.router.navigate(['settings/profile']);
           }
         },
         error => {
-          console.log(error)
-          this.message = error.error.msg;
+          this.toastr.error(error.error.msg, 'Login Failed');
         });
     }
   }
@@ -78,14 +78,11 @@ export class LoginComponent {
         response => {
           this.loginResponse = response;
           this.token.saveUser(response);
+          this.toastr.success('Welcome ' + response.name + ' ' + response.lastname, 'Login Successful');
           this.router.navigate(['']);
-
         },
         error => {
-          this.message = 'Verification Code is invalid';
-          this.messageSuccess = '';
-          console.log(error)
-          this.message = error.error.msg;
+          this.toastr.error(error.error.msg, 'Verification Failed');
         });
     }
   }

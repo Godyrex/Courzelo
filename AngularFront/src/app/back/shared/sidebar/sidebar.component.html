@@ -83,7 +83,7 @@
           </ul>
         </li>
 
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item"
+        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN') && loginResponse.institution" class="nav-item"
             [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
           <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -93,7 +93,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" routerLink="/organisation/institution" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>My Institution</p>

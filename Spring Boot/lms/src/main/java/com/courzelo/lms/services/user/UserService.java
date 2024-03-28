@@ -122,7 +122,6 @@ public class UserService implements UserDetailsService {
             institutionClass = classRepository.findById(user.getStclass().getId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not found"));
         }
-        log.info(user.getPhoto().getId());
         return new JwtResponse(
                 user.getEmail(),
                 user.getName(),

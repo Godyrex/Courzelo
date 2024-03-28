@@ -8,6 +8,7 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {Router} from "@angular/router";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-profile',
@@ -55,7 +56,8 @@ export class ProfileComponent {
     private token: TokenStorageService,
     private router: Router,
     private updateService: UpdateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
   ) {
   }
 
@@ -89,17 +91,15 @@ export class ProfileComponent {
       this.updateService.changeName(this.nameRequest)
         .subscribe(data => {
             console.log(data)
-            this.messageSuccess = data.msg!;
             this.user = this.token.getUser();
             this.user.name = this.nameForm.value.name!;
             this.user.lastname = this.nameForm.value.lastName!;
             this.token.saveUser(this.user);
-            this.messageError = "";
+            this.toaster.success("Name updated successfully", "Success");
           },
           error => {
             console.log("update name error :", error)
-            this.messageSuccess = "";
-            this.messageError = error.error.msg;
+            this.toaster.error(error.error.msg, "Error")
           });
     }
   }
@@ -113,8 +113,7 @@ export class ProfileComponent {
         .subscribe(progress => {
           this.uploadProgress = progress;
           if (progress === 100) {
-            this.messageSuccess = "File upload completed";
-            this.messageError = "";
+            this.toaster.success("Photo updated successfully", "Success");
             this.selectedFile = null!;
           }
         });
@@ -140,10 +139,12 @@ export class ProfileComponent {
     this.updateService.deleteAccount(this.deleteAccountRequest).subscribe(data => {
         console.log(data)
         console.log('Account deleted successfully!');
+        this.toaster.success("Account deleted successfully", "Success")
         this.router.navigate(['/logout']);
       },
       error => {
         console.log("delete account error :", error)
+        this.toaster.error(error.error.msg, "Error")
         console.log(error)
       });
   }
@@ -157,13 +158,11 @@ export class ProfileComponent {
       this.updateService.changePassword(this.passwordRequest)
         .subscribe(data => {
             console.log(data)
-            this.messageError = "";
-            this.messageSuccess = data.msg!;
+          this.toaster.success("Password updated successfully", "Success");
           },
           error => {
             console.log("update password error :", error)
-            this.messageSuccess = "";
-            this.messageError = error.error.msg;
+            this.toaster.error(error.error.msg, "Error")
           });
     }
   }
@@ -175,9 +174,11 @@ export class ProfileComponent {
           this.showVerification = true;
           this.showEmailForm = false;
           console.log('Verification code sent successfully:', response);
+          this.toaster.show('Verification code sent successfully', 'Success')
         },
         (error: any) => {
           console.error('Error sending verification code:', error);
+          this.toaster.error('Error sending verification code', 'Error')
         }
       );
     }
@@ -192,9 +193,11 @@ export class ProfileComponent {
           this.showVerification = false;
           this.showEmailForm = true;
           console.log('Email Changed successfully Logging out ....:', response);
+          this.toaster.success('Email Changed successfully Logging out ....', 'Success');
           this.router.navigate(['/logout']);
         },
         (error: any) => {
+          this.toaster.error('Error changing email', 'Error')
           console.error('Error sending verification code:', error);
         }
       );

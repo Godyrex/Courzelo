@@ -49,7 +49,7 @@ public class UserController {
     public UserDTO getUserByID(@PathVariable String userID) {
         return modelMapper.map(userService.getUserByID(userID), UserDTO.class);
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/myInfo")
     @Cacheable(value = "MyInfo", key = "#principal.name")
     public JwtResponse getMyInfo(Principal principal) {
