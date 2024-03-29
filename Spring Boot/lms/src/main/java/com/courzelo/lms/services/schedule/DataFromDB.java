@@ -44,7 +44,7 @@ public class DataFromDB {
         departments = departmentService.findAll();
         moduls = modulService.findAll();
         teachers=userService.getProfsByRole();
-        classes = classService.findAll();
+        classes = classService.getClasses1();
 
     }
 }

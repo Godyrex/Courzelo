@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -136,6 +137,7 @@ public class ClassService implements IClassService {
 
         return ResponseEntity.badRequest().body(null);
     }
+
 
     @Override
     public ResponseEntity<Boolean> addUserToClass(String classID, String userEmail, String role) {
@@ -275,8 +277,12 @@ public class ClassService implements IClassService {
     public List<Class> searchClassesBySemester(SemesterNumber semesterNumber) {
         return classRepository.findBySemester_SemesterNumber(semesterNumber);
     }
-
-    public List<Class> findAll() {
-        return classRepository.findAll();
+    public List<Class> getClasses1() {
+        log.info("Getting all classes");
+        return classRepository.findAll()
+                .stream()
+                .map(classes -> modelMapper.map(classes, Class.class))
+                .collect(Collectors.toList());
     }
+
 }

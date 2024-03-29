@@ -6,7 +6,7 @@
       <div *ngIf="!prof" class="col">
         <div class="form-group">
           <label for="department-select">
-            <i class="fa fa-building"></i> Départements
+            <i class="fa fa-building"></i> Departments
           </label>
           <select
             id="department-select"
@@ -14,7 +14,7 @@
             (change)="handleDepartmentChange($event.target)"
             class="form-select custom-select"
           >
-            <option selected disabled>Sélectionner...</option>
+            <option selected disabled>Select...</option>
             <option
               *ngFor="let department of departements"
               value="{{ department.id }}"
@@ -27,7 +27,7 @@
       <div *ngIf="!prof" class="col">
         <div class="form-group">
           <label for="field-select">
-            <i class="fa fa-clipboard"></i> Filiéres
+            <i class="fa fa-clipboard"></i> Fields of studies
           </label>
           <select
             id="field-select"
@@ -35,7 +35,7 @@
             (change)="handleFiliereChange($event.target)"
             class="form-select custom-select"
           >
-            <option selected disabled>Sélectionner...</option>
+            <option selected disabled>Select...</option>
             <option *ngFor="let filiere of filieres" value="{{ filiere.id }}">
               {{ filiere.name }}
             </option>
@@ -46,7 +46,7 @@
       <div *ngIf="!prof" class="col">
         <div class="form-group">
           <label for="semester-select">
-            <i class="fa fa-calendar"></i> Semestre
+            <i class="fa fa-calendar"></i> Semester
           </label>
           <select
             id="semester-select"
@@ -54,7 +54,7 @@
             (change)="handleSemsterChange($event.target)"
             class="form-select custom-select"
           >
-            <option selected disabled>Sélectionner...</option>
+            <option selected disabled>Select...</option>
             <option *ngFor="let s of semsters" value="{{ s.id }}">
               {{ s.semesterNumber }}
             </option>
@@ -67,7 +67,7 @@
           (click)="handleDownloadEmploi()"
           *ngIf="!spinnerExport"
           class="btn btn-outline-primary me-2"
-        ><i class="fas fa-download"></i> Télécharger
+        ><i class="fas fa-download"></i> Dwonload
         </a>
 
         <div

@@ -73,7 +73,7 @@ public class LoadFromExcelToDB {
                                 }
                                 assert t != null;
                                 t.setRoles(Collections.singletonList(Role.TEACHER));
-                                if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Role.TEACHER).isEmpty()) {
+                                if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).isEmpty()) {
                                     userService.addTeacher(t);
                                 }
                             }
@@ -149,8 +149,8 @@ public class LoadFromExcelToDB {
                                             t = new User();
                                             t.setName(cell.getRow().getCell(5).getStringCellValue().split("_")[0]);
                                             t.setLastName(cell.getRow().getCell(5).getStringCellValue().split("_")[1]);
-                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Role.TEACHER).size() != 0) {
-                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getName(), Role.TEACHER).get(0));
+                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).size() != 0) {
+                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).get(0));
                                             } else {
                                                 isImported = false;
                                                 System.out.println("Teacher doesn't exist in the database");
@@ -191,6 +191,7 @@ public class LoadFromExcelToDB {
             row.createCell(2).setCellValue(teacher.getName() + "_" + teacher.getLastName());
             row.createCell(3).setCellValue(teacher.getSpeciality());
             row.createCell(4).setCellValue(teacher.getTel());
+            row.createCell(5).setCellValue(teacher.getEmail());
         }
         Sheet departmentsSheet = workbook.createSheet("DEPARTMENTS");
 

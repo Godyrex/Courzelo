@@ -20,9 +20,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     User findUserByEmail(String email);
     Boolean existsByEmail(String email);
     List<User> findUsersByRoles(List<Role> roles);
-
-    List<User> findByRolesContains(Role role);
-    List<User> findUsersByIdAndRolesContainsAndName(String id, Role role, String name);
-    User findUserByIdAndRolesContainsAndName(String id, Role role, String name);
+    List<User> findByRolesIs(@NotNull List<Role> roles);
+    List<User> findUsersByIdAndRolesIsAndName(String id, @NotNull List<Role> roles, @NotNull String name);
+    User findUserByIdAndRolesIsAndName(String id, @NotNull List<Role> roles, @NotNull String name);
 
 }

@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.courzelo.lms.entities.user.Role.TEACHER;
 
@@ -217,7 +218,15 @@ public class UserService implements UserDetailsService {
         return ResponseEntity.badRequest().build();
     }
     public User getProfById(String id) {
-        return  userRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+        // Check if the user has the TEACHER role
+        boolean hasTeacherRole = user.getRoles().stream()
+                .anyMatch(role -> role == Role.TEACHER);
+        if (!hasTeacherRole) {
+            throw new RuntimeException("No TEACHER role found for user with id: " + id);
+        }
+        return user;
     }
     public List<Role> getUserRoles(String userId) {
         User user = userRepository.findById(userId)
@@ -225,13 +234,15 @@ public class UserService implements UserDetailsService {
         return user.getRoles();
     }
     public List<User> getProfsByRole() {
-        return  userRepository.findUsersByRoles(Collections.singletonList(TEACHER));
+        return userRepository.findUsersByRoles(Collections.singletonList(Role.TEACHER));
     }
-    public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUsersByIdAndRolesContainsAndName(id,TEACHER, name);
+
+    public List<User> findTeachersByNameAndRole(String id, String name, List<Role> roles) {
+        return userRepository.findUsersByIdAndRolesIsAndName(id, roles, name);
     }
-    public User findTeacherByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUserByIdAndRolesContainsAndName(id,TEACHER, name);
+
+    public User findTeacherByNameAndRole(String id, String name, List<Role> roles) {
+        return userRepository.findUserByIdAndRolesIsAndName(id, roles, name);
     }
 
 
@@ -255,6 +266,9 @@ public class UserService implements UserDetailsService {
         return userRepository.save(teacher);
     }*/
     public List<User> getTeachers() {
-        return userRepository.findByRolesContains(Role.TEACHER);
+        return userRepository.findByRolesIs(Collections.singletonList(TEACHER))
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

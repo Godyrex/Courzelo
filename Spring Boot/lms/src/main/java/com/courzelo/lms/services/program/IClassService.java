@@ -31,3 +31,5 @@ public interface IClassService {
     boolean userInInstitution(User user, Institution institution);
     List<Class> searchClassesBySemester(SemesterNumber semesterNumber);
 }
+
+
