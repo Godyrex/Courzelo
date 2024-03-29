@@ -402,7 +402,16 @@ public class PdfExportService {
         String text1 = "Departement : "+classe.getFieldOfStudy().getDepartment().getName();
         String text2 = "EMPLOI DU TEMPS";
         String text3 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
-        String annee = classe.getName().split(" ")[1];
+        String name = classe.getName();
+        String[] parts = name.split(" ");
+        String annee = "";
+        if (parts.length > 1) {
+            annee = parts[1];
+        } else {
+            // Handle the case where there is no second part
+            // This could be setting a default value, logging an error, etc.
+            System.out.println("No second part in the class name");
+        }
         String text4 = "FI "+classe.getFieldOfStudy().getName();
         if(annee =="1"){
             text4 =text4+" -  1ère Année";
@@ -410,7 +419,17 @@ public class PdfExportService {
         else{
             text4 =text4+" -  "+annee+"ème Année";
         }
-        String text5 = "Semestre "+classe.getName().split(" ")[1];
+        String name1 = classe.getName();
+        String[] parts1 = name1.split(" ");
+        String semester = "";
+        if (parts.length > 1) {
+            semester = parts1[1];
+        } else {
+            // Handle the case where there is no second part
+            // This could be setting a default value, logging an error, etc.
+            System.out.println("No second part in the class name");
+        }
+        String text5 = "Semestre " + semester;
         String text6 = "Provisoire";
 
         // Create a paragraph with the new font
@@ -426,21 +445,21 @@ public class PdfExportService {
         paragraph5.setAlignment(Element.ALIGN_CENTER);
         Paragraph paragraph6 = new Paragraph(text6,font6);
         paragraph6.setAlignment(Element.ALIGN_CENTER);
-        Image headerImage = Image.getInstance("src/main/resources/header.jpg");
-        Image footerImage = Image.getInstance("src/main/resources/footer.jpg");
+       // Image headerImage = Image.getInstance("");
+        //Image footerImage = Image.getInstance("");
         float headerWidth = PageSize.A4.getWidth();
         float headerHeight = 50f;  // Adjust the height as needed
         float footerWidth = PageSize.A4.getWidth();
         float footerHeight = 50f;  // Adjust the height as needed
         Rectangle headerRect = new Rectangle(headerWidth, headerHeight);
         Rectangle footerRect = new Rectangle(footerWidth, footerHeight);
-        headerImage.setAbsolutePosition(0, PageSize.A4.getHeight() - headerHeight - 10f);
-        headerImage.scaleToFit(headerWidth, headerHeight);
-        myPDFDoc.add(headerImage);
+        // headerImage.setAbsolutePosition(0, PageSize.A4.getHeight() - headerHeight - 10f);
+        //headerImage.scaleToFit(headerWidth, headerHeight);
+       // myPDFDoc.add(headerImage);
         // Add footer image to the bottom of each page
-        footerImage.setAbsolutePosition(0, 10f);
-        footerImage.scaleToFit(footerWidth, footerHeight);footerImage.scaleToFit(footerWidth, footerHeight);
-        myPDFDoc.add(footerImage);
+        //footerImage.setAbsolutePosition(0, 10f);
+       // footerImage.scaleToFit(footerWidth, footerHeight);footerImage.scaleToFit(footerWidth, footerHeight);
+       // myPDFDoc.add(footerImage);
         myPDFDoc.add(paragraph1);
         myPDFDoc.add(paragraph2);
         myPDFDoc.add(paragraph3);

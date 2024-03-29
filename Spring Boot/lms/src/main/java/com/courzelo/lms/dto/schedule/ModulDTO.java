@@ -28,7 +28,6 @@ public class ModulDTO {
     private Boolean isMetuale;
     private List<ElementModule> elementModules;
     private Class aClass;
-    private Modul modul;
 
     public boolean isMetuale() {
         return false;

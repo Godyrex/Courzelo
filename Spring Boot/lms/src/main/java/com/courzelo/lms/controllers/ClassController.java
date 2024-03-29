@@ -32,10 +32,10 @@ public class ClassController {
     public ResponseEntity<List<ClassDTO>> getClasses() {
         return iClassService.getClasses();
     }
-    @GetMapping("/allWithoutPagination")
+   /* @GetMapping("/allWithoutPagination")
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         return iClassService.getClassesWithoutPagination();
-    }
+    }*/
 
     @DeleteMapping("/delete/{classID}")
     public ResponseEntity<Boolean> deleteClass(@PathVariable String classID) {

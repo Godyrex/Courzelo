@@ -7,7 +7,6 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
-import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -15,14 +14,12 @@ import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.InstitutionNotFoundException;
 import com.courzelo.lms.exceptions.ProgramNotFoundException;
 import com.courzelo.lms.repositories.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +38,14 @@ public class ClassService implements IClassService {
     private final FieldOfStudyRepository fieldOfRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    public ClassService(ClassRepository classRepository, UserRepository userRepository, InstitutionRepository institutionRepository, ProgramRepository programRepository, FieldOfStudyRepository fieldOfRepository) {
+        this.classRepository = classRepository;
+        this.userRepository = userRepository;
+        this.institutionRepository = institutionRepository;
+        this.programRepository = programRepository;
+        this.fieldOfRepository = fieldOfRepository;
+    }
 
     @Override
     public ResponseEntity<List<ClassDTO>> getClasses() {
@@ -283,7 +288,7 @@ public class ClassService implements IClassService {
                 .map(classes -> modelMapper.map(classes, Class.class))
                 .collect(Collectors.toList());
 
-    @Override
+  /*  @Override
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         log.info("Getting all classes without pagination");
         return ResponseEntity
@@ -292,6 +297,8 @@ public class ClassService implements IClassService {
                         .stream()
                         .map(classes -> modelMapper.map(classes, ClassDTO.class))
                         .toList());
+    }*/
+
     }
 
     public List<Class> findAll() {
