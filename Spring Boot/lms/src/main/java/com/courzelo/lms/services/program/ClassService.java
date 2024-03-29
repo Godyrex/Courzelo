@@ -32,7 +32,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class ClassService implements IClassService {
     private final ClassRepository classRepository;
@@ -283,6 +282,20 @@ public class ClassService implements IClassService {
                 .stream()
                 .map(classes -> modelMapper.map(classes, Class.class))
                 .collect(Collectors.toList());
+
+    @Override
+    public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
+        log.info("Getting all classes without pagination");
+        return ResponseEntity
+                .ok()
+                .body(classRepository.findAll()
+                        .stream()
+                        .map(classes -> modelMapper.map(classes, ClassDTO.class))
+                        .toList());
+    }
+
+    public List<Class> findAll() {
+        return classRepository.findAll();
     }
 
 }
