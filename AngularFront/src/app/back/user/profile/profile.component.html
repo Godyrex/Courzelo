@@ -44,6 +44,7 @@
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email">Email</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password">Password</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete">Delete account</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tfa">Two Factor Authentication</a></li>
             </ul>
           </div><!-- /.card-header -->
           <div class="card-body">
@@ -195,6 +196,26 @@
                   </div>
                   <button class="btn btn-primary">Delete My Account</button>
                 </form>
+              </div>
+              <div class="tab-pane" id="tfa">
+                <div *ngIf="!user.twoFactorAuthEnabled" class="card-body">
+                  <button class="btn btn-primary" (click)="generateTwoFactorAuthQrCode()">Generate QR Code</button>
+                  <!-- Display the QR code here -->
+                  <div *ngIf="qrCodeImage">
+                    <img [src]="qrCodeImage" alt="QR Code">
+                  </div>
+                  <form *ngIf="qrCodeImage" [formGroup]="tfaForm" (ngSubmit)="enableTwoFactorAuth()">
+                    <div class="form-group">
+                      <label for="verificationCode">Verification Code</label>
+                      <input type="text" id="verificationCode" formControlName="verificationCode" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enable Two-Factor Authentication</button>
+                  </form>
+                </div>
+                <!-- Display a message when TFA is already enabled -->
+                <div *ngIf="user.twoFactorAuthEnabled" class="card-body">
+                  <p>Two-Factor Authentication is already enabled.</p>
+                </div>
               </div>
               <!-- /.tab-pane -->
             </div>

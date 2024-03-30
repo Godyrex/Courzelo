@@ -129,7 +129,8 @@ public class UserService implements UserDetailsService {
                 roles,
                 user.getPhoto() != null ? user.getPhoto().getId() : null,
                 institution != null ? institution.getName() : null,
-                institutionClass != null ? institutionClass.getName() : null
+                institutionClass != null ? institutionClass.getName() : null,
+                user.isTwoFactorAuthEnabled()
         );
     }
 

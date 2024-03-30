@@ -1,7 +1,10 @@
 package com.courzelo.lms.security.jwt;
 
 import com.courzelo.lms.entities.user.RefreshToken;
+import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.services.user.AuthService;
+import com.courzelo.lms.services.user.IDeviceMetadataService;
 import com.courzelo.lms.services.user.IRefreshTokenService;
 import com.courzelo.lms.services.user.UserService;
 import com.courzelo.lms.utils.CookieUtil;
@@ -39,7 +42,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private IRefreshTokenService iRefreshTokenService;
     @Autowired
     private AuthService authService;
-
+    @Autowired
+    private IDeviceMetadataService deviceMetadataService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
@@ -60,6 +66,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
+
         String accessToken = cookieUtil.getAccessTokenFromCookies(request);
         String refreshToken = cookieUtil.getRefreshTokenFromCookies(request);
 
@@ -76,10 +84,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void handleAccessToken(HttpServletRequest request, String accessToken) throws Exception {
+    private void handleAccessToken(HttpServletRequest request, String accessToken) {
         if (jwtUtils.validateJwtToken(accessToken)) {
             String email = jwtUtils.getEmailFromJwtToken(accessToken);
-            if (userDetailsService.ValidUser(email)) {
+            User user = userRepository.findUserByEmail(email);
+            String userAgent = request.getHeader("User-Agent");
+            if (deviceMetadataService.isNewDevice(userAgent, user)) {
+                log.info("Device is new, please confirm device");
+            } else if (userDetailsService.ValidUser(email)) {
                 UserDetails userDetails = userDetailsService.loadUserByEmail(email);
                 setAuthenticationInSecurityContext(request, userDetails);
             }

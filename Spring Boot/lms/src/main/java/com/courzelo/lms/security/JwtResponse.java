@@ -15,6 +15,7 @@ public class JwtResponse {
     private String photoID;
     private String institution;
     private String institutionClass;
+    private boolean twoFactorAuthEnabled;
 
     public JwtResponse(String email, String name, String lastname, List<String> roles) {
         this.email = email;

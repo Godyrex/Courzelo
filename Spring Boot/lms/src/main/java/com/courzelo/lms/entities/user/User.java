@@ -34,6 +34,8 @@ public class User implements UserDetails {
     private String lastName;
     @NotNull
     private List<Role> roles = new ArrayList<>();
+    private String twoFactorAuthKey;
+    private boolean twoFactorAuthEnabled;
     @DBRef
     private Photo photo;
     @DBRef

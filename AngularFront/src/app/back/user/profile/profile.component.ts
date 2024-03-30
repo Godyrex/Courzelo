@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -9,15 +9,18 @@ import {EmailRequest} from "../../../model/user/EmailRequest";
 import {Router} from "@angular/router";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {ToastrService} from "ngx-toastr";
+import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
+  qrCodeImage: string = '';
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
   messageError = '';
@@ -27,6 +30,7 @@ export class ProfileComponent {
   selectedFile: File | undefined;
   showVerification: boolean = false;
   showEmailForm: boolean = true;
+  verificationCode: string = '';
   emailForm = this.formBuilder.group({
     email: ['', [Validators.email]],
   });
@@ -39,6 +43,9 @@ export class ProfileComponent {
   nameForm = this.formBuilder.group({
     name: ['', [Validators.maxLength(20), Validators.minLength(3)]],
     lastName: ['', [Validators.maxLength(20), Validators.minLength(3)]],
+  });
+  tfaForm = this.formBuilder.group({
+    verificationCode: ['', [Validators.required]],
   });
   passwordForm = this.formBuilder.group({
       password: ['', [Validators.required]],
@@ -57,8 +64,21 @@ export class ProfileComponent {
     private router: Router,
     private updateService: UpdateService,
     private formBuilder: FormBuilder,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private authService: AuthenticationService
   ) {
+  }
+
+  ngOnInit(): void {
+        this.getMyInfo();
+    }
+  getMyInfo() {
+    this.updateService.getMyInfo().subscribe(
+      response => {
+        this.user = response;
+        console.log(response);
+      }
+    )
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {
@@ -84,6 +104,34 @@ export class ProfileComponent {
     this.messageError = "";
   }
 
+  enableTwoFactorAuth() {
+    this.verificationCode = this.tfaForm.controls['verificationCode'].value!;
+    this.authService.enableTwoFactorAuth(this.verificationCode)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.toaster.success('Two factor authentication enabled successfully', 'Success')
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error enabling two factor authentication', 'Error')
+        }
+      );
+  }
+
+  generateTwoFactorAuthQrCode() {
+    this.authService.generateTwoFactorAuthQrCode()
+      .subscribe(
+        (data: QRCodeResponse) => {
+          this.qrCodeImage = 'data:image/png;base64,' + data.qrCodeImage;
+          this.toaster.success('QR code generated successfully', 'Success')
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error generating QR code', 'Error');
+        }
+      );
+  }
   changeName() {
     if (this.nameForm.valid) {
       this.nameRequest = Object.assign(this.nameRequest, this.nameForm.value);

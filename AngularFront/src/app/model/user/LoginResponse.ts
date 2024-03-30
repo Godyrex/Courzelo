@@ -6,4 +6,5 @@ export interface LoginResponse {
   photoID?: string;
   institution?: string;
   institutionClass?: string;
+  twoFactorAuthEnabled?: boolean;
 }
