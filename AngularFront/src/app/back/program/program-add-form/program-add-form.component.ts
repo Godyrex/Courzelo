@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramService} from "../../../service/program/program.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-program-add-form',
@@ -13,6 +14,7 @@ export class ProgramAddFormComponent {
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() addForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() programInfoChanged: EventEmitter<void> = new EventEmitter<void>();
   programForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(40)]],
     description: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
@@ -21,7 +23,8 @@ export class ProgramAddFormComponent {
 
   constructor(
     private programService: ProgramService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
   ) {
   }
 
@@ -36,13 +39,12 @@ export class ProgramAddFormComponent {
       this.programService.addProgram(this.programRequest)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit("Program Added");
-            this.errorMessage.emit("");
+            this.toaster.success("Program Added");
+            this.programInfoChanged.emit();
           },
           error => {
             console.log("add Program error :", error)
-            this.successMessage.emit("");
-            this.errorMessage.emit("an error has occurred");
+this.toaster.error("an error has occurred")
           });
     }
   }

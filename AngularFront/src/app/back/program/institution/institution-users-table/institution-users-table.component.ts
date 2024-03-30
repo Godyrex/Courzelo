@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserResponse} from "../../../../model/user/UserResponse";
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {UserListDTO} from "../../../../model/user/UserListDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-institution-users-table',
   templateUrl: './institution-users-table.component.html',
   styleUrls: ['./institution-users-table.component.css']
 })
-export class InstitutionUsersTableComponent {
+export class InstitutionUsersTableComponent implements OnInit {
   usersResponse: UserResponse[] = [];
   messageSuccess: string = "";
   messageError: string = "";
@@ -22,9 +23,12 @@ export class InstitutionUsersTableComponent {
 
   constructor(
     private institutionService: InstitutionService,
+    private toaster: ToastrService
   ) {
   }
-
+  handleUserInfoChanged() {
+    this.loadUsers();
+  }
   close() {
     this.updateForm.emit(false)
   }
@@ -46,17 +50,15 @@ export class InstitutionUsersTableComponent {
       data => {
         if (data) {
           this.usersResponse = this.usersResponse.filter(inst => inst.email !== email);
-          this.messageSuccess = "User removed";
-          this.messageError = "";
+          this.toaster.success("User removed");
+          this.loadUsers()
         } else {
-          this.messageSuccess = "";
-          this.messageError = "error removing User";
+this.toaster.error("User not removed");
         }
       },
       error => {
         console.log("remove User error :", error)
-        this.messageSuccess = "";
-        this.messageError = "an error has occurred";
+this.toaster.error("an error has occurred");
       });
   }
 
@@ -75,7 +77,7 @@ export class InstitutionUsersTableComponent {
         console.log("total number of pages : " + response.totalPages)
       },
       (error: any) => {
-        console.error('Error fetching students:', error);
+        this.toaster.error("Error fetching users")
       }
     );
   }

@@ -66,6 +66,7 @@
   <div class="row">
     <div class="col-12">
       <app-institution-add-user
+        (userInfoChanged)="handleUserInfoChanged()"
         (addForm)="handleAddFormToggle($event)"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"

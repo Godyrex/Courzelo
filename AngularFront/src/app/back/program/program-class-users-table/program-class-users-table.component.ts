@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserResponse} from "../../../model/user/UserResponse";
 import {UserListDTO} from "../../../model/user/UserListDTO";
 import {ClassService} from "../../../service/program/class.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-program-class-users-table',
   templateUrl: './program-class-users-table.component.html',
   styleUrls: ['./program-class-users-table.component.css']
 })
-export class ProgramClassUsersTableComponent {
+export class ProgramClassUsersTableComponent implements OnInit{
   usersResponse: UserResponse[] = [];
   messageSuccess: string = "";
   messageError: string = "";
@@ -22,6 +23,8 @@ export class ProgramClassUsersTableComponent {
 
   constructor(
     private classService: ClassService,
+    private toaster: ToastrService
+
   ) {
   }
 
@@ -40,23 +43,23 @@ export class ProgramClassUsersTableComponent {
   resetErrorAlert() {
     this.messageError = "";
   }
-
+  handleUserInfoChanged() {
+    this.loadUsers();
+  }
   removeUser(email: string) {
     this.classService.removeUserFromClass(this.classID, email).subscribe(
       data => {
         if (data) {
           this.usersResponse = this.usersResponse.filter(inst => inst.email !== email);
-          this.messageSuccess = "User removed";
-          this.messageError = "";
+this.toaster.success("User Removed")
+          this.loadUsers()
         } else {
-          this.messageSuccess = "";
-          this.messageError = "error removing User";
+this.toaster.error("an error has occurred")
         }
       },
       error => {
         console.log("remove User error :", error)
-        this.messageSuccess = "";
-        this.messageError = "an error has occurred";
+        this.toaster.error("an error has occurred")
       });
   }
 
@@ -77,6 +80,7 @@ export class ProgramClassUsersTableComponent {
       },
       (error: any) => {
         console.error('Error fetching users:', error);
+        this.toaster.error("Error fetching users", "Error")
       }
     );
   }

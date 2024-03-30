@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {FormBuilder, Validators} from "@angular/forms";
 import {ClassDTO} from "../../../../model/program/ClassDTO";
 import {ClassService} from "../../../../service/program/class.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-class-update',
@@ -14,6 +15,8 @@ export class ClassUpdateComponent implements OnChanges {
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() classInfoChanged: EventEmitter<void> = new EventEmitter<void>();
+
   classForm = this.formBuilder.group({
     id: [this.classToUpdate.id, [Validators.required]],
     name: [this.classToUpdate.name, [Validators.required, Validators.maxLength(40)]],
@@ -22,7 +25,9 @@ export class ClassUpdateComponent implements OnChanges {
 
   constructor(
     private classService: ClassService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
+
   ) {
   }
 
@@ -37,13 +42,13 @@ export class ClassUpdateComponent implements OnChanges {
       this.classService.updateClass(this.classDTO)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit("Class Updated");
-            this.errorMessage.emit("");
+this.toaster.success("Class Updated");
+            this.classInfoChanged.emit();
           },
           error => {
             console.log("Update Class error :", error)
-            this.successMessage.emit("");
-            this.errorMessage.emit("an error has occurred");
+this.toaster.error("an error has occurred")
+            this.classInfoChanged.emit();
           });
     }
   }

@@ -83,6 +83,7 @@
   <div class="row">
     <div class="col-12">
       <app-program-add-class
+        (classInfoChanged)="handleClassInfoChanged()"
         (addForm)="handleAddFormToggle($event)"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
@@ -91,6 +92,7 @@
         >
       </app-program-add-class>
       <app-class-update
+        (classInfoChanged)="handleClassInfoChanged()"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
         (updateForm)="handleUpdateFormToggle($event)"
