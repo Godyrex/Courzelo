@@ -128,7 +128,7 @@ public class AuthService implements IAuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Incorrect email or password"));
         }
     }
-    public ResponseEntity<?> loginTFA(LoginDTO loginDTO, @NonNull HttpServletResponse response, int verificationCode) {
+    public ResponseEntity<?> loginTFA(LoginDTO loginDTO, @NonNull HttpServletResponse response, int verificationCode,String userAgent) {
         try {
             log.info("Starting TFA login for user: {}", loginDTO.getEmail());
             Authentication authentication = authenticationManager.authenticate(
@@ -137,6 +137,8 @@ public class AuthService implements IAuthService {
 
             if(verifyTwoFactorAuth(loginDTO.getEmail(), verificationCode)) {
                 log.info("TFA code verified, authenticating user");
+                User user = userRepository.findUserByEmail(loginDTO.getEmail());
+                iDeviceMetadataService.saveDeviceDetails(userAgent, user);
                 return  authenticateUser(authentication, response, loginDTO);
             } else {
                 log.warn("Invalid TFA code for user: {}", loginDTO.getEmail());

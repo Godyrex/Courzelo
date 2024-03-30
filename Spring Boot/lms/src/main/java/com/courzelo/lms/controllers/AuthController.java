@@ -45,8 +45,8 @@ public class AuthController {
         return iAuthService.loginUser(loginDTO, response, request, userAgent);
     }
     @PostMapping("/signingTFA")
-    public ResponseEntity<?> authenticateTFAUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response,@RequestParam String verificationCode) {
-        return iAuthService.loginTFA(loginDTO, response, Integer.parseInt(verificationCode));
+    public ResponseEntity<?> authenticateTFAUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response,@RequestParam String verificationCode, @RequestHeader(value = "User-Agent") String userAgent) {
+        return iAuthService.loginTFA(loginDTO, response, Integer.parseInt(verificationCode),userAgent);
     }
 
     @PostMapping("/signup")

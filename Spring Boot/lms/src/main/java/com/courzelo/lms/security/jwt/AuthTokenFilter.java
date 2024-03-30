@@ -52,12 +52,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         List<String> excludedEndpoints = Arrays.asList(
                 "/api/v1/auth/signing",
+                "/api/v1/auth/signingTFA",
+                "/api/v1/auth/verifyTwoFactorAuth",
                 "/api/v1/auth/signup",
                 "/api/v1/auth/logout",
                 "/api/v1/auth/refreshToken",
                 "/api/v1/auth/verify",
                 "/api/v1/auth/confirmDevice/",
                 "/api/v1/auth/recover-password"
+
         );
 
         String requestUri = request.getRequestURI();
