@@ -122,7 +122,6 @@ public class UserService implements UserDetailsService {
             institutionClass = classRepository.findById(user.getStclass().getId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not found"));
         }
-        log.info(user.getPhoto().getId());
         return new JwtResponse(
                 user.getEmail(),
                 user.getName(),
@@ -130,7 +129,8 @@ public class UserService implements UserDetailsService {
                 roles,
                 user.getPhoto() != null ? user.getPhoto().getId() : null,
                 institution != null ? institution.getName() : null,
-                institutionClass != null ? institutionClass.getName() : null
+                institutionClass != null ? institutionClass.getName() : null,
+                user.isTwoFactorAuthEnabled()
         );
     }
 

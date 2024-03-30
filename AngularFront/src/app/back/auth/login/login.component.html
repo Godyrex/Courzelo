@@ -3,7 +3,7 @@
   <div class="login-logo">
     <a routerLink="/"><b>Cour</b>zelo</a>
   </div>
-  <ng-container *ngIf="!verification; else verificationCodeInput">
+  <ng-container *ngIf="!showTwoFactorAuthInput && !verification; else otherForms">
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -60,7 +60,30 @@
       <!-- /.login-card-body -->
     </div>
   </ng-container>
+  <ng-template #otherForms>
+  <ng-container *ngIf="showTwoFactorAuthInput; else verificationCodeInput">
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Enter your Two-Factor Authentication code</p>
 
+        <form (ngSubmit)="verifyTwoFactorAuth()" [formGroup]="TFAForm">
+          <div class="input-group mb-3">
+            <input class="form-control" formControlName="twoFactorAuthCode" placeholder="2FA Code" type="text">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="btn btn-primary btn-block" type="submit">Verify</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
   <ng-template #verificationCodeInput>
     <div class="card">
       <div class="card-body login-card-body">
@@ -92,6 +115,7 @@
       </div>
       <!-- /.login-card-body -->
     </div>
+  </ng-template>
   </ng-template>
 </div>
 </body>

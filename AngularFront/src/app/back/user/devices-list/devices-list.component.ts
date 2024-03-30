@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DeviceService} from "../../../service/user/profile/device.service";
 import {DeviceListDTO} from "../../../model/user/DeviceListDTO";
 import {DeviceDTO} from "../../../model/user/DeviceDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-devices-list',
@@ -14,7 +15,8 @@ export class DevicesListComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 2;
 
-  constructor(private deviceService: DeviceService) {
+  constructor(private deviceService: DeviceService,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -37,6 +39,7 @@ export class DevicesListComponent implements OnInit {
         console.log("total number of pages : " + response.totalPages)
       },
       (error: any) => {
+        this.toastr.error("Error fetching devices", "Error")
         console.error('Error fetching devices:', error);
       }
     );
@@ -46,9 +49,10 @@ export class DevicesListComponent implements OnInit {
     this.deviceService.deleteDevice(id).subscribe(
       data => {
         this.deviceDTOS = this.deviceDTOS.filter(dev => dev.id !== id);
+        this.toastr.success("Device deleted successfully", "Success");
       }, error => {
         console.log("delete Device error :", error)
-
+        this.toastr.error("Device could not be deleted", "Error");
       });
 
   }

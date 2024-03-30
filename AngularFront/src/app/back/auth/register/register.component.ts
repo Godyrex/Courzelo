@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterRequest} from "../../../model/RegisterRequest";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -27,7 +28,8 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
   }
 
@@ -59,13 +61,15 @@ export class RegisterComponent {
       this.authService.register(this.registerRequest)
         .subscribe(data => {
             console.log(data)
-            this.messageSuccess = data.msg!;
+            this.toastr.success("Please check your email to verify your account.", 'Registration Successful');
+
           },
           error => {
             console.log("register error :", error)
-            this.message = error.error.msg;
+            this.toastr.error(error.error.msg, 'Error registering user')
           });
+    }else {
+      this.toastr.error("Please fill in all fields correctly.", 'Error registering user')
     }
-
   }
 }

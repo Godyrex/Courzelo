@@ -46,4 +46,22 @@ export class AuthenticationService {
   getRole() {
     return this.http.get<string[]>(`${this.baseUrl}/getRole`);
   }
+  generateTwoFactorAuthQrCode(): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/generateTwoFactorAuthQrCode`, null);
+  }
+
+  enableTwoFactorAuth(verificationCode: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/enableTwoFactorAuth?verificationCode=${verificationCode}`, null);
+  }
+
+  disableTwoFactorAuth(): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/disableTwoFactorAuth`, null);
+  }
+  loginTFA(loginRequest: LoginRequest, verificationCode: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/signingTFA?verificationCode=${verificationCode}`, loginRequest);
+  }
+
+  verifyTwoFactorAuth( verificationCode: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/verifyTwoFactorAuth?verificationCode=${verificationCode}`, null);
+  }
 }
