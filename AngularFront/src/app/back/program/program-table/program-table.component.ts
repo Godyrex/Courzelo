@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramListDTO} from "../../../model/program/ProgramListDTO";
 import {ProgramService} from "../../../service/program/program.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-program-table',
@@ -23,6 +24,7 @@ export class ProgramTableComponent implements OnInit {
 
   constructor(
     private programService: ProgramService,
+    private toaster: ToastrService
   ) {
   }
 
@@ -60,6 +62,7 @@ export class ProgramTableComponent implements OnInit {
       },
       (error: any) => {
         console.error('Error fetching programs:', error);
+        this.toaster.error("Error fetching programs", "Error")
       }
     );
   }
@@ -77,17 +80,15 @@ export class ProgramTableComponent implements OnInit {
       data => {
         if (data) {
           this.programDTOS = this.programDTOS.filter(prog => prog.id !== programID);
-          this.messageSuccess = "Program removed";
-          this.messageError = "";
+          this.toaster.success("Program removed successfully", "Success")
+          this.fetchData()
         } else {
-          this.messageSuccess = "";
-          this.messageError = "error removing program";
+          this.toaster.error("Error removing program", "Error")
         }
       },
       error => {
         console.log("delete program error :", error)
-        this.messageSuccess = "";
-        this.messageError = "an error has occurred";
+        this.toaster.error("Error removing program", "Error")
       });
   }
 
@@ -109,5 +110,8 @@ export class ProgramTableComponent implements OnInit {
 
   handleErrorMessage(message: string) {
     this.messageError = message;
+  }
+  handleProgInfoChanged() {
+    this.fetchData();
   }
 }

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {FormBuilder, Validators} from "@angular/forms";
 import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramService} from "../../../service/program/program.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-program-update-form',
@@ -14,6 +15,8 @@ export class ProgramUpdateFormComponent implements OnChanges {
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() programInfoChanged: EventEmitter<void> = new EventEmitter<void>();
+
   programForm = this.formBuilder.group({
     id: [this.programToUpdate.id, [Validators.required]],
     name: [this.programToUpdate.name, [Validators.required, Validators.maxLength(40)]],
@@ -23,7 +26,9 @@ export class ProgramUpdateFormComponent implements OnChanges {
 
   constructor(
     private programService: ProgramService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
+
   ) {
   }
 
@@ -38,13 +43,12 @@ export class ProgramUpdateFormComponent implements OnChanges {
       this.programService.updateProgram(this.programRequest)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit("Program Updated");
-            this.errorMessage.emit("");
+this.toaster.success("Program Updated");
+            this.programInfoChanged.emit();
           },
           error => {
             console.log("Update program error :", error)
-            this.successMessage.emit("");
-            this.errorMessage.emit("an error has occurred");
+this.toaster.error("an error has occurred")
           });
     }
   }

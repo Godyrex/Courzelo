@@ -80,12 +80,14 @@
   <div class="row">
     <div class="col-12">
       <app-program-add-form
+        (programInfoChanged)="handleProgInfoChanged()"
         (addForm)="handleAddFormToggle($event)"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
         *ngIf="addForm">
       </app-program-add-form>
       <app-program-update-form
+        (programInfoChanged)="handleProgInfoChanged()"
         (errorMessage)="handleErrorMessage($event)"
         (successMessage)="handleSuccessMessage($event)"
         (updateForm)="handleUpdateFormToggle($event)"

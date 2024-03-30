@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ClassDTO} from "../../../model/program/ClassDTO";
 import {ProgramService} from "../../../service/program/program.service";
 import {ClassListDTO} from "../../../model/program/ClassListDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-program-classes-table',
@@ -28,6 +29,7 @@ export class ProgramClassesTableComponent implements OnInit {
 
   constructor(
     private programService: ProgramService,
+    private toaster:ToastrService
   ) {
   }
 
@@ -56,17 +58,15 @@ export class ProgramClassesTableComponent implements OnInit {
       data => {
         if (data) {
           this.classDTOS = this.classDTOS.filter(inst => inst.id !== id);
-          this.messageSuccess = "class removed";
-          this.messageError = "";
+this.toaster.success("Class removed")
         } else {
-          this.messageSuccess = "";
-          this.messageError = "error removing class";
+this.toaster.error("an error has occurred")
         }
       },
       error => {
         console.log("remove class error :", error)
-        this.messageSuccess = "";
-        this.messageError = "an error has occurred";
+        this.toaster.error("an error has occurred")
+
       });
   }
 
@@ -91,8 +91,7 @@ export class ProgramClassesTableComponent implements OnInit {
         console.log("total number of pages : " + response.totalPages)
       },
       (error: any) => {
-        console.error('Error fetching classes:', error);
-      }
+this.toaster.error("Error fetching classes")    }
     );
   }
 
@@ -119,5 +118,8 @@ export class ProgramClassesTableComponent implements OnInit {
 
   showAddForm() {
     this.addForm = true;
+  }
+  handleClassInfoChanged() {
+    this.loadClasses();
   }
 }

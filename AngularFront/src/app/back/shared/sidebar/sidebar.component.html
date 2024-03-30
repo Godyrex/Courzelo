@@ -83,12 +83,12 @@
           </ul>
         </li>
 
-        <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN') && loginResponse.institution" class="nav-item"
+        <li *ngIf="loginResponse.institution" class="nav-item"
             [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
           <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              Admin
+              Consult
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -99,13 +99,13 @@
                 <p>My Institution</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item">
               <a class="nav-link" routerLink="/organisation/programs" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Programs</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item">
               <a class="nav-link" routerLink="/organisation/calendar" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Calendar</p>

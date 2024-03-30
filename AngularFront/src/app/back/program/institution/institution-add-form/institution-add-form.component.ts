@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-institution-add-form',
@@ -13,6 +14,7 @@ export class InstitutionAddFormComponent {
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() addForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() institutionInfoChanged: EventEmitter<void> = new EventEmitter<void>();
   institutionForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(40)]],
     location: ['', [Validators.required, Validators.maxLength(80)]],
@@ -22,7 +24,8 @@ export class InstitutionAddFormComponent {
 
   constructor(
     private institutionService: InstitutionService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
   ) {
   }
 
@@ -37,13 +40,12 @@ export class InstitutionAddFormComponent {
       this.institutionService.addInstitution(this.institutionRequest)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit("Institution Added");
-            this.errorMessage.emit("");
+            this.toaster.success("Institution Added");
+            this.institutionInfoChanged.emit();
           },
           error => {
             console.log("add Institution error :", error)
-            this.successMessage.emit("");
-            this.errorMessage.emit("an error has occurred");
+            this.toaster.error("an error has occurred")
           });
     }
   }

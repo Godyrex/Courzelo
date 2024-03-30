@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 import {InstitutionListDTO} from "../../../../model/program/InstitutionListDTO";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-institution-table',
@@ -27,6 +28,7 @@ export class InstitutionTableComponent implements OnInit {
 
   constructor(
     private institutionService: InstitutionService,
+    private toaster: ToastrService
   ) {
   }
 
@@ -54,7 +56,6 @@ export class InstitutionTableComponent implements OnInit {
     console.log("page changed from paginator" + page)
     this.fetchData();
   }
-
   fetchData(): void {
     this.institutionService.getPaginatedInstitution(this.currentPage, this.pageSize).subscribe(
       (response: InstitutionListDTO) => {
@@ -64,6 +65,7 @@ export class InstitutionTableComponent implements OnInit {
         console.log("total number of pages : " + response.totalPages)
       },
       (error: any) => {
+        this.toaster.error("Error fetching institutions")
         console.error('Error fetching institutions:', error);
       }
     );
@@ -82,20 +84,20 @@ export class InstitutionTableComponent implements OnInit {
       data => {
         if (data) {
           this.institutionResponse = this.institutionResponse.filter(inst => inst.id !== institutionID);
-          this.messageSuccess = "Institution removed";
-          this.messageError = "";
+          this.toaster.success('Institution removed successfully', 'Success')
+          this.fetchData();
         } else {
-          this.messageSuccess = "";
-          this.messageError = "error removing institution";
+          this.toaster.error('Error removing institution', 'Error')
         }
       },
       error => {
         console.log("add Institution error :", error)
-        this.messageSuccess = "";
-        this.messageError = "an error has occurred";
+        this.toaster.error('Error removing institution', 'Error')
       });
   }
-
+  handleInstInfoChanged() {
+    this.fetchData();
+  }
   handleSuccessMessage(message: string) {
     this.messageSuccess = message;
   }
