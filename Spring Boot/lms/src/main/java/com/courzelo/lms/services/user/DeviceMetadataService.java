@@ -35,14 +35,16 @@ public class DeviceMetadataService implements IDeviceMetadataService {
 
     @Override
     public void saveDeviceDetails(String device, User user) {
-        log.info("Saving Device...");
-        log.info("Device : " + device);
-        DeviceMetadata deviceMetadata = new DeviceMetadata();
-        deviceMetadata.setDeviceDetails(device);
-        deviceMetadata.setUser(user);
-        deviceMetadata.setLastLoggedIn(Instant.now().plusSeconds(3600));
-        deviceMetadataRepository.save(deviceMetadata);
-        log.info("Device Saved!");
+        if(isNewDevice(device, user)) {
+            log.info("Saving Device...");
+            log.info("Device : " + device);
+            DeviceMetadata deviceMetadata = new DeviceMetadata();
+            deviceMetadata.setDeviceDetails(device);
+            deviceMetadata.setUser(user);
+            deviceMetadata.setLastLoggedIn(Instant.now().plusSeconds(3600));
+            deviceMetadataRepository.save(deviceMetadata);
+            log.info("Device Saved!");
+        }
     }
 
     @Override
