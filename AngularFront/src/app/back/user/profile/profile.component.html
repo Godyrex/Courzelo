@@ -33,7 +33,7 @@
     <div class="row">
       <div class="col-md-3">
         <!-- Profile Image -->
-        <app-user-profile></app-user-profile>
+        <app-user-profile [userInfoChanged]="userInfoChanged"></app-user-profile>
       </div>
       <div class="col-md-9">
         <div class="card">
@@ -215,6 +215,7 @@
                 <!-- Display a message when TFA is already enabled -->
                 <div *ngIf="user.twoFactorAuthEnabled" class="card-body">
                   <p>Two-Factor Authentication is already enabled.</p>
+                  <button class="btn btn-danger" (click)="disableTwoFactorAuth()">Disable Two-Factor Authentication</button>
                 </div>
               </div>
               <!-- /.tab-pane -->

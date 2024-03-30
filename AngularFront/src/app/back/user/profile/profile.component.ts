@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit{
   deleteForm = this.formBuilder.group({
     password: ['', [Validators.required]],
   });
-
+  @Output() userInfoChanged = new EventEmitter<void>();
   constructor(
     private token: TokenStorageService,
     private router: Router,
@@ -111,6 +111,7 @@ export class ProfileComponent implements OnInit{
         data => {
           console.log(data);
           this.toaster.success('Two factor authentication enabled successfully', 'Success')
+          this.getMyInfo()
         },
         error => {
           console.log(error);
@@ -132,6 +133,20 @@ export class ProfileComponent implements OnInit{
         }
       );
   }
+  disableTwoFactorAuth() {
+    this.authService.disableTwoFactorAuth()
+      .subscribe(
+        data => {
+          console.log(data);
+          this.toaster.success('Two factor authentication disabled successfully', 'Success')
+          this.getMyInfo()
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error disabling two factor authentication', 'Error')
+        }
+      );
+  }
   changeName() {
     if (this.nameForm.valid) {
       this.nameRequest = Object.assign(this.nameRequest, this.nameForm.value);
@@ -139,11 +154,9 @@ export class ProfileComponent implements OnInit{
       this.updateService.changeName(this.nameRequest)
         .subscribe(data => {
             console.log(data)
-            this.user = this.token.getUser();
-            this.user.name = this.nameForm.value.name!;
-            this.user.lastname = this.nameForm.value.lastName!;
-            this.token.saveUser(this.user);
+            this.getMyInfo()
             this.toaster.success("Name updated successfully", "Success");
+            this.userInfoChanged.emit();
           },
           error => {
             console.log("update name error :", error)
@@ -163,6 +176,7 @@ export class ProfileComponent implements OnInit{
           if (progress === 100) {
             this.toaster.success("Photo updated successfully", "Success");
             this.selectedFile = null!;
+            this.userInfoChanged.emit();
           }
         });
     }
@@ -222,7 +236,7 @@ export class ProfileComponent implements OnInit{
           this.showVerification = true;
           this.showEmailForm = false;
           console.log('Verification code sent successfully:', response);
-          this.toaster.show('Verification code sent successfully', 'Success')
+          this.toaster.success('Verification code sent successfully', 'Success')
         },
         (error: any) => {
           console.error('Error sending verification code:', error);
