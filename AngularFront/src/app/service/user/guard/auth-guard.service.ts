@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.auth.isAuthenticated().pipe(
       map(response => {
-        return !!response;
+        return response;
       })
     );
   }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +36,13 @@ public class PhotoService implements IPhotoService {
 
     @Override
     public ResponseEntity<byte[]> getPhoto(String photoId) {
-        Optional<Photo> photoOptional = photoRepository.findById(photoId);
+    log.info("Starting Getting Photo");
+    Optional<Photo> photoOptional = photoRepository.findById(photoId);
         if (photoOptional.isPresent()) {
             Photo photo = photoOptional.get();
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(photo.getType()))
+                    .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
                     .body(photo.getImage().getData());
         } else {
             return ResponseEntity.notFound().build();
