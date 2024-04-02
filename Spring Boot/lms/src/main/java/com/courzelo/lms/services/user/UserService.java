@@ -108,6 +108,7 @@ public class UserService implements UserDetailsService {
     }
 
     public JwtResponse getMyInfo(String email) {
+        log.info("getMyInfo :Getting user " + email + " info...");
         User user = userRepository.findUserByEmail(email);
         List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

@@ -50,6 +50,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        log.info("AuthTokenFilter: doFilterInternal "+ request.getRequestURI());
         List<String> excludedEndpoints = Arrays.asList(
                 "/api/v1/auth/signing",
                 "/api/v1/auth/signingTFA",

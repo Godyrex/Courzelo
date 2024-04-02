@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.concurrent.TimeUnit;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/user")
@@ -52,8 +54,11 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myInfo")
     @Cacheable(value = "MyInfo", key = "#principal.name")
-    public JwtResponse getMyInfo(Principal principal) {
-        return userService.getMyInfo(principal.getName());
+    public ResponseEntity<JwtResponse> getMyInfo(Principal principal) {
+        JwtResponse jwtResponse = userService.getMyInfo(principal.getName());
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
+                .body(jwtResponse);
     }
 
     @DeleteMapping("/{userID}")
