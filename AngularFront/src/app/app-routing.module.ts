@@ -41,6 +41,10 @@ const routes: Routes = [
   {
     path: 'departments',
     component: GestionDepartementComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['ADMIN']
+    },
     children: [
       {path: 'add', component: AddDepartementComponent},
       {path: 'edit', component: EditDepartementComponent}
@@ -52,15 +56,27 @@ const routes: Routes = [
   },
   {
     path: 'timetable',
-    component: TimeTableComponent
+    component: TimeTableComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['ADMIN','TEACHER','STUDENT']
+    },
   },
   {
     path: 'actions',
-    component: ActionsComponent
+    component: ActionsComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['ADMIN']
+    },
   },
   {
     path: 'fieldOfStudies',
     component: GestionFieldOfStudyComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['ADMIN']
+    },
     children: [
       {path: 'add', component: AddFieldOfStudyComponent},
       {path: 'edit', component: EditFieldOfStudyComponent}
@@ -69,6 +85,10 @@ const routes: Routes = [
   {
     path: 'NonDisponibilities',
     component: NonDisponibilityComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['TEACHER']
+    },
     children: [
       {path: 'add', component: AddNonDisponibilityComponent},
       {path: 'edit', component: EditNonDisponibilityComponent}
@@ -124,11 +144,19 @@ const routes: Routes = [
     children: [
       {
         path: 'users',
-        component: UsersTableComponent
+        component: UsersTableComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'SUPERADMIN'
+        },
       },
       {
         path: 'institutions',
-        component: InstitutionTableComponent
+        component: InstitutionTableComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'SUPERADMIN'
+        },
       }
     ]
   },
@@ -141,7 +169,7 @@ const routes: Routes = [
         component: InstitutionPanelComponent,
         canActivate: [RoleGuardService],
         data: {
-          expectedRole: 'ADMIN'
+          expectedRole: ['ADMIN','STUDENT','TEACHER']
         },
       },
       {

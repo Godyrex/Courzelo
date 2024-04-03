@@ -47,7 +47,7 @@ public class InstitutionController {
         return iInstitutionService.getInstitutionByID(institutionID);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACHER')")
     @GetMapping("/getMyInstitution")
     @Cacheable(value = "MyInstitution", key = "#principal.name")
     public ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal) {
@@ -130,7 +130,7 @@ public class InstitutionController {
     public ResponseEntity<HttpStatus> generateExcel(@RequestBody List<CalendarDTO> events,Principal principal) {
         return iInstitutionService.generateExcel(events,principal);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACHER')")
     @GetMapping("/downloadExcel")
     public ResponseEntity<byte[]> downloadExcel(Principal principal) {
         return iInstitutionService.downloadExcel(principal);
