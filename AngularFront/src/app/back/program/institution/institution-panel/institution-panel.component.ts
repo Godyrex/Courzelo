@@ -32,9 +32,11 @@ export class InstitutionPanelComponent implements OnInit {
   ) {
   }
   ngOnInit(): void {
-    this.countUsers();
     this.getMyInstitution();
     this.getMyInfo();
+    if(this.loginResponse.roles?.includes("ADMIN")) {
+      this.countUsers();
+    }
   }
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
