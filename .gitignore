@@ -274,3 +274,7 @@ node_modules/@types/geojson/package.json
 node_modules/@types/geojson/LICENSE
 node_modules/@types/geojson/index.d.ts
 node_modules/.package-lock.json
+.idea/Courzelo.iml
+.idea/jsLibraryMappings.xml
+.idea/Courzelo.iml
+/.idea

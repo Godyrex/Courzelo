@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -8,15 +8,19 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 import {EmailRequest} from "../../../model/user/EmailRequest";
 import {Router} from "@angular/router";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
+import {ToastrService} from "ngx-toastr";
+import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
+  qrCodeImage: string = '';
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
   messageError = '';
@@ -26,6 +30,7 @@ export class ProfileComponent {
   selectedFile: File | undefined;
   showVerification: boolean = false;
   showEmailForm: boolean = true;
+  verificationCode: string = '';
   emailForm = this.formBuilder.group({
     email: ['', [Validators.email]],
   });
@@ -39,6 +44,9 @@ export class ProfileComponent {
     name: ['', [Validators.maxLength(20), Validators.minLength(3)]],
     lastName: ['', [Validators.maxLength(20), Validators.minLength(3)]],
   });
+  tfaForm = this.formBuilder.group({
+    verificationCode: ['', [Validators.required]],
+  });
   passwordForm = this.formBuilder.group({
       password: ['', [Validators.required]],
       newPassword: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
@@ -50,13 +58,27 @@ export class ProfileComponent {
   deleteForm = this.formBuilder.group({
     password: ['', [Validators.required]],
   });
-
+  @Output() userInfoChanged = new EventEmitter<void>();
   constructor(
     private token: TokenStorageService,
     private router: Router,
     private updateService: UpdateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService,
+    private authService: AuthenticationService
   ) {
+  }
+
+  ngOnInit(): void {
+        this.getMyInfo();
+    }
+  getMyInfo() {
+    this.updateService.getMyInfo().subscribe(
+      response => {
+        this.user = response;
+        console.log(response);
+      }
+    )
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {
@@ -82,6 +104,49 @@ export class ProfileComponent {
     this.messageError = "";
   }
 
+  enableTwoFactorAuth() {
+    this.verificationCode = this.tfaForm.controls['verificationCode'].value!;
+    this.authService.enableTwoFactorAuth(this.verificationCode)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.toaster.success('Two factor authentication enabled successfully', 'Success')
+          this.getMyInfo()
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error enabling two factor authentication', 'Error')
+        }
+      );
+  }
+
+  generateTwoFactorAuthQrCode() {
+    this.authService.generateTwoFactorAuthQrCode()
+      .subscribe(
+        (data: QRCodeResponse) => {
+          this.qrCodeImage = 'data:image/png;base64,' + data.qrCodeImage;
+          this.toaster.success('QR code generated successfully', 'Success')
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error generating QR code', 'Error');
+        }
+      );
+  }
+  disableTwoFactorAuth() {
+    this.authService.disableTwoFactorAuth()
+      .subscribe(
+        data => {
+          console.log(data);
+          this.toaster.success('Two factor authentication disabled successfully', 'Success')
+          this.getMyInfo()
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error disabling two factor authentication', 'Error')
+        }
+      );
+  }
   changeName() {
     if (this.nameForm.valid) {
       this.nameRequest = Object.assign(this.nameRequest, this.nameForm.value);
@@ -89,17 +154,13 @@ export class ProfileComponent {
       this.updateService.changeName(this.nameRequest)
         .subscribe(data => {
             console.log(data)
-            this.messageSuccess = data.msg!;
-            this.user = this.token.getUser();
-            this.user.name = this.nameForm.value.name!;
-            this.user.lastname = this.nameForm.value.lastName!;
-            this.token.saveUser(this.user);
-            this.messageError = "";
+            this.getMyInfo()
+            this.toaster.success("Name updated successfully", "Success");
+            this.userInfoChanged.emit();
           },
           error => {
             console.log("update name error :", error)
-            this.messageSuccess = "";
-            this.messageError = error.error.msg;
+            this.toaster.error(error.error.msg, "Error")
           });
     }
   }
@@ -113,9 +174,9 @@ export class ProfileComponent {
         .subscribe(progress => {
           this.uploadProgress = progress;
           if (progress === 100) {
-            this.messageSuccess = "File upload completed";
-            this.messageError = "";
+            this.toaster.success("Photo updated successfully", "Success");
             this.selectedFile = null!;
+            this.userInfoChanged.emit();
           }
         });
     }
@@ -140,10 +201,12 @@ export class ProfileComponent {
     this.updateService.deleteAccount(this.deleteAccountRequest).subscribe(data => {
         console.log(data)
         console.log('Account deleted successfully!');
+        this.toaster.success("Account deleted successfully", "Success")
         this.router.navigate(['/logout']);
       },
       error => {
         console.log("delete account error :", error)
+        this.toaster.error(error.error.msg, "Error")
         console.log(error)
       });
   }
@@ -157,13 +220,11 @@ export class ProfileComponent {
       this.updateService.changePassword(this.passwordRequest)
         .subscribe(data => {
             console.log(data)
-            this.messageError = "";
-            this.messageSuccess = data.msg!;
+          this.toaster.success("Password updated successfully", "Success");
           },
           error => {
             console.log("update password error :", error)
-            this.messageSuccess = "";
-            this.messageError = error.error.msg;
+            this.toaster.error(error.error.msg, "Error")
           });
     }
   }
@@ -175,9 +236,11 @@ export class ProfileComponent {
           this.showVerification = true;
           this.showEmailForm = false;
           console.log('Verification code sent successfully:', response);
+          this.toaster.success('Verification code sent successfully', 'Success')
         },
         (error: any) => {
           console.error('Error sending verification code:', error);
+          this.toaster.error('Error sending verification code', 'Error')
         }
       );
     }
@@ -192,9 +255,11 @@ export class ProfileComponent {
           this.showVerification = false;
           this.showEmailForm = true;
           console.log('Email Changed successfully Logging out ....:', response);
+          this.toaster.success('Email Changed successfully Logging out ....', 'Success');
           this.router.navigate(['/logout']);
         },
         (error: any) => {
+          this.toaster.error('Error changing email', 'Error')
           console.error('Error sending verification code:', error);
         }
       );

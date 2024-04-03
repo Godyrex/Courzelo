@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {FormBuilder, Validators} from "@angular/forms";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-institution-update-form',
@@ -21,10 +22,12 @@ export class InstitutionUpdateFormComponent implements OnChanges {
     description: [this.institutionToUpdate.description, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
     website: [this.institutionToUpdate.website],
   });
+  @Output() institutionInfoChanged: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(
     private institutionService: InstitutionService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toaster: ToastrService
   ) {
   }
 
@@ -39,13 +42,12 @@ export class InstitutionUpdateFormComponent implements OnChanges {
       this.institutionService.updateInstitution(this.institutionRequest)
         .subscribe(data => {
             console.log(data)
-            this.successMessage.emit("Institution Updated");
-            this.errorMessage.emit("");
+            this.toaster.success("Institution Updated");
+            this.institutionInfoChanged.emit();
           },
           error => {
             console.log("Update Institution error :", error)
-            this.successMessage.emit("");
-            this.errorMessage.emit("an error has occurred");
+            this.toaster.error("an error has occurred");
           });
     }
   }

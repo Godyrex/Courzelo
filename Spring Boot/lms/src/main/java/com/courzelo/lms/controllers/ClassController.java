@@ -7,6 +7,7 @@ import com.courzelo.lms.services.program.IClassService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +39,13 @@ public class ClassController {
     }*/
 
     @DeleteMapping("/delete/{classID}")
+    @CacheEvict(value = {"ProgramClasses"}, allEntries = true)
     public ResponseEntity<Boolean> deleteClass(@PathVariable String classID) {
         return iClassService.deleteClass(classID);
     }
 
     @PostMapping("/update")
+    @CacheEvict(value = {"ProgramClasses"}, allEntries = true)
     public ResponseEntity<Boolean> updateClass(@RequestBody ClassDTO classDTO) {
         return iClassService.updateClass(classDTO);
     }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 
@@ -10,12 +10,19 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 export class UserProfileComponent implements OnInit {
   loginResponse: LoginResponse = {}
   userPhotoUrl: any
+  @Input() userInfoChanged?: EventEmitter<void>;
+
 
   constructor(
     private updateService: UpdateService
   ) {
   }
 
+  listenForChanges(): void {
+    this.userInfoChanged?.subscribe(() => {
+      this.getMyInfo();
+    });
+  }
   getImage() {
     this.updateService.getPhoto(this.loginResponse.photoID!).subscribe((data: Blob) => {
       const reader = new FileReader();
@@ -28,6 +35,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMyInfo();
+    this.listenForChanges()
   }
 
   getMyInfo() {

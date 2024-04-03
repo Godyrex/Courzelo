@@ -12,11 +12,11 @@ export class RoleGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
-    const expectedRole = route.data['expectedRole'];
+    const expectedRoles = route.data['expectedRole'];
 
     return this.auth.getRole().pipe(
-      map(roles => {
-        return roles.includes(expectedRole);
+      map(userRoles => {
+        return userRoles.some(role => expectedRoles.includes(role));
       }),
       catchError(error => {
         console.error('Error retrieving role:', error);

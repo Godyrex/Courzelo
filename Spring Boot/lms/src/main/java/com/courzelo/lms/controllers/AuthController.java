@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,10 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response, HttpServletRequest request, @RequestHeader(value = "User-Agent") String userAgent) {
         return iAuthService.loginUser(loginDTO, response, request, userAgent);
     }
+    @PostMapping("/signingTFA")
+    public ResponseEntity<?> authenticateTFAUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response,@RequestParam String verificationCode, @RequestHeader(value = "User-Agent") String userAgent) {
+        return iAuthService.loginTFA(loginDTO, response, Integer.parseInt(verificationCode),userAgent);
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user, @RequestHeader(value = "User-Agent") String userAgent) {
@@ -55,6 +60,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> verifyAccount(@RequestParam("code") String code) {
         return iAuthService.verifyAccount(code);
     }
@@ -75,7 +81,29 @@ public class AuthController {
     }
 
     @PostMapping("/recover-password")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> recoverPassword(@RequestParam("token") String token, @RequestBody RecoverPasswordDTO passwordDTO) {
         return iAuthService.recoverPassword(token, passwordDTO);
+    }
+    @PostMapping("/generateTwoFactorAuthQrCode")
+    public ResponseEntity<?> generateTwoFactorAuthQrCode(Principal principal) {
+        return iAuthService.generateTwoFactorAuthQrCode(principal.getName());
+    }
+
+    @PostMapping("/enableTwoFactorAuth")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<?> enableTwoFactorAuth(Principal principal, @RequestParam String verificationCode) {
+        return iAuthService.enableTwoFactorAuth(principal.getName(), verificationCode);
+    }
+
+    @PostMapping("/disableTwoFactorAuth")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public void disableTwoFactorAuth(Principal principal) {
+        iAuthService.disableTwoFactorAuth(principal.getName());
+    }
+
+    @PostMapping("/verifyTwoFactorAuth")
+    public boolean verifyTwoFactorAuth(@RequestParam String email, @RequestParam int verificationCode) {
+        return iAuthService.verifyTwoFactorAuth(email, verificationCode);
     }
 }

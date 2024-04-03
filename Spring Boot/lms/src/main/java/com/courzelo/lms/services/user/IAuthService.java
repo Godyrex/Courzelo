@@ -9,6 +9,7 @@ import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 
 import java.io.UnsupportedEncodingException;
@@ -21,6 +22,7 @@ public interface IAuthService {
     ResponseEntity<?> confirmDevice(String userAgent, HttpServletResponse response, LoginDTO loginDTO, Integer code);
 
     ResponseEntity<?> loginUser(LoginDTO loginDTO, HttpServletResponse response, HttpServletRequest request, String userAgent);
+    ResponseEntity<?> loginTFA(LoginDTO loginDTO,HttpServletResponse response, int verificationCode,String userAgent);
 
     void logout(HttpServletResponse response);
 
@@ -33,4 +35,12 @@ public interface IAuthService {
     ResponseEntity<Response> forgotPassword(String email) throws MessagingException, UnsupportedEncodingException;
 
     ResponseEntity<Response> recoverPassword(String token, RecoverPasswordDTO passwordDTO);
+
+    void disableTwoFactorAuth(String email);
+
+    ResponseEntity<?> enableTwoFactorAuth(String email, String verificationCode);
+
+    ResponseEntity<?> generateTwoFactorAuthQrCode(String email);
+
+    boolean verifyTwoFactorAuth(String email, int verificationCode);
 }

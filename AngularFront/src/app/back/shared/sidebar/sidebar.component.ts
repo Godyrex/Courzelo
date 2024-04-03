@@ -9,7 +9,6 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  auth = this.token.isAuthenticated();
   userPhotoUrl: any;
   isMenuOpen: boolean = false;
   isSuperAdminMenuOpen: boolean = false;
@@ -17,7 +16,6 @@ export class SidebarComponent implements OnInit {
   loginResponse: LoginResponse = {}
 
   constructor(
-    private token: TokenStorageService,
     private updateService: UpdateService
   ) {
   }
