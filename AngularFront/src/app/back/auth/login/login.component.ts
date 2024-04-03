@@ -6,13 +6,39 @@ import {Router} from "@angular/router";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {ToastrService} from "ngx-toastr";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        'max-height': '500px', 'opacity': '1', 'visibility': 'visible'
+      })),
+      state('out', style({
+        'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'
+      })),
+      transition('in => out', [animate('400ms ease-in-out')]),
+      transition('out => in', [animate('400ms ease-in-out')])
+    ])
+  ],
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  public loginAnimationState = 'in';
+  public tfaAnimationState = 'out';
+  public deviceAnimationState = 'out';
+
+  toggleLoginAnimation() {
+    this.loginAnimationState = this.loginAnimationState === 'out' ? 'in' : 'out';
+  }
+  toggleTFAAnimation() {
+    this.tfaAnimationState = this.tfaAnimationState === 'out' ? 'in' : 'out';
+  }
+  toggleDeviceAnimation() {
+    this.deviceAnimationState = this.deviceAnimationState === 'out' ? 'in' : 'out';
+  }
   verification: boolean = false;
   code: number = 0;
   loginResponse: LoginResponse = {};
@@ -54,13 +80,16 @@ export class LoginComponent {
         response => {
           console.log(response)
           if(response.msg === 'Two Factor Authentication Required') {
+            this.toggleLoginAnimation();
+            this.toggleTFAAnimation();
             this.showTwoFactorAuthInput = true;
           }else {
             if (response.deviceIsNew !== undefined) {
               console.log("device not confirmed")
               if (response.deviceIsNew) {
                 console.log(this.loginRequest.rememberMe)
-                this.verification = true;
+                this.toggleLoginAnimation();
+                this.toggleDeviceAnimation();
                 this.toastr.info('Please enter the verification code sent to your email', 'Verification Required');
               }
             } else {
