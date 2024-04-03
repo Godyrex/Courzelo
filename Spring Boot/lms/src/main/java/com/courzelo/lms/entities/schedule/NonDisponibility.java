@@ -1,6 +1,7 @@
 package com.courzelo.lms.entities.schedule;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -10,8 +11,7 @@ import java.time.DayOfWeek;
 
 
 @Document(collection = "NonDisponibility")
-@Getter
-@Setter
+@Data
 public class NonDisponibility {
 
     @Id

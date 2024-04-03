@@ -2,6 +2,7 @@ package com.courzelo.lms.entities.schedule;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -12,8 +13,7 @@ import java.util.List;
 
 
 @Document(collection = "Departments")
-@Getter
-@Setter
+@Data
 public class Department {
 
     @Id

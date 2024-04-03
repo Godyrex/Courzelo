@@ -32,8 +32,8 @@ public class ElementModule {
     private DayOfWeek dayOfWeek;
     @NotNull
     private Period period;
-   @NotNull
-   private List<Class> classes;
+    @DBRef
+    private List<Class> classes;
     @NotNull
     @DBRef
     private List<Semester> semesters ;
@@ -42,14 +42,10 @@ public class ElementModule {
     private List<Department> departments;
     @NotNull
     private int numSemesters;
-
     @NotNull
     private int numDepartments;
     @DBRef
-    @NotNull
     private User teacher;
-   // @DBRef
-  //  private List<User> teachers = new ArrayList<>();
     @DBRef
     private Modul modul;
 

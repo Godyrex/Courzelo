@@ -12,7 +12,7 @@ import java.util.List;
 public class ClassDTO {
     private String id;
     private String name;
-    private Long capacity;
+    private Integer capacity;
     private List<User> teachers;
     private List<Modul> moduls;
     private FieldOfStudy fieldOfStudy;

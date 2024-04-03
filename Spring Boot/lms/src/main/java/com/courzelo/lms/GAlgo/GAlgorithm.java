@@ -6,6 +6,8 @@ import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.services.schedule.DataFromDB;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GAlgorithm {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GAlgorithm.class);
     private  final int POPULATION_SIZE = 10;
     private  final double MUTATION_RATE = 0.2;
     private  final double CROSSOVER_RATE = 0.9;
@@ -64,18 +67,32 @@ public class GAlgorithm {
         }
         return elementModules;
     }
-    private List<ElementModule> getElementsForClasse(Class classe) {
-        List<ElementModule> elementModules = new ArrayList<>();
-        for (Modul module : classe.getModuls()) {
-            elementModules.addAll(module.getElementModules());
+
+    private List<ElementModule> getElementsForClasse(ClassDTO classe) {
+            List<ElementModule> elementModules = new ArrayList<>();
+            if (classe != null && classe.getModuls() != null) {
+                for (Modul modul : classe.getModuls()) {
+                    if (modul != null && modul.getElementModules() != null) {
+                        elementModules.addAll(modul.getElementModules());
+                    } else if (modul == null) {
+                        System.out.println("One of the Modul objects in the class is null.");
+                    } else {
+                        System.out.println("Modul " + modul.getName() + " does not have any ElementModule objects associated with it.");
+                    }
+                }
+            } else if (classe == null) {
+                System.out.println("The Class object passed to the method is null.");
+            } else {
+                System.out.println("Class " + classe.getName() + " does not have any Modul objects associated with it.");
+            }
+            return elementModules;
         }
-        return elementModules;
-    }
     public void initializePopulation() {
+        LOGGER.info("Initializing population...");
         for (int i = 0; i < POPULATION_SIZE; i++) {
             UniversityTimetable universityTimetable= new UniversityTimetable(DataFromDB.classes.size());
             for (int classIndex = 0; classIndex < DataFromDB.classes.size(); classIndex++) {
-               Class classe=DataFromDB.classes.get(classIndex);
+               ClassDTO classe=DataFromDB.classes.get(classIndex);
                 List<ElementModule> elements = getElementsForClasse(classe);
                 Collections.shuffle(elements);
 
@@ -107,6 +124,7 @@ public class GAlgorithm {
         }
     }
     public void evolve() {
+        LOGGER.info("Starting evolution...");
         for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
             List<UniversityTimetable> newPopulation = new ArrayList<>(POPULATION_SIZE);
 
@@ -172,12 +190,16 @@ public class GAlgorithm {
         }*/
     }
     private UniversityTimetable selectParent() {
+
         int totalFitness = 0;
         for (UniversityTimetable universityTimetable : population) {
             totalFitness += universityTimetable.calculateFitness();
         }
 
-        int randomFitness = random.nextInt(totalFitness);
+        int randomFitness = 0;
+        if (totalFitness > 0) {
+            randomFitness = random.nextInt(totalFitness);
+        }
         int cumulativeFitness = 0;
 
         for (UniversityTimetable universityTimetable : population) {
@@ -190,7 +212,7 @@ public class GAlgorithm {
         // If no individual is selected (should not happen), return a random one
         return population.get(random.nextInt(population.size()));
     }
-    public List<UniversityTimetable> crossover(UniversityTimetable parent1,UniversityTimetable parent2) {
+    public List<UniversityTimetable> crossover(UniversityTimetable parent1, UniversityTimetable parent2) {
         Random random = new Random();
         int numberOfClasses = parent1.getNumberOfClasses();
         // Create offspring timetables
@@ -199,20 +221,28 @@ public class GAlgorithm {
 
         // Perform crossover for each class
         for (int classIndex = 0; classIndex < numberOfClasses; classIndex++) {
-            List<ElementModule> parent1Timetable = parent1.getTimetable(classIndex);// IIBDCC emplois du temps 1
-            List<ElementModule> parent2Timetable = parent2.getTimetable(classIndex);// IIBDCC emplois du temps 2
+            List<ElementModule> parent1Timetable = parent1.getTimetable(classIndex);
+            List<ElementModule> parent2Timetable = parent2.getTimetable(classIndex);
 
-            int timetableSize = parent1Timetable.size();
+            int timetableSize = Math.min(parent1Timetable.size(), parent2Timetable.size());
 
             // Determine crossover point
-            int crossoverPoint = random.nextInt((timetableSize / 2) - 1) + 1;
-            //exit(0);
+            int crossoverPoint = 1; // Default to 1 if timetableSize <= 2
+            if (timetableSize > 2) {
+                // Adjust the range of the random number generator to exclude the first and last index
+                crossoverPoint = random.nextInt(timetableSize - 2) + 1;
+            }
+
+            // If crossoverPoint is greater than the size of the parent timetables, set it to the size of the smaller parent timetable
+            if (crossoverPoint > timetableSize) {
+                crossoverPoint = timetableSize;
+            }
+
             // Create child timetables by combining parent schedules
             List<ElementModule> child1Timetable = new ArrayList<>(parent1Timetable.subList(0, crossoverPoint));
             List<ElementModule> child2Timetable = new ArrayList<>(parent2Timetable.subList(0, crossoverPoint));
 
             List<ElementModule> remainingElementsParent1 = parent1Timetable.stream().filter(element -> !child2Timetable.contains(element)).toList();
-
             List<ElementModule> remainingElementsParent2 = parent2Timetable.stream().filter(element -> !child1Timetable.contains(element)).toList();
 
             // Add remaining elements from the other parent to each child timetable
@@ -220,8 +250,8 @@ public class GAlgorithm {
             child2Timetable.addAll(remainingElementsParent1);
 
             // Add child timetables to offspring
-            offspring1.getTimetable(classIndex).addAll(child1Timetable);
-            offspring2.getTimetable(classIndex).addAll(child2Timetable);
+            offspring1.setTimetable(classIndex, child1Timetable);
+            offspring2.setTimetable(classIndex, child2Timetable);
         }
 
         List<UniversityTimetable> offspring = new ArrayList<>();
@@ -235,22 +265,28 @@ public class GAlgorithm {
         int classIndex = random.nextInt(universityTimetable.getNumberOfClasses());
         List<ElementModule> classTimetable = universityTimetable.getTimetable(classIndex);
         // Select two positions in the class timetable
-        int position1 = random.nextInt(classTimetable.size());
-        int position2 = random.nextInt(classTimetable.size());
+        int position1 = 0;
+        int position2 = 0;
+        if (classTimetable.size() > 0) {
+            position1 = random.nextInt(classTimetable.size());
+            position2 = random.nextInt(classTimetable.size());
+        }
         // Randomly reassign day and period for the element in the updated timetable
         DayOfWeek randomDay = getRandomDay();
         Period randomPeriod = getRandomPeriode(randomDay);
-        classTimetable.get(position1).setDayOfWeek(randomDay);
-        classTimetable.get(position1).setPeriod(randomPeriod);
+        if (!classTimetable.isEmpty()) {
+            classTimetable.get(position1).setDayOfWeek(randomDay);
+            classTimetable.get(position1).setPeriod(randomPeriod);
+        }
         // Swap the elements at the selected positions
         universityTimetable.swapGenes(classIndex, position1, position2);
-/*
+
         // Select another individual to get the new timetable from
-        int classIndex2 = random.nextInt(schoolTimetable.getNumberOfClasses());
-        List<ElementDeModule> classTimetable2 = schoolTimetable.getTimetable(classIndex2);
+        int classIndex2 = random.nextInt(universityTimetable.getNumberOfClasses());
+        List<ElementModule> classTimetable2 = universityTimetable.getTimetable(classIndex2);
         // Replace the timetable of the selected class with the timetable from the second individual
-        schoolTimetable.setTimetable(classIndex, classTimetable2);
-*/
+        universityTimetable.setTimetable(classIndex, classTimetable2);
+
 
     }
     public UniversityTimetable generateTimetable() {

@@ -231,8 +231,10 @@ public class PdfExportService {
         Department departement = departmentService.getDepartmentById(id);
         myPDFDoc.open();  // Open the Document
         for(FieldOfStudy fieldOfStudy :departement.getFieldOfStudies()){
-            for(Class classe :fieldOfStudy.getClasses()){
-                AddPageClasse(myPDFDoc,classe);
+            for(Class aClass :fieldOfStudy.getClasses()){
+                // Convert Class to ClassDTO
+                ClassDTO classDTO = classService.mapToDTO(aClass);
+                AddPageClasse(myPDFDoc, classDTO);
             }
         }
         myPDFDoc.close();
@@ -243,7 +245,7 @@ public class PdfExportService {
         // Retrieve all classes
 
 
-        Class classe = classService.getClasseById(id);
+        ClassDTO classe = classService.getClasseById(id);
 
         Document myPDFDoc = new Document(PageSize.A4,
                 40f,   // left
@@ -265,13 +267,13 @@ public class PdfExportService {
                 70f); // down
         final PdfWriter pdfWriter = PdfWriter.getInstance(myPDFDoc, response.getOutputStream());
         myPDFDoc.open();  // Open the Document
-        for(Class classe :DataFromDB.classes){
+        for(ClassDTO classe :DataFromDB.classes){
             AddPageClasse(myPDFDoc,classe);
         }
         myPDFDoc.close();
         pdfWriter.close();
     }
-    public void AddPageClasse(Document myPDFDoc, Class classe) throws IOException {
+    public void AddPageClasse(Document myPDFDoc, ClassDTO classe) throws IOException {
         // Set TimePeriods in Timetable
         Period[] periods = Period.values();
         days = new ArrayList<>();

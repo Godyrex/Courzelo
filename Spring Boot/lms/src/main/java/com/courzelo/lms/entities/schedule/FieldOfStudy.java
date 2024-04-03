@@ -4,6 +4,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.Department;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -14,8 +15,7 @@ import java.util.List;
 
 
 @Document(collection = "FieldOfStudy")
-@Getter
-@Setter
+@Data
 public class FieldOfStudy {
 
     @Id

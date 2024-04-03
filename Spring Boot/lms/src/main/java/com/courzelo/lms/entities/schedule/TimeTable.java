@@ -6,6 +6,7 @@ import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.entities.schedule.Semester;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -16,9 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
 @Document(collation = "TimeTables")
-@Setter
+@Data
 
 public class TimeTable {
     @Id

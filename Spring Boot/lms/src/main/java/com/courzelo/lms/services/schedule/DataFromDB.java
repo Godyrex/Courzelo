@@ -26,7 +26,7 @@ public class DataFromDB {
     public static List<ElementModuleDTO> elementModules;
     public static List<FieldOfStudyDTO> fieldOfStudies;
     public static List<DepartmentDTO> departments;
-    public static List<Class> classes;
+    public static List<ClassDTO> classes;
     public static List<ModulDTO> moduls;
     private UserService userService;
     private SemesterService semesterService;
@@ -44,7 +44,7 @@ public class DataFromDB {
         departments = departmentService.findAll();
         moduls = modulService.findAll();
         teachers=userService.getProfsByRole();
-        classes = classService.getClasses1();
+        classes = classService.getClasses2();
 
     }
 }

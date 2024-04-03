@@ -67,9 +67,12 @@ public class ElementModuleService {
         elementModuleDTO.setName(elementModule.getName());
         elementModuleDTO.setDayOfWeek(elementModule.getDayOfWeek());
         elementModuleDTO.setPeriod(elementModule.getPeriod());
-        elementModuleDTO.setClasses(elementModule.getClasses());
         elementModuleDTO.setSemesters(elementModule.getSemesters());
         elementModuleDTO.setDepartments(elementModule.getDepartments());
+        elementModuleDTO.setNumSemesters(elementModule.getNumSemesters());
+        elementModuleDTO.setNumDepartments(elementModule.getNumDepartments());
+        elementModuleDTO.setModul(elementModule.getModul());
+        elementModuleDTO.setClasses(elementModule.getClasses());
         return elementModuleDTO;
     }
 
@@ -79,12 +82,12 @@ public class ElementModuleService {
         elementModule.setName(elementModuleDTO.getName());
         elementModule.setDayOfWeek(elementModuleDTO.getDayOfWeek());
         elementModule.setPeriod(elementModuleDTO.getPeriod());
-        elementModule.setClasses(elementModuleDTO.getClasses());
         elementModule.setSemesters(elementModuleDTO.getSemesters());
         elementModule.setDepartments(elementModuleDTO.getDepartments());
         elementModule.setNumSemesters(elementModuleDTO.getNumSemesters());
         elementModule.setNumDepartments(elementModuleDTO.getNumDepartments());
         elementModule.setModul(elementModuleDTO.getModul());
+        elementModule.setClasses(elementModuleDTO.getClasses());
         return elementModule;
     }
 
@@ -93,7 +96,7 @@ public class ElementModuleService {
     }
 
     public List<ElementModule> getEmploisByClasse(String id) {
-        return elementModuleRepository.getEmploisByClasses(id);
+        return elementModuleRepository.getElementModulesByClasses(id);
     }
 
     public ElementModule addElementModule(ElementModule elementDeModule) {

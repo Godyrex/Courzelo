@@ -1,6 +1,8 @@
 package com.courzelo.lms.controllers;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.ModulDTO;
+import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.services.schedule.ModulService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,19 +37,25 @@ public class ModulController {
 
     @PostMapping
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<?> createModul(@RequestBody @Valid final ModulDTO modulDTO) {
+    public ResponseEntity<ModulDTO> createModul(@RequestBody @Valid final ModulDTO modulDTO) {
         if (modulDTO.getAClass() == null) {
-            return new ResponseEntity<>("ClassDTO is null", HttpStatus.BAD_REQUEST);
+            Class aClass = new Class();
+            // Set default values for the ClassDTO object if needed
+            aClass.setName("Default Class Name");
+            modulDTO.setAClass(aClass);
         }
-        final Modul createdModul = modulService.createModul(modulDTO);
+        final ModulDTO createdModul = modulService.createModul(modulDTO);
         return new ResponseEntity<>(createdModul, HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<String> updateModul(@PathVariable(name = "id") final String id,
                                               @RequestBody @Valid final ModulDTO modulDTO) {
+        ModulDTO existingModul = modulService.get(id);
+        if (existingModul == null) {
+            return new ResponseEntity<>("Modul not found for ID: " + id, HttpStatus.NOT_FOUND);
+        }
         modulService.update(id, modulDTO);
-        return ResponseEntity.ok('"' + id + '"');
+        return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")

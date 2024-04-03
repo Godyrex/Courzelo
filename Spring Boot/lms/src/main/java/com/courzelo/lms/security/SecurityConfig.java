@@ -85,7 +85,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/departments/**")
                         .permitAll()
-                        .requestMatchers("/api/moduls/**")
+                        .requestMatchers("/api/Modules/**")
                         .permitAll()
                         .requestMatchers("/api/v1/user/**")
                         .permitAll()

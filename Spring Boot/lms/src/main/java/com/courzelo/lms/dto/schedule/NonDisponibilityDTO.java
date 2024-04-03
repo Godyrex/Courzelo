@@ -10,8 +10,6 @@ import java.time.DayOfWeek;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
-@Getter
-@Setter
 public class NonDisponibilityDTO {
     private String  id;
     private DayOfWeek dayOfWeek;

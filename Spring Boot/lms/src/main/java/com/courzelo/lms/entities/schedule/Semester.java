@@ -2,6 +2,7 @@ package com.courzelo.lms.entities.schedule;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -11,8 +12,7 @@ import java.time.LocalDate;
 
 
 @Document(collection = "Semester")
-@Getter
-@Setter
+@Data
 public class Semester {
 
     @Id

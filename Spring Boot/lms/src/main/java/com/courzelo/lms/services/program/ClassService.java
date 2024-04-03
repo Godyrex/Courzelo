@@ -7,6 +7,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -36,15 +37,17 @@ public class ClassService implements IClassService {
     private final InstitutionRepository institutionRepository;
     private final ProgramRepository programRepository;
     private final FieldOfStudyRepository fieldOfRepository;
+    private final ModulRepository modulRepository;
     @Autowired
     private ModelMapper modelMapper;
 
-    public ClassService(ClassRepository classRepository, UserRepository userRepository, InstitutionRepository institutionRepository, ProgramRepository programRepository, FieldOfStudyRepository fieldOfRepository) {
+    public ClassService(ClassRepository classRepository, UserRepository userRepository, InstitutionRepository institutionRepository, ProgramRepository programRepository, FieldOfStudyRepository fieldOfRepository, ModulRepository modulRepository) {
         this.classRepository = classRepository;
         this.userRepository = userRepository;
         this.institutionRepository = institutionRepository;
         this.programRepository = programRepository;
         this.fieldOfRepository = fieldOfRepository;
+        this.modulRepository = modulRepository;
     }
 
     @Override
@@ -268,9 +271,14 @@ public class ClassService implements IClassService {
         return ResponseEntity.ok().body(userListDTO);
     }
 
-    public Class getClasseById(String id) {
+   /* public Class getClasseById(String id) {
         return classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
+    }*/
+    public ClassDTO getClasseById(String id) {
+        Class aClass = classRepository.findById(id)
+                .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
+        return mapToDTO(aClass);
     }
 
     public Class addClasse(Class classe, String idField) {
@@ -300,9 +308,26 @@ public class ClassService implements IClassService {
     }*/
 
     }
+    public List<ClassDTO> getClasses2() {
+        log.info("Getting all classes");
+        return classRepository.findAll()
+                .stream()
+                .map(classes -> modelMapper.map(classes, ClassDTO.class))
+                .collect(Collectors.toList());
+    }
 
     public List<Class> findAll() {
         return classRepository.findAll();
     }
-
+    public ClassDTO mapToDTO(Class aClass) {
+        ClassDTO classDTO = new ClassDTO();
+        classDTO.setId(aClass.getId());
+        classDTO.setName(aClass.getName());
+        classDTO.setCapacity(aClass.getCapacity());
+        classDTO.setTeachers(aClass.getTeachers());
+        classDTO.setModuls(aClass.getModuls());
+        classDTO.setFieldOfStudy(aClass.getFieldOfStudy());
+        classDTO.setSemester(aClass.getSemester());
+        return classDTO;
+    }
 }

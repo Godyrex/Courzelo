@@ -9,8 +9,6 @@ import lombok.Setter;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
-@Getter
-@Setter
 public class FieldOfStudyDTO {
     private String id;
     @Size(max = 255)
