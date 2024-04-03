@@ -11,13 +11,26 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {ToastrService} from "ngx-toastr";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void => *', animate(500)),
+    ]),
+  ]
 })
 export class ProfileComponent implements OnInit{
+  loading = false;
+  toggleLoading(): void {
+    this.loading = true;
+  }
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
   qrCodeImage: string = '';

@@ -1,0 +1,9 @@
+.email-link {
+  color: black;
+  transition: color 0.5s ease;
+}
+
+.email-link:hover {
+  color: blue;
+  cursor: pointer;
+}
