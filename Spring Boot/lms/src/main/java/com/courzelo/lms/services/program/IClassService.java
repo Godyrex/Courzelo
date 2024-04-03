@@ -19,6 +19,7 @@ public interface IClassService {
     void removeUsersInClass(String classID);
 
     ResponseEntity<Boolean> addClass(ClassDTO classDTO);
+    ResponseEntity<Boolean> addClass1(ClassDTO classDTO);
 
     ResponseEntity<Boolean> updateClass(ClassDTO classDTO);
 

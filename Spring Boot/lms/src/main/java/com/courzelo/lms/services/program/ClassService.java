@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -86,19 +87,49 @@ public class ClassService implements IClassService {
         }
     }
 
+
+
     @Override
-    public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
+     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
+         log.info("Adding class ");
+         Class aClass = modelMapper.map(classDTO, Class.class);
+         Class savedClass = classRepository.save(aClass);
+         if (savedClass.getId() != null) {
+             return ResponseEntity.ok().body(true);
+         } else {
+             return ResponseEntity.badRequest().body(false);
+         }
+     }
+    @Override
+    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
         log.info("Adding class ");
         Class aClass = modelMapper.map(classDTO, Class.class);
+        List<Modul> moduls = new ArrayList<>();
+        if (classDTO.getModuls() != null) {
+            moduls = classDTO.getModuls().stream()
+                    .map(modulDTO -> {
+                        Modul modul = modulRepository.findById(modulDTO.getId())
+                                .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + modulDTO.getId()));
+                        return modul;
+                    })
+                    .collect(Collectors.toList());
+        }
+        aClass.setModuls(moduls);
+
+        if (classDTO.getFieldOfStudy() != null && classDTO.getFieldOfStudy().getId() != null) {
+            FieldOfStudy fieldOfStudy = fieldOfRepository.findById(classDTO.getFieldOfStudy().getId())
+                    .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + classDTO.getFieldOfStudy().getId()));
+            aClass.setFieldOfStudy(fieldOfStudy);
+        }
+
         Class savedClass = classRepository.save(aClass);
-        if (savedClass.getId() != null) {
+        if (savedClass != null && savedClass.getId() != null) {
             return ResponseEntity.ok().body(true);
         } else {
             return ResponseEntity.badRequest().body(false);
         }
     }
-
-    @Override
+   /* @Override
     public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
         log.info("Update class :" + classDTO.getId());
         Class aClass = classRepository.findById(classDTO.getId())
@@ -111,7 +142,27 @@ public class ClassService implements IClassService {
         } else {
             return ResponseEntity.badRequest().body(false);
         }
-    }
+    }*/
+   @Override
+   public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
+       log.info("Update class :" + classDTO.getId());
+       Class aClass = classRepository.findById(classDTO.getId())
+               .orElseThrow(() -> new ClassNotFoundException("Class " + classDTO.getId() + " not found"));
+       aClass.setName(classDTO.getName());
+       List<Modul> moduls = classDTO.getModuls().stream()
+               .map(modulDTO -> {
+                   Modul modul = modelMapper.map(modulDTO, Modul.class);
+                   return modulRepository.save(modul);
+               })
+               .collect(Collectors.toList());
+       aClass.setModuls(moduls);
+       Class savedClass = classRepository.save(aClass);
+       if (savedClass.getId() != null) {
+           return ResponseEntity.ok().body(true);
+       } else {
+           return ResponseEntity.badRequest().body(false);
+       }
+   }
 
     @Override
     public ResponseEntity<UserListDTO> getClassUsers(String classID, Principal principal, String role, int page, int sizePerPage) {

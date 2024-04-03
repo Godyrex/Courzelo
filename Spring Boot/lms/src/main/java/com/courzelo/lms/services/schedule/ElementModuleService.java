@@ -1,18 +1,16 @@
 package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.dto.schedule.ElementModuleDTO;
-import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.Semester;
-import com.courzelo.lms.repositories.DepartmentRepository;
-import com.courzelo.lms.repositories.ElementModuleRepository;
-import com.courzelo.lms.repositories.SemesterRepository;
+import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Modul;
+import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.repositories.*;
 import com.courzelo.lms.utils.NotFoundException;
-import jakarta.persistence.PostPersist;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,12 +20,17 @@ public class ElementModuleService {
     private final ElementModuleRepository elementModuleRepository;
     private final SemesterRepository semesterRepository;
     private final DepartmentRepository departmentRepository;
+    private final ModulRepository modulRepository;
+    private final UserRepository userRepository;
+    private final FieldOfStudyRepository fieldOfStudyRepository;
 
-
-    public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository) {
+    public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository, ModulRepository modulRepository, UserRepository userRepository, FieldOfStudyRepository fieldOfStudyRepository) {
         this.elementModuleRepository = elementModuleRepository;
         this.semesterRepository = semesterRepository;
         this.departmentRepository = departmentRepository;
+        this.modulRepository = modulRepository;
+        this.userRepository = userRepository;
+        this.fieldOfStudyRepository = fieldOfStudyRepository;
     }
 
     public List<ElementModuleDTO> findAll() {
@@ -45,8 +48,35 @@ public class ElementModuleService {
 
     public String create(final ElementModuleDTO elementModuleDTO) {
         final ElementModule elementModule = new ElementModule();
+        if (elementModuleDTO.getId() != null) {
+            Modul modul = modulRepository.findById(elementModuleDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + elementModuleDTO.getId()));
+            elementModule.setModul(modul);
+        }
+        if (elementModuleDTO.getTeacher() != null && elementModuleDTO.getTeacher().getId() != null) {
+            User teacher = userRepository.findById(elementModuleDTO.getTeacher().getId())
+                    .orElseThrow(() -> new RuntimeException("Teacher not found for ID: " + elementModuleDTO.getTeacher().getId()));
+            elementModule.setTeacher(teacher);
+        }
+        if (elementModuleDTO.getFieldOfStudies() != null) {
+            List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+            for (FieldOfStudy fieldOfStudyDTO : elementModuleDTO.getFieldOfStudies()) {
+                if (fieldOfStudyDTO.getId() != null) {
+                    FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(fieldOfStudyDTO.getId())
+                            .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + fieldOfStudyDTO.getId()));
+                    fieldOfStudies.add(fieldOfStudy);
+                }
+            }
+            elementModule.setFieldOfStudies(fieldOfStudies);
+        }
+
+
         mapToEntity(elementModuleDTO, elementModule);
-        return elementModuleRepository.save(elementModule).getId();
+        ElementModule savedElementModule = elementModuleRepository.save(elementModule);
+        if (elementModule.getModul() != null) {
+            modulRepository.save(elementModule.getModul());
+        }
+        return savedElementModule.getId();
     }
 
     public void update(final String id, final ElementModuleDTO elementModuleDTO) {
@@ -73,6 +103,8 @@ public class ElementModuleService {
         elementModuleDTO.setNumDepartments(elementModule.getNumDepartments());
         elementModuleDTO.setModul(elementModule.getModul());
         elementModuleDTO.setClasses(elementModule.getClasses());
+        elementModuleDTO.setTeacher(elementModule.getTeacher());
+        elementModuleDTO.setFieldOfStudies(elementModule.getFieldOfStudies());
         return elementModuleDTO;
     }
 
@@ -88,6 +120,8 @@ public class ElementModuleService {
         elementModule.setNumDepartments(elementModuleDTO.getNumDepartments());
         elementModule.setModul(elementModuleDTO.getModul());
         elementModule.setClasses(elementModuleDTO.getClasses());
+        elementModule.setTeacher(elementModuleDTO.getTeacher());
+        elementModule.setFieldOfStudies(elementModuleDTO.getFieldOfStudies());
         return elementModule;
     }
 

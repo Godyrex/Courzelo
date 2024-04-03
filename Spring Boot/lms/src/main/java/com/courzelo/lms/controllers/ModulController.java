@@ -3,7 +3,7 @@ package com.courzelo.lms.controllers;
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.ModulDTO;
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.Modul;
+import com.courzelo.lms.services.program.IClassService;
 import com.courzelo.lms.services.schedule.ModulService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -20,9 +20,11 @@ import java.util.List;
 public class ModulController {
 
     private final ModulService modulService;
+    private final IClassService iClassService;
 
-    public ModulController(final ModulService modulService) {
+    public ModulController(final ModulService modulService, IClassService iClassService) {
         this.modulService = modulService;
+        this.iClassService = iClassService;
     }
 
     @GetMapping
@@ -63,6 +65,10 @@ public class ModulController {
     public ResponseEntity<Void> deleteModul(@PathVariable(name = "id") final String id) {
         modulService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/addmodules")
+    public ResponseEntity<Boolean> addClass(@RequestBody ClassDTO classDTO) {
+        return iClassService.addClass1(classDTO);
     }
 
 }

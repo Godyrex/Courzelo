@@ -12,6 +12,8 @@ import com.courzelo.lms.repositories.ModulRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.courzelo.lms.utils.NotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,23 +50,23 @@ public class ModulService {
         return modulRepository.save(modul).getId();
     }
     public ModulDTO createModul(ModulDTO modulDTO) {
-        List<ElementModule> elementModules = modulDTO.getElementModules().stream()
-                .map(dto -> {
-                    ElementModule elementModule = new ElementModule();
-                    elementModule.setName(dto.getName());
-                    return elementModuleRepository.save(elementModule);
-                })
-                .collect(Collectors.toList());
-
-        // Create a new Class entity
-        Class aClass = new Class();
-        aClass.setName("Default Class Name"); // Set a default name or any other default values
-        aClass = classRepository.save(aClass);
-
+        List<ElementModule> elementModules = new ArrayList<>();
+        if (modulDTO.getElementModules() != null) {
+            elementModules = modulDTO.getElementModules().stream()
+                    .filter(dto -> dto.getId() != null)
+                    .map(dto -> elementModuleRepository.findById(dto.getId())
+                            .orElseThrow(() -> new RuntimeException("ElementModule not found for ID: " + dto.getId())))
+                    .collect(Collectors.toList());
+        }
+        Class aClass = null;
+        if (modulDTO.getAClass() != null && modulDTO.getAClass().getId() != null) {
+            aClass = classRepository.findById(modulDTO.getAClass().getId())
+                    .orElseThrow(() -> new RuntimeException("Class not found for ID: " + modulDTO.getAClass().getId()));
+        }
         Modul modul = new Modul();
         modul.setName(modulDTO.getName());
         modul.setElementModules(elementModules);
-        modul.setAClass(aClass); // Associate the saved Class entity with the new Modul entity
+        modul.setAClass(aClass);
         modul = modulRepository.save(modul);
         return mapToDTO(modul, new ModulDTO());
     }

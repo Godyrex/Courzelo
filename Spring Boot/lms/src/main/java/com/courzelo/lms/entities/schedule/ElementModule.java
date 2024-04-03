@@ -48,6 +48,8 @@ public class ElementModule {
     private User teacher;
     @DBRef
     private Modul modul;
+    @DBRef
+    private List<FieldOfStudy> fieldOfStudies;
 
 
 }

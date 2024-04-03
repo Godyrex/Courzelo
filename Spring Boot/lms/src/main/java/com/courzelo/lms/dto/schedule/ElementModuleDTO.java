@@ -31,6 +31,7 @@ public class ElementModuleDTO {
     private List<Class> classes;
     private User teacher;
     private Modul modul;
+    private List<FieldOfStudy> fieldOfStudies;
 
 
 }

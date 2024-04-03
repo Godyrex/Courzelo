@@ -90,18 +90,21 @@ public class GAlgorithm {
     public void initializePopulation() {
         LOGGER.info("Initializing population...");
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            UniversityTimetable universityTimetable= new UniversityTimetable(DataFromDB.classes.size());
+            UniversityTimetable universityTimetable = new UniversityTimetable(DataFromDB.classes.size());
             for (int classIndex = 0; classIndex < DataFromDB.classes.size(); classIndex++) {
-               ClassDTO classe=DataFromDB.classes.get(classIndex);
+                ClassDTO classe = DataFromDB.classes.get(classIndex);
                 List<ElementModule> elements = getElementsForClasse(classe);
                 Collections.shuffle(elements);
-
                 for (ElementModule element : elements) {
-                    DayOfWeek day = getRandomDay();
-                    Period periode = getRandomPeriode(day);
-                    element.setDayOfWeek(day);
-                    element.setPeriod(periode);
-                    universityTimetable.addElementDeModule(classIndex, element);
+                    if (element != null) {
+                        DayOfWeek day = getRandomDay();
+                        Period periode = getRandomPeriode(day);
+                        element.setDayOfWeek(day);
+                        element.setPeriod(periode);
+                        universityTimetable.addElementDeModule(classIndex, element);
+                    } else {
+                        System.out.println("One of the ElementModule objects in the class is null.");
+                    }
                 }
             }
             population.add(universityTimetable);

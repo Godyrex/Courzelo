@@ -6,6 +6,7 @@ import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.user.User;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
