@@ -70,6 +70,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
 import { ActionsComponent } from './back/schedule/actions/actions.component';
+import { UserProfileDialogComponent } from './back/user/user-profile-dialog/user-profile-dialog.component';
 
 
 @NgModule({
@@ -122,7 +123,8 @@ import { ActionsComponent } from './back/schedule/actions/actions.component';
     ForgotPasswordComponent,
     RecoverPasswordComponent,
     CalendarComponent,
-    ActionsComponent
+    ActionsComponent,
+    UserProfileDialogComponent
   ],
   imports: [
     BrowserModule,

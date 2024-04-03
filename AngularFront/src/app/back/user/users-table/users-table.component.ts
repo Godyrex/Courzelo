@@ -4,6 +4,8 @@ import {UserRoleRequest} from "../../../model/user/UserRoleRequest";
 import {PanelService} from "../../../service/user/admin/panel.service";
 import {UserListDTO} from "../../../model/user/UserListDTO";
 import {ToastrService} from "ngx-toastr";
+import {MatDialog} from "@angular/material/dialog";
+import {UserProfileDialogComponent} from "../user-profile-dialog/user-profile-dialog.component";
 
 @Component({
   selector: 'app-users-table',
@@ -13,15 +15,20 @@ import {ToastrService} from "ngx-toastr";
 export class UsersTableComponent implements OnInit {
   userResponse: UserResponse[] = []
   selectedRole: string = "";
-  availableRoles: string[] = ['SUPERADMIN']
+  availableRoles: string[] = ['SUPERADMIN', 'ADMIN', 'STUDENT', 'TEACHER']
   totalPages: number = 0;
   currentPage: number = 0;
   pageSize: number = 2;
 
   constructor(private panelService: PanelService,
-              private toaster: ToastrService) {
+              private toaster: ToastrService,
+              public dialog: MatDialog) {
   }
-
+  openUserProfile(email: string): void {
+    this.dialog.open(UserProfileDialogComponent, {
+      data: { email: email }
+    });
+  }
   ngOnInit(): void {
     this.loadUsers();
   }

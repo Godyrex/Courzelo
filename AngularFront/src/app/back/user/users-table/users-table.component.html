@@ -33,7 +33,7 @@
             <tbody>
             <tr *ngFor="let user of userResponse">
               <td>{{ user.id }}</td>
-              <td>{{ user.email }}</td>
+              <td><a class="email-link" (click)="openUserProfile(user.email!)">{{ user.email }}</a></td>
               <td>{{ user.name }}</td>
               <td>{{ user.lastname }}</td>
               <td>
