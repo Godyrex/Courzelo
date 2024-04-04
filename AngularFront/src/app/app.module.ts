@@ -71,6 +71,8 @@ import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
 import { ActionsComponent } from './back/schedule/actions/actions.component';
 import { UserProfileDialogComponent } from './back/user/user-profile-dialog/user-profile-dialog.component';
+import { QaDialogComponent } from './back/user/qa-dialog/qa-dialog.component';
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -124,12 +126,14 @@ import { UserProfileDialogComponent } from './back/user/user-profile-dialog/user
     RecoverPasswordComponent,
     CalendarComponent,
     ActionsComponent,
-    UserProfileDialogComponent
+    UserProfileDialogComponent,
+    QaDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
     RouterOutlet,

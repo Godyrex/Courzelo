@@ -6,6 +6,6 @@
 }
 
 .profile-pic:hover {
-  transform: scale(4) translate(50%, 25%); /* Adjusted */
+  transform: scale(3) translate(0%, 25%); /* Adjusted */
   z-index: 1000; /* New */
 }
