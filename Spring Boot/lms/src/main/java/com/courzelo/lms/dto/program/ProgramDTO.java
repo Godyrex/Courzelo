@@ -8,4 +8,5 @@ public class ProgramDTO {
     String name;
     String description;
     String programType;
+    String secretKey;
 }

@@ -73,6 +73,12 @@ import { ActionsComponent } from './back/schedule/actions/actions.component';
 import { UserProfileDialogComponent } from './back/user/user-profile-dialog/user-profile-dialog.component';
 import { QaDialogComponent } from './back/user/qa-dialog/qa-dialog.component';
 import {MatIconModule} from "@angular/material/icon";
+import { MyClassesComponent } from './back/program/my-programs-and-classes/my-classes/my-classes.component';
+import { MyProgramsComponent } from './back/program/my-programs-and-classes/my-programs/my-programs.component';
+import { MyProgramsAndClassesComponent } from './back/program/my-programs-and-classes/my-programs-and-classes.component';
+import { JoinProgramDialogComponent } from './back/program/my-programs-and-classes/my-programs/join-program-dialog/join-program-dialog.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -127,7 +133,11 @@ import {MatIconModule} from "@angular/material/icon";
     CalendarComponent,
     ActionsComponent,
     UserProfileDialogComponent,
-    QaDialogComponent
+    QaDialogComponent,
+    MyClassesComponent,
+    MyProgramsComponent,
+    MyProgramsAndClassesComponent,
+    JoinProgramDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -143,7 +153,9 @@ import {MatIconModule} from "@angular/material/icon";
     MatDialogModule,
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
-    })
+    }),
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [HttpClient, {
     provide: HTTP_INTERCEPTORS,

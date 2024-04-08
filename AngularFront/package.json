@@ -21,8 +21,6 @@
     "@angular/platform-browser-dynamic": "^15.2.10",
     "@angular/router": "^15.2.10",
     "@types/leaflet": "^1.9.8",
-    "jqvmap": "^1.5.1",
-    "jvectormap-next": "^3.1.1",
     "leaflet": "^1.9.4",
     "ngx-bootstrap": "^6.2.0",
     "ngx-toastr": "^16.2.0",
@@ -30,7 +28,8 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.6.13",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.13.0",
+    "admin-lte": "3.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.10",

@@ -14,6 +14,7 @@ public interface ProgramRepository extends MongoRepository<Program, String> {
     Page<Program> findAllByInstitution(Institution institution, Pageable pageable);
 
     List<Program> findByInstitution(Institution institution);
+    Program findBySecretKey(String secretKey);
 
 
 }

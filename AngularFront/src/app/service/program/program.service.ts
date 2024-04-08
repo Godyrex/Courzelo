@@ -51,4 +51,20 @@ export class ProgramService {
   removeClassFromProgram(classID: string): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/remove/class/${classID}`, null);
   }
+  getMyPrograms(): Observable<ProgramListDTO> {
+    return this.http.get<ProgramListDTO>(`${this.baseUrl}/myPrograms`);
+  }
+  joinProgram(key: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('key', key);
+    return this.http.post<boolean>(`${this.baseUrl}/join`, null, {params});
+  }
+  leaveProgram(programID: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('program', programID);
+    return this.http.post<boolean>(`${this.baseUrl}/leave`, null, {params});
+  }
+  getProgramByClassID(classID: string): Observable<ProgramDTO> {
+    return this.http.get<ProgramDTO>(`${this.baseUrl}/get/${classID}`);
+  }
 }

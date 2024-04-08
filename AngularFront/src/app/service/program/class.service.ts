@@ -18,6 +18,9 @@ export class ClassService {
       .set('id', classID)
     return this.http.post<boolean>(`${this.baseUrl}/add/user/${userEmail}/${role}`, null, {params});
   }
+  getMyClass():Observable<ClassDTO>{
+    return this.http.get<ClassDTO>(`${this.baseUrl}/myClass`);
+  }
 
   removeUserFromClass(classID: string, userEmail: string): Observable<boolean> {
     const params = new HttpParams()
