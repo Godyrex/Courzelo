@@ -9,9 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="ngx-bootstrap" level="application" />
-    <orderEntry type="library" name="leaflet" level="application" />
-    <orderEntry type="library" name="ngx-bootstrap" level="application" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="0376fbe7-246f-4154-a796-6b914ad92087" />
