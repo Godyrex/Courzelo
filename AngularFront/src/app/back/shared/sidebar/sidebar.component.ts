@@ -46,7 +46,9 @@ export class SidebarComponent implements OnInit {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
-        this.getImage();
+        if(this.loginResponse.photoID != null) {
+          this.getImage();
+        }
         console.log(response);
       }
     )

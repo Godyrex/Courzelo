@@ -32,4 +32,6 @@ public interface IClassService {
     List<Class> searchClassesBySemester(SemesterNumber semesterNumber);
 
     ResponseEntity<List<ClassDTO>> getClassesWithoutPagination();
+
+    ResponseEntity<ClassDTO> getMyClass(Principal principal);
 }

@@ -101,7 +101,7 @@
           </ul>
         </li>
 
-        <li *ngIf="loginResponse.institution" class="nav-item"
+        <li class="nav-item"
             [ngClass]="{'menu-open': isAdminMenuOpen, 'menu-close': !isAdminMenuOpen}">
           <a (click)="toggleAdminMenu()" [ngClass]="{'active': isAdminMenuOpen, '': !isAdminMenuOpen}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -111,10 +111,16 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
+            <li *ngIf="loginResponse.institution" class="nav-item">
               <a class="nav-link" routerLink="/organisation/institution" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>My Institution</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/organisation/ProgramsAndClasses" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Classes/Programs</p>
               </a>
             </li>
             <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item">
@@ -123,14 +129,14 @@
                 <p>Programs</p>
               </a>
             </li>
-            <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="nav-item">
+            <li  *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN') &&loginResponse.institution" class="nav-item">
               <a class="nav-link" routerLink="/organisation/calendar" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Calendar</p>
               </a>
             </li>
           </ul>
-          <ul class="nav nav-treeview">
+          <ul *ngIf="loginResponse.institution" class="nav nav-treeview">
 
             <li class="nav-item">
               <a routerLink="/departments" class="nav-link">

@@ -1,0 +1,25 @@
+<div class="row mb-2">
+  <div class="col-sm-6">
+    <h1 class="m-0">Programs</h1>
+  </div><!-- /.col -->
+</div><!-- /.row -->
+<div class="row">
+    <div class="col-sm-4" *ngFor="let program of programs">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h2 class="card-title text-primary">{{program.name}}</h2>
+          <p class="card-text"><strong>Description:</strong> {{program.description}}</p>
+          <p class="card-text"><strong>Type:</strong> {{program.programType}}</p>
+          <button class="btn btn-danger" (click)="leaveProgram(program.id!)">Leave</button>
+        </div>
+      </div>
+    </div>
+  <div class="col-sm-4  align-content-center">
+    <div class="card mt-4  text-center clickable-card" (click)="openJoinProgramDialog()">
+      <div class="card-body">
+        <h1 class="display-1">+</h1>
+      </div>
+    </div>
+  </div>
+
+</div>

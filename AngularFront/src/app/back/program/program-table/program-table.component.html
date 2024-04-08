@@ -40,6 +40,7 @@
               <th>Name</th>
               <th>Description</th>
               <th>ProgramType</th>
+              <th>SecretKey</th>
             </tr>
             </thead>
             <tbody>
@@ -47,6 +48,7 @@
               <td>{{ program.name }}</td>
               <td>{{ program.description }}</td>
               <td>{{ program.programType }}</td>
+              <td>{{program.secretKey||"Not Assigned"}}</td>
               <td>
                 <button (click)="showClassesTable(program.id!)" class="btn btn-link">
                   <i class="fas fa-user-graduate mr-1" style="color: orange;"></i>Classes

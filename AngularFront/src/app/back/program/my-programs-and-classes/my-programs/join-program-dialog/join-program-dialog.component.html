@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Join Program</h1>
+<div mat-dialog-content>
+  <p>Please enter the key:</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="key">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="joinProgram()">Join</button>
+</div>

@@ -5,6 +5,7 @@ import com.courzelo.lms.dto.program.ClassListDTO;
 import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.program.ProgramListDTO;
 import com.courzelo.lms.entities.institution.Program;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.security.Principal;
@@ -25,4 +26,12 @@ public interface IProgramService {
     ResponseEntity<Boolean> removeClass(String classID, Principal principal);
 
     ResponseEntity<Boolean> addClassToProgram(String program, ClassDTO classe, Principal principal);
+
+    ResponseEntity<HttpStatus> joinProgram(String email, String secretKey);
+
+    ResponseEntity<HttpStatus> leaveProgram(String name, String programID);
+
+    ResponseEntity<ProgramListDTO> getMyPrograms(String name);
+
+    ResponseEntity<ProgramDTO> getProgramByClassID(String classID);
 }

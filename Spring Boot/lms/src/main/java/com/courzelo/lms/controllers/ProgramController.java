@@ -9,6 +9,7 @@ import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,16 @@ public class ProgramController {
     @CacheEvict(value = {"ProgramList"}, allEntries = true)
     public ResponseEntity<Boolean> addProgram(Principal principal, @RequestBody ProgramDTO programDTO) {
         return iProgramService.addProgram(principal, programDTO);
+    }
+    @GetMapping("/get/{classID}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<ProgramDTO> getProgramByClassID(@PathVariable String classID){
+        return iProgramService.getProgramByClassID(classID);
+    }
+    @GetMapping("/myPrograms")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ProgramListDTO> getMyPrograms(Principal principal) {
+        return iProgramService.getMyPrograms(principal.getName());
     }
 
     @GetMapping("/all")
@@ -65,6 +76,16 @@ public class ProgramController {
     @CacheEvict(value = {"ProgramClasses"}, allEntries = true)
     public ResponseEntity<Boolean> addUserToInstitution(@RequestParam() String program, @RequestBody ClassDTO classe, Principal principal) {
         return iProgramService.addClassToProgram(program, classe, principal);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/join")
+    public ResponseEntity<HttpStatus> joinProgram(Principal principal, @RequestParam() String key){
+        return iProgramService.joinProgram(principal.getName(), key);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/leave")
+    public ResponseEntity<HttpStatus> leaveProgram(Principal principal, @RequestParam() String program){
+        return iProgramService.leaveProgram(principal.getName(), program);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
