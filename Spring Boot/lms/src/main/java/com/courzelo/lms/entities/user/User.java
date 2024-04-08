@@ -2,6 +2,7 @@ package com.courzelo.lms.entities.user;
 
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
+import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.NonDisponibility;
 import jakarta.validation.constraints.NotNull;
@@ -42,6 +43,8 @@ public class User implements UserDetails {
     private Institution institution;
     @DBRef
     private Class stclass;
+    @DBRef
+    private List<Program> programs = new ArrayList<>();
     private boolean enabled;
     private Boolean ban;
     private boolean rememberMe;

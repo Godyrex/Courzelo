@@ -37,6 +37,11 @@ public class ClassController {
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         return iClassService.getClassesWithoutPagination();
     }
+    @GetMapping("/myClass")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ClassDTO> getMyClass(Principal principal) {
+        return iClassService.getMyClass(principal);
+    }
 
     @DeleteMapping("/delete/{classID}")
     @CacheEvict(value = {"ProgramClasses"}, allEntries = true)

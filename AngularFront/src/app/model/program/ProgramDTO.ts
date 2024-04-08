@@ -3,4 +3,5 @@ export interface ProgramDTO {
   name?: string;
   description?: string;
   programType?: string;
+  secretKey?: string;
 }

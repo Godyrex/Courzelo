@@ -287,6 +287,16 @@ public class ClassService implements IClassService {
                         .toList());
     }
 
+    @Override
+    public ResponseEntity<ClassDTO> getMyClass(Principal principal) {
+        log.info("Getting my class");
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user.getStclass() != null) {
+            return ResponseEntity.ok().body(modelMapper.map(user.getStclass(), ClassDTO.class));
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
     public List<Class> findAll() {
         return classRepository.findAll();
     }
