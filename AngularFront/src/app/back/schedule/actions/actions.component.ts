@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import Swal from "sweetalert2";
 import {ActionsService} from "../../../service/schedule/actions.service";
 import {ClassService} from "../../../service/program/class.service";

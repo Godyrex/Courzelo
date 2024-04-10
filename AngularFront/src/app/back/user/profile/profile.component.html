@@ -39,16 +39,16 @@
         <div class="card">
           <div class="card-header p-2">
             <ul class="nav nav-pills">
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name">Name</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo">Profile photo</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email">Email</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password">Password</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete">Delete account</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tfa">Two Factor Authentication</a></li>
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name" (click)="toggleLoading()">Name</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo" (click)="checkUserProfileImage(); toggleLoading()">Profile photo</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email" (click)="toggleLoading()">Email</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password" (click)="toggleLoading()">Password</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete" (click)="toggleLoading()">Delete account</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tfa" (click)="checkUserProfileTwoFactorAuth();toggleLoading()">Two Factor Authentication</a></li>
             </ul>
           </div><!-- /.card-header -->
           <div class="card-body">
-            <div class="tab-content">
+            <div [@fadeInOut]="loading ? 'void' : '*'" (@fadeInOut.done)="loading = false" class="tab-content">
               <div class="active tab-pane" id="name">
                 <form (ngSubmit)="changeName()" [formGroup]="nameForm" class="form-horizontal">
                   <div *ngIf="nameForm.controls.name.touched && nameForm.controls.name?.invalid"
@@ -229,5 +229,8 @@
     </div>
     <!-- /.row -->
   </div><!-- /.container-fluid -->
+  <button data-widget="pushmenu" mat-fab color="primary" class="fab" (click)="openDialog()">
+    <mat-icon>live_help</mat-icon>
+  </button>
 </section>
 

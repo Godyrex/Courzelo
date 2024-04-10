@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 
@@ -46,7 +45,9 @@ export class SidebarComponent implements OnInit {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
-        this.getImage();
+        if(this.loginResponse.photoID != null) {
+          this.getImage();
+        }
         console.log(response);
       }
     )

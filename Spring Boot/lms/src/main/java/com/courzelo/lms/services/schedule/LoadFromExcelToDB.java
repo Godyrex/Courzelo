@@ -1,4 +1,5 @@
 package com.courzelo.lms.services.schedule;
+
 import com.courzelo.lms.dto.schedule.DepartmentDTO;
 import com.courzelo.lms.dto.schedule.FieldOfStudyDTO;
 import com.courzelo.lms.dto.schedule.SemesterDTO;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -55,25 +57,25 @@ public class LoadFromExcelToDB {
                                 if (cell.getColumnIndex() == 2) {
                                     t = new User();
                                     if (!cell.getStringCellValue().equals("")) {
-                                        t.setName(cell.getStringCellValue().split("_")[0]);
-                                        t.setLastName(cell.getStringCellValue().split("_")[1]);
+                                        t.getProfile().setName(cell.getStringCellValue().split("_")[0]);
+                                        t.getProfile().setLastName(cell.getStringCellValue().split("_")[1]);
                                     }
                                 }
                                 if (cell.getColumnIndex() == 3) {
                                     if (!cell.getStringCellValue().equals("")) {
                                         assert t != null;
-                                        t.setSpeciality(cell.getStringCellValue());
+                                        t.getProfile().setSpeciality(cell.getStringCellValue());
                                     }
                                 }
                                 if (cell.getColumnIndex() == 4) {
                                     if (!cell.getStringCellValue().equals("")) {
                                         assert t != null;
-                                        t.setTel(cell.getStringCellValue());
+                                        t.getContact().setPhoneNumber(cell.getStringCellValue());
                                     }
                                 }
                                 assert t != null;
                                 t.setRoles(Collections.singletonList(Role.TEACHER));
-                                if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).isEmpty()) {
+                                if (userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Role.TEACHER).isEmpty()) {
                                     userService.addTeacher(t);
                                 }
                             }
@@ -147,10 +149,10 @@ public class LoadFromExcelToDB {
                                         User t = null;
                                         if (!cell.getRow().getCell(5).getStringCellValue().equals("")) {
                                             t = new User();
-                                            t.setName(cell.getRow().getCell(5).getStringCellValue().split("_")[0]);
-                                            t.setLastName(cell.getRow().getCell(5).getStringCellValue().split("_")[1]);
-                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).size() != 0) {
-                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getName(), Collections.singletonList(Role.TEACHER)).get(0));
+                                            t.getProfile().setName(cell.getRow().getCell(5).getStringCellValue().split("_")[0]);
+                                            t.getProfile().setLastName(cell.getRow().getCell(5).getStringCellValue().split("_")[1]);
+                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Role.TEACHER).size() != 0) {
+                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Role.TEACHER).get(0));
                                             } else {
                                                 isImported = false;
                                                 System.out.println("Teacher doesn't exist in the database");
@@ -188,10 +190,9 @@ public class LoadFromExcelToDB {
         for (int i = 0; i < teachers.size(); i++) {
             User teacher = teachers.get(i);
             Row row = teachersSheet.createRow(i + 4);
-            row.createCell(2).setCellValue(teacher.getName() + "_" + teacher.getLastName());
-            row.createCell(3).setCellValue(teacher.getSpeciality());
-            row.createCell(4).setCellValue(teacher.getTel());
-            row.createCell(5).setCellValue(teacher.getEmail());
+            row.createCell(2).setCellValue(teacher.getProfile().getName() + "_" + teacher.getProfile().getLastName());
+            row.createCell(3).setCellValue(teacher.getProfile().getSpeciality());
+            row.createCell(4).setCellValue(teacher.getContact().getPhoneNumber());
         }
         Sheet departmentsSheet = workbook.createSheet("DEPARTMENTS");
 

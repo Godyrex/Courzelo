@@ -24,12 +24,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class ProgramService implements IProgramService {
 
         Pageable pageable = PageRequest.of(page, sizePerPage);
 
-        Page<Program> programPage = programRepository.findAllByInstitution(user.getInstitution(), pageable);
+        Page<Program> programPage = programRepository.findAllByInstitution(user.getEducation().getInstitution(), pageable);
 
         List<ProgramDTO> programDTOS = programPage.getContent()
                 .stream()
@@ -92,6 +94,13 @@ public class ProgramService implements IProgramService {
                 iClassService.deleteClass(aClass.getId());
             }
         }
+        List<User> users = program.getStudents();
+        if (users != null && !users.isEmpty()) {
+            for (User user : users) {
+                user.getEducation().getPrograms().remove(program);
+                userRepository.save(user);
+            }
+        }
         institution.getPrograms().remove(program);
         institutionRepository.save(institution);
         programRepository.deleteById(program.getId());
@@ -101,10 +110,13 @@ public class ProgramService implements IProgramService {
     public ResponseEntity<Boolean> addProgram(Principal principal, ProgramDTO programDTO) {
         log.info("Adding program ");
         User user = userRepository.findUserByEmail(principal.getName());
-        Institution institution = institutionRepository.findById(user.getInstitution().getId())
+        Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
                 .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
         Program program = modelMapper.map(programDTO, Program.class);
-        program.setInstitution(user.getInstitution());
+        program.setInstitution(user.getEducation().getInstitution());
+        if(program.getProgramType().equals(ProgramType.PUBLIC)){
+            program.setSecretKey(generateSecretKey());
+        }
         Program savedProgram = programRepository.save(program);
         institution.getPrograms().add(program);
         institutionRepository.save(institution);
@@ -126,6 +138,11 @@ public class ProgramService implements IProgramService {
         program.setName(programDTO.getName());
         program.setProgramType(ProgramType.valueOf(programDTO.getProgramType()));
         program.setDescription(programDTO.getDescription());
+        if(program.getProgramType().equals(ProgramType.PUBLIC)){
+            program.setSecretKey(generateSecretKey());
+        }else if(program.getProgramType().equals(ProgramType.PRIVATE)){
+            program.setSecretKey(null);
+        }
         Program savedProgram = programRepository.save(program);
         if (savedProgram.getId() != null) {
             return ResponseEntity.ok().body(true);
@@ -195,10 +212,74 @@ public class ProgramService implements IProgramService {
         return ResponseEntity.ok().body(true);
     }
 
+    @Override
+    public ResponseEntity<HttpStatus> joinProgram(String email, String secretKey) {
+        User user = userRepository.findUserByEmail(email);
+        Program program = programRepository.findBySecretKey(secretKey);
+        if(program==null){
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+        if(program.getProgramType().equals(ProgramType.PUBLIC)){
+            if(program.getStudents().contains(user)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            program.getStudents().add(user);
+            programRepository.save(program);
+            if(user.getEducation().getPrograms().contains(program)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            user.getEducation().getPrograms().add(program);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> leaveProgram(String name, String programID) {
+        User user = userRepository.findUserByEmail(name);
+        Program program = programRepository.findById(programID)
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + programID + " not found"));
+        if(program.getStudents().contains(user)){
+            program.getStudents().remove(user);
+            programRepository.save(program);
+            if(user.getEducation().getPrograms().contains(program)){
+                user.getEducation().getPrograms().remove(program);
+                userRepository.save(user);
+                return ResponseEntity.ok().body(HttpStatus.OK);
+            }
+        }
+        return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<ProgramListDTO> getMyPrograms(String name) {
+        User user = userRepository.findUserByEmail(name);
+        List<Program> programs = user.getEducation().getPrograms();
+        List<ProgramDTO> programDTOS = programs.stream()
+                .map(program -> modelMapper.map(program, ProgramDTO.class))
+                .toList();
+        ProgramListDTO programListDTO = new ProgramListDTO(programDTOS, programs.size());
+        return ResponseEntity.ok().body(programListDTO);
+    }
+
+    @Override
+    public ResponseEntity<ProgramDTO> getProgramByClassID(String classID) {
+        Class classe = classRepository.findById(classID)
+                .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
+        Program program = programRepository.findById(classe.getProgram().getId())
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + classe.getProgram().getId() + " not found"));
+        ProgramDTO programDTO = modelMapper.map(program, ProgramDTO.class);
+        return ResponseEntity.ok().body(programDTO);
+    }
+
+    private String generateSecretKey() {
+        return UUID.randomUUID().toString().substring(0, 6);
+    }
     private boolean isPartOfInstitution(Principal principal, String programID) {
         User user = userRepository.findUserByEmail(principal.getName());
         Program program = programRepository.findById(programID)
                 .orElseThrow(() -> new ProgramNotFoundException("Program " + programID + " not found"));
-        return user.getInstitution() == program.getInstitution();
+        return user.getEducation().getInstitution() == program.getInstitution();
     }
 }

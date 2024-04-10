@@ -32,6 +32,7 @@ import {LogoutComponent} from "./back/auth/logout/logout.component";
 import {LoginComponent} from "./back/auth/login/login.component";
 import {CalendarComponent} from "./back/program/institution/calendar/calendar.component";
 import {ActionsComponent} from "./back/schedule/actions/actions.component";
+import {MyProgramsAndClassesComponent} from "./back/program/my-programs-and-classes/my-programs-and-classes.component";
 
 const routes: Routes = [
   {
@@ -167,6 +168,14 @@ const routes: Routes = [
       {
         path: 'institution',
         component: InstitutionPanelComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: ['ADMIN','STUDENT','TEACHER']
+        },
+      },
+      {
+        path: 'ProgramsAndClasses',
+        component: MyProgramsAndClassesComponent,
         canActivate: [RoleGuardService],
         data: {
           expectedRole: ['ADMIN','STUDENT','TEACHER']

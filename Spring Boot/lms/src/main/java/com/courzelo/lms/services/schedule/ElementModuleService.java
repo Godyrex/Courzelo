@@ -2,10 +2,9 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.dto.schedule.ElementModuleDTO;
 import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.FieldOfStudy;
-import com.courzelo.lms.entities.schedule.Modul;
-import com.courzelo.lms.entities.user.User;
-import com.courzelo.lms.repositories.*;
+import com.courzelo.lms.repositories.DepartmentRepository;
+import com.courzelo.lms.repositories.ElementModuleRepository;
+import com.courzelo.lms.repositories.SemesterRepository;
 import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

@@ -32,7 +32,9 @@ public interface IClassService {
     boolean userInInstitution(User user, Institution institution);
     List<Class> searchClassesBySemester(SemesterNumber semesterNumber);
 
-  //  ResponseEntity<List<ClassDTO>> getClassesWithoutPagination();
+    ResponseEntity<List<ClassDTO>> getClassesWithoutPagination();
+
+    ResponseEntity<ClassDTO> getMyClass(Principal principal);
 }
 
 

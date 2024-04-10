@@ -1,9 +1,5 @@
 package com.courzelo.lms.entities.schedule;
 
-import com.courzelo.lms.entities.schedule.Department;
-import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.Period;
-import com.courzelo.lms.entities.schedule.Semester;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

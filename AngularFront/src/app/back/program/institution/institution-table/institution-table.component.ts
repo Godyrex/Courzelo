@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {InstitutionService} from "../../../../service/program/institution.service";
 import {InstitutionDTO} from "../../../../model/program/InstitutionDTO";
 import {InstitutionListDTO} from "../../../../model/program/InstitutionListDTO";

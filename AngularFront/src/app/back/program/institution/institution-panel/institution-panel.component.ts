@@ -6,6 +6,7 @@ import {ToastrService} from "ngx-toastr";
 import * as L from 'leaflet';
 import {UpdateService} from "../../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../../model/user/LoginResponse";
+
 @Component({
   selector: 'app-institution-panel',
   templateUrl: './institution-panel.component.html',
@@ -34,14 +35,15 @@ export class InstitutionPanelComponent implements OnInit {
   ngOnInit(): void {
     this.getMyInstitution();
     this.getMyInfo();
-    if(this.loginResponse.roles?.includes("ADMIN")) {
-      this.countUsers();
-    }
   }
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
+        if(this.loginResponse.roles?.includes('ROLE_ADMIN')) {
+          console.log("counting users")
+          this.countUsers();
+        }
         console.log(response);
       }
     )

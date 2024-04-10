@@ -2,9 +2,9 @@
 <div class="card card-primary card-outline">
   <div class="card-body box-profile">
     <div class="text-center">
-      <img [src]="userPhotoUrl"
+      <img [src]="userPhotoUrl|| 'assets/default-image.jpg'"
            alt="User profile picture"
-           class="profile-user-img img-fluid img-circle">
+           class="profile-user-img img-fluid img-circle profile-pic">
     </div>
 
     <h3 class="profile-username text-center">{{loginResponse.name + " " + loginResponse.lastname }}</h3>

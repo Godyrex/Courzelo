@@ -1,6 +1,5 @@
 package com.courzelo.lms.GAlgo;
 
-import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
@@ -121,7 +120,7 @@ public class GAlgorithm {
                 String period = element.getPeriod().toString();
                 String module = element.getModul().getName();
 
-                System.out.println("Day: " + day + ", Period: " + period + ", Room: "  + module + ", Teacher: " + element.getTeacher().getName() + " Element: " + element.getName());
+                System.out.println("Day: " + day + ", Period: " + period + ", Room: "  + module + ", Teacher: " + element.getTeacher().getProfile().getName() + " Element: " + element.getName());
             }
             System.out.println();
         }

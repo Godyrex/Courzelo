@@ -18,7 +18,6 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/class")
 @RestController
-@RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 @RateLimiter(name = "backend")
 public class ClassController {
@@ -37,6 +36,12 @@ public class ClassController {
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         return iClassService.getClassesWithoutPagination();
     }*/
+    
+    @GetMapping("/myClass")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ClassDTO> getMyClass(Principal principal) {
+        return iClassService.getMyClass(principal);
+    }
 
     @DeleteMapping("/delete/{classID}")
     @CacheEvict(value = {"ProgramClasses"}, allEntries = true)

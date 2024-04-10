@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 
@@ -42,7 +42,10 @@ export class UserProfileComponent implements OnInit {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
-        this.getImage();
+        if(this.loginResponse.photoID != null) {
+          console.log("photoID: " + this.loginResponse.photoID)
+          this.getImage();
+        }
         console.log(response);
       }
     )

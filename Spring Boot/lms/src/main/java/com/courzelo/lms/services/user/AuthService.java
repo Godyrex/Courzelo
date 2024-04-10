@@ -87,7 +87,7 @@ public class AuthService implements IAuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User checkUser = userRepository.findUserByEmail(loginDTO.getEmail());
-            if(!checkUser.isTwoFactorAuthEnabled()) {
+            if(!checkUser.getSecurity().isTwoFactorAuthEnabled()) {
                 String ip = iDeviceMetadataService.getIpAddressFromHeader(request);
                 log.info("ip :" + request.getRemoteAddr());
                 log.info("host :" + request.getRemoteHost());
@@ -169,11 +169,11 @@ public class AuthService implements IAuthService {
 
         if (loginDTO.isRememberMe()) {
             refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshRememberMeExpirationMs);
-            userDetails.setRememberMe(true);
+            userDetails.getSecurity().setRememberMe(true);
             log.info("RememberMe : On");
         } else {
             refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshExpirationMs);
-            userDetails.setRememberMe(false);
+            userDetails.getSecurity().setRememberMe(false);
             log.info("RememberMe : Off");
         }
 
@@ -188,24 +188,24 @@ public class AuthService implements IAuthService {
         log.info("Authentication finished!");
         Institution institution = null;
         Class institutionClass = null;
-        if (userDetails.getInstitution() != null) {
-            institution = institutionRepository.findById(userDetails.getInstitution().getId())
+        if (userDetails.getEducation().getInstitution() != null) {
+            institution = institutionRepository.findById(userDetails.getEducation().getInstitution().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
         }
-        if (userDetails.getStclass() != null) {
-            institutionClass = classRepository.findById(userDetails.getStclass().getId())
+        if (userDetails.getEducation().getStclass() != null) {
+            institutionClass = classRepository.findById(userDetails.getEducation().getStclass().getId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not found"));
         }
 
         JwtResponse jwtResponse = new JwtResponse(
                 userDetails.getEmail(),
-                userDetails.getName(),
-                userDetails.getLastName(),
+                userDetails.getProfile().getName(),
+                userDetails.getProfile().getLastName(),
                 roles,
-                userDetails.getPhoto() != null ? userDetails.getPhoto().getId() : null,
+                userDetails.getProfile().getPhoto() != null ? userDetails.getProfile().getPhoto().getId() : null,
                 institution != null ? institution.getName() : null,
                 institutionClass != null ? institutionClass.getName() : null,
-                userDetails.isTwoFactorAuthEnabled()
+                userDetails.getSecurity().isTwoFactorAuthEnabled()
         );
 
         return ResponseEntity.ok(jwtResponse);
@@ -244,7 +244,7 @@ public class AuthService implements IAuthService {
         GoogleAuthenticator gAuth = new GoogleAuthenticator();
         final GoogleAuthenticatorKey key = gAuth.createCredentials();
 
-        user.setTwoFactorAuthKey(key.getKey());
+        user.getSecurity().setTwoFactorAuthKey(key.getKey());
         userRepository.save(user);
 
         String qrCodeData = "otpauth://totp/" + email + "?secret=" + key.getKey() + "&issuer=Courzelo";
@@ -260,7 +260,7 @@ public class AuthService implements IAuthService {
     public ResponseEntity<?> enableTwoFactorAuth(String email,String verificationCode){
         User user = userRepository.findUserByEmail(email);
         if (verifyTwoFactorAuth(email, Integer.parseInt(verificationCode))) {
-            user.setTwoFactorAuthEnabled(true);
+            user.getSecurity().setTwoFactorAuthEnabled(true);
             userRepository.save(user);
             return ResponseEntity.ok().body(new Response("Two Factor Authentication Enabled"));
         }
@@ -268,8 +268,8 @@ public class AuthService implements IAuthService {
     }
     public void disableTwoFactorAuth(String email){
         User user = userRepository.findUserByEmail(email);
-        user.setTwoFactorAuthKey(null);
-        user.setTwoFactorAuthEnabled(false);
+        user.getSecurity().setTwoFactorAuthKey(null);
+        user.getSecurity().setTwoFactorAuthEnabled(false);
         userRepository.save(user);
     }
     public boolean verifyTwoFactorAuth(String email, int verificationCode) {
@@ -280,7 +280,7 @@ public class AuthService implements IAuthService {
             return false;
         }
         GoogleAuthenticator gAuth = new GoogleAuthenticator();
-        boolean isCodeValid = gAuth.authorize(user.getTwoFactorAuthKey(), verificationCode);
+        boolean isCodeValid = gAuth.authorize(user.getSecurity().getTwoFactorAuthKey(), verificationCode);
         if(isCodeValid) {
             log.info("TFA code verified for user: {}", email);
         } else {
@@ -317,7 +317,7 @@ public class AuthService implements IAuthService {
         User user = userRepository.findUserById(verificationToken.getUser().getId());
         if (user != null) {
             log.info(user.getEmail());
-            user.setEnabled(true);
+            user.getSecurity().setEnabled(true);
             userRepository.save(user);
             log.info("Finished Verifying...");
             return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
@@ -398,9 +398,9 @@ public class AuthService implements IAuthService {
         }
         user.setPassword(encoder.encode(user.getPassword()));
         user.getRoles().add(Role.STUDENT);
-        user.setEnabled(false);
-        user.setBan(false);
-        user.setTwoFactorAuthEnabled(false);
+        user.getSecurity().setEnabled(false);
+        user.getSecurity().setBan(false);
+        user.getSecurity().setTwoFactorAuthEnabled(false);
         userRepository.save(user);
         String randomCode = RandomString.make(64);
         VerificationToken verificationToken = new VerificationToken(

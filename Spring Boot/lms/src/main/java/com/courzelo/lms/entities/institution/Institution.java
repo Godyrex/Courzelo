@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Document(collection = "institutions")
@@ -31,5 +32,12 @@ public class Institution {
     private byte[] excelFile;
     private double latitude;
     private double longitude;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Institution institution = (Institution) o;
+        return Objects.equals(id, institution.id);
+    }
 
 }

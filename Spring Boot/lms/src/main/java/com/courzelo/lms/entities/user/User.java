@@ -1,15 +1,10 @@
 package com.courzelo.lms.entities.user;
 
-import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.institution.Institution;
-import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.NonDisponibility;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
+@NoArgsConstructor
 @Data
 @Document(collection = "users")
 public class User implements UserDetails {
@@ -29,32 +24,23 @@ public class User implements UserDetails {
     @NotNull
     private String password;
     @NotNull
-    private String name;
-    @NotNull
-    private String lastName;
-    @NotNull
     private List<Role> roles = new ArrayList<>();
-    private String twoFactorAuthKey;
-    private boolean twoFactorAuthEnabled;
-    @DBRef
-    private Photo photo;
-    @DBRef
-    private Institution institution;
-    @DBRef
-    private Class stclass;
-    private boolean enabled;
-    private Boolean ban;
-    private boolean rememberMe;
-    private String speciality;
-    private String tel;
-    @DBRef
-    private List<ElementModule>elementModules;
-    @DBRef
-    private List<NonDisponibility>nonDisponibilities;
+    private UserSecurity security = new UserSecurity();
+    private UserProfile profile = new UserProfile();
+    private UserEducationalDetails education = new UserEducationalDetails();
+    private UserContact contact = new UserContact();
+    private UserActivity activity = new UserActivity();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role1 -> new SimpleGrantedAuthority("ROLE_" + role1.name())).toList();
+    }
+
+    public User(String email, String password, String name, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.profile.setName(name);
+        this.profile.setLastName(lastName);
     }
 
     @Override
@@ -69,7 +55,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !ban;
+        return !security.getBan();
     }
 
     @Override
@@ -79,7 +65,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return security.isEnabled();
     }
 
     @Override

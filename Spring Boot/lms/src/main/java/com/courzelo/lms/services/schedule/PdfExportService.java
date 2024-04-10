@@ -1,19 +1,19 @@
 package com.courzelo.lms.services.schedule;
 
-import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.*;
+import com.courzelo.lms.entities.schedule.Department;
+import com.courzelo.lms.entities.schedule.ElementModule;
+import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.services.program.ClassService;
-import com.lowagie.text.alignment.HorizontalAlignment;
 import com.courzelo.lms.services.user.UserService;
-import com.lowagie.text.*;
-import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.Element;
+import com.lowagie.text.*;
+import com.lowagie.text.alignment.HorizontalAlignment;
 import com.lowagie.text.alignment.VerticalAlignment;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
@@ -71,7 +71,7 @@ public class PdfExportService {
         days.add(DayOfWeek.THURSDAY);
         days.add(DayOfWeek.FRIDAY);
         days.add(DayOfWeek.SATURDAY);
-        String title = teacher.getName()+" "+teacher.getLastName();
+        String title = teacher.getProfile().getName()+" "+teacher.getProfile().getLastName();
         Table myTable = new Table(5); // 3 columns
         FontFactory.register("Fonts/QuattrocentoSans-Italic.ttf");
         FontFactory.register("Fonts/Calibri Regular.ttf");
@@ -169,7 +169,7 @@ public class PdfExportService {
         Font font5 = FontFactory.getFont("Calibri", 18,Font.BOLD);
         Font font6 = FontFactory.getFont("Calibri", 16, Font.BOLD,Color.RED);
         int year = new Date().getYear();
-        String text1 = "Teacher : "+teacher.getName() +" "+teacher.getLastName();
+        String text1 = "Teacher : "+teacher.getProfile().getName() +" "+teacher.getProfile().getLastName();
         String text2 = "Timetable";
         String text3 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
         String text6 = "Temporary";
@@ -344,7 +344,7 @@ public class PdfExportService {
                 if(elms.size()>0){
                     Paragraph Libele = new Paragraph(elms.get(0).getName()+" ("+elms.get(0).getNmbrHours()+")",Calibri1);
                     Libele.setAlignment(Element.ALIGN_CENTER);
-                    Paragraph Prof = new Paragraph(elms.get(0).getTeacher().getName()+" "+elms.get(0).getTeacher().getLastName(),Calibri3);
+                    Paragraph Prof = new Paragraph(elms.get(0).getTeacher().getProfile().getName()+" "+elms.get(0).getTeacher().getProfile().getLastName(),Calibri3);
                     Prof.setAlignment(Element.ALIGN_CENTER);
                     CellList.add(Libele);
                     CellList.add(Prof);

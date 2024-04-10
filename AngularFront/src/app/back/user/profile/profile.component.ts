@@ -11,13 +11,28 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {ToastrService} from "ngx-toastr";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatDialog} from "@angular/material/dialog";
+import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void => *', animate(500)),
+    ]),
+  ]
 })
 export class ProfileComponent implements OnInit{
+  loading = false;
+  toggleLoading(): void {
+    this.loading = true;
+  }
   nameRequest: NameRequest = {};
   emailRequest: EmailRequest = {};
   qrCodeImage: string = '';
@@ -65,10 +80,13 @@ export class ProfileComponent implements OnInit{
     private updateService: UpdateService,
     private formBuilder: FormBuilder,
     private toaster: ToastrService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    public dialog:MatDialog
   ) {
   }
-
+  openDialog(): void {
+    this.dialog.open(QaDialogComponent);
+  }
   ngOnInit(): void {
         this.getMyInfo();
     }
@@ -79,6 +97,28 @@ export class ProfileComponent implements OnInit{
         console.log(response);
       }
     )
+  }
+  checkUserProfileImage() {
+    if (!this.user.photoID) {
+      const lastNotification = localStorage.getItem('lastImageNotification');
+      const now = new Date().getTime();
+      const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
+      if (!lastNotification || now - Number(lastNotification) > oneDay) {
+        this.toaster.info('Enhance your profile by adding a profile picture.');
+        localStorage.setItem('lastImageNotification', String(now));
+      }
+    }
+  }
+  checkUserProfileTwoFactorAuth() {
+    if (!this.user.twoFactorAuthEnabled) {
+      const lastNotification = localStorage.getItem('lastTwoFactorAuthNotification');
+      const now = new Date().getTime();
+      const oneDay = 24 * 60 * 60 * 1000;
+      if (!lastNotification || now - Number(lastNotification) > oneDay) {
+        this.toaster.info('Secure your account by enabling two factor authentication.');
+        localStorage.setItem('lastTwoFactorAuthNotification', String(now));
+      }
+    }
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {

@@ -4,9 +4,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.Period;
-import com.courzelo.lms.entities.schedule.Teacher;
 import com.courzelo.lms.entities.user.User;
-import io.jsonwebtoken.lang.Classes;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -23,8 +21,8 @@ public class Criterias {
         int counter = 0;
         List<User> teachers = universityTimetable.getTeachers();
         for (User teacher : teachers) {
-            for (ElementModule element : teacher.getElementModules()) {
-                boolean isAvailable = teacher.getNonDisponibilities().stream()
+            for (ElementModule element : teacher.getEducation().getElementModules()) {
+                boolean isAvailable = teacher.getEducation().getNonDisponibilities().stream()
                         .noneMatch(nonDispo ->
                                 nonDispo.getDayOfWeek() == element.getDayOfWeek() &&
                                         nonDispo.getPeriod() == element.getPeriod()
@@ -41,7 +39,7 @@ public class Criterias {
         int counter = 0;
         List<User> teachers = universityTimetable.getTeachers();
         for (User teacher : teachers) {
-            List<ElementModule> elements = teacher.getElementModules();
+            List<ElementModule> elements = teacher.getEducation().getElementModules();
             if (elements != null) {
                 for (ElementModule element : elements) {
                     boolean isSatisfied = elements.stream()

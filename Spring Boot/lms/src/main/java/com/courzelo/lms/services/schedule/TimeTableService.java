@@ -2,10 +2,12 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.GAlgo.GAlgorithm;
 import com.courzelo.lms.GAlgo.UniversityTimetable;
-import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.TimeTableDTO;
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.*;
+import com.courzelo.lms.entities.schedule.ElementModule;
+import com.courzelo.lms.entities.schedule.Period;
+import com.courzelo.lms.entities.schedule.SemesterNumber;
+import com.courzelo.lms.entities.schedule.TimeTable;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.TimeTableRepository;
@@ -95,7 +97,7 @@ public class TimeTableService {
         // show only  element de module of S1 ou S3 or S5
 
         List<ElementModule> elementModules = new ArrayList<>();
-        for (ElementModule elementModule : teacher.getElementModules()) {
+        for (ElementModule elementModule : teacher.getEducation().getElementModules()) {
             if (elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S3 || elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S5 || elementModule.getModul().getAClass().getSemester().getSemesterNumber()== SemesterNumber.S1) {
                 elementModules.add(elementModule);
             }

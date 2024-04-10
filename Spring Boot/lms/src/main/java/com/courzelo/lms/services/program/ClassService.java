@@ -1,4 +1,3 @@
-package com.courzelo.lms.services.program;
 
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.user.UserDTO;
@@ -102,6 +101,8 @@ public class ClassService implements IClassService {
      }
     @Override
     public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
+   /* @Override
+    public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         log.info("Adding class ");
         Class aClass = modelMapper.map(classDTO, Class.class);
         List<Modul> moduls = new ArrayList<>();
@@ -124,6 +125,26 @@ public class ClassService implements IClassService {
 
         Class savedClass = classRepository.save(aClass);
         if (savedClass != null && savedClass.getId() != null) {
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }*/
+}
+
+    public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
+        log.info("Adding class ");
+        Class aClass = modelMapper.map(classDTO, Class.class);
+        List<Modul> moduls = classDTO.getModuls().stream()
+                .map(modulDTO -> {
+                    Modul modul = modelMapper.map(modulDTO, Modul.class);
+                    return modulRepository.save(modul);
+                })
+                .collect(Collectors.toList());
+        aClass.setModuls(moduls);
+        Class savedClass = classRepository.save(aClass);
+
+        if (savedClass.getId() != null) {
             return ResponseEntity.ok().body(true);
         } else {
             return ResponseEntity.badRequest().body(false);
