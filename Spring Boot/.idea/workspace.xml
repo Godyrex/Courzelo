@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="20846d53-6b70-49e9-90a2-dd5f05a3aa6f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/1/6/164da197a61572e0937f548db6a83987d17d1407" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/2/9/291f992197e465991a15c738f22996879c1c953f" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/4/8/48b9775e3be7ef4d16b744db491bb10d8a154010" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/6/9/6944cb238baef6b1b145a83f07a5678ebca6597b" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/9/b/9bbab72740654e37ac792eb501c0e3a75c8ebd2c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/b/1/b14e4430bef7e1beeab3ef3062f5cb51e0a2e7f4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/d/5/d55ddad5870165118fe470e13758ef1851beb1fd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/1/6/164da197a61572e0937f548db6a83987d17d1407" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/2/9/291f992197e465991a15c738f22996879c1c953f" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/4/8/48b9775e3be7ef4d16b744db491bb10d8a154010" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/6/9/6944cb238baef6b1b145a83f07a5678ebca6597b" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/9/b/9bbab72740654e37ac792eb501c0e3a75c8ebd2c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/b/1/b14e4430bef7e1beeab3ef3062f5cb51e0a2e7f4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/d/5/d55ddad5870165118fe470e13758ef1851beb1fd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/actions/actions.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/actions/actions.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/actions/actions.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/actions/actions.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/Class.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/Modul.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/ProfPage.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/ImportDataFromExcel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/PdfExportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/LoadFromExcelToDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/PdfExportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/resources/Fonts/COMIC.TTF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/resources/Fonts/Calibri Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/resources/Fonts/QuattrocentoSans-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lms/src/main/resources/Fonts/times new roman.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/3/d/3d835c33585fce19ee9c411f86b5c282a0daa3ae" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/3/d/3d835c33585fce19ee9c411f86b5c282a0daa3ae" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/5/d/5d3d0bb085b8f3601fa87f007d5850fae613a8af" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/5/d/5d3d0bb085b8f3601fa87f007d5850fae613a8af" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/7/b/7b024adcf05ec6d0fcaa0fd808c43938cc771256" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/7/b/7b024adcf05ec6d0fcaa0fd808c43938cc771256" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/4/84379a79342af365ff57537e902fe6cac9d08e6e" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/4/84379a79342af365ff57537e902fe6cac9d08e6e" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/c/8c7cc624e90b73dad7592e9d39fcea3978d53ffe" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/c/8c7cc624e90b73dad7592e9d39fcea3978d53ffe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/e/8ecaf062d17cdf362415e8ae5804109185741333" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/8/e/8ecaf062d17cdf362415e8ae5804109185741333" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/b/0/b01b1d9aecf2ddfa5d974e482a4c3f36cb2e64ec" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/b/0/b01b1d9aecf2ddfa5d974e482a4c3f36cb2e64ec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/b/e/be9b6ca535b168bb1f4f43ea6fbdd0338e52b126" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/b/e/be9b6ca535b168bb1f4f43ea6fbdd0338e52b126" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/c/3/c3c5208d72586de994b3ed621bf7eadbc46321be" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/c/3/c3c5208d72586de994b3ed621bf7eadbc46321be" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/c/7/c7c15afc09ecaa90d8b1ae33ec6c1487a299a2d1" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/c/7/c7c15afc09ecaa90d8b1ae33ec6c1487a299a2d1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/d/0/d0eb5830cc032741a580bbc0befb56f0c1727743" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/d/0/d0eb5830cc032741a580bbc0befb56f0c1727743" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/d/5/d51a8fc09758e2556ccd0dddf78da66de3041cf9" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/d/5/d51a8fc09758e2556ccd0dddf78da66de3041cf9" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/f/7/f72a63895549a2e58eee9b8d4c94497b7e16a047" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/f/7/f72a63895549a2e58eee9b8d4c94497b7e16a047" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/gestion-departement/gestion-departement.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/gestion-departement/gestion-departement.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/back/schedule/gestion/time-table/time-table.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/model/program/ClassDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/program/ClassDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/element-module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/element-module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/non-disponibility.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/non-disponibility.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/semester.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/schedule/semester.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/model/user/UserResponse.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/model/user/UserResponse.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/service/program/class.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/service/program/class.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/department.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/department.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/field-ofstudy.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/field-ofstudy.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/time-table.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/service/schedule/time-table.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/service/user/auth/token-storage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/service/user/auth/token-storage.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/3/03e68cd72c2fb0e142168962be961e3e8ac339b7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/4/043d5df01c18d33dc428a3f89836b272722b7418" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/7/0787bc94139ac0eef2d6534043b4d1b86a037e2b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/7/1722962af14662d54b804e1b77e2b9e726ddbf62" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/4/240795cc30abd91d6f80543e85d3b59e92c7553a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/e/2ea910579faf4d598f8c1e00f0f13544ea07202b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/e/2efa8c80cf8918607f8dcd7933c58356a0336f74" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/2/325781264842c728df86f7b04619f205c344222e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/1/412d1007ed649758445424820ddd649c640756be" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/2/42608629649ec3d9ab989fee857b3e125dd6e6c9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/3/43fb5a207de184078ca8f22a3269d2ce58674efa" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/2/52eed8899a1ffbd12019e13eb2bc8f562896e3c7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/c/5c7562edb4376f2d10a10e7a24f1cc3e245b1708" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/c/5ca6f09f18411336311b9bc107f50d364d4c6c8e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/8/68a27a09bf0834062bc6c9c3b85a9476aeadeb3c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/e/6ec7c790467f9eaf72ef509ea652527999387991" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/3/83ce62153c726a7bd7a2450da4aaf869b5ce8055" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/4/840ed78f046c463bf771ed307b05db0fbbbf62dc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/8/98530881178b0cc64825452db97e5e5b2b2fe207" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/c/9c1dad5e4bdd1063ab4aa97d2ecbfb35ba387ff0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/1/a152d1b075376858e1b1ddc7157716d398aa5d26" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/0/b08818dd8b1aff270d6f551c917996cd2974e3c8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/1/b1817e74f22d126c348ad66bb50e0ad9c406c929" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/1/c165d054fdf78037f5260eed118a5e295c2d803b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/6/d626ed314a1c898c7a705c22ecbf4a2facf34377" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/b/db332cc77f695b0838250b85b78e295d8ea0d562" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/d/dd2b97932a1d2fbf7a9598318ab2623415906141" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6d67ea11bddd42a69f460bd1d3b32248c3b28f3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/9/e921f852d3dd9fcdf496e98e46f2ade3e354b796" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/c/ec826707fc193f2f5870194b8a9250964b34a016" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/3/03e68cd72c2fb0e142168962be961e3e8ac339b7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/4/043d5df01c18d33dc428a3f89836b272722b7418" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/7/0787bc94139ac0eef2d6534043b4d1b86a037e2b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/1/7/1722962af14662d54b804e1b77e2b9e726ddbf62" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/2/4/240795cc30abd91d6f80543e85d3b59e92c7553a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/2/e/2ea910579faf4d598f8c1e00f0f13544ea07202b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/2/e/2efa8c80cf8918607f8dcd7933c58356a0336f74" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/3/2/325781264842c728df86f7b04619f205c344222e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/4/1/412d1007ed649758445424820ddd649c640756be" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/4/2/42608629649ec3d9ab989fee857b3e125dd6e6c9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/4/3/43fb5a207de184078ca8f22a3269d2ce58674efa" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/2/52eed8899a1ffbd12019e13eb2bc8f562896e3c7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/c/5c7562edb4376f2d10a10e7a24f1cc3e245b1708" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/c/5ca6f09f18411336311b9bc107f50d364d4c6c8e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/6/8/68a27a09bf0834062bc6c9c3b85a9476aeadeb3c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/6/e/6ec7c790467f9eaf72ef509ea652527999387991" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/8/3/83ce62153c726a7bd7a2450da4aaf869b5ce8055" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/8/4/840ed78f046c463bf771ed307b05db0fbbbf62dc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/9/8/98530881178b0cc64825452db97e5e5b2b2fe207" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/9/c/9c1dad5e4bdd1063ab4aa97d2ecbfb35ba387ff0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/a/1/a152d1b075376858e1b1ddc7157716d398aa5d26" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/b/0/b08818dd8b1aff270d6f551c917996cd2974e3c8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/b/1/b1817e74f22d126c348ad66bb50e0ad9c406c929" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/c/1/c165d054fdf78037f5260eed118a5e295c2d803b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/d/6/d626ed314a1c898c7a705c22ecbf4a2facf34377" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/d/b/db332cc77f695b0838250b85b78e295d8ea0d562" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/d/d/dd2b97932a1d2fbf7a9598318ab2623415906141" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/6/e6d67ea11bddd42a69f460bd1d3b32248c3b28f3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/9/e921f852d3dd9fcdf496e98e46f2ade3e354b796" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/c/ec826707fc193f2f5870194b8a9250964b34a016" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/lms/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/Criterias.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/Criterias.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/GAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/GAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/UniversityTimetable.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/GAlgo/UniversityTimetable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/ClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/ClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/FieldOfStudyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/FieldOfStudyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/ModulController.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/ModulController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/schedule/ElementModuleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/schedule/ElementModuleDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/schedule/ModulDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/schedule/ModulDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/user/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/user/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/institution/Class.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/institution/Class.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/ElementModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/ElementModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/FieldOfStudy.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/FieldOfStudy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/Modul.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/Modul.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/schedule/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/entities/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/ClassRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/ClassRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/ElementModuleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/ElementModuleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/SemesterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/SemesterRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/program/ClassService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/program/ClassService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/program/IClassService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/program/IClassService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/DataFromDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/DataFromDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/DepartmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/DepartmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/ElementModuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/ElementModuleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/FieldOfStudyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/FieldOfStudyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/ModulService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/ModulService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/SemesterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/SemesterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/TimeTableService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/schedule/TimeTableService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/services/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2cuC6zAQ4jX3yrSNg9wT5sBk3SY" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "ScheduleManagement",
+    "last_opened_file_path": "C:/Users/user/Documents/Github/Courzelo/Spring Boot",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="LmsApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.courzelo.lms.LmsApplication" />
+      <module name="lms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.courzelo.lms.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="20846d53-6b70-49e9-90a2-dd5f05a3aa6f" name="Changes" comment="" />
+      <created>1708951907137</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1708951907137</updated>
+      <workItem from="1708951914338" duration="154000" />
+      <workItem from="1708952083086" duration="65000" />
+      <workItem from="1708952236211" duration="145000" />
+      <workItem from="1708952760030" duration="29000" />
+      <workItem from="1709068474353" duration="46000" />
+      <workItem from="1709070891617" duration="68000" />
+      <workItem from="1709127388323" duration="2000" />
+      <workItem from="1711316492623" duration="192000" />
+      <workItem from="1711316727518" duration="27000" />
+      <workItem from="1711614216802" duration="411000" />
+      <workItem from="1711623854760" duration="4000" />
+      <workItem from="1711623911118" duration="4000" />
+      <workItem from="1711623930935" duration="86000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Spring_Boot$NullAndEmptyStringTest.ic" NAME="NullAndEmptyStringTest Coverage Results" MODIFIED="1708353627977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.courzelo.lms.*</FILTER>
+    </SUITE>
+  </component>
+</project>

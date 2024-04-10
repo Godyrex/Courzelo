@@ -1,5 +1,6 @@
 package com.courzelo.lms.services.schedule;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.ElementModule;
@@ -8,10 +9,11 @@ import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.services.program.ClassService;
+import com.lowagie.text.alignment.HorizontalAlignment;
 import com.courzelo.lms.services.user.UserService;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
+import com.lowagie.text.Rectangle;  
 import com.lowagie.text.*;
 import com.lowagie.text.alignment.HorizontalAlignment;
 import com.lowagie.text.alignment.VerticalAlignment;

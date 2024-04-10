@@ -1,5 +1,6 @@
 package com.courzelo.lms.services.schedule;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.*;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.user.User;
