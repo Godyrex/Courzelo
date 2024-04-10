@@ -51,7 +51,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user, @RequestHeader(value = "User-Agent") String userAgent) {
-        return iAuthService.saveUser(modelMapper.map(user, User.class), userAgent);
+        User user1 = new User(user.getEmail(),
+                user.getPassword(),
+                user.getName(),
+                user.getLastname()
+                );
+        return iAuthService.saveUser(user1, userAgent);
     }
 
     @PostMapping("/logout")

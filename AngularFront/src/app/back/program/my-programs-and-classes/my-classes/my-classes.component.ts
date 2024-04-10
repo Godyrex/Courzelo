@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ClassService} from "../../../../service/program/class.service";
 import {ClassDTO} from "../../../../model/program/ClassDTO";
-import { ToastrService} from "ngx-toastr";
+import {ToastrService} from "ngx-toastr";
 import {ProgramService} from "../../../../service/program/program.service";
 import {ProgramDTO} from "../../../../model/program/ProgramDTO";
 

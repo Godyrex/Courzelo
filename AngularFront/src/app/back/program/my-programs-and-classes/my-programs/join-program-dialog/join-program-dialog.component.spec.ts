@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JoinProgramDialogComponent } from './join-program-dialog.component';
+import {JoinProgramDialogComponent} from './join-program-dialog.component';
 
 describe('JoinProgramDialogComponent', () => {
   let component: JoinProgramDialogComponent;

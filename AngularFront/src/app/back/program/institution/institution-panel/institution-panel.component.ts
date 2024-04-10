@@ -6,6 +6,7 @@ import {ToastrService} from "ngx-toastr";
 import * as L from 'leaflet';
 import {UpdateService} from "../../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../../model/user/LoginResponse";
+
 @Component({
   selector: 'app-institution-panel',
   templateUrl: './institution-panel.component.html',

@@ -7,7 +7,6 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
-import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -69,10 +67,10 @@ public class ClassService implements IClassService {
     public void removeUsersInClass(String classID) {
         Class aClass = classRepository.findById(classID)
                 .orElseThrow(() -> new ClassNotFoundException("Class not found"));
-        List<User> users = userRepository.findByStclass(aClass);
+        List<User> users = userRepository.findByEducationStclass(aClass);
         if (!users.isEmpty()) {
             for (User user : users) {
-                user.setStclass(null);
+                user.getEducation().setStclass(null);
                 userRepository.save(user);
             }
         }
@@ -114,11 +112,11 @@ public class ClassService implements IClassService {
         User userr = userRepository.findUserByEmail(principal.getName());
         if (userr.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(classID, "")) {
             Class aClass = classRepository.findById(classID)
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getEducation().getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
-        } else if (userr.getInstitution() != null) {
+        } else if (userr.getEducation().getInstitution() != null) {
             log.info("Checking class");
-            Institution institution = institutionRepository.findById(userr.getInstitution().getId())
+            Institution institution = institutionRepository.findById(userr.getEducation().getInstitution().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
             log.info("Class id : " + classID);
             Class aClass = classRepository.findById(classID)
@@ -166,7 +164,7 @@ public class ClassService implements IClassService {
                 return ResponseEntity.ok().body(true);
             }
             aClass.getTeachers().add(target);
-            target.setStclass(aClass);
+            target.getEducation().setStclass(aClass);
             if (!target.getRoles().contains(Role.TEACHER)) {
                 target.getRoles().add(Role.TEACHER);
             }
@@ -179,7 +177,7 @@ public class ClassService implements IClassService {
                 return ResponseEntity.ok().body(true);
             }
             aClass.getStudents().add(target);
-            target.setStclass(aClass);
+            target.getEducation().setStclass(aClass);
             if (!target.getRoles().contains(Role.STUDENT)) {
                 target.getRoles().add(Role.STUDENT);
             }
@@ -207,7 +205,7 @@ public class ClassService implements IClassService {
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
         if (aClass.getTeachers().contains(user)) {
             aClass.getTeachers().remove(user);
-            user.setStclass(null);
+            user.getEducation().setStclass(null);
             user.getRoles().remove(Role.TEACHER);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -215,7 +213,7 @@ public class ClassService implements IClassService {
         }
         if (aClass.getStudents().contains(user)) {
             aClass.getStudents().remove(user);
-            user.setStclass(null);
+            user.getEducation().setStclass(null);
             user.getRoles().remove(Role.STUDENT);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -227,11 +225,11 @@ public class ClassService implements IClassService {
 
     @Override
     public boolean userInInstitution(User user, Institution institution) {
-        if (user.getInstitution() != null) {
-            log.info("user institution id = " + user.getInstitution().getId());
+        if (user.getEducation().getInstitution() != null) {
+            log.info("user institution id = " + user.getEducation().getInstitution().getId());
             log.info("institution id = " + institution.getId());
 
-            return Objects.equals(user.getInstitution().getId(), institution.getId());
+            return Objects.equals(user.getEducation().getInstitution().getId(), institution.getId());
         }
         return false;
     }
@@ -291,8 +289,8 @@ public class ClassService implements IClassService {
     public ResponseEntity<ClassDTO> getMyClass(Principal principal) {
         log.info("Getting my class");
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user.getStclass() != null) {
-            return ResponseEntity.ok().body(modelMapper.map(user.getStclass(), ClassDTO.class));
+        if (user.getEducation().getStclass() != null) {
+            return ResponseEntity.ok().body(modelMapper.map(user.getEducation().getStclass(), ClassDTO.class));
         }
         return ResponseEntity.badRequest().body(null);
     }

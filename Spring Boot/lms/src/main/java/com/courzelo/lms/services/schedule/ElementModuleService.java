@@ -1,15 +1,11 @@
 package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.dto.schedule.ElementModuleDTO;
-import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.repositories.SemesterRepository;
 import com.courzelo.lms.utils.NotFoundException;
-import jakarta.persistence.PostPersist;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 

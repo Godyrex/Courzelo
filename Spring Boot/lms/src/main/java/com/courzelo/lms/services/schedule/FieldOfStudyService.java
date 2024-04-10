@@ -2,7 +2,6 @@ package com.courzelo.lms.services.schedule;
 
 
 import com.courzelo.lms.dto.schedule.FieldOfStudyDTO;
-import com.courzelo.lms.dto.schedule.SemesterDTO;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
 import com.courzelo.lms.entities.schedule.Semester;

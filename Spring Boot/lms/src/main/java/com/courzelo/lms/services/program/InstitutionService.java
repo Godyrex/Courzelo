@@ -37,7 +37,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.YearMonth;
@@ -81,8 +80,8 @@ public class InstitutionService implements IInstitutionService {
     @Override
     public ResponseEntity<HttpStatus> generateExcel(List<CalendarDTO> events, Principal principal) {
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user != null && user.getInstitution() != null) {
-            String institutionId = user.getInstitution().getId();
+        if (user != null && user.getEducation().getInstitution() != null) {
+            String institutionId = user.getEducation().getInstitution().getId();
             Institution institution = institutionRepository.findById(institutionId)
                     .orElseThrow(()->new InstitutionNotFoundException("Institution " + institutionId + " not found"));
             try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -222,16 +221,16 @@ public class InstitutionService implements IInstitutionService {
     public ResponseEntity<InstitutionDTO> getInstitution(String email) {
         log.info("Get institution for user :" + email);
         User user = userRepository.findUserByEmail(email);
-        if (user != null && user.getInstitution() != null) {
+        if (user != null && user.getEducation().getInstitution() != null) {
             if (user.getRoles().contains(Role.ADMIN)) {
-                return ResponseEntity.ok().body(modelMapper.map(user.getInstitution(), InstitutionDTO.class));
+                return ResponseEntity.ok().body(modelMapper.map(user.getEducation().getInstitution(), InstitutionDTO.class));
             } else {
                 InstitutionDTO simplifiedDTO = new InstitutionDTO();
-                simplifiedDTO.setId(user.getInstitution().getId());
-                simplifiedDTO.setName(user.getInstitution().getName());
-                simplifiedDTO.setDescription(user.getInstitution().getDescription());
-                simplifiedDTO.setLocation(user.getInstitution().getLocation());
-                simplifiedDTO.setWebsite(user.getInstitution().getWebsite());
+                simplifiedDTO.setId(user.getEducation().getInstitution().getId());
+                simplifiedDTO.setName(user.getEducation().getInstitution().getName());
+                simplifiedDTO.setDescription(user.getEducation().getInstitution().getDescription());
+                simplifiedDTO.setLocation(user.getEducation().getInstitution().getLocation());
+                simplifiedDTO.setWebsite(user.getEducation().getInstitution().getWebsite());
                 return ResponseEntity.ok().body(simplifiedDTO);
             }
         }
@@ -244,9 +243,9 @@ public class InstitutionService implements IInstitutionService {
         Institution institution = institutionRepository.findById(institutionID)
                 .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionID + " not found"));
         if (institution != null) {
-            List<User> users = userRepository.findByInstitution(institution);
+            List<User> users = userRepository.findByEducationInstitution(institution);
             for (User user : users) {
-                user.setInstitution(null);
+                user.getEducation().setInstitution(null);
                 userRepository.save(user);
             }
             List<Program> programs = programRepository.findByInstitution(institution);
@@ -305,8 +304,8 @@ public class InstitutionService implements IInstitutionService {
             }
             return addUser(role, target, institution);
         } else {
-            Institution institution = institutionRepository.findById(user.getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getInstitution().getId() + " not found"));
+            Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getEducation().getInstitution().getId() + " not found"));
             if (!isAdminInInstitution(principal, institution.getId())) {
                 log.info("Not authorized to manage this institution");
                 return ResponseEntity.badRequest().body(false);
@@ -319,9 +318,9 @@ public class InstitutionService implements IInstitutionService {
         if (target != null) {
             switch (role) {
                 case "Admins":
-                    if (!institution.getAdmins().contains(target) && target.getInstitution() == null) {
+                    if (!institution.getAdmins().contains(target) && target.getEducation().getInstitution() == null) {
                         institution.getAdmins().add(target);
-                        target.setInstitution(institution);
+                        target.getEducation().setInstitution(institution);
                         if (!target.getRoles().contains(Role.ADMIN)) {
                             target.getRoles().add(Role.ADMIN);
                         }
@@ -335,9 +334,9 @@ public class InstitutionService implements IInstitutionService {
                     }
                     break;
                 case "Teachers":
-                    if (!institution.getTeachers().contains(target) && target.getInstitution() == null) {
+                    if (!institution.getTeachers().contains(target) && target.getEducation().getInstitution() == null) {
                         institution.getTeachers().add(target);
-                        target.setInstitution(institution);
+                        target.getEducation().setInstitution(institution);
                         if (!target.getRoles().contains(Role.TEACHER)) {
                             target.getRoles().add(Role.TEACHER);
                         }
@@ -351,9 +350,9 @@ public class InstitutionService implements IInstitutionService {
                     }
                     break;
                 case "Students":
-                    if (!institution.getStudents().contains(target) && target.getInstitution() == null) {
+                    if (!institution.getStudents().contains(target) && target.getEducation().getInstitution() == null) {
                         institution.getStudents().add(target);
-                        target.setInstitution(institution);
+                        target.getEducation().setInstitution(institution);
                         if (!target.getRoles().contains(Role.STUDENT)) {
                             target.getRoles().add(Role.STUDENT);
                         }
@@ -388,7 +387,7 @@ public class InstitutionService implements IInstitutionService {
             institution = institutionRepository.findById(institutionID)
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionID + " not found"));
         } else {
-            institution = user.getInstitution();
+            institution = user.getEducation().getInstitution();
             log.info("User is admin");
             if (institution == null) {
                 log.info("Institution not found ");
@@ -403,16 +402,16 @@ public class InstitutionService implements IInstitutionService {
 
         if (institution.getAdmins().contains(userToBeRemoved)) {
             institution.getAdmins().remove(userToBeRemoved);
-            userToBeRemoved.setInstitution(null);
+            userToBeRemoved.getEducation().setInstitution(null);
             userToBeRemoved.getRoles().remove(Role.ADMIN);
         } else if (institution.getTeachers().contains(userToBeRemoved)) {
             institution.getTeachers().remove(userToBeRemoved);
-            userToBeRemoved.setInstitution(null);
+            userToBeRemoved.getEducation().setInstitution(null);
             userToBeRemoved.getRoles().remove(Role.TEACHER);
             checkIfUserInClassAndRemove(userToBeRemoved);
         } else if (institution.getStudents().contains(userToBeRemoved)) {
             institution.getStudents().remove(userToBeRemoved);
-            userToBeRemoved.setInstitution(null);
+            userToBeRemoved.getEducation().setInstitution(null);
             userToBeRemoved.getRoles().remove(Role.STUDENT);
             checkIfUserInClassAndRemove(userToBeRemoved);
         } else {
@@ -430,9 +429,9 @@ public class InstitutionService implements IInstitutionService {
     public ResponseEntity<Boolean> updateMyInstitution(InstitutionDTO institutionDTO, Principal principal) {
         log.info("Update institution :" + institutionDTO.getId());
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user != null && user.getInstitution() != null) {
+        if (user != null && user.getEducation().getInstitution() != null) {
 
-            Institution institution = institutionRepository.findById(user.getInstitution().getId())
+            Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionDTO.getId() + " not found"));
             isAdminInInstitution(principal, institution.getId());
             institution.setDescription(institutionDTO.getDescription());
@@ -454,9 +453,9 @@ public class InstitutionService implements IInstitutionService {
     public ResponseEntity<InstitutionUsersCountDTO> countUsers(Principal principal) {
         log.info("counting users");
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user != null && user.getInstitution() != null) {
-            Institution institution = institutionRepository.findById(user.getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getInstitution().getId() + " not found"));
+        if (user != null && user.getEducation().getInstitution() != null) {
+            Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getEducation().getInstitution().getId() + " not found"));
             isAdminInInstitution(principal, institution.getId());
             InstitutionUsersCountDTO institutionUsersCountDTO = new InstitutionUsersCountDTO(
                     institution.getAdmins().size(),
@@ -477,11 +476,11 @@ public class InstitutionService implements IInstitutionService {
         User userr = userRepository.findUserByEmail(principal.getName());
         if (userr.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(institutionID, "")) {
             Institution institution = institutionRepository.findById(institutionID)
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getEducation().getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(institution, principal, role, page, sizePerPage);
-        } else if (userr.getInstitution() != null) {
-            Institution institution = institutionRepository.findById(userr.getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
+        } else if (userr.getEducation().getInstitution() != null) {
+            Institution institution = institutionRepository.findById(userr.getEducation().getInstitution().getId())
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getEducation().getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(institution, principal, role, page, sizePerPage);
         }
         log.info("find users condition failed ");
@@ -491,10 +490,10 @@ public class InstitutionService implements IInstitutionService {
     @Override
     public ResponseEntity<InstitutionDTO> getMyInstitution(Principal principal) {
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user.getInstitution() != null) {
+        if (user.getEducation().getInstitution() != null) {
             log.info("Getting institution ");
-            Institution institution = institutionRepository.findById(user.getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getInstitution().getId() + " not found"));
+            Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + user.getEducation().getInstitution().getId() + " not found"));
             return ResponseEntity
                     .ok()
                     .body(modelMapper.map(institution, InstitutionDTO.class));
@@ -503,8 +502,8 @@ public class InstitutionService implements IInstitutionService {
     }
     public ResponseEntity<byte[]> downloadExcel(Principal principal) {
         User user = userRepository.findUserByEmail(principal.getName());
-        if (user != null && user.getInstitution() != null) {
-            String institutionId = user.getInstitution().getId();
+        if (user != null && user.getEducation().getInstitution() != null) {
+            String institutionId = user.getEducation().getInstitution().getId();
             Institution institution = institutionRepository.findById(institutionId)
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution " + institutionId + " not found"));
             byte[] excelFile = institution.getExcelFile();
@@ -570,15 +569,15 @@ public class InstitutionService implements IInstitutionService {
     }
 
     private void checkIfUserInClassAndRemove(User user) {
-        if (user.getStclass() != null) {
-            Class aClass = classRepository.findById(user.getStclass().getId())
+        if (user.getEducation().getStclass() != null) {
+            Class aClass = classRepository.findById(user.getEducation().getStclass().getId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not found"));
             if (aClass.getStudents().contains(user)) {
                 aClass.getStudents().remove(user);
-                user.setStclass(null);
+                user.getEducation().setStclass(null);
             } else {
                 aClass.getTeachers().remove(user);
-                user.setStclass(null);
+                user.getEducation().setStclass(null);
             }
             classRepository.save(aClass);
             userRepository.save(user);

@@ -65,18 +65,20 @@ import {
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
-import { CalendarComponent } from './back/program/institution/calendar/calendar.component';
+import {CalendarComponent} from './back/program/institution/calendar/calendar.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
-import { ActionsComponent } from './back/schedule/actions/actions.component';
-import { UserProfileDialogComponent } from './back/user/user-profile-dialog/user-profile-dialog.component';
-import { QaDialogComponent } from './back/user/qa-dialog/qa-dialog.component';
+import {ActionsComponent} from './back/schedule/actions/actions.component';
+import {UserProfileDialogComponent} from './back/user/user-profile-dialog/user-profile-dialog.component';
+import {QaDialogComponent} from './back/user/qa-dialog/qa-dialog.component';
 import {MatIconModule} from "@angular/material/icon";
-import { MyClassesComponent } from './back/program/my-programs-and-classes/my-classes/my-classes.component';
-import { MyProgramsComponent } from './back/program/my-programs-and-classes/my-programs/my-programs.component';
-import { MyProgramsAndClassesComponent } from './back/program/my-programs-and-classes/my-programs-and-classes.component';
-import { JoinProgramDialogComponent } from './back/program/my-programs-and-classes/my-programs/join-program-dialog/join-program-dialog.component';
+import {MyClassesComponent} from './back/program/my-programs-and-classes/my-classes/my-classes.component';
+import {MyProgramsComponent} from './back/program/my-programs-and-classes/my-programs/my-programs.component';
+import {MyProgramsAndClassesComponent} from './back/program/my-programs-and-classes/my-programs-and-classes.component';
+import {
+  JoinProgramDialogComponent
+} from './back/program/my-programs-and-classes/my-programs/join-program-dialog/join-program-dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 

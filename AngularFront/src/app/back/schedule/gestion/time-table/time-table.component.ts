@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import {ActionsService} from "../../../../service/schedule/actions.service";
 import {ClassService} from "../../../../service/program/class.service";
 import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
-import {Class} from "../../../../model/schedule/Class";
+
 @Component({
   selector: 'app-time-table',
   templateUrl: './time-table.component.html',

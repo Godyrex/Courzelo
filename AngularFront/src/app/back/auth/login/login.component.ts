@@ -83,6 +83,7 @@ export class LoginComponent {
             this.toggleLoginAnimation();
             this.toggleTFAAnimation();
             this.showTwoFactorAuthInput = true;
+            this.toastr.info('Please enter the verification code from your mobile app', 'Two Factor Authentication Required');
           }else {
             if (response.deviceIsNew !== undefined) {
               console.log("device not confirmed")

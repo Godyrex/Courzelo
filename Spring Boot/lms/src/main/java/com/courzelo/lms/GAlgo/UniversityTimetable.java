@@ -3,11 +3,7 @@ package com.courzelo.lms.GAlgo;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
-import com.courzelo.lms.entities.schedule.Teacher;
-import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;

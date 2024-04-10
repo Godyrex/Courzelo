@@ -4,7 +4,6 @@ import {Departement} from "./departement";
 import {ClassDTO} from "../program/ClassDTO";
 
 
-
 export interface PageProf {
     content:          UserResponse[];
     totalPages:       number;
