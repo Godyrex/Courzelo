@@ -221,6 +221,7 @@ public class UserService implements UserDetailsService {
         }
         return ResponseEntity.badRequest().build();
     }
+
     public User getProfById(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
@@ -242,42 +243,43 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findTeachersByNameAndRole(String id, String name, List<Role> roles) {
-        return userRepository.findUsersByIdAndRolesIsAndName(id, roles, name);
+        return userRepository.findUsersByIdAndRolesIsAndProfileName(id, roles, name);
     }
 
     public User findTeacherByNameAndRole(String id, String name, List<Role> roles) {
-        return userRepository.findUserByIdAndRolesIsAndName(id, roles, name);
-    public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUsersByIdAndRolesContainsAndProfileName(id,TEACHER, name);
-    }
-    public User findTeacherByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUserByIdAndRolesContainsAndProfileName(id,TEACHER, name);
-    }
+        return userRepository.findUserByIdAndRolesIsAndProfileName(id, roles, name);}
 
-
-    public User addTeacher(User user) {
-        // Check if the user is a teacher
-        if (!user.getRoles().contains(Role.TEACHER)) {
-            throw new IllegalArgumentException("User must be a teacher");
+        public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
+            return userRepository.findUsersByIdAndRolesContainsAndProfileName(id,TEACHER, name);
         }
-        // Check if the password is null
+        public User findTeacherByNameAndRole(String id,String name, Role role) {
+            return userRepository.findUserByIdAndRolesContainsAndProfileName(id,TEACHER, name);
+        }
+
+
+        public User addTeacher(User user) {
+            // Check if the user is a teacher
+            if (!user.getRoles().contains(Role.TEACHER)) {
+                throw new IllegalArgumentException("User must be a teacher");
+            }
+            // Check if the password is null
         /*if (user.getPassword() == null || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null");
         }
         // Encode the password
         user.setPassword(encoder.encode(user.getPassword()));*/
-        // Save the user in the database
-        return userRepository.save(user);
-    }
+            // Save the user in the database
+            return userRepository.save(user);
+        }
 
 
    /* public User addTeacher(User teacher) {
         return userRepository.save(teacher);
     }*/
-    public List<User> getTeachers() {
-        return userRepository.findByRolesIs(Collections.singletonList(TEACHER))
-                .stream()
-                .distinct()
-                .collect(Collectors.toList());
-    }
+        public List<User> getTeachers() {
+            return userRepository.findByRolesIs(Collections.singletonList(TEACHER))
+                    .stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
 }

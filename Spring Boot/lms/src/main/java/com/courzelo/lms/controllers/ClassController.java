@@ -5,7 +5,6 @@ import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.services.program.IClassService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,12 @@ import java.util.List;
 public class ClassController {
     private final IClassService iClassService;
     private ModelMapper modelMapper;
+
+    public ClassController(IClassService iClassService, ModelMapper modelMapper) {
+        this.iClassService = iClassService;
+        this.modelMapper = modelMapper;
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         return iClassService.addClass(classDTO);

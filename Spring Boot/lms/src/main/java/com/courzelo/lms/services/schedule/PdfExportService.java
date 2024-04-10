@@ -15,7 +15,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;  
 import com.lowagie.text.*;
-import com.lowagie.text.alignment.HorizontalAlignment;
 import com.lowagie.text.alignment.VerticalAlignment;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;

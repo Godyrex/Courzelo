@@ -2,6 +2,7 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.GAlgo.GAlgorithm;
 import com.courzelo.lms.GAlgo.UniversityTimetable;
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.TimeTableDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;

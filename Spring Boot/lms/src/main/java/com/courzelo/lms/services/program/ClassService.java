@@ -1,3 +1,4 @@
+package com.courzelo.lms.services.program;
 
 import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.user.UserDTO;
@@ -6,7 +7,6 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
-import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -14,6 +14,7 @@ import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.InstitutionNotFoundException;
 import com.courzelo.lms.exceptions.ProgramNotFoundException;
 import com.courzelo.lms.repositories.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ClassService implements IClassService {
     private final ClassRepository classRepository;
@@ -37,18 +38,8 @@ public class ClassService implements IClassService {
     private final InstitutionRepository institutionRepository;
     private final ProgramRepository programRepository;
     private final FieldOfStudyRepository fieldOfRepository;
-    private final ModulRepository modulRepository;
     @Autowired
     private ModelMapper modelMapper;
-
-    public ClassService(ClassRepository classRepository, UserRepository userRepository, InstitutionRepository institutionRepository, ProgramRepository programRepository, FieldOfStudyRepository fieldOfRepository, ModulRepository modulRepository) {
-        this.classRepository = classRepository;
-        this.userRepository = userRepository;
-        this.institutionRepository = institutionRepository;
-        this.programRepository = programRepository;
-        this.fieldOfRepository = fieldOfRepository;
-        this.modulRepository = modulRepository;
-    }
 
     @Override
     public ResponseEntity<List<ClassDTO>> getClasses() {
@@ -77,80 +68,33 @@ public class ClassService implements IClassService {
     public void removeUsersInClass(String classID) {
         Class aClass = classRepository.findById(classID)
                 .orElseThrow(() -> new ClassNotFoundException("Class not found"));
-        List<User> users = userRepository.findByStclass(aClass);
+        List<User> users = userRepository.findByEducationStclass(aClass);
         if (!users.isEmpty()) {
             for (User user : users) {
-                user.setStclass(null);
+                user.getEducation().setStclass(null);
                 userRepository.save(user);
             }
         }
     }
 
-
-
     @Override
-     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
-         log.info("Adding class ");
-         Class aClass = modelMapper.map(classDTO, Class.class);
-         Class savedClass = classRepository.save(aClass);
-         if (savedClass.getId() != null) {
-             return ResponseEntity.ok().body(true);
-         } else {
-             return ResponseEntity.badRequest().body(false);
-         }
-     }
-    @Override
-    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
-   /* @Override
     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         log.info("Adding class ");
         Class aClass = modelMapper.map(classDTO, Class.class);
-        List<Modul> moduls = new ArrayList<>();
-        if (classDTO.getModuls() != null) {
-            moduls = classDTO.getModuls().stream()
-                    .map(modulDTO -> {
-                        Modul modul = modulRepository.findById(modulDTO.getId())
-                                .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + modulDTO.getId()));
-                        return modul;
-                    })
-                    .collect(Collectors.toList());
-        }
-        aClass.setModuls(moduls);
-
-        if (classDTO.getFieldOfStudy() != null && classDTO.getFieldOfStudy().getId() != null) {
-            FieldOfStudy fieldOfStudy = fieldOfRepository.findById(classDTO.getFieldOfStudy().getId())
-                    .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + classDTO.getFieldOfStudy().getId()));
-            aClass.setFieldOfStudy(fieldOfStudy);
-        }
-
         Class savedClass = classRepository.save(aClass);
-        if (savedClass != null && savedClass.getId() != null) {
-            return ResponseEntity.ok().body(true);
-        } else {
-            return ResponseEntity.badRequest().body(false);
-        }
-    }*/
-}
-
-    public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
-        log.info("Adding class ");
-        Class aClass = modelMapper.map(classDTO, Class.class);
-        List<Modul> moduls = classDTO.getModuls().stream()
-                .map(modulDTO -> {
-                    Modul modul = modelMapper.map(modulDTO, Modul.class);
-                    return modulRepository.save(modul);
-                })
-                .collect(Collectors.toList());
-        aClass.setModuls(moduls);
-        Class savedClass = classRepository.save(aClass);
-
         if (savedClass.getId() != null) {
             return ResponseEntity.ok().body(true);
         } else {
             return ResponseEntity.badRequest().body(false);
         }
     }
-   /* @Override
+
+    @Override
+    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
         log.info("Update class :" + classDTO.getId());
         Class aClass = classRepository.findById(classDTO.getId())
@@ -163,27 +107,7 @@ public class ClassService implements IClassService {
         } else {
             return ResponseEntity.badRequest().body(false);
         }
-    }*/
-   @Override
-   public ResponseEntity<Boolean> updateClass(ClassDTO classDTO) {
-       log.info("Update class :" + classDTO.getId());
-       Class aClass = classRepository.findById(classDTO.getId())
-               .orElseThrow(() -> new ClassNotFoundException("Class " + classDTO.getId() + " not found"));
-       aClass.setName(classDTO.getName());
-       List<Modul> moduls = classDTO.getModuls().stream()
-               .map(modulDTO -> {
-                   Modul modul = modelMapper.map(modulDTO, Modul.class);
-                   return modulRepository.save(modul);
-               })
-               .collect(Collectors.toList());
-       aClass.setModuls(moduls);
-       Class savedClass = classRepository.save(aClass);
-       if (savedClass.getId() != null) {
-           return ResponseEntity.ok().body(true);
-       } else {
-           return ResponseEntity.badRequest().body(false);
-       }
-   }
+    }
 
     @Override
     public ResponseEntity<UserListDTO> getClassUsers(String classID, Principal principal, String role, int page, int sizePerPage) {
@@ -194,11 +118,11 @@ public class ClassService implements IClassService {
         User userr = userRepository.findUserByEmail(principal.getName());
         if (userr.getRoles().contains(Role.SUPERADMIN) && !Objects.equals(classID, "")) {
             Class aClass = classRepository.findById(classID)
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getInstitution().getId() + " not found"));
+                    .orElseThrow(() -> new InstitutionNotFoundException("Institution " + userr.getEducation().getInstitution().getId() + " not found"));
             return getUserListDTOResponseEntity(aClass, principal, role, page, sizePerPage);
-        } else if (userr.getInstitution() != null) {
+        } else if (userr.getEducation().getInstitution() != null) {
             log.info("Checking class");
-            Institution institution = institutionRepository.findById(userr.getInstitution().getId())
+            Institution institution = institutionRepository.findById(userr.getEducation().getInstitution().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
             log.info("Class id : " + classID);
             Class aClass = classRepository.findById(classID)
@@ -216,7 +140,6 @@ public class ClassService implements IClassService {
 
         return ResponseEntity.badRequest().body(null);
     }
-
 
     @Override
     public ResponseEntity<Boolean> addUserToClass(String classID, String userEmail, String role) {
@@ -247,7 +170,7 @@ public class ClassService implements IClassService {
                 return ResponseEntity.ok().body(true);
             }
             aClass.getTeachers().add(target);
-            target.setStclass(aClass);
+            target.getEducation().setStclass(aClass);
             if (!target.getRoles().contains(Role.TEACHER)) {
                 target.getRoles().add(Role.TEACHER);
             }
@@ -260,7 +183,7 @@ public class ClassService implements IClassService {
                 return ResponseEntity.ok().body(true);
             }
             aClass.getStudents().add(target);
-            target.setStclass(aClass);
+            target.getEducation().setStclass(aClass);
             if (!target.getRoles().contains(Role.STUDENT)) {
                 target.getRoles().add(Role.STUDENT);
             }
@@ -288,7 +211,7 @@ public class ClassService implements IClassService {
                 .orElseThrow(() -> new ClassNotFoundException("Class " + classID + " not found"));
         if (aClass.getTeachers().contains(user)) {
             aClass.getTeachers().remove(user);
-            user.setStclass(null);
+            user.getEducation().setStclass(null);
             user.getRoles().remove(Role.TEACHER);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -296,7 +219,7 @@ public class ClassService implements IClassService {
         }
         if (aClass.getStudents().contains(user)) {
             aClass.getStudents().remove(user);
-            user.setStclass(null);
+            user.getEducation().setStclass(null);
             user.getRoles().remove(Role.STUDENT);
             classRepository.save(aClass);
             userRepository.save(user);
@@ -308,11 +231,11 @@ public class ClassService implements IClassService {
 
     @Override
     public boolean userInInstitution(User user, Institution institution) {
-        if (user.getInstitution() != null) {
-            log.info("user institution id = " + user.getInstitution().getId());
+        if (user.getEducation().getInstitution() != null) {
+            log.info("user institution id = " + user.getEducation().getInstitution().getId());
             log.info("institution id = " + institution.getId());
 
-            return Objects.equals(user.getInstitution().getId(), institution.getId());
+            return Objects.equals(user.getEducation().getInstitution().getId(), institution.getId());
         }
         return false;
     }
@@ -343,10 +266,6 @@ public class ClassService implements IClassService {
         return ResponseEntity.ok().body(userListDTO);
     }
 
-   /* public Class getClasseById(String id) {
-        return classRepository.findById(id)
-                .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
-    }*/
     public ClassDTO getClasseById(String id) {
         Class aClass = classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
@@ -361,14 +280,8 @@ public class ClassService implements IClassService {
     public List<Class> searchClassesBySemester(SemesterNumber semesterNumber) {
         return classRepository.findBySemester_SemesterNumber(semesterNumber);
     }
-    public List<Class> getClasses1() {
-        log.info("Getting all classes");
-        return classRepository.findAll()
-                .stream()
-                .map(classes -> modelMapper.map(classes, Class.class))
-                .collect(Collectors.toList());
 
-  /*  @Override
+    @Override
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         log.info("Getting all classes without pagination");
         return ResponseEntity
@@ -377,8 +290,20 @@ public class ClassService implements IClassService {
                         .stream()
                         .map(classes -> modelMapper.map(classes, ClassDTO.class))
                         .toList());
-    }*/
+    }
 
+    @Override
+    public ResponseEntity<ClassDTO> getMyClass(Principal principal) {
+        log.info("Getting my class");
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user.getEducation().getStclass() != null) {
+            return ResponseEntity.ok().body(modelMapper.map(user.getEducation().getStclass(), ClassDTO.class));
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
+    public List<Class> findAll() {
+        return classRepository.findAll();
     }
     public List<ClassDTO> getClasses2() {
         log.info("Getting all classes");
@@ -386,10 +311,6 @@ public class ClassService implements IClassService {
                 .stream()
                 .map(classes -> modelMapper.map(classes, ClassDTO.class))
                 .collect(Collectors.toList());
-    }
-
-    public List<Class> findAll() {
-        return classRepository.findAll();
     }
     public ClassDTO mapToDTO(Class aClass) {
         ClassDTO classDTO = new ClassDTO();

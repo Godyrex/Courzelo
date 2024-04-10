@@ -1,5 +1,6 @@
 package com.courzelo.lms.GAlgo;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Modul;
