@@ -1,12 +1,8 @@
 package com.courzelo.lms.dto.user;
 
-import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.entities.schedule.NonDisponibility;
 import com.courzelo.lms.entities.schedule.Teacher;
 import com.courzelo.lms.entities.user.Role;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 @Data

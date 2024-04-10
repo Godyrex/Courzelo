@@ -1,6 +1,5 @@
 package com.courzelo.lms.dto.program;
 
-import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
 import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.Semester;

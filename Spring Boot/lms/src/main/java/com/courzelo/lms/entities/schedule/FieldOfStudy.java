@@ -1,7 +1,6 @@
 package com.courzelo.lms.entities.schedule;
 
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.Department;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

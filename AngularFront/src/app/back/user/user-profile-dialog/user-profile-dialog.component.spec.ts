@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserProfileDialogComponent } from './user-profile-dialog.component';
+import {UserProfileDialogComponent} from './user-profile-dialog.component';
 
 describe('UserProfileDialogComponent', () => {
   let component: UserProfileDialogComponent;

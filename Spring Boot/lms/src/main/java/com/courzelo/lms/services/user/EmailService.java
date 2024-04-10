@@ -79,7 +79,7 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
+        content = content.replace("[[name]]", user.getProfile().getName() + " " + user.getProfile().getLastName());
         String changeURL = "localhost:4200" + "/recover-password?token=" + verificationToken.getToken();
 
         content = content.replace("[[URL]]", changeURL);
@@ -134,7 +134,7 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
+        content = content.replace("[[name]]", user.getProfile().getName() + " " + user.getProfile().getLastName());
         String verifyURL = "localhost:4200" + "/verify?code=" + verificationToken.getToken();
 
         content = content.replace("[[URL]]", verifyURL);
@@ -217,7 +217,7 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getName() + " " + user.getLastName());
+        content = content.replace("[[name]]", user.getProfile().getName() + " " + user.getProfile().getLastName());
         content = content.replace("[[verificationCode]]", verificationToken.getToken());
 
         helper.setText(content, true);

@@ -4,7 +4,6 @@ package com.courzelo.lms.services.schedule;
 import com.courzelo.lms.dto.schedule.DepartmentDTO;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
-import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.repositories.DepartmentRepository;
 import com.courzelo.lms.repositories.FieldOfStudyRepository;
 import com.courzelo.lms.utils.NotFoundException;

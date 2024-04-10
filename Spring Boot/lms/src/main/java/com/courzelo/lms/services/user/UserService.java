@@ -1,6 +1,9 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.dto.user.*;
+import com.courzelo.lms.dto.user.DeleteAccountDTO;
+import com.courzelo.lms.dto.user.PasswordDTO;
+import com.courzelo.lms.dto.user.ProfileDTO;
+import com.courzelo.lms.dto.user.UpdateEmailDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.user.Role;
@@ -89,13 +92,13 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserByEmail(email);
         if (profileDTO.getName() != null && !profileDTO.getName().isEmpty()) {
             log.info("updateUserProfile :Setting name to " + profileDTO.getName());
-            user.setName(profileDTO.getName());
-            log.info("updateUserProfile :Name set to " + user.getName());
+            user.getProfile().setName(profileDTO.getName());
+            log.info("updateUserProfile :Name set to " + user.getProfile().getName());
         }
         if (profileDTO.getLastName() != null && !profileDTO.getLastName().isEmpty()) {
             log.info("updateUserProfile :Setting lastname to " + profileDTO.getLastName());
-            user.setLastName(profileDTO.getLastName());
-            log.info("updateUserProfile :Lastname set to " + user.getLastName());
+            user.getProfile().setLastName(profileDTO.getLastName());
+            log.info("updateUserProfile :Lastname set to " + user.getProfile().getLastName());
         }
         userRepository.save(user);
         log.info("updateUserProfile :Profile Updated!");
@@ -115,23 +118,23 @@ public class UserService implements UserDetailsService {
                 .toList();
         Institution institution = null;
         Class institutionClass = null;
-        if (user.getInstitution() != null) {
-            institution = institutionRepository.findById(user.getInstitution().getId())
+        if (user.getEducation().getInstitution() != null) {
+            institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
                     .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
         }
-        if (user.getStclass() != null) {
-            institutionClass = classRepository.findById(user.getStclass().getId())
+        if (user.getEducation().getStclass() != null) {
+            institutionClass = classRepository.findById(user.getEducation().getStclass().getId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not found"));
         }
         return new JwtResponse(
                 user.getEmail(),
-                user.getName(),
-                user.getLastName(),
+                user.getProfile().getName(),
+                user.getProfile().getLastName(),
                 roles,
-                user.getPhoto() != null ? user.getPhoto().getId() : null,
+                user.getProfile().getPhoto() != null ? user.getProfile().getPhoto().getId() : null,
                 institution != null ? institution.getName() : null,
                 institutionClass != null ? institutionClass.getName() : null,
-                user.isTwoFactorAuthEnabled()
+                user.getSecurity().isTwoFactorAuthEnabled()
         );
     }
 
@@ -154,7 +157,7 @@ public class UserService implements UserDetailsService {
 
     public boolean ValidUser(String email) {
         User user = userRepository.findUserByEmail(email);
-        return !user.getBan() && user.isEnabled();
+        return !user.getSecurity().getBan() && user.isEnabled();
     }
 
 
@@ -198,7 +201,7 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<HttpStatus> updatePhoto(MultipartFile file, Principal principal) throws IOException {
         User user = userRepository.findUserByEmail(principal.getName());
-        user.setPhoto(iPhotoService.addPhoto(file));
+        user.getProfile().setPhoto(iPhotoService.addPhoto(file));
         userRepository.save(user);
         log.info("finish update photo");
         return ResponseEntity.ok().build();
@@ -229,10 +232,10 @@ public class UserService implements UserDetailsService {
         return  userRepository.findUsersByRoles(Collections.singletonList(TEACHER));
     }
     public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUsersByIdAndRolesContainsAndName(id,TEACHER, name);
+        return userRepository.findUsersByIdAndRolesContainsAndProfileName(id,TEACHER, name);
     }
     public User findTeacherByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUserByIdAndRolesContainsAndName(id,TEACHER, name);
+        return userRepository.findUserByIdAndRolesContainsAndProfileName(id,TEACHER, name);
     }
 
 

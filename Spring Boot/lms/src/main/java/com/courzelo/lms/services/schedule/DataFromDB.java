@@ -1,18 +1,13 @@
 package com.courzelo.lms.services.schedule;
 
-import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.*;
-import com.courzelo.lms.dto.user.UserDTO;
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.*;
-import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.services.program.ClassService;
 import com.courzelo.lms.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

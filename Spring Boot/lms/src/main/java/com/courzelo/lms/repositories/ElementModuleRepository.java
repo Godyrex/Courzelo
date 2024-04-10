@@ -4,17 +4,10 @@ package com.courzelo.lms.repositories;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Period;
-import com.courzelo.lms.entities.schedule.Teacher;
 import com.courzelo.lms.entities.user.User;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.DayOfWeek;
 import java.util.List;
