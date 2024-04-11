@@ -166,7 +166,8 @@ public class AuthService implements IAuthService {
 
         User userDetails = (User) authentication.getPrincipal();
         RefreshToken refreshToken = null;
-
+        userDetails.getActivity().setLastLogin(Instant.now());
+        userDetails.getActivity().setLoginCount(userDetails.getActivity().getLoginCount() + 1);
         if (loginDTO.isRememberMe()) {
             refreshToken = iRefreshTokenService.createRefreshToken(loginDTO.getEmail(), refreshRememberMeExpirationMs);
             userDetails.getSecurity().setRememberMe(true);
@@ -261,6 +262,8 @@ public class AuthService implements IAuthService {
         User user = userRepository.findUserByEmail(email);
         if (verifyTwoFactorAuth(email, Integer.parseInt(verificationCode))) {
             user.getSecurity().setTwoFactorAuthEnabled(true);
+            user.getActivity().setUpdatedAt(Instant.now());
+            user.getActivity().setLastSecurityChange(Instant.now());
             userRepository.save(user);
             return ResponseEntity.ok().body(new Response("Two Factor Authentication Enabled"));
         }
@@ -270,6 +273,8 @@ public class AuthService implements IAuthService {
         User user = userRepository.findUserByEmail(email);
         user.getSecurity().setTwoFactorAuthKey(null);
         user.getSecurity().setTwoFactorAuthEnabled(false);
+        user.getActivity().setUpdatedAt(Instant.now());
+        user.getActivity().setLastSecurityChange(Instant.now());
         userRepository.save(user);
     }
     public boolean verifyTwoFactorAuth(String email, int verificationCode) {
@@ -318,6 +323,8 @@ public class AuthService implements IAuthService {
         if (user != null) {
             log.info(user.getEmail());
             user.getSecurity().setEnabled(true);
+            user.getActivity().setUpdatedAt(Instant.now());
+            user.getActivity().setLastSecurityChange(Instant.now());
             userRepository.save(user);
             log.info("Finished Verifying...");
             return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
@@ -382,6 +389,8 @@ public class AuthService implements IAuthService {
             throw new UserNotFoundException("User Not Found with id " + verificationToken.getUser().getId());
         }
         user.setPassword(encoder.encode(passwordDTO.getPassword()));
+        user.getActivity().setUpdatedAt(Instant.now());
+        user.getActivity().setLastPasswordChange(Instant.now());
         userRepository.save(user);
         verificationTokenRepository.delete(verificationToken);
         return ResponseEntity
@@ -401,6 +410,8 @@ public class AuthService implements IAuthService {
         user.getSecurity().setEnabled(false);
         user.getSecurity().setBan(false);
         user.getSecurity().setTwoFactorAuthEnabled(false);
+        user.getActivity().setCreatedAt(Instant.now());
+        user.getActivity().setLoginCount(0);
         userRepository.save(user);
         String randomCode = RandomString.make(64);
         VerificationToken verificationToken = new VerificationToken(

@@ -2,6 +2,7 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.user.*;
+import com.courzelo.lms.entities.user.UserAddress;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IDeviceMetadataService;
@@ -59,6 +60,13 @@ public class UserController {
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
                 .body(jwtResponse);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myContactInfo")
+    public ResponseEntity<UserContactDTO> getMyContactInfo(Principal principal) {
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
+                .body(userService.getMyContactInfo(principal.getName()));
     }
 
     @DeleteMapping("/{userID}")
@@ -122,5 +130,11 @@ public class UserController {
                                                     Principal principal
     ) {
         return iDeviceMetadataService.getDevices(page, sizePerPage, principal);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/update/contact")
+    public ResponseEntity<HttpStatus> updateUserContact(@Valid @RequestBody UserContactDTO userContactDTO, Principal principal) {
+        return userService.updateUserContact(principal.getName(), userContactDTO);
     }
 }

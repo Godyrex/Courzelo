@@ -7,6 +7,8 @@ import {EmailRequest} from "../../../model/user/EmailRequest";
 import {map, Observable} from "rxjs";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
+import {UserAddress} from "../../../model/user/UserAddress";
+import {UserContact} from "../../../model/user/UserContact";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,16 @@ export class UpdateService {
   private baseUrl: string = 'http://localhost:8081/api/v1/user';
 
   constructor(private http: HttpClient) {
+  }
+  getCountries(): Observable<string[]> {
+    return this.http.get<any[]>('/assets/countries.json').pipe(
+      map(countries => countries.map(country => country.name))
+    );
+  }
+  getStates(countryCode: string): Observable<any> {
+    return this.http.get<any[]>('/assets/countries.json').pipe(
+      map(countries => countries.find(country => country.name === countryCode)?.states)
+    );
   }
 
   changePassword(passwordRequest: PasswordRequest) {
@@ -51,9 +63,15 @@ export class UpdateService {
   getMyInfo() {
     return this.http.get<LoginResponse>(`${this.baseUrl}/myInfo`);
   }
+  getMyContactInfo(){
+    return this.http.get<UserContact>(`${this.baseUrl}/myContactInfo`);
+  }
 
   deleteAccount(password: DeleteAccountRequest) {
     return this.http.post(`${this.baseUrl}/delete`, password);
+  }
+  updateUserContact(userContact: UserContact): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/contact`, userContact);
   }
 
   private getUploadProgress(event: any): number | null {

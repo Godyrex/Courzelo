@@ -14,6 +14,9 @@ import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog} from "@angular/material/dialog";
 import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
+import {UserContact} from "../../../model/user/UserContact";
+import {UserAddress} from "../../../model/user/UserAddress";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +37,13 @@ export class ProfileComponent implements OnInit{
     this.loading = true;
   }
   nameRequest: NameRequest = {};
+  userContact : UserContact = {};
+  userAddress : UserAddress = {};
   emailRequest: EmailRequest = {};
+  selectedCountry: string= '';
+  showStatesForm: boolean = false;
+  countries: any[] = [];
+  states: any[] = [];
   qrCodeImage: string = '';
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
@@ -52,6 +61,18 @@ export class ProfileComponent implements OnInit{
   photoForm = this.formBuilder.group({
     photo: ['', [Validators.required]],
   });
+  contactForm = this.formBuilder.group({
+    phone: [this.userContact.phoneNumber, [Validators.maxLength(20), Validators.minLength(5)]],
+    facebook: [this.userContact.facebook],
+    github: [this.userContact.github],
+    linkedin: [this.userContact.linkedin],
+    address: [this.userContact.userAddress?.address],
+    city: [this.userContact.userAddress?.city],
+    state: [this.userContact.userAddress?.state],
+    country: [this.userContact.userAddress?.country],
+    zipCode: [this.userContact.userAddress?.zipCode],
+  });
+
   verificationForm = this.formBuilder.group({
     code: ['', [Validators.maxLength(4), Validators.minLength(4)]],
   });
@@ -84,12 +105,69 @@ export class ProfileComponent implements OnInit{
     public dialog:MatDialog
   ) {
   }
+  onCountryChange(countryCode: string): void {
+    this.updateService.getStates(countryCode).subscribe(states => {
+      this.states = states;
+      this.showStatesForm = true;
+    });
+  }
   openDialog(): void {
     this.dialog.open(QaDialogComponent);
   }
   ngOnInit(): void {
         this.getMyInfo();
+        this.getMyContactInfo();
+        this.updateService.getCountries().subscribe(countries => {
+          this.countries = countries;
+          console.log(countries);
+        });
     }
+  updateContact(){
+    this.userContact.phoneNumber = this.contactForm.controls['phone'].value!;
+    this.userContact.facebook = this.contactForm.controls['facebook'].value!;
+    this.userContact.github = this.contactForm.controls['github'].value!;
+    this.userContact.linkedin = this.contactForm.controls['linkedin'].value!;
+    this.userAddress.address = this.contactForm.controls['address'].value!;
+    this.userAddress.city = this.contactForm.controls['city'].value!;
+    this.userAddress.state = this.contactForm.controls['state'].value!;
+    this.userAddress.country = this.contactForm.controls['country'].value!;
+    this.userAddress.zipCode = this.contactForm.controls['zipCode'].value!;
+    this.userContact.userAddress = this.userAddress;
+    this.updateService.updateUserContact(this.userContact).subscribe(
+      response => {
+        console.log(response);
+        this.toaster.success('Contact information updated successfully', 'Success');
+      },
+      error => {
+        console.log(error);
+        this.toaster.error('Error updating contact information', 'Error');
+      }
+    )
+  }
+  getMyContactInfo() {
+    this.updateService.getMyContactInfo().pipe(
+      tap(response => {
+        this.userContact = response;
+        console.log("get my contact ",response);
+
+        // Initialize the form here
+        this.contactForm = this.formBuilder.group({
+          phone: [this.userContact.phoneNumber, [Validators.maxLength(20), Validators.minLength(5)]],
+          facebook: [this.userContact.facebook],
+          github: [this.userContact.github],
+          linkedin: [this.userContact.linkedin],
+          address: [this.userContact.userAddress?.address],
+          city: [this.userContact.userAddress?.city],
+          state: [this.userContact.userAddress?.state],
+          country: [this.userContact.userAddress?.country],
+          zipCode: [this.userContact.userAddress?.zipCode],
+        });
+        if(this.userContact.userAddress?.country!=null){
+          this.onCountryChange(this.userContact.userAddress?.country);
+        }
+      })
+    ).subscribe();
+  }
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
