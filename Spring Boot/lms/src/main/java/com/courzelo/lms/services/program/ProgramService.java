@@ -97,8 +97,10 @@ public class ProgramService implements IProgramService {
         List<User> users = program.getStudents();
         if (users != null && !users.isEmpty()) {
             for (User user : users) {
-                user.getEducation().getPrograms().remove(program);
-                userRepository.save(user);
+                if (user != null && user.getEducation() != null) {
+                    user.getEducation().getPrograms().remove(program);
+                    userRepository.save(user);
+                }
             }
         }
         institution.getPrograms().remove(program);

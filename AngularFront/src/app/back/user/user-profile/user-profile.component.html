@@ -8,6 +8,9 @@
     </div>
 
     <h3 class="profile-username text-center">{{loginResponse.profile?.name + " " + loginResponse.profile?.lastName }}</h3>
+    <div class="text-center">
+      <span *ngFor="let role of profileRoles" class="badge badge-primary">{{role}}</span>
+    </div>
     <p class="text-muted text-center">{{loginResponse.profile?.title}}</p>
     <p class="text-muted text-center">{{loginResponse.email}}</p>
     <p class="text-muted text-center">{{loginResponse.profile?.birthDate | date:'mediumDate'}}</p>

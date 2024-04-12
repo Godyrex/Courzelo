@@ -14,7 +14,7 @@ export class UserProfileComponent implements OnInit {
   userContact:UserContact = {}
   userPhotoUrl: any
   @Input() userInfoChanged?: EventEmitter<void>;
-
+  profileRoles: string[] = [];
 
   constructor(
     private updateService: UpdateService
@@ -49,6 +49,7 @@ export class UserProfileComponent implements OnInit {
           console.log("photoID: " + this.loginResponse.profile.photo)
           this.getImage();
         }
+        this.profileRoles = this.loginResponse!.roles!.map(role => role.replace('ROLE_', ''));
         console.log(response);
       }
     )

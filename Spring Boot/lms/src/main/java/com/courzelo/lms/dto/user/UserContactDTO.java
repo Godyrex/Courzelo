@@ -1,6 +1,7 @@
 package com.courzelo.lms.dto.user;
 
 import com.courzelo.lms.entities.user.UserAddress;
+import com.courzelo.lms.entities.user.UserContact;
 import lombok.Data;
 
 @Data
@@ -19,5 +20,14 @@ public class UserContactDTO {
         this.linkedin = linkedin;
         this.facebook = facebook;
         this.github = github;
+    }
+
+    public UserContactDTO(UserContact contact) {
+        this.userAddress = contact.getUserAddress();
+        this.phoneNumber = contact.getPhoneNumber();
+        this.website = contact.getWebsite();
+        this.linkedin = contact.getLinkedin();
+        this.facebook = contact.getFacebook();
+        this.github = contact.getGithub();
     }
 }

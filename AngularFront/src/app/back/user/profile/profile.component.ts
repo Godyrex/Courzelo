@@ -44,6 +44,7 @@ export class ProfileComponent implements OnInit{
   userContact : UserContact = {};
   userAddress : UserAddress = {};
   emailRequest: EmailRequest = {};
+  profileRoles: string[] = [];
   selectedCountry: string= '';
   showStatesForm: boolean = false;
   countries: any[] = [];
@@ -174,6 +175,7 @@ export class ProfileComponent implements OnInit{
         }
         this.contactForm.controls['country'].setValue(this.user.contact?.userAddress?.country);
         this.contactForm.controls['state'].setValue(this.user.contact?.userAddress?.state);
+        this.profileRoles = this.user!.roles!.map(role => role.replace('ROLE_', ''));
         console.log(response);
       }
     )

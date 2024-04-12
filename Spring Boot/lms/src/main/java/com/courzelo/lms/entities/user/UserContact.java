@@ -10,4 +10,8 @@ public class UserContact {
     private String linkedin;
     private String facebook;
     private String github;
+
+    public UserAddress getUserAddress() {
+        return address;
+    }
 }

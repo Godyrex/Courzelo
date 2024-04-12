@@ -23,4 +23,7 @@ public class UserEducationalDetails {
     private List<ElementModule>elementModules;
     @DBRef
     private List<NonDisponibility>nonDisponibilities;
+    public List<Program> getProgram() {
+        return programs;
+    }
 }

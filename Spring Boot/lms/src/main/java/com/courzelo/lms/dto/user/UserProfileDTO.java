@@ -1,5 +1,6 @@
 package com.courzelo.lms.dto.user;
 
+import com.courzelo.lms.entities.user.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,14 @@ public class UserProfileDTO {
     private Date birthDate;
     private String title;
     private String bio;
+
+    public UserProfileDTO(UserProfile profile) {
+        this.name = profile.getName();
+        this.lastName = profile.getLastName();
+        this.photo = profile.getPhoto().getId();
+        this.speciality = profile.getSpeciality();
+        this.birthDate = profile.getBirthDate();
+        this.title = profile.getTitle();
+        this.bio = profile.getBio();
+    }
 }

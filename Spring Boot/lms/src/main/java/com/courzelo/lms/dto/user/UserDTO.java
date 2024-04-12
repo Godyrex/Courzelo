@@ -1,6 +1,6 @@
 package com.courzelo.lms.dto.user;
 
-import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +18,25 @@ public class UserDTO {
     private UserEducationDTO education;
     private UserContactDTO contact;
     private UserActivityDTO activity;
+
+    public UserDTO(
+            String id,
+            String email,
+            List<String> list,
+            UserSecurity security,
+            UserProfile profile,
+            UserEducationalDetails education,
+            UserContact contact,
+            UserActivity activity)
+    {
+        this.id = id;
+        this.email = email;
+        this.roles = list;
+        this.security = new UserSecurityDTO(security);
+        this.profile = new UserProfileDTO(profile);
+        this.education = new UserEducationDTO(education);
+        this.contact = new UserContactDTO(contact);
+        this.activity = new UserActivityDTO(activity);
+
+    }
 }
