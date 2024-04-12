@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InstitutionDTO {
+public class SimplifiedInstitutionDTO {
     String id;
     String name;
-    String location;
-    String description;
-    String website;
-    double latitude;
-    double longitude;
 }

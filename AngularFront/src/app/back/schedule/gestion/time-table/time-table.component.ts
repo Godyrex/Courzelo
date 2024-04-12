@@ -142,7 +142,7 @@ export class TimeTableComponent  {
       && modul.period === prd);
     if(!this.prof)
     {
-      return modul ? modul.teacher.name+" "+modul.teacher.lastname : '';
+      return modul ? modul.teacher.profile?.name+" "+modul.teacher.profile?.lastName : '';
 
     }else{
       return modul && modul.modul && modul.modul.aClass && modul.modul.aClass.name ? modul.modul.aClass.name : '';

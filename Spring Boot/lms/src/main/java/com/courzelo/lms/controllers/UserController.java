@@ -42,7 +42,7 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/update/name")
+    @PatchMapping("/update/profile")
     @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user, Principal principal) {
         return userService.updateUserProfile(user, principal.getName());
@@ -55,11 +55,10 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myInfo")
     @Cacheable(value = "MyInfo", key = "#principal.name")
-    public ResponseEntity<JwtResponse> getMyInfo(Principal principal) {
-        JwtResponse jwtResponse = userService.getMyInfo(principal.getName());
+    public ResponseEntity<UserDTO> getMyInfo(Principal principal) {
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
-                .body(jwtResponse);
+                .body(userService.getMyInfo(principal.getName()));
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myContactInfo")
@@ -134,6 +133,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/update/contact")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<HttpStatus> updateUserContact(@Valid @RequestBody UserContactDTO userContactDTO, Principal principal) {
         return userService.updateUserContact(principal.getName(), userContactDTO);
     }

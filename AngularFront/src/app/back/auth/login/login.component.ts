@@ -78,14 +78,16 @@ export class LoginComponent {
       this.loginRequest.rememberMe = this.loginForm.controls['rememberMe'].value != null;
       this.authService.login(this.loginRequest).subscribe(
         response => {
+          console.log("start login")
           console.log(response)
-          if(response.msg === 'Two Factor Authentication Required') {
+          if(response && response.msg && response.msg === 'Two Factor Authentication Required') {
+            console.log("tfa")
             this.toggleLoginAnimation();
             this.toggleTFAAnimation();
             this.showTwoFactorAuthInput = true;
             this.toastr.info('Please enter the verification code from your mobile app', 'Two Factor Authentication Required');
           }else {
-            if (response.deviceIsNew !== undefined) {
+            if (response && response.deviceIsNew !== undefined) {
               console.log("device not confirmed")
               if (response.deviceIsNew) {
                 console.log(this.loginRequest.rememberMe)
@@ -94,15 +96,17 @@ export class LoginComponent {
                 this.toastr.info('Please enter the verification code sent to your email', 'Verification Required');
               }
             } else {
+              console.log("logging in")
               console.log(this.loginRequest.rememberMe)
-              this.toastr.success('Welcome ' + response.name + ' ' + response.lastname, 'Login Successful');
-              this.loginResponse = response;
+              this.toastr.success('Login Successful');
               this.router.navigate(['settings/profile']);
             }
           }
         },
         error => {
-          this.toastr.error(error.error.msg, 'Login Failed');
+          if(error && error.error && error.error.msg) {
+            this.toastr.error(error.error.msg, 'Login Failed');
+          }
         });
     }
   }
@@ -110,8 +114,7 @@ export class LoginComponent {
     this.authService.loginTFA(this.loginRequest,this.TFAForm.controls['twoFactorAuthCode'].value!).subscribe(
       (response: any) => {
         console.log(this.loginRequest.rememberMe)
-        this.toastr.success('Welcome ' + response.name + ' ' + response.lastname, 'Login Successful');
-        this.loginResponse = response;
+        this.toastr.success('Login Successful');
         this.router.navigate(['settings/profile']);
       },
       error => {
@@ -125,10 +128,8 @@ export class LoginComponent {
       this.code = +this.verificationForm.controls['code'].value!;
       this.authService.confirmDevice(this.loginRequest, this.code).subscribe(
         response => {
-          this.loginResponse = response;
-          this.token.saveUser(response);
-          this.toastr.success('Welcome ' + response.name + ' ' + response.lastname, 'Login Successful');
-          this.router.navigate(['']);
+          this.toastr.success('Login Successful');
+          this.router.navigate(['settings/profile']);
         },
         error => {
           this.toastr.error(error.error.msg, 'Verification Failed');

@@ -181,35 +181,7 @@ public class AuthService implements IAuthService {
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), loginDTO.isRememberMe() ? refreshRememberMeExpirationMs : refreshExpirationMs).toString());
 
         userRepository.save(userDetails);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-
-        log.info("Authentication finished!");
-        Institution institution = null;
-        Class institutionClass = null;
-        if (userDetails.getEducation().getInstitution() != null) {
-            institution = institutionRepository.findById(userDetails.getEducation().getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
-        }
-        if (userDetails.getEducation().getStclass() != null) {
-            institutionClass = classRepository.findById(userDetails.getEducation().getStclass().getId())
-                    .orElseThrow(() -> new ClassNotFoundException("Class not found"));
-        }
-
-        JwtResponse jwtResponse = new JwtResponse(
-                userDetails.getEmail(),
-                userDetails.getProfile().getName(),
-                userDetails.getProfile().getLastName(),
-                roles,
-                userDetails.getProfile().getPhoto() != null ? userDetails.getProfile().getPhoto().getId() : null,
-                institution != null ? institution.getName() : null,
-                institutionClass != null ? institutionClass.getName() : null,
-                userDetails.getSecurity().isTwoFactorAuthEnabled()
-        );
-
-        return ResponseEntity.ok(jwtResponse);
+        return ResponseEntity.ok().build();
     }
 
 
@@ -263,7 +235,6 @@ public class AuthService implements IAuthService {
         if (verifyTwoFactorAuth(email, Integer.parseInt(verificationCode))) {
             user.getSecurity().setTwoFactorAuthEnabled(true);
             user.getActivity().setUpdatedAt(Instant.now());
-            user.getActivity().setLastSecurityChange(Instant.now());
             userRepository.save(user);
             return ResponseEntity.ok().body(new Response("Two Factor Authentication Enabled"));
         }
@@ -274,7 +245,6 @@ public class AuthService implements IAuthService {
         user.getSecurity().setTwoFactorAuthKey(null);
         user.getSecurity().setTwoFactorAuthEnabled(false);
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastSecurityChange(Instant.now());
         userRepository.save(user);
     }
     public boolean verifyTwoFactorAuth(String email, int verificationCode) {
@@ -324,7 +294,6 @@ public class AuthService implements IAuthService {
             log.info(user.getEmail());
             user.getSecurity().setEnabled(true);
             user.getActivity().setUpdatedAt(Instant.now());
-            user.getActivity().setLastSecurityChange(Instant.now());
             userRepository.save(user);
             log.info("Finished Verifying...");
             return ResponseEntity.status(HttpStatus.OK).body(new Response("Account Verified"));
@@ -390,7 +359,6 @@ public class AuthService implements IAuthService {
         }
         user.setPassword(encoder.encode(passwordDTO.getPassword()));
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastPasswordChange(Instant.now());
         userRepository.save(user);
         verificationTokenRepository.delete(verificationToken);
         return ResponseEntity

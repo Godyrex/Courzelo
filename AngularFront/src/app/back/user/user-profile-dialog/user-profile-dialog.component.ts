@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 import {PanelService} from "../../../service/user/admin/panel.service";
 import {UpdateService} from "../../../service/user/profile/update.service";
+import {UserResponse} from "../../../model/user/UserResponse";
 
 @Component({
   selector: 'app-user-profile-dialog',
@@ -13,10 +14,10 @@ export class UserProfileDialogComponent implements OnInit{
   constructor(@Inject(MAT_DIALOG_DATA) public data: { email: string },
               private adminService:PanelService,
               private updateService:UpdateService) {}
-  loginResponse: LoginResponse = {}
+  loginResponse: UserResponse = {}
   userPhotoUrl: any
   getImage() {
-    this.updateService.getPhoto(this.loginResponse.photoID!).subscribe((data: Blob) => {
+    this.updateService.getPhoto(this.loginResponse.profile?.photo!).subscribe((data: Blob) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.userPhotoUrl = reader.result;
@@ -33,8 +34,8 @@ export class UserProfileDialogComponent implements OnInit{
     this.adminService.getUserInfo(this.data.email).subscribe(
       response => {
         this.loginResponse = response;
-        if(this.loginResponse.photoID != null) {
-          console.log("photoID: " + this.loginResponse.photoID)
+        if(this.loginResponse.profile?.photo != null) {
+          console.log("photoID: " + this.loginResponse.profile.photo)
           this.getImage();
         }
         console.log(response);

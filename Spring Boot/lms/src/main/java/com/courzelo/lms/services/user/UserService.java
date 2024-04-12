@@ -1,5 +1,9 @@
 package com.courzelo.lms.services.user;
 
+import com.courzelo.lms.dto.program.InstitutionDTO;
+import com.courzelo.lms.dto.program.SimplifiedClassDTO;
+import com.courzelo.lms.dto.program.SimplifiedInstitutionDTO;
+import com.courzelo.lms.dto.program.SimplifiedProgramDTO;
 import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
@@ -94,8 +98,22 @@ public class UserService implements UserDetailsService {
             user.getProfile().setLastName(profileDTO.getLastName());
             log.info("updateUserProfile :Lastname set to " + user.getProfile().getLastName());
         }
+        if(profileDTO.getTitle() != null && !profileDTO.getTitle().isEmpty()){
+            log.info("updateUserProfile :Setting title to " + profileDTO.getTitle());
+            user.getProfile().setTitle(profileDTO.getTitle());
+            log.info("updateUserProfile :Title set to " + user.getProfile().getTitle());
+        }
+        if(profileDTO.getBio() != null && !profileDTO.getBio().isEmpty()){
+            log.info("updateUserProfile :Setting bio to " + profileDTO.getBio());
+            user.getProfile().setBio(profileDTO.getBio());
+            log.info("updateUserProfile :Bio set to " + user.getProfile().getBio());
+        }
+        if(profileDTO.getBirthDate() != null && !profileDTO.getBirthDate().toString().isEmpty()){
+            log.info("updateUserProfile :Setting birthdate to " + profileDTO.getBirthDate());
+            user.getProfile().setBirthDate(profileDTO.getBirthDate());
+            log.info("updateUserProfile :Birthdate set to " + user.getProfile().getBirthDate());
+        }
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastProfileChange(Instant.now());
         userRepository.save(user);
         log.info("updateUserProfile :Profile Updated!");
         return ResponseEntity.ok().body(new Response("Profile Updated!"));
@@ -106,31 +124,25 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
     }
 
-    public JwtResponse getMyInfo(String email) {
-        log.info("getMyInfo :Getting user " + email + " info...");
+    public UserDTO getMyInfo(String email) {
         User user = userRepository.findUserByEmail(email);
-        List<String> roles = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-        Institution institution = null;
-        Class institutionClass = null;
-        if (user.getEducation().getInstitution() != null) {
-            institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
-        }
-        if (user.getEducation().getStclass() != null) {
-            institutionClass = classRepository.findById(user.getEducation().getStclass().getId())
-                    .orElseThrow(() -> new ClassNotFoundException("Class not found"));
-        }
-        return new JwtResponse(
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        Institution institution = user.getEducation().getInstitution() != null ? institutionRepository.findById(user.getEducation().getInstitution().getId()).orElseThrow(() -> new InstitutionNotFoundException("Institution not found")) : null;
+        Class institutionClass = user.getEducation().getStclass() != null ? classRepository.findById(user.getEducation().getStclass().getId()).orElseThrow(() -> new ClassNotFoundException("Class not found")) : null;
+
+        return new UserDTO(
+                user.getId(),
                 user.getEmail(),
-                user.getProfile().getName(),
-                user.getProfile().getLastName(),
                 roles,
-                user.getProfile().getPhoto() != null ? user.getProfile().getPhoto().getId() : null,
-                institution != null ? institution.getName() : null,
-                institutionClass != null ? institutionClass.getName() : null,
-                user.getSecurity().isTwoFactorAuthEnabled()
+                new UserSecurityDTO(user.getSecurity().isTwoFactorAuthEnabled(), user.getSecurity().isEnabled(), user.getSecurity().getBan(), user.getSecurity().isRememberMe()),
+                new UserProfileDTO(user.getProfile().getName(), user.getProfile().getLastName(), user.getProfile().getPhoto().getId(), user.getProfile().getSpeciality(), user.getProfile().getBirthDate(), user.getProfile().getTitle(), user.getProfile().getBio()),
+                new UserEducationDTO(
+                        institution != null ? new SimplifiedInstitutionDTO(institution.getId(), institution.getName()) : null,
+                        institutionClass != null ? new SimplifiedClassDTO(institutionClass.getId(), institutionClass.getName()) : null,
+                        institutionClass != null ? Collections.singletonList(new SimplifiedProgramDTO(institutionClass.getProgram().getId(), institutionClass.getProgram().getName())) : null
+                ),
+                new UserContactDTO(user.getContact().getAddress(), user.getContact().getPhoneNumber(), user.getContact().getWebsite(), user.getContact().getLinkedin(), user.getContact().getFacebook(), user.getContact().getGithub()),
+                new UserActivityDTO(user.getActivity().getCreatedAt(), user.getActivity().getUpdatedAt(), user.getActivity().getLastLogin(), user.getActivity().getLoginCount())
         );
     }
     public UserContactDTO getMyContactInfo(String email){
@@ -157,7 +169,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(passwordDTO.getNewPassword()));
         log.info("changePassword :Encoded password set to " + user.getPassword());
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastPasswordChange(Instant.now());
         userRepository.save(user);
         log.info("changePassword :Password Changed!");
         return ResponseEntity.ok().body(new Response("Password updated!"));
@@ -202,7 +213,6 @@ public class UserService implements UserDetailsService {
         if (Objects.equals(user.getId(), verificationToken.getUser().getId())) {
             user.setEmail(updateEmailDTO.getEmail());
             user.getActivity().setUpdatedAt(Instant.now());
-            user.getActivity().setLastEmailChange(Instant.now());
             userRepository.save(user);
             return ResponseEntity.ok().build();
         }
@@ -213,7 +223,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserByEmail(principal.getName());
         user.getProfile().setPhoto(iPhotoService.addPhoto(file));
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastProfileChange(Instant.now());
         userRepository.save(user);
         log.info("finish update photo");
         return ResponseEntity.ok().build();
@@ -277,15 +286,27 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<HttpStatus> updateUserContact(String name, UserContactDTO userUpdateDTO) {
         log.info("updateUserDetails :Updating details of user " + name + "...");
+        String facebook = "https://www.facebook.com/";
+        String linkedin = "https://www.linkedin.com/in/";
+        String github = "https://www.github.com/";
         User user = userRepository.findUserByEmail(name);
-         user.getContact().setAddress(userUpdateDTO.getUserAddress());
+            user.getContact().setAddress(userUpdateDTO.getUserAddress());
+        if(userUpdateDTO.getPhoneNumber() != null && !userUpdateDTO.getPhoneNumber().isEmpty()) {
             user.getContact().setPhoneNumber(userUpdateDTO.getPhoneNumber());
+        }
+        if(userUpdateDTO.getWebsite() != null && !userUpdateDTO.getWebsite().isEmpty()) {
             user.getContact().setWebsite(userUpdateDTO.getWebsite());
-            user.getContact().setLinkedin(userUpdateDTO.getLinkedin());
-            user.getContact().setFacebook(userUpdateDTO.getFacebook());
-            user.getContact().setGithub(userUpdateDTO.getGithub());
+        }
+        if(userUpdateDTO.getLinkedin() != null && !userUpdateDTO.getLinkedin().isEmpty()) {
+            user.getContact().setLinkedin(linkedin + userUpdateDTO.getLinkedin());
+        }
+        if(userUpdateDTO.getFacebook() != null && !userUpdateDTO.getFacebook().isEmpty()) {
+            user.getContact().setFacebook(facebook + userUpdateDTO.getFacebook());
+        }
+        if (userUpdateDTO.getGithub() != null && !userUpdateDTO.getGithub().isEmpty()) {
+            user.getContact().setGithub(github + userUpdateDTO.getGithub());
+        }
         user.getActivity().setUpdatedAt(Instant.now());
-        user.getActivity().setLastContactChange(Instant.now());
         userRepository.save(user);
         log.info("updateUserDetails :User details Updated!");
         return ResponseEntity.ok().build();

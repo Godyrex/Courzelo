@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {LoginResponse} from "../../../model/user/LoginResponse";
+import {UserContact} from "../../../model/user/UserContact";
+import {UserResponse} from "../../../model/user/UserResponse";
 
 @Component({
   selector: 'app-user-profile',
@@ -8,7 +10,8 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  loginResponse: LoginResponse = {}
+  loginResponse: UserResponse = {}
+  userContact:UserContact = {}
   userPhotoUrl: any
   @Input() userInfoChanged?: EventEmitter<void>;
 
@@ -24,7 +27,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
   getImage() {
-    this.updateService.getPhoto(this.loginResponse.photoID!).subscribe((data: Blob) => {
+    this.updateService.getPhoto(this.loginResponse.profile?.photo!).subscribe((data: Blob) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.userPhotoUrl = reader.result;
@@ -42,10 +45,18 @@ export class UserProfileComponent implements OnInit {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.loginResponse = response;
-        if(this.loginResponse.photoID != null) {
-          console.log("photoID: " + this.loginResponse.photoID)
+        if(this.loginResponse.profile?.photo != null) {
+          console.log("photoID: " + this.loginResponse.profile.photo)
           this.getImage();
         }
+        console.log(response);
+      }
+    )
+  }
+  getMyContactInfo() {
+    this.updateService.getMyContactInfo().subscribe(
+      response => {
+        this.userContact = response;
         console.log(response);
       }
     )

@@ -9,6 +9,7 @@ import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 import {UserAddress} from "../../../model/user/UserAddress";
 import {UserContact} from "../../../model/user/UserContact";
+import {UserResponse} from "../../../model/user/UserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +38,8 @@ export class UpdateService {
     return this.http.post(`${this.baseUrl}/update/email`, emailRequest);
   }
 
-  changeName(nameRequest: NameRequest) {
-    return this.http.patch<JsonResponse>(`${this.baseUrl}/update/name`, nameRequest);
+  changeProfile(nameRequest: NameRequest) {
+    return this.http.patch<JsonResponse>(`${this.baseUrl}/update/profile`, nameRequest);
   }
 
   sendVerificationCode(): Observable<any> {
@@ -61,7 +62,7 @@ export class UpdateService {
   }
 
   getMyInfo() {
-    return this.http.get<LoginResponse>(`${this.baseUrl}/myInfo`);
+    return this.http.get<UserResponse>(`${this.baseUrl}/myInfo`);
   }
   getMyContactInfo(){
     return this.http.get<UserContact>(`${this.baseUrl}/myContactInfo`);

@@ -1,5 +1,6 @@
 package com.courzelo.lms.controllers;
 
+import com.courzelo.lms.dto.user.UserDTO;
 import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
@@ -30,10 +31,9 @@ public class AdminController {
         return iAdminService.getUsers(page, sizePerPage);
     }
     @GetMapping("/userInfo")
-    public ResponseEntity<JwtResponse> getUserInfo(@RequestParam String email) {
-        JwtResponse jwtResponse = userService.getMyInfo(email);
+    public ResponseEntity<UserDTO> getUserInfo(@RequestParam String email) {
         return ResponseEntity.ok()
-                .body(jwtResponse);
+                .body(userService.getMyInfo(email));
     }
 
     @PostMapping("/add/{userID}/{role}")

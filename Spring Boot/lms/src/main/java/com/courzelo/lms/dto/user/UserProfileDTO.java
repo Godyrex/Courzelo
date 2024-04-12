@@ -1,19 +1,20 @@
-package com.courzelo.lms.entities.user;
+package com.courzelo.lms.dto.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-public class UserProfile {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserProfileDTO {
     private String name;
     private String lastName;
-    @DBRef
-    private Photo photo;
+    private String photo;
     private String speciality;
     private Date birthDate;
     private String title;
     private String bio;
-
 }
