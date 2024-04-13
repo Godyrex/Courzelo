@@ -550,7 +550,16 @@ public class InstitutionService implements IInstitutionService {
         List<User> paginatedUsers = users.subList(start, end);
 
         List<UserDTO> userDTOs = paginatedUsers.stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRoles().stream().map(Role::name).toList(),
+                        user.getSecurity(),
+                        user.getProfile(),
+                        user.getEducation(),
+                        user.getContact(),
+                        user.getActivity()
+                ))
                 .toList();
         log.info("users in page : " + page + " " + userDTOs);
 

@@ -81,6 +81,9 @@ import {
 } from './back/program/my-programs-and-classes/my-programs/join-program-dialog/join-program-dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { UsersSearchComponent } from './back/user/users-search/users-search.component';
+import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/user-profile-by-email.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -139,7 +142,9 @@ import {MatInputModule} from "@angular/material/input";
     MyClassesComponent,
     MyProgramsComponent,
     MyProgramsAndClassesComponent,
-    JoinProgramDialogComponent
+    JoinProgramDialogComponent,
+    UsersSearchComponent,
+    UserProfileByEmailComponent
   ],
   imports: [
     BrowserModule,
@@ -148,6 +153,7 @@ import {MatInputModule} from "@angular/material/input";
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     RouterOutlet,
     MatButtonModule,
     BsDatepickerModule.forRoot(),

@@ -1,18 +1,8 @@
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
+<link href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" rel="stylesheet" >
 <section class="content-header">
   <div class="container-fluid">
-    <div class="col-sm-6">
-      <!-- Notification area -->
-      <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
-        <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
-        {{ messageSuccess }}
-      </div>
-      <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
-        <button (click)="resetErrorAlert()" class="close" type="button">×</button>
-        {{ messageError }}
-      </div>
-    </div><!-- /.col -->
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1>Profile</h1>
@@ -41,6 +31,7 @@
             <ul class="nav nav-pills">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name" (click)="toggleLoading()">Name</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo" (click)="checkUserProfileImage(); toggleLoading()">Profile photo</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contact" (click)="toggleLoading()">Contact</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email" (click)="toggleLoading()">Email</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password" (click)="toggleLoading()">Password</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete" (click)="toggleLoading()">Delete account</a></li>
@@ -72,6 +63,26 @@
                     </div>
                   </div>
                   <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="title" placeholder="Title" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Bio</label>
+                    <div class="col-sm-10">
+                      <textarea rows="3" class="form-control" formControlName="bio" placeholder="Bio" type="text"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Date of Birth</label>
+                    <div class="col-sm-10">
+                    <input class="form-control" placeholder="Date" bsDatepicker
+                           [maxDate]="maxDate"
+                           [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" formControlName="birthDate">
+                  </div>
+                  </div>
+                  <div class="form-group row">
                     <div class="offset-sm-2 col-sm-10">
                       <button class="btn btn-primary" type="submit">Submit</button>
                     </div>
@@ -101,6 +112,65 @@
                   </div>
                 </form>
                 <!-- /.post -->
+              </div>
+              <div class="tab-pane" id="contact">
+                <form (ngSubmit)="updateContact()" [formGroup]="contactForm" class="form-horizontal">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">Phone</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="phone" placeholder="Phone" type="text">
+                    </div>
+                  </div>
+                  <!-- set social links -->
+                    <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">Facebook</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="facebook" placeholder="Facebook" type="text">
+                    </div>
+                      <div *ngIf="contactForm.controls.facebook.touched && contactForm.controls.facebook.invalid" class="text-danger">
+                        Invalid Facebook username. Please enter only the username part of the URL.
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">Linkedin</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="linkedin" placeholder="Linkedin" type="text">
+                    </div>
+                    <div *ngIf="contactForm.controls.linkedin.touched && contactForm.controls.linkedin.invalid" class="text-danger">
+                      Invalid Linkedin username. Please enter only the username part of the URL.
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">Github</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="github" placeholder="Github" type="text">
+                    </div>
+                    <div *ngIf="contactForm.controls.github.touched && contactForm.controls.github.invalid" class="text-danger">
+                      Invalid Github username. Please enter only the username part of the URL.
+                    </div>
+                  </div>
+                  <div *ngIf="countries" class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">Country</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" formControlName="country" [(ngModel)]="selectedCountry" (change)="onCountryChange(selectedCountry)">
+                        <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div *ngIf="showStatesForm" class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName">State</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" formControlName="state">
+                        <option *ngFor="let state of states" [value]="state.name">{{state.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                  </div>
+                </form>
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="email">
@@ -198,7 +268,7 @@
                 </form>
               </div>
               <div class="tab-pane" id="tfa">
-                <div *ngIf="!user.twoFactorAuthEnabled" class="card-body">
+                <div *ngIf="!user.security?.twoFactorAuthEnabled" class="card-body">
                   <button class="btn btn-primary" (click)="generateTwoFactorAuthQrCode()">Generate QR Code</button>
                   <!-- Display the QR code here -->
                   <div *ngIf="qrCodeImage">
@@ -213,7 +283,7 @@
                   </form>
                 </div>
                 <!-- Display a message when TFA is already enabled -->
-                <div *ngIf="user.twoFactorAuthEnabled" class="card-body">
+                <div *ngIf="user.security?.twoFactorAuthEnabled" class="card-body">
                   <p>Two-Factor Authentication is already enabled.</p>
                   <button class="btn btn-danger" (click)="disableTwoFactorAuth()">Disable Two-Factor Authentication</button>
                 </div>

@@ -80,7 +80,7 @@ public class InstitutionController {
         return iInstitutionService.updateMyInstitution(institutionDTO, principal);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @GetMapping("/getInstitutionUsers/{role}")
     @Cacheable(value = "InstitutionUsers", key = "#page + '-' + #sizePerPage + '-' + #role")
     public ResponseEntity<UserListDTO> getInstitutionUsers(@RequestParam(required = false) String institutionID,
@@ -94,21 +94,21 @@ public class InstitutionController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/add/user/{userEmail}/{role}")
-    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
+    @CacheEvict(value = {"InstitutionUsers","UsersList", "MyInfo"}, allEntries = true, key = "#userEmail")
     public ResponseEntity<Boolean> addUserToInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, @PathVariable String role, Principal principal) {
         return iInstitutionService.addUserToInstitution(institutionID, userEmail, role, principal);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{institutionID}/{userEmail}")
-    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
+    @CacheEvict(value = {"InstitutionUsers","UsersList", "MyInfo"}, allEntries = true, key = "#userEmail")
     public ResponseEntity<Boolean> removeUser(@PathVariable String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/remove/user/{userEmail}")
-    @CacheEvict(value = {"InstitutionUsers"}, allEntries = true)
+    @CacheEvict(value = {"InstitutionUsers","UsersList", "MyInfo"}, allEntries = true, key = "#userEmail")
     public ResponseEntity<Boolean> removeUserFromInstitution(@RequestParam(required = false) String institutionID, @PathVariable String userEmail, Principal principal) {
         return iInstitutionService.removeUser(institutionID, userEmail, principal);
     }

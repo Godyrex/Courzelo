@@ -33,6 +33,7 @@ import {LoginComponent} from "./back/auth/login/login.component";
 import {CalendarComponent} from "./back/program/institution/calendar/calendar.component";
 import {ActionsComponent} from "./back/schedule/actions/actions.component";
 import {MyProgramsAndClassesComponent} from "./back/program/my-programs-and-classes/my-programs-and-classes.component";
+import {UsersSearchComponent} from "./back/user/users-search/users-search.component";
 
 const routes: Routes = [
   {
@@ -146,6 +147,14 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersTableComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: 'SUPERADMIN'
+        },
+      },
+      {
+        path: 'search',
+        component: UsersSearchComponent,
         canActivate: [RoleGuardService],
         data: {
           expectedRole: 'SUPERADMIN'

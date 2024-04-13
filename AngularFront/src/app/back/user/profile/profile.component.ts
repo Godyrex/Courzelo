@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
@@ -14,6 +14,13 @@ import {QRCodeResponse} from "../../../model/user/QRCodeResponse";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog} from "@angular/material/dialog";
 import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
+import {UserContact} from "../../../model/user/UserContact";
+import {UserAddress} from "../../../model/user/UserAddress";
+import {tap} from "rxjs";
+import {UserResponse} from "../../../model/user/UserResponse";
+import {UserSecurity} from "../../../model/user/UserSecurity";
+import {UserActivity} from "../../../model/user/UserActivity";
+import {UserEducation} from "../../../model/user/UserEducation";
 
 @Component({
   selector: 'app-profile',
@@ -34,13 +41,23 @@ export class ProfileComponent implements OnInit{
     this.loading = true;
   }
   nameRequest: NameRequest = {};
+  userContact : UserContact = {};
+  userAddress : UserAddress = {};
   emailRequest: EmailRequest = {};
+  profileRoles: string[] = [];
+  selectedCountry: string= '';
+  showStatesForm: boolean = false;
+  countries: any[] = [];
+  states: any[] = [];
   qrCodeImage: string = '';
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
   messageError = '';
   messageSuccess = '';
-  user: LoginResponse = {};
+  user: UserResponse = {};
+  //make max date 16 years ago
+  maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 16));
+
   uploadProgress: number = 0;
   selectedFile: File | undefined;
   showVerification: boolean = false;
@@ -52,12 +69,35 @@ export class ProfileComponent implements OnInit{
   photoForm = this.formBuilder.group({
     photo: ['', [Validators.required]],
   });
+  contactForm = this.formBuilder.group({
+    phone: [this.user.contact?.phoneNumber, [Validators.maxLength(20), Validators.minLength(5)]],
+    facebook: [this.user.contact?.facebook, [this.usernameValidator]],
+    github: [this.user.contact?.github, [this.usernameValidator]],
+    linkedin: [this.user.contact?.linkedin, [this.usernameValidator]],
+    address: [this.user.contact?.userAddress?.address],
+    city: [this.user.contact?.userAddress?.city],
+    state: [this.user.contact?.userAddress?.state],
+    country: [this.user.contact?.userAddress?.country],
+    zipCode: [this.user.contact?.userAddress?.zipCode],
+  });
+  usernameValidator(control: AbstractControl) {
+    const value = control.value;
+    console.log(value)
+    if (value && (value.includes('www.') || value.includes('http://') || value.includes('https://'))) {
+      console.log('invalidUsername')
+      return { 'invalidUsername': true };
+    }
+    return null;
+  }
   verificationForm = this.formBuilder.group({
     code: ['', [Validators.maxLength(4), Validators.minLength(4)]],
   });
   nameForm = this.formBuilder.group({
     name: ['', [Validators.maxLength(20), Validators.minLength(3)]],
     lastName: ['', [Validators.maxLength(20), Validators.minLength(3)]],
+    title: ['', [Validators.maxLength(20), Validators.minLength(3)]],
+    bio: ['', [Validators.minLength(10),Validators.maxLength(500)]],
+    birthDate: [null,],
   });
   tfaForm = this.formBuilder.group({
     verificationCode: ['', [Validators.required]],
@@ -84,22 +124,64 @@ export class ProfileComponent implements OnInit{
     public dialog:MatDialog
   ) {
   }
+  onCountryChange(countryCode: string): void {
+    this.updateService.getStates(countryCode).subscribe(states => {
+      this.states = states;
+      this.showStatesForm = true;
+    });
+  }
   openDialog(): void {
     this.dialog.open(QaDialogComponent);
   }
   ngOnInit(): void {
         this.getMyInfo();
+        this.updateService.getCountries().subscribe(countries => {
+          this.countries = countries;
+          console.log(countries);
+        });
     }
+  updateContact(){
+    if(this.contactForm.valid) {
+      this.userContact.phoneNumber = this.contactForm.controls['phone'].value!;
+      this.userContact.facebook = this.contactForm.controls['facebook'].value!;
+      this.userContact.github = this.contactForm.controls['github'].value!;
+      this.userContact.linkedin = this.contactForm.controls['linkedin'].value!;
+      this.userAddress.address = this.contactForm.controls['address'].value!;
+      this.userAddress.city = this.contactForm.controls['city'].value!;
+      this.userAddress.state = this.contactForm.controls['state'].value!;
+      this.userAddress.country = this.contactForm.controls['country'].value!;
+      this.userAddress.zipCode = this.contactForm.controls['zipCode'].value!;
+      this.userContact.userAddress = this.userAddress;
+      this.updateService.updateUserContact(this.userContact).subscribe(
+        response => {
+          console.log(response);
+          this.toaster.success('Contact information updated successfully', 'Success');
+          this.getMyInfo();
+          this.userInfoChanged.emit();
+        },
+        error => {
+          console.log(error);
+          this.toaster.error('Error updating contact information', 'Error');
+        }
+      )
+    }
+  }
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
         this.user = response;
+        if(this.user.contact?.userAddress?.country!=null && this.user.contact?.userAddress?.country!=""){
+          this.onCountryChange(this.user.contact?.userAddress?.country);
+        }
+        this.contactForm.controls['country'].setValue(this.user.contact?.userAddress?.country);
+        this.contactForm.controls['state'].setValue(this.user.contact?.userAddress?.state);
+        this.profileRoles = this.user!.roles!.map(role => role.replace('ROLE_', ''));
         console.log(response);
       }
     )
   }
   checkUserProfileImage() {
-    if (!this.user.photoID) {
+    if (!this.user.profile!.photo) {
       const lastNotification = localStorage.getItem('lastImageNotification');
       const now = new Date().getTime();
       const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
@@ -110,7 +192,7 @@ export class ProfileComponent implements OnInit{
     }
   }
   checkUserProfileTwoFactorAuth() {
-    if (!this.user.twoFactorAuthEnabled) {
+    if (!this.user.security!.twoFactorAuthEnabled) {
       const lastNotification = localStorage.getItem('lastTwoFactorAuthNotification');
       const now = new Date().getTime();
       const oneDay = 24 * 60 * 60 * 1000;
@@ -134,14 +216,6 @@ export class ProfileComponent implements OnInit{
         matchingControl.setErrors(null);
       }
     };
-  }
-
-  resetSuccessAlert() {
-    this.messageSuccess = "";
-  }
-
-  resetErrorAlert() {
-    this.messageError = "";
   }
 
   enableTwoFactorAuth() {
@@ -191,15 +265,15 @@ export class ProfileComponent implements OnInit{
     if (this.nameForm.valid) {
       this.nameRequest = Object.assign(this.nameRequest, this.nameForm.value);
       console.log(this.nameRequest);
-      this.updateService.changeName(this.nameRequest)
+      this.updateService.changeProfile(this.nameRequest)
         .subscribe(data => {
             console.log(data)
             this.getMyInfo()
-            this.toaster.success("Name updated successfully", "Success");
+            this.toaster.success("Profile updated successfully", "Success");
             this.userInfoChanged.emit();
           },
           error => {
-            console.log("update name error :", error)
+            console.log("profile error :", error)
             this.toaster.error(error.error.msg, "Error")
           });
     }

@@ -10,11 +10,6 @@ public class UserActivity {
     private Instant updatedAt;
     private Instant lastLogin;
     private Instant lastLogout;
-    private Instant lastPasswordChange;
-    private Instant lastEmailChange;
-    private Instant lastContactChange;
-    private Instant lastSecurityChange;
-    private Instant lastProfileChange;
     private int loginCount;
 
 }

@@ -1,0 +1,11 @@
+.profile-pic {
+  transition: transform 0.2s; /* Animation */
+  transform-origin: center; /* New */
+  position: relative; /* New */
+  z-index: 1; /* New */
+}
+
+.profile-pic:hover {
+  transform: scale(3) translate(0%, 25%); /* Adjusted */
+  z-index: 1000; /* New */
+}

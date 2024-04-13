@@ -2,6 +2,9 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.user.*;
+import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.entities.user.UserAddress;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IDeviceMetadataService;
@@ -25,7 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/user")
@@ -41,10 +46,28 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/update/name")
+    @PatchMapping("/update/profile")
     @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user, Principal principal) {
         return userService.updateUserProfile(user, principal.getName());
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword ,@RequestParam String page){
+        List<User> users = userService.searchByKeyword(keyword , Integer.parseInt(page));
+        List<UserDTO> userDTOS = users.stream()
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRoles().stream().map(Role::name).toList(),
+                        user.getSecurity(),
+                        user.getProfile(),
+                        user.getEducation(),
+                        user.getContact(),
+                        user.getActivity()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOS);
     }
 
     @GetMapping("/{userID}")
@@ -54,11 +77,17 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myInfo")
     @Cacheable(value = "MyInfo", key = "#principal.name")
-    public ResponseEntity<JwtResponse> getMyInfo(Principal principal) {
-        JwtResponse jwtResponse = userService.getMyInfo(principal.getName());
+    public ResponseEntity<UserDTO> getMyInfo(Principal principal) {
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
-                .body(jwtResponse);
+                .body(userService.getMyInfo(principal.getName()));
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myContactInfo")
+    public ResponseEntity<UserContactDTO> getMyContactInfo(Principal principal) {
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
+                .body(userService.getMyContactInfo(principal.getName()));
     }
 
     @DeleteMapping("/{userID}")
@@ -122,5 +151,12 @@ public class UserController {
                                                     Principal principal
     ) {
         return iDeviceMetadataService.getDevices(page, sizePerPage, principal);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/update/contact")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<HttpStatus> updateUserContact(@Valid @RequestBody UserContactDTO userContactDTO, Principal principal) {
+        return userService.updateUserContact(principal.getName(), userContactDTO);
     }
 }

@@ -32,24 +32,24 @@
             <tbody>
             <tr *ngFor="let user of userResponse">
               <td><a class="email-link" (click)="openUserProfile(user.email!)">{{ user.email }}</a></td>
-              <td>{{ user.name }}</td>
-              <td>{{ user.lastname }}</td>
+              <td>{{ user.profile?.name }}</td>
+              <td>{{ user.profile?.lastName }}</td>
               <td>
                 <ul>
                   <li *ngFor="let role of user.roles">{{ role}}</li>
                 </ul>
               </td>
               <td>
-                <button (click)="toggleBan(user)" [ngClass]="{'btn-danger': user.ban, 'btn-success': !user.ban}"
+                <button (click)="toggleBan(user)" [ngClass]="{'btn-danger': user.security?.ban, 'btn-success': !user.security?.ban}"
                         class="btn btn-sm">
-                  {{ user.ban ? 'Unban' : 'Ban' }}
+                  {{ user.security?.ban ? 'Unban' : 'Ban' }}
                 </button>
               </td>
               <td>
                 <button (click)="toggleEnable(user)"
-                        [ngClass]="{'btn-danger': !user.enabled, 'btn-success': user.enabled}"
+                        [ngClass]="{'btn-danger': !user.security?.enabled, 'btn-success': user.security?.enabled}"
                         class="btn btn-sm">
-                  {{ user.enabled ? 'Disable' : 'Enable' }}
+                  {{ user.security?.enabled ? 'Disable' : 'Enable' }}
                 </button>
               </td>
               <td>
