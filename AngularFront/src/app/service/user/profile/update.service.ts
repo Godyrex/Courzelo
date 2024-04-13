@@ -10,6 +10,7 @@ import {LoginResponse} from "../../../model/user/LoginResponse";
 import {UserAddress} from "../../../model/user/UserAddress";
 import {UserContact} from "../../../model/user/UserContact";
 import {UserResponse} from "../../../model/user/UserResponse";
+import {UserListDTO} from "../../../model/user/UserListDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,9 @@ export class UpdateService {
 
   sendVerificationCode(): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendVerificationCode`, null);
+  }
+  searchUsers(search:string): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>(`${this.baseUrl}/search`, {params: {keyword: search}});
   }
 
   changePhoto(file: File): Observable<any> {

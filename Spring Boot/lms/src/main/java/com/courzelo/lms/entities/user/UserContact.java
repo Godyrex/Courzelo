@@ -1,6 +1,7 @@
 package com.courzelo.lms.entities.user;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 
 @Data
 public class UserContact {

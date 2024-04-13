@@ -20,12 +20,12 @@ public class UserProfileDTO {
     private String bio;
 
     public UserProfileDTO(UserProfile profile) {
-        this.name = profile.getName();
-        this.lastName = profile.getLastName();
-        this.photo = profile.getPhoto().getId();
-        this.speciality = profile.getSpeciality();
-        this.birthDate = profile.getBirthDate();
-        this.title = profile.getTitle();
-        this.bio = profile.getBio();
+        this.name = profile.getName() != null ? profile.getName() : null;
+        this.lastName = profile.getLastName() != null ? profile.getLastName() : null;
+        this.photo = profile.getPhoto() != null ? profile.getPhoto().getId() : null;
+        this.speciality = profile.getSpeciality() != null ? profile.getSpeciality() : null;
+        this.birthDate = profile.getBirthDate() != null ? profile.getBirthDate() : null;
+        this.title = profile.getTitle() != null ? profile.getTitle() : null;
+        this.bio = profile.getBio() != null ? profile.getBio() : null;
     }
 }

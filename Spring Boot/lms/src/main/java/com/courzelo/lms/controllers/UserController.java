@@ -2,6 +2,8 @@ package com.courzelo.lms.controllers;
 
 
 import com.courzelo.lms.dto.user.*;
+import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.entities.user.UserAddress;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
@@ -26,7 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/user")
@@ -46,6 +50,24 @@ public class UserController {
     @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> updateUserProfile(@Valid @RequestBody ProfileDTO user, Principal principal) {
         return userService.updateUserProfile(user, principal.getName());
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword) {
+        List<User> users = userService.searchByKeyword(keyword);
+        List<UserDTO> userDTOS = users.stream()
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRoles().stream().map(Role::name).toList(),
+                        user.getSecurity(),
+                        user.getProfile(),
+                        user.getEducation(),
+                        user.getContact(),
+                        user.getActivity()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOS);
     }
 
     @GetMapping("/{userID}")

@@ -3,6 +3,7 @@ package com.courzelo.lms.entities.institution;
 import com.courzelo.lms.entities.user.User;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 

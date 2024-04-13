@@ -4,7 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,10 +28,15 @@ public class User implements UserDetails {
     @NotNull
     private List<Role> roles = new ArrayList<>();
     private UserSecurity security = new UserSecurity();
+    @TextIndexed
     private UserProfile profile = new UserProfile();
+    @TextIndexed
     private UserEducationalDetails education = new UserEducationalDetails();
+    @TextIndexed
     private UserContact contact = new UserContact();
     private UserActivity activity = new UserActivity();
+    @TextScore
+    private Float score;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

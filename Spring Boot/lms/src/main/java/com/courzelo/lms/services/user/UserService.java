@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,8 +55,10 @@ public class UserService implements UserDetailsService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final ClassRepository classRepository;
     private final InstitutionRepository institutionRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository) {
+
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
@@ -64,8 +67,11 @@ public class UserService implements UserDetailsService {
         this.verificationTokenRepository = verificationTokenRepository;
         this.classRepository = classRepository;
         this.institutionRepository = institutionRepository;
+        this.mongoTemplate = mongoTemplate;
     }
-
+    public List<User> searchByKeyword(String keyword) {
+        return userRepository.searchByKeyword(keyword, mongoTemplate);
+    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email);
@@ -127,22 +133,16 @@ public class UserService implements UserDetailsService {
     public UserDTO getMyInfo(String email) {
         User user = userRepository.findUserByEmail(email);
         List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        Institution institution = user.getEducation().getInstitution() != null ? institutionRepository.findById(user.getEducation().getInstitution().getId()).orElseThrow(() -> new InstitutionNotFoundException("Institution not found")) : null;
-        Class institutionClass = user.getEducation().getStclass() != null ? classRepository.findById(user.getEducation().getStclass().getId()).orElseThrow(() -> new ClassNotFoundException("Class not found")) : null;
 
         return new UserDTO(
                 user.getId(),
                 user.getEmail(),
                 roles,
-                new UserSecurityDTO(user.getSecurity().isTwoFactorAuthEnabled(), user.getSecurity().isEnabled(), user.getSecurity().getBan(), user.getSecurity().isRememberMe()),
-                new UserProfileDTO(user.getProfile().getName(), user.getProfile().getLastName(), user.getProfile().getPhoto().getId(), user.getProfile().getSpeciality(), user.getProfile().getBirthDate(), user.getProfile().getTitle(), user.getProfile().getBio()),
-                new UserEducationDTO(
-                        institution != null ? new SimplifiedInstitutionDTO(institution.getId(), institution.getName()) : null,
-                        institutionClass != null ? new SimplifiedClassDTO(institutionClass.getId(), institutionClass.getName()) : null,
-                        institutionClass != null ? Collections.singletonList(new SimplifiedProgramDTO(institutionClass.getProgram().getId(), institutionClass.getProgram().getName())) : null
-                ),
-                new UserContactDTO(user.getContact().getAddress(), user.getContact().getPhoneNumber(), user.getContact().getWebsite(), user.getContact().getLinkedin(), user.getContact().getFacebook(), user.getContact().getGithub()),
-                new UserActivityDTO(user.getActivity().getCreatedAt(), user.getActivity().getUpdatedAt(), user.getActivity().getLastLogin(), user.getActivity().getLoginCount())
+                user.getSecurity(),
+                user.getProfile(),
+                user.getEducation(),
+                user.getContact(),
+                user.getActivity()
         );
     }
     public UserContactDTO getMyContactInfo(String email){

@@ -1,0 +1,63 @@
+<!-- Profile Image -->
+<div class="card card-primary card-outline">
+  <div class="card-body box-profile">
+    <div class="text-center">
+      <img [src]="userPhotoUrl|| 'assets/default-image.jpg'"
+           alt="User profile picture"
+           class="profile-user-img img-fluid img-circle profile-pic">
+    </div>
+
+    <h3 class="profile-username text-center">{{loginResponse.profile?.name + " " + loginResponse.profile?.lastName }}</h3>
+    <div class="text-center">
+      <span *ngFor="let role of profileRoles" class="badge badge-primary">{{role}}</span>
+    </div>
+    <p class="text-muted text-center">{{loginResponse.profile?.title}}</p>
+    <p class="text-muted text-center">{{loginResponse.email}}</p>
+    <p class="text-muted text-center">{{loginResponse.profile?.birthDate | date:'mediumDate'}}</p>
+    <div class="text-center">
+      <a href="{{loginResponse.contact?.github}}" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a href="{{loginResponse.contact?.facebook}}" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
+      <a href="{{loginResponse.contact?.linkedin}}" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+    </div>
+    <div *ngIf="!aboutMe" class="text-center">
+    <p >More information</p>
+      <a (click)="aboutMe = !aboutMe" class="btn btn-primary">Show</a>
+    </div>
+    <div *ngIf="aboutMe" class="text-center">
+      <p >Less information</p>
+      <a (click)="aboutMe = !aboutMe" class="btn btn-primary">Hide</a>
+    </div>
+  </div>
+  <!-- /.card-body -->
+</div>
+<div *ngIf="aboutMe" class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">About Me</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+
+
+    <strong *ngIf="loginResponse.profile?.bio"><i *ngIf="loginResponse.profile?.bio" class="far fa-file-alt mr-1"></i>Bio</strong>
+
+    <p class="text-muted">{{loginResponse.profile?.bio}}</p>
+    <hr *ngIf="loginResponse.education?.institution">
+    <strong *ngIf="loginResponse.education?.institution"><i *ngIf="loginResponse.education?.institution" class="fas fa-book mr-1"></i>Education</strong>
+
+    <p *ngIf="loginResponse.education?.institution" class="text-muted">
+      Institution : {{ loginResponse.education?.institution?.name! }}<br>
+    </p>
+    <p *ngIf="loginResponse.education?.stclass" class="text-muted">
+      Class : {{ loginResponse.education?.stclass?.name }}<br>
+    </p>
+
+
+    <hr>
+
+    <strong *ngIf="loginResponse.contact?.userAddress?.country"><i *ngIf="loginResponse.contact?.userAddress?.country" class="fas fa-map-marker-alt mr-1"></i>Location</strong>
+
+    <p class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
+
+  </div>
+  <!-- /.card-body -->
+</div>
