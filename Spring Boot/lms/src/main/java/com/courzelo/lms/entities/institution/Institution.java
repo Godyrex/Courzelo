@@ -19,8 +19,10 @@ import java.util.Objects;
 public class Institution {
     @Id
     private String id;
+    @TextIndexed(weight = 1)
     private String name;
     private String location;
+    @TextIndexed(weight = 1)
     private String description;
     private String website;
     @DBRef

@@ -18,21 +18,24 @@ import java.util.Objects;
 @NoArgsConstructor
 @Data
 @Document(collection = "users")
+
 public class User implements UserDetails {
     @Id
     private String id;
     @NotNull
+    @TextIndexed(weight = 1)
     private String email;
     @NotNull
     private String password;
     @NotNull
+    @TextIndexed(weight = 1)
     private List<Role> roles = new ArrayList<>();
     private UserSecurity security = new UserSecurity();
-    @TextIndexed
+    @TextIndexed(weight = 4)
     private UserProfile profile = new UserProfile();
     @TextIndexed
     private UserEducationalDetails education = new UserEducationalDetails();
-    @TextIndexed
+    @TextIndexed(weight = 1)
     private UserContact contact = new UserContact();
     private UserActivity activity = new UserActivity();
     @TextScore

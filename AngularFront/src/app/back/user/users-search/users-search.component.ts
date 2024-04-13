@@ -11,6 +11,7 @@ import {ToastrService} from "ngx-toastr";
 })
 export class UsersSearchComponent {
   Users: UserResponse[] = [];
+  page = 0;
   constructor(
     private updateService: UpdateService,
     private formBuilder: FormBuilder,
@@ -20,12 +21,26 @@ export class UsersSearchComponent {
   searchForm = this.formBuilder.group({
     keyword: [''],
   });
+  searchMoreUsers() {
+    this.page++;
+    this.updateService.searchUsers(this.searchForm.value.keyword!, this.page).subscribe(
+      (response) => {
+        this.Users = this.Users.concat(response);
+        console.log(this.Users);
+        },
+      (error) => {
+        this.toaster.error('Error while searching');
+      }
+    );
+
+  }
   search() {
-    this.updateService.searchUsers(this.searchForm.value.keyword!).subscribe(
+    this.page = 0;
+    this.updateService.searchUsers(this.searchForm.value.keyword!, this.page).subscribe(
       (response) => {
         this.Users = response;
         console.log(this.Users);
-        this.toaster.info('Found ' + this.Users.length + ' users');
+
       },
       (error) => {
         this.toaster.error('Error while searching');

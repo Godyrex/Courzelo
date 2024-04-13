@@ -15,9 +15,9 @@
     <p class="text-muted text-center">{{loginResponse.email}}</p>
     <p class="text-muted text-center">{{loginResponse.profile?.birthDate | date:'mediumDate'}}</p>
     <div class="text-center">
-      <a href="{{loginResponse.contact?.github}}" target="_blank"><i class="fab fa-github fa-2x"></i></a>
-      <a href="{{loginResponse.contact?.facebook}}" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
-      <a href="{{loginResponse.contact?.linkedin}}" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+      <a *ngIf="loginResponse.contact?.github" href="{{loginResponse.contact?.github}}" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a *ngIf="loginResponse.contact?.facebook"  href="{{loginResponse.contact?.facebook}}" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
+      <a *ngIf="loginResponse.contact?.linkedin"  href="{{loginResponse.contact?.linkedin}}" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
     </div>
     <div *ngIf="!aboutMe" class="text-center">
     <p >More information</p>
@@ -56,7 +56,7 @@
 
     <strong *ngIf="loginResponse.contact?.userAddress?.country"><i *ngIf="loginResponse.contact?.userAddress?.country" class="fas fa-map-marker-alt mr-1"></i>Location</strong>
 
-    <p class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
+    <p *ngIf="loginResponse.contact?.userAddress?.country" class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
 
   </div>
   <!-- /.card-body -->

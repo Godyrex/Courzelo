@@ -46,8 +46,8 @@ export class UpdateService {
   sendVerificationCode(): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendVerificationCode`, null);
   }
-  searchUsers(search:string): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>(`${this.baseUrl}/search`, {params: {keyword: search}});
+  searchUsers(search:string,page: number): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>(`${this.baseUrl}/search`, {params: {keyword: search, page: page.toString()}});
   }
 
   changePhoto(file: File): Observable<any> {

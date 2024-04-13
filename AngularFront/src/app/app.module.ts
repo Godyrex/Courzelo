@@ -83,6 +83,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { UsersSearchComponent } from './back/user/users-search/users-search.component';
 import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/user-profile-by-email.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -152,6 +153,7 @@ import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/u
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     RouterOutlet,
     MatButtonModule,
     BsDatepickerModule.forRoot(),

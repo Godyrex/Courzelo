@@ -69,8 +69,8 @@ public class UserService implements UserDetailsService {
         this.institutionRepository = institutionRepository;
         this.mongoTemplate = mongoTemplate;
     }
-    public List<User> searchByKeyword(String keyword) {
-        return userRepository.searchByKeyword(keyword, mongoTemplate);
+    public List<User> searchByKeyword(String keyword ,int page) {
+        return userRepository.searchByKeyword(keyword,page, mongoTemplate);
     }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

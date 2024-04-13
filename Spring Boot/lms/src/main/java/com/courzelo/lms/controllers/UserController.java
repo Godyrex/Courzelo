@@ -53,8 +53,8 @@ public class UserController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/search")
-    public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword) {
-        List<User> users = userService.searchByKeyword(keyword);
+    public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword ,@RequestParam String page){
+        List<User> users = userService.searchByKeyword(keyword , Integer.parseInt(page));
         List<UserDTO> userDTOS = users.stream()
                 .map(user -> new UserDTO(
                         user.getId(),
