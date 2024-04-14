@@ -10,10 +10,7 @@ import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.user.*;
 import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.*;
-import com.courzelo.lms.repositories.ClassRepository;
-import com.courzelo.lms.repositories.InstitutionRepository;
-import com.courzelo.lms.repositories.UserRepository;
-import com.courzelo.lms.repositories.VerificationTokenRepository;
+import com.courzelo.lms.repositories.*;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
@@ -56,9 +53,11 @@ public class UserService implements UserDetailsService {
     private final ClassRepository classRepository;
     private final InstitutionRepository institutionRepository;
     private final MongoTemplate mongoTemplate;
+    private final SearchRepository searchRepository;
 
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate) {
+
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate, SearchRepository searchRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
@@ -68,6 +67,7 @@ public class UserService implements UserDetailsService {
         this.classRepository = classRepository;
         this.institutionRepository = institutionRepository;
         this.mongoTemplate = mongoTemplate;
+        this.searchRepository = searchRepository;
     }
     public List<User> searchByKeyword(String keyword ,int page) {
         return userRepository.searchByKeyword(keyword,page, mongoTemplate);
@@ -342,5 +342,26 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         log.info("updateShowPhone :ShowPhone Updated!");
         return ResponseEntity.ok().body(new Response("ShowPhone Updated!"));
+    }
+
+    public ResponseEntity<HttpStatus> saveSearch(String query) {
+        log.info("saveSearch :Saving search query..."+query);
+        if(query == null || query.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Search existingSearch = searchRepository.findByQuery(query);
+        if(existingSearch != null && query.equals(existingSearch.getQuery())) {
+            return ResponseEntity.ok().build();
+        }
+        Search search = new Search(query);
+        searchRepository.save(search);
+        return ResponseEntity.ok().build();
+    }
+
+    public List<Search> getSearchSuggestions(String input) {
+        if(input == null || input.isEmpty()) {
+            return null;
+        }
+        return searchRepository.findByQueryRegex(input);
     }
 }
