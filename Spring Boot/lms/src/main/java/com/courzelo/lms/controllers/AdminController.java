@@ -37,25 +37,25 @@ public class AdminController {
     }
 
     @PostMapping("/add/{userID}/{role}")
-    @CacheEvict(value = "UsersList", allEntries = true)
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> addRole(@PathVariable String userID, @PathVariable String role) {
         return iAdminService.addRole(role, userID);
     }
 
     @PostMapping("/remove/{userID}/{role}")
-    @CacheEvict(value = "UsersList", allEntries = true)
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> removeRole(@PathVariable String userID, @PathVariable String role) {
         return iAdminService.removeRole(role, userID);
     }
 
     @PostMapping("/ban/{userID}")
-    @CacheEvict(value = "UsersList", allEntries = true)
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> toggleBan(@PathVariable String userID) {
         return iAdminService.toggleBan(userID);
     }
 
     @PostMapping("/enable/{userID}")
-    @CacheEvict(value = "UsersList", allEntries = true)
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> toggleEnable(@PathVariable String userID) {
         return iAdminService.toggleEnable(userID);
     }

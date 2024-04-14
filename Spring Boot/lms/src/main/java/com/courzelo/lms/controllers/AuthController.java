@@ -36,6 +36,7 @@ public class AuthController {
     private ModelMapper modelMapper;
 
     @PostMapping("/confirmDevice/{code}")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<?> confirmDevice(@Valid @RequestBody LoginDTO loginDTO, @PathVariable Integer code, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {
         return iAuthService.confirmDevice(userAgent, response, loginDTO, code);
     }
@@ -50,6 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<Response> signup(@Valid @RequestBody RegisterDTO user, @RequestHeader(value = "User-Agent") String userAgent) {
         User user1 = new User(user.getEmail(),
                 user.getPassword(),

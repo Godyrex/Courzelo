@@ -258,7 +258,8 @@ public class ClassService implements IClassService {
                         user.getEducation(),
                         user.getContact(),
                         user.getActivity(),
-                        user.getSettings()
+                        user.getSettings(),
+                        user.getScore()
                 ))
                 .toList();
         log.info("users in page : " + page + " " + userDTOs);

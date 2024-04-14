@@ -11,12 +11,11 @@ import {UpdateService} from "../../../service/user/profile/update.service";
 export class UserProfileByEmailComponent implements OnInit{
   constructor(private adminService:PanelService,
               private updateService:UpdateService) {}
-  loginResponse: UserResponse = {}
+  @Input() loginResponse: UserResponse = {}
   userPhotoUrl: any
-  @Input() email: string = "";
   profileRoles: string[] = [];
   aboutMe: boolean = false;
-
+  @Input() isPerfectProfile: boolean = false;
   getImage() {
     this.updateService.getPhoto(this.loginResponse.profile?.photo!).subscribe((data: Blob) => {
       const reader = new FileReader();
@@ -27,19 +26,13 @@ export class UserProfileByEmailComponent implements OnInit{
     });
   }
   getMyInfo() {
-    this.adminService.getUserInfo(this.email).subscribe(
-      response => {
-        this.loginResponse = response;
         if(this.loginResponse.profile?.photo != null) {
           console.log("photoID: " + this.loginResponse.profile.photo)
           this.getImage();
         }
         this.profileRoles = this.loginResponse!.roles!.map(role => role.replace('ROLE_', ''));
-        console.log(response);
-      }
-    )
+        console.log(this.loginResponse);
   }
-
   ngOnInit(): void {
     this.getMyInfo();
   }

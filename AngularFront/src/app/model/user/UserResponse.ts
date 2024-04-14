@@ -16,4 +16,5 @@ export interface UserResponse {
   contact?:UserContact;
   activity?:UserActivity;
   settings?:UserSettings;
+  score?:number;
 }

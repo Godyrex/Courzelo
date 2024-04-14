@@ -1,9 +1,9 @@
 <div class="container-fluid">
-  <h2 class="text-center display-4">Search</h2>
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
+  <h2 class="text-center display-4 mb-4"><i class="fa fa-search"></i> Search</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
       <form (ngSubmit)="search()" [formGroup]="searchForm">
-        <div class="input-group">
+        <div class="input-group mb-3">
           <input formControlName="keyword" type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
           <div class="input-group-append">
             <button type="submit" class="btn btn-lg btn-default">
@@ -15,9 +15,16 @@
     </div>
   </div>
   <hr>
-  <div class="row " infiniteScroll [infiniteScrollDistance]="1" (scrolled)="searchMoreUsers()">
-    <div *ngFor="let user of Users" class="col-md-3">
-    <app-user-profile-by-email [email]="user.email!"></app-user-profile-by-email>
+  <div class="row mt-3" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="searchMoreUsers()">
+    <!-- Add this block -->
+    <div *ngIf="isLoading" class="text-center w-100">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <!-- End of block -->
+    <div *ngFor="let user of Users" class="col-md-3 mb-3">
+      <app-user-profile-by-email [isPerfectProfile]="isPerfect(user)" [loginResponse]="user"><i class="fa fa-user"></i></app-user-profile-by-email>
+    </div>
   </div>
 </div>
-  </div>

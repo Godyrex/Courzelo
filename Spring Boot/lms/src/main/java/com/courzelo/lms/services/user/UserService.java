@@ -143,7 +143,8 @@ public class UserService implements UserDetailsService {
                 user.getEducation(),
                 user.getContact(),
                 user.getActivity(),
-                user.getSettings()
+                user.getSettings(),
+                user.getScore()
         );
     }
     public UserContactDTO getMyContactInfo(String email){

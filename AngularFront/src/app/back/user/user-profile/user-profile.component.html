@@ -9,7 +9,7 @@
 
     <h3 class="profile-username text-center"><i class="fas fa-user mr-1"></i>{{loginResponse.profile?.name + " " + loginResponse.profile?.lastName }}</h3>
     <div class="text-center">
-      <span *ngFor="let role of profileRoles" class="badge badge-primary"><i class="fas fa-badge mr-1"></i>{{role}}</span>
+      <span *ngFor="let role of profileRoles" class="badge badge-primary mr-1"><i class="fas fa-badge mr-1"></i>{{role}}</span>
     </div>
     <p class="text-muted text-center"><i *ngIf="loginResponse.profile?.title" class="fas fa-briefcase mr-1"></i>{{loginResponse.profile?.title}}</p>
     <p class="text-muted text-center"><i class="fas fa-envelope mr-1"></i>{{loginResponse.email}}</p>
