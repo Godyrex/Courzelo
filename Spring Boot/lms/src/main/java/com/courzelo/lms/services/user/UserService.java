@@ -142,7 +142,8 @@ public class UserService implements UserDetailsService {
                 user.getProfile(),
                 user.getEducation(),
                 user.getContact(),
-                user.getActivity()
+                user.getActivity(),
+                user.getSettings()
         );
     }
     public UserContactDTO getMyContactInfo(String email){
@@ -310,5 +311,35 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         log.info("updateUserDetails :User details Updated!");
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<Response> updateShowBirthDate(String name) {
+        log.info("updateShowBirthDate :Updating showBirthDate of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowBirthDate(!user.getSettings().isShowBirthDate());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowBirthDate :ShowBirthDate Updated!");
+        return ResponseEntity.ok().body(new Response("ShowBirthDate Updated!"));
+    }
+
+    public ResponseEntity<Response> updateShowAddress(String name) {
+        log.info("updateShowAddress :Updating showAddress of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowAddress(!user.getSettings().isShowAddress());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowAddress :ShowAddress Updated!");
+        return ResponseEntity.ok().body(new Response("ShowAddress Updated!"));
+    }
+
+    public ResponseEntity<Response> updateShowPhone(String name) {
+        log.info("updateShowPhone :Updating showPhone of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowPhone(!user.getSettings().isShowPhone());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowPhone :ShowPhone Updated!");
+        return ResponseEntity.ok().body(new Response("ShowPhone Updated!"));
     }
 }

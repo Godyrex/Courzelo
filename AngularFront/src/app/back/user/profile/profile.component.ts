@@ -16,11 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
 import {UserContact} from "../../../model/user/UserContact";
 import {UserAddress} from "../../../model/user/UserAddress";
-import {tap} from "rxjs";
 import {UserResponse} from "../../../model/user/UserResponse";
-import {UserSecurity} from "../../../model/user/UserSecurity";
-import {UserActivity} from "../../../model/user/UserActivity";
-import {UserEducation} from "../../../model/user/UserEducation";
 
 @Component({
   selector: 'app-profile',
@@ -40,6 +36,9 @@ export class ProfileComponent implements OnInit{
   toggleLoading(): void {
     this.loading = true;
   }
+  showPhone = false;
+  showAddress = false;
+  showBirthDate = false;
   nameRequest: NameRequest = {};
   userContact : UserContact = {};
   userAddress : UserAddress = {};
@@ -124,6 +123,24 @@ export class ProfileComponent implements OnInit{
     public dialog:MatDialog
   ) {
   }
+  toggleShowPhone() {
+    this.updateService.updateShowPhone().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
+  }
+  toggleShowAddress() {
+    this.updateService.updateShowAddress().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
+  }
+  toggleShowBirthDate() {
+    this.updateService.updateShowBirthDate().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
+  }
   onCountryChange(countryCode: string): void {
     this.updateService.getStates(countryCode).subscribe(states => {
       this.states = states;
@@ -173,6 +190,14 @@ export class ProfileComponent implements OnInit{
         if(this.user.contact?.userAddress?.country!=null && this.user.contact?.userAddress?.country!=""){
           this.onCountryChange(this.user.contact?.userAddress?.country);
         }
+        if(this.user.settings!= null){
+          this.showPhone = this.user.settings.showPhone!;
+          this.showAddress = this.user.settings.showAddress!;
+          this.showBirthDate = this.user.settings.showBirthDate!;
+        }
+        console.log(this.showAddress);
+        console.log(this.showPhone);
+        console.log(this.showBirthDate);
         this.contactForm.controls['country'].setValue(this.user.contact?.userAddress?.country);
         this.contactForm.controls['state'].setValue(this.user.contact?.userAddress?.state);
         this.profileRoles = this.user!.roles!.map(role => role.replace('ROLE_', ''));

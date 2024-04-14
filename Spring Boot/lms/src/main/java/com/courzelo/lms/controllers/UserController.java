@@ -64,10 +64,26 @@ public class UserController {
                         user.getProfile(),
                         user.getEducation(),
                         user.getContact(),
-                        user.getActivity()
+                        user.getActivity(),
+                        user.getSettings()
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDTOS);
+    }
+    @PutMapping("/update/showPhone")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowPhone(Principal principal) {
+        return userService.updateShowPhone(principal.getName());
+    }
+    @PutMapping("/update/showAddress")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowAddress(Principal principal) {
+        return userService.updateShowAddress(principal.getName());
+    }
+    @PutMapping("/update/showBirthDate")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowBirthDate(Principal principal) {
+        return userService.updateShowBirthDate(principal.getName());
     }
 
     @GetMapping("/{userID}")

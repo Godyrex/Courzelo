@@ -16,7 +16,8 @@ export class UserProfileDialogComponent implements OnInit{
               private updateService:UpdateService) {}
   loginResponse: UserResponse = {}
   userPhotoUrl: any
-  @Input() email: string = "";
+  profileRoles: string[] = [];
+  aboutMe: boolean = false;
   getImage() {
     this.updateService.getPhoto(this.loginResponse.profile?.photo!).subscribe((data: Blob) => {
       const reader = new FileReader();
@@ -28,11 +29,7 @@ export class UserProfileDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.data.email != null&&this.data.email != "") {
       this.getMyInfo();
-    }else {
-      this.getMyInfoNoDialog();
-    }
   }
 
   getMyInfo() {
@@ -43,18 +40,7 @@ export class UserProfileDialogComponent implements OnInit{
           console.log("photoID: " + this.loginResponse.profile.photo)
           this.getImage();
         }
-        console.log(response);
-      }
-    )
-  }
-  getMyInfoNoDialog() {
-    this.adminService.getUserInfo(this.email).subscribe(
-      response => {
-        this.loginResponse = response;
-        if(this.loginResponse.profile?.photo != null) {
-          console.log("photoID: " + this.loginResponse.profile.photo)
-          this.getImage();
-        }
+        this.profileRoles = this.loginResponse!.roles!.map(role => role.replace('ROLE_', ''));
         console.log(response);
       }
     )

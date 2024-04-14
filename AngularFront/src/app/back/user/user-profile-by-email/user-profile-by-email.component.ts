@@ -32,7 +32,6 @@ export class UserProfileByEmailComponent implements OnInit{
         this.loginResponse = response;
         if(this.loginResponse.profile?.photo != null) {
           console.log("photoID: " + this.loginResponse.profile.photo)
-
           this.getImage();
         }
         this.profileRoles = this.loginResponse!.roles!.map(role => role.replace('ROLE_', ''));

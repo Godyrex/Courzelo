@@ -18,6 +18,7 @@ public class UserDTO {
     private UserEducationDTO education;
     private UserContactDTO contact;
     private UserActivityDTO activity;
+    private UserSettingsDTO settings;
 
     public UserDTO(
             String id,
@@ -27,7 +28,8 @@ public class UserDTO {
             UserProfile profile,
             UserEducationalDetails education,
             UserContact contact,
-            UserActivity activity)
+            UserActivity activity,
+            UserSettings settings)
     {
         this.id = id;
         this.email = email;
@@ -37,6 +39,7 @@ public class UserDTO {
         this.education = new UserEducationDTO(education);
         this.contact = new UserContactDTO(contact);
         this.activity = new UserActivityDTO(activity);
+        this.settings = new UserSettingsDTO(settings);
 
     }
 }

@@ -30,6 +30,17 @@ export class UpdateService {
       map(countries => countries.find(country => country.name === countryCode)?.states)
     );
   }
+  updateShowPhone(): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/showPhone`, null);
+  }
+
+  updateShowAddress(): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/showAddress`, null);
+  }
+
+  updateShowBirthDate(): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/showBirthDate`, null);
+  }
 
   changePassword(passwordRequest: PasswordRequest) {
     return this.http.patch<JsonResponse>(`${this.baseUrl}/update/password`, passwordRequest)

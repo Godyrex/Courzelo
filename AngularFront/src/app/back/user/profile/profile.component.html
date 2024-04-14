@@ -36,6 +36,7 @@
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password" (click)="toggleLoading()">Password</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete" (click)="toggleLoading()">Delete account</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tfa" (click)="checkUserProfileTwoFactorAuth();toggleLoading()">Two Factor Authentication</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings" (click)="toggleLoading()">Settings</a></li>
             </ul>
           </div><!-- /.card-header -->
           <div class="card-body">
@@ -286,6 +287,27 @@
                 <div *ngIf="user.security?.twoFactorAuthEnabled" class="card-body">
                   <p>Two-Factor Authentication is already enabled.</p>
                   <button class="btn btn-danger" (click)="disableTwoFactorAuth()">Disable Two-Factor Authentication</button>
+                </div>
+              </div>
+              <div class="tab-pane" id="settings">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <label for="verificationCode">Privacy Settings :</label>
+                    <div class="form-group">
+                      <mat-slide-toggle (click)="toggleShowPhone()" [(ngModel)]="showPhone">Show Phone</mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group">
+
+                      <mat-slide-toggle (click)="toggleShowAddress()" [(ngModel)]="showAddress">Show Address</mat-slide-toggle>
+                      </div>
+
+                      <div class="form-group">
+
+                        <mat-slide-toggle (click)="toggleShowBirthDate()" [(ngModel)]="showBirthDate">Show Birth Date</mat-slide-toggle>
+                      </div>
+
+                    </div>
                 </div>
               </div>
               <!-- /.tab-pane -->
