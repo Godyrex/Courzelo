@@ -28,16 +28,16 @@ public class User implements UserDetails {
     @NotNull
     private String password;
     @NotNull
-    @TextIndexed(weight = 1)
+    @TextIndexed(weight = 2)
     private List<Role> roles = new ArrayList<>();
     private UserSecurity security = new UserSecurity();
-    @TextIndexed(weight = 4)
+    @TextIndexed(weight = 3)
     private UserProfile profile = new UserProfile();
     @TextIndexed
     private UserEducationalDetails education = new UserEducationalDetails();
-    @TextIndexed(weight = 1)
     private UserContact contact = new UserContact();
     private UserActivity activity = new UserActivity();
+    private UserSettings settings = new UserSettings();
     @TextScore
     private Float score;
 

@@ -111,7 +111,9 @@ public class AdminService implements IAdminService {
                             user.getProfile(),
                             user.getEducation(),
                             user.getContact(),
-                            user.getActivity()
+                            user.getActivity(),
+                            user.getSettings(),
+                            user.getScore()
                     ))
                     .toList();
 

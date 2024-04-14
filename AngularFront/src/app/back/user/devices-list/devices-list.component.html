@@ -3,11 +3,10 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Devices Table</h3>
+          <h3 class="card-title"><i class="fas fa-tablet-alt mr-2"></i>Devices</h3>
           <div class="card-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
               <input class="form-control float-right" name="table_search" placeholder="Search" type="text">
-
               <div class="input-group-append">
                 <button class="btn btn-default" type="submit">
                   <i class="fas fa-search"></i>
@@ -17,25 +16,18 @@
           </div>
         </div>
         <!-- /.card-header -->
-        <div class="card-body table-responsive p-0">
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th>Device</th>
-              <th>Last Login</th>
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let device of deviceDTOS">
-              <td>{{ device.deviceDetails }}</td>
-              <td>{{ device.lastLoggedIn }}</td>
-              <td>
-                <button (click)="deleteDevice(device.id!)" class="btn btn-danger btn-sm">Delete</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        <div class="card-body">
+          <div class="row">
+            <div *ngFor="let device of deviceDTOS" class="col-sm-4">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fas fa-tablet-alt mr-2"></i>{{ device.deviceDetails }}</h5>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>Last Login: {{ device.lastLoggedIn }}</p>
+                  <button (click)="deleteDevice(device.id!)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <app-pagination
           (pageChanged)="onPageChange($event)"

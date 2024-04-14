@@ -18,7 +18,7 @@ export class UsersTableComponent implements OnInit {
   availableRoles: string[] = ['SUPERADMIN', 'ADMIN', 'STUDENT', 'TEACHER']
   totalPages: number = 0;
   currentPage: number = 0;
-  pageSize: number = 2;
+  pageSize: number = 4;
 
   constructor(private panelService: PanelService,
               private toaster: ToastrService,

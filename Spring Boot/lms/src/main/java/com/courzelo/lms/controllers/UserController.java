@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('SUPERADMIN')")
 @RateLimiter(name = "backend")
+@Slf4j
 public class UserController {
     private final UserService userService;
     private final IPhotoService photoService;
@@ -53,6 +55,7 @@ public class UserController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/search")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword ,@RequestParam String page){
         List<User> users = userService.searchByKeyword(keyword , Integer.parseInt(page));
         List<UserDTO> userDTOS = users.stream()
@@ -64,10 +67,27 @@ public class UserController {
                         user.getProfile(),
                         user.getEducation(),
                         user.getContact(),
-                        user.getActivity()
+                        user.getActivity(),
+                        user.getSettings(),
+                        user.getScore()
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDTOS);
+    }
+    @PutMapping("/update/showPhone")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowPhone(Principal principal) {
+        return userService.updateShowPhone(principal.getName());
+    }
+    @PutMapping("/update/showAddress")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowAddress(Principal principal) {
+        return userService.updateShowAddress(principal.getName());
+    }
+    @PutMapping("/update/showBirthDate")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateShowBirthDate(Principal principal) {
+        return userService.updateShowBirthDate(principal.getName());
     }
 
     @GetMapping("/{userID}")
@@ -79,7 +99,6 @@ public class UserController {
     @Cacheable(value = "MyInfo", key = "#principal.name")
     public ResponseEntity<UserDTO> getMyInfo(Principal principal) {
         return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
                 .body(userService.getMyInfo(principal.getName()));
     }
     @PreAuthorize("isAuthenticated()")

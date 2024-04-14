@@ -4,6 +4,7 @@ import {UserActivity} from "./UserActivity";
 import {UserEducation} from "./UserEducation";
 import {UserProfile} from "./UserProfile";
 import {UserSecurity} from "./UserSecurity";
+import {UserSettings} from "./UserSettings";
 
 export interface UserResponse {
   id?: string;
@@ -14,4 +15,6 @@ export interface UserResponse {
   education?:UserEducation;
   contact?:UserContact;
   activity?:UserActivity;
+  settings?:UserSettings;
+  score?:number;
 }

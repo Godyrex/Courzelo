@@ -15,6 +15,7 @@ export class UserProfileComponent implements OnInit {
   userPhotoUrl: any
   @Input() userInfoChanged?: EventEmitter<void>;
   profileRoles: string[] = [];
+  aboutMe: boolean = false;
 
   constructor(
     private updateService: UpdateService

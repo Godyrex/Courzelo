@@ -3,11 +3,10 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Users Table</h3>
+          <h3 class="card-title"><i class="fas fa-table mr-2"></i>Users Table</h3>
           <div class="card-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
               <input class="form-control float-right" name="table_search" placeholder="Search" type="text">
-
               <div class="input-group-append">
                 <button class="btn btn-default" type="submit">
                   <i class="fas fa-search"></i>
@@ -21,35 +20,35 @@
           <table class="table table-hover text-nowrap">
             <thead>
             <tr>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Lastname</th>
-              <th>Roles</th>
-              <th>Ban</th>
-              <th>Enabled</th>
+              <th><i class="fas fa-envelope mr-2"></i>Email</th>
+              <th><i class="fas fa-user mr-2"></i>Name</th>
+              <th><i class="fas fa-user mr-2"></i>Lastname</th>
+              <th><i class="fas fa-users mr-2"></i>Roles</th>
+              <th><i class="fas fa-ban mr-2"></i>Ban</th>
+              <th><i class="fas fa-check mr-2"></i>Enabled</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let user of userResponse">
-              <td><a class="email-link" (click)="openUserProfile(user.email!)">{{ user.email }}</a></td>
-              <td>{{ user.profile?.name }}</td>
-              <td>{{ user.profile?.lastName }}</td>
+              <td><a class="email-link" (click)="openUserProfile(user.email!)"><i class="fas fa-envelope mr-2"></i>{{ user.email }}</a></td>
+              <td><i class="fas fa-user mr-2"></i>{{ user.profile?.name }}</td>
+              <td><i class="fas fa-user mr-2"></i>{{ user.profile?.lastName }}</td>
               <td>
                 <ul>
-                  <li *ngFor="let role of user.roles">{{ role}}</li>
+                  <li *ngFor="let role of user.roles"><i class="fas fa-user-tag mr-2"></i>{{ role}}</li>
                 </ul>
               </td>
               <td>
                 <button (click)="toggleBan(user)" [ngClass]="{'btn-danger': user.security?.ban, 'btn-success': !user.security?.ban}"
                         class="btn btn-sm">
-                  {{ user.security?.ban ? 'Unban' : 'Ban' }}
+                  <i class="fas fa-ban mr-2"></i>{{ user.security?.ban ? 'Unban' : 'Ban' }}
                 </button>
               </td>
               <td>
                 <button (click)="toggleEnable(user)"
                         [ngClass]="{'btn-danger': !user.security?.enabled, 'btn-success': user.security?.enabled}"
                         class="btn btn-sm">
-                  {{ user.security?.enabled ? 'Disable' : 'Enable' }}
+                  <i class="fas fa-check mr-2"></i>{{ user.security?.enabled ? 'Disable' : 'Enable' }}
                 </button>
               </td>
               <td>
@@ -59,7 +58,7 @@
                       <option *ngFor="let role of availableRoles" [value]="role">{{ role }}</option>
                     </select>
                   </div>
-                  <button class="btn btn-primary" type="submit">Add/Remove Role</button>
+                  <button class="btn btn-primary" type="submit"><i class="fas fa-user-edit mr-2"></i>Add/Remove Role</button>
                 </form>
               </td>
             </tr>

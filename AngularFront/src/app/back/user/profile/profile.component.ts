@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
@@ -16,11 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
 import {UserContact} from "../../../model/user/UserContact";
 import {UserAddress} from "../../../model/user/UserAddress";
-import {tap} from "rxjs";
 import {UserResponse} from "../../../model/user/UserResponse";
-import {UserSecurity} from "../../../model/user/UserSecurity";
-import {UserActivity} from "../../../model/user/UserActivity";
-import {UserEducation} from "../../../model/user/UserEducation";
 
 @Component({
   selector: 'app-profile',
@@ -40,6 +36,9 @@ export class ProfileComponent implements OnInit{
   toggleLoading(): void {
     this.loading = true;
   }
+  showPhone = false;
+  showAddress = false;
+  showBirthDate = false;
   nameRequest: NameRequest = {};
   userContact : UserContact = {};
   userAddress : UserAddress = {};
@@ -57,7 +56,6 @@ export class ProfileComponent implements OnInit{
   user: UserResponse = {};
   //make max date 16 years ago
   maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 16));
-
   uploadProgress: number = 0;
   selectedFile: File | undefined;
   showVerification: boolean = false;
@@ -70,7 +68,7 @@ export class ProfileComponent implements OnInit{
     photo: ['', [Validators.required]],
   });
   contactForm = this.formBuilder.group({
-    phone: [this.user.contact?.phoneNumber, [Validators.maxLength(20), Validators.minLength(5)]],
+    phone: [this.user.contact?.phoneNumber, [Validators.maxLength(20), Validators.minLength(5),this.onlyDigitsValidator]],
     facebook: [this.user.contact?.facebook, [this.usernameValidator]],
     github: [this.user.contact?.github, [this.usernameValidator]],
     linkedin: [this.user.contact?.linkedin, [this.usernameValidator]],
@@ -89,13 +87,20 @@ export class ProfileComponent implements OnInit{
     }
     return null;
   }
+  onlyDigitsValidator(control: AbstractControl) {
+    const value = control.value;
+    if (value && !/^\d+$/.test(value)) {
+      return { 'onlyDigits': true };
+    }
+    return null;
+  }
   verificationForm = this.formBuilder.group({
     code: ['', [Validators.maxLength(4), Validators.minLength(4)]],
   });
   nameForm = this.formBuilder.group({
     name: ['', [Validators.maxLength(20), Validators.minLength(3)]],
     lastName: ['', [Validators.maxLength(20), Validators.minLength(3)]],
-    title: ['', [Validators.maxLength(20), Validators.minLength(3)]],
+    title: ['', [Validators.maxLength(30), Validators.minLength(3)]],
     bio: ['', [Validators.minLength(10),Validators.maxLength(500)]],
     birthDate: [null,],
   });
@@ -123,6 +128,24 @@ export class ProfileComponent implements OnInit{
     private authService: AuthenticationService,
     public dialog:MatDialog
   ) {
+  }
+  toggleShowPhone() {
+    this.updateService.updateShowPhone().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
+  }
+  toggleShowAddress() {
+    this.updateService.updateShowAddress().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
+  }
+  toggleShowBirthDate() {
+    this.updateService.updateShowBirthDate().subscribe(() => {
+      this.getMyInfo();
+      this.userInfoChanged.emit();
+    });
   }
   onCountryChange(countryCode: string): void {
     this.updateService.getStates(countryCode).subscribe(states => {
@@ -173,6 +196,14 @@ export class ProfileComponent implements OnInit{
         if(this.user.contact?.userAddress?.country!=null && this.user.contact?.userAddress?.country!=""){
           this.onCountryChange(this.user.contact?.userAddress?.country);
         }
+        if(this.user.settings!= null){
+          this.showPhone = this.user.settings.showPhone!;
+          this.showAddress = this.user.settings.showAddress!;
+          this.showBirthDate = this.user.settings.showBirthDate!;
+        }
+        console.log(this.showAddress);
+        console.log(this.showPhone);
+        console.log(this.showBirthDate);
         this.contactForm.controls['country'].setValue(this.user.contact?.userAddress?.country);
         this.contactForm.controls['state'].setValue(this.user.contact?.userAddress?.state);
         this.profileRoles = this.user!.roles!.map(role => role.replace('ROLE_', ''));

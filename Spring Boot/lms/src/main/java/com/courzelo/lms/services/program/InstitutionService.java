@@ -558,7 +558,9 @@ public class InstitutionService implements IInstitutionService {
                         user.getProfile(),
                         user.getEducation(),
                         user.getContact(),
-                        user.getActivity()
+                        user.getActivity(),
+                        user.getSettings(),
+                        user.getScore()
                 ))
                 .toList();
         log.info("users in page : " + page + " " + userDTOs);

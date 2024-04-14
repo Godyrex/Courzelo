@@ -18,6 +18,8 @@ public class UserDTO {
     private UserEducationDTO education;
     private UserContactDTO contact;
     private UserActivityDTO activity;
+    private UserSettingsDTO settings;
+    private Float score;
 
     public UserDTO(
             String id,
@@ -27,7 +29,10 @@ public class UserDTO {
             UserProfile profile,
             UserEducationalDetails education,
             UserContact contact,
-            UserActivity activity)
+            UserActivity activity,
+            UserSettings settings,
+            Float score
+    )
     {
         this.id = id;
         this.email = email;
@@ -37,6 +42,8 @@ public class UserDTO {
         this.education = new UserEducationDTO(education);
         this.contact = new UserContactDTO(contact);
         this.activity = new UserActivityDTO(activity);
+        this.settings = new UserSettingsDTO(settings);
+        this.score = score!=null?score:0.0f;
 
     }
 }
