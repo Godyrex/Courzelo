@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -351,6 +352,8 @@ public class UserService implements UserDetailsService {
         }
         Search existingSearch = searchRepository.findByQuery(query);
         if(existingSearch != null && query.equals(existingSearch.getQuery())) {
+            existingSearch.setCount(existingSearch.getCount()+1);
+            searchRepository.save(existingSearch);
             return ResponseEntity.ok().build();
         }
         Search search = new Search(query);
@@ -362,6 +365,6 @@ public class UserService implements UserDetailsService {
         if(input == null || input.isEmpty()) {
             return null;
         }
-        return searchRepository.findByQueryRegex(input);
+        return searchRepository.findTop10ByQueryRegex(input, PageRequest.of(0, 10));
     }
 }

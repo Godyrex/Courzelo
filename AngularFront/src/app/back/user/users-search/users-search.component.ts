@@ -27,7 +27,7 @@ export class UsersSearchComponent implements OnInit{
   ) {
   }
   searchForm = this.formBuilder.group({
-    keyword: [''],
+    keyword: ['',[Validators.required]],
   });
   searchMoreUsers() {
     this.page++;
@@ -51,6 +51,7 @@ export class UsersSearchComponent implements OnInit{
     );
   }
   search() {
+    if (this.searchForm.valid) {
     this.isLoading = true; // Add this line
     this.page = 0;
     this.highestScore = 0;
@@ -66,6 +67,9 @@ export class UsersSearchComponent implements OnInit{
         this.isLoading = false; // Add this line
       }
     );
+  }else{
+      this.toaster.error("Empty search!")
+    }
   }
   isPerfect(user: UserResponse) {
     return user.score === this.highestScore;
@@ -81,11 +85,13 @@ export class UsersSearchComponent implements OnInit{
     });
   }
   getSearches() {
-    this.updateService.getSearches(this.searchForm.value.keyword!).subscribe(
-      (response) => {
-        this.options = response.map(search => search.query!);
-        this.filteredOptions = of(this._filter(this.searchForm.value.keyword!));
-      }
-    );
+    if (this.searchForm.valid) {
+      this.updateService.getSearches(this.searchForm.value.keyword!).subscribe(
+        (response) => {
+          this.options = response.map(search => search.query!);
+          this.filteredOptions = of(this._filter(this.searchForm.value.keyword!));
+        }
+      );
+    }
   }
 }
