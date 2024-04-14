@@ -15,6 +15,7 @@ public class Search {
     @Id
     private String id;
     private String query;
+    private int count =0;
 
     public Search(String query) {
         this.query = query;
