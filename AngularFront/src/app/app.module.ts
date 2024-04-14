@@ -85,6 +85,7 @@ import { UsersSearchComponent } from './back/user/users-search/users-search.comp
 import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/user-profile-by-email.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 @NgModule({
@@ -157,6 +158,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     InfiniteScrollModule,
     MatSlideToggleModule,
     RouterOutlet,
+    MatAutocompleteModule,
     MatButtonModule,
     BsDatepickerModule.forRoot(),
     BrowserAnimationsModule,

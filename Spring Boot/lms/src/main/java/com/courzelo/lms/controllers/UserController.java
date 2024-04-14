@@ -3,6 +3,7 @@ package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.Search;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.entities.user.UserAddress;
 import com.courzelo.lms.security.JwtResponse;
@@ -57,6 +58,9 @@ public class UserController {
     @GetMapping("/search")
     @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
     public ResponseEntity<List<UserDTO>> searchByKeyword(@RequestParam String keyword ,@RequestParam String page){
+        if(keyword == null || keyword.isEmpty() || page == null || page.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
         List<User> users = userService.searchByKeyword(keyword , Integer.parseInt(page));
         List<UserDTO> userDTOS = users.stream()
                 .map(user -> new UserDTO(
@@ -107,6 +111,21 @@ public class UserController {
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(2, TimeUnit.SECONDS).cachePrivate())
                 .body(userService.getMyContactInfo(principal.getName()));
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/saveSearch")
+    public ResponseEntity<HttpStatus> saveSearch(@Valid @RequestBody SearchDTO saveSearchDTO) {
+        return userService.saveSearch(saveSearchDTO.getQuery());
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/searches")
+    public ResponseEntity<List<SearchDTO>> getSearches(@RequestParam String query) {
+        List<Search> searches = userService.getSearchSuggestions(query);
+        List<SearchDTO> searchDTOS = searches.stream()
+                .map(search -> new SearchDTO(search.getQuery()))
+                .toList();
+        return ResponseEntity.ok()
+                .body(searchDTOS);
     }
 
     @DeleteMapping("/{userID}")

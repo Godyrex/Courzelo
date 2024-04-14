@@ -4,7 +4,12 @@
     <div class="col-md-8">
       <form (ngSubmit)="search()" [formGroup]="searchForm">
         <div class="input-group mb-3">
-          <input formControlName="keyword" type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
+          <input formControlName="keyword" type="search" class="form-control form-control-lg" placeholder="Type your keywords here" matInput [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
           <div class="input-group-append">
             <button type="submit" class="btn btn-lg btn-default">
               <i class="fa fa-search"></i>

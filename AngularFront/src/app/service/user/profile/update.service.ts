@@ -11,6 +11,7 @@ import {UserAddress} from "../../../model/user/UserAddress";
 import {UserContact} from "../../../model/user/UserContact";
 import {UserResponse} from "../../../model/user/UserResponse";
 import {UserListDTO} from "../../../model/user/UserListDTO";
+import {SearchDTO} from "../../../model/user/SearchDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,12 @@ export class UpdateService {
 
   getPhoto(photoId: string) {
     return this.http.get(`${this.baseUrl}/photo/${photoId}`, {responseType: 'blob'});
+  }
+  saveSearch(search: SearchDTO): Observable<any> {
+    return this.http.post(`${this.baseUrl}/saveSearch`, search);
+  }
+  getSearches(query: string): Observable<SearchDTO[]> {
+    return this.http.get<SearchDTO[]>(`${this.baseUrl}/searches`, {params: {query: query}});
   }
 
   getMyInfo() {
