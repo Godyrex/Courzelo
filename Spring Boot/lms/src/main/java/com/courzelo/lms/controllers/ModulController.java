@@ -36,6 +36,11 @@ public class ModulController {
     public ResponseEntity<ModulDTO> getModul(@PathVariable(name = "id") final String id) {
         return ResponseEntity.ok(modulService.get(id));
     }
+    @PostMapping("/create")
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<String> create(@RequestBody @Valid final ModulDTO modulDTO) {
+        return new ResponseEntity<>(modulService.create(modulDTO), HttpStatus.CREATED);
+    }
 
     @PostMapping
     @ApiResponse(responseCode = "201")

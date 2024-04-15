@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document(collection =  "Module")
 @Data
@@ -32,5 +33,16 @@ public class Modul {
     }
     public boolean isSeperated() {
         return false;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Modul that = (Modul) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(nmbrHours, that.nmbrHours) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(isSeperated, that.isSeperated) &&
+                Objects.equals(isMetuale, that.isMetuale);
     }
 }

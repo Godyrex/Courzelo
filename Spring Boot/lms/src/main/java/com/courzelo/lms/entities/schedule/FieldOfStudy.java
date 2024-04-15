@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Document(collection = "FieldOfStudy")
@@ -29,6 +30,15 @@ public class FieldOfStudy {
     private Department department;
     @DBRef
     private List<Class> classes;
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FieldOfStudy that = (FieldOfStudy) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(numbrWeeks, that.numbrWeeks) &&
+                Objects.equals(chefField, that.chefField);
+    }
 
 }

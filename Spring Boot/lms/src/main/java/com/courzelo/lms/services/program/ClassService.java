@@ -7,6 +7,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ public class ClassService implements IClassService {
     private final InstitutionRepository institutionRepository;
     private final ProgramRepository programRepository;
     private final FieldOfStudyRepository fieldOfRepository;
+    private final ModulRepository modulRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -87,11 +90,6 @@ public class ClassService implements IClassService {
         } else {
             return ResponseEntity.badRequest().body(false);
         }
-    }
-
-    @Override
-    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
-        return null;
     }
 
     @Override
@@ -268,7 +266,8 @@ public class ClassService implements IClassService {
 
     public ClassDTO getClasseById(String id) {
         Class aClass = classRepository.findById(id)
-                .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
+                .orElseThrow(() ->
+                        new ClassNotFoundException("Class " + id + " not found"));
         return mapToDTO(aClass);
     }
 
@@ -322,5 +321,34 @@ public class ClassService implements IClassService {
         classDTO.setFieldOfStudy(aClass.getFieldOfStudy());
         classDTO.setSemester(aClass.getSemester());
         return classDTO;
+    }
+    @Override
+    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
+        log.info("Adding class ");
+        Class aClass = modelMapper.map(classDTO, Class.class);
+        List<Modul> moduls = new ArrayList<>();
+        if (classDTO.getModuls() != null) {
+            moduls = classDTO.getModuls().stream()
+                    .map(modulDTO -> {
+                        Modul modul = modulRepository.findById(modulDTO.getId())
+                                .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + modulDTO.getId()));
+                        return modul;
+                    })
+                    .collect(Collectors.toList());
+        }
+        aClass.setModuls(moduls);
+
+        if (classDTO.getFieldOfStudy() != null && classDTO.getFieldOfStudy().getId() != null) {
+            FieldOfStudy fieldOfStudy = fieldOfRepository.findById(classDTO.getFieldOfStudy().getId())
+                    .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + classDTO.getFieldOfStudy().getId()));
+            aClass.setFieldOfStudy(fieldOfStudy);
+        }
+
+        Class savedClass = classRepository.save(aClass);
+        if (savedClass != null && savedClass.getId() != null) {
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
     }
 }

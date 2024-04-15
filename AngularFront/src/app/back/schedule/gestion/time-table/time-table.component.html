@@ -17,7 +17,7 @@
             <option selected disabled>Select...</option>
             <option
               *ngFor="let department of departements"
-              value="{{ department.id }}"
+              [value]="department.id"
             >
               {{ department.name }}
             </option>
@@ -63,11 +63,10 @@
       </div>
       <div class="col-auto text-end float-end ms-auto download-grp pb-2">
         <a
-          [ngClass]="{ disabled: !ready }"
           (click)="handleDownloadEmploi()"
           *ngIf="!spinnerExport"
           class="btn btn-outline-primary me-2"
-        ><i class="fas fa-download"></i> Dwonload
+        ><i class="fas fa-download"></i> Download
         </a>
 
         <div

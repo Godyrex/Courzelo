@@ -1,6 +1,8 @@
 package com.courzelo.lms.dto.schedule;
 
+import com.courzelo.lms.entities.schedule.NonDisponibility;
 import com.courzelo.lms.entities.schedule.Period;
+import com.courzelo.lms.entities.user.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.Getter;
@@ -14,4 +16,6 @@ public class NonDisponibilityDTO {
     private String  id;
     private DayOfWeek dayOfWeek;
     private Period period;
+    private User teacher;
+
 }

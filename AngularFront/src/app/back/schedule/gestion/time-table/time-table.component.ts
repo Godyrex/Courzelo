@@ -15,6 +15,7 @@ import {ClassService} from "../../../../service/program/class.service";
 import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
 import {Class} from "../../../../model/schedule/Class";
 import {SemesterService} from "../../../../service/schedule/semester.service";
+import {ClassListDTO} from "../../../../model/program/ClassListDTO";
 
 @Component({
   selector: 'app-time-table',
@@ -27,6 +28,7 @@ export class TimeTableComponent  {
   public ProfPage:Departement[] = [];
   public filieres:FieldOfStudy[] = [];
   public semsters:Semester[] = [];
+  public classes: ClassDTO[] = [];
   public elementModule:ElementModule[] = [];
   selectedDepartement: Departement|undefined;
   selectedFiliere: FieldOfStudy|undefined;
@@ -44,11 +46,22 @@ export class TimeTableComponent  {
              private actionsService:ActionsService,
              private classService:ClassService,
              private fieldOfStudyService:FieldOfstudyService,
-            // private semesterService:SemesterService
+             private semesterService:SemesterService
+
  ){}
 
 
   ngOnInit() {
+    this.departmentService.getAllDepartements().subscribe(data => { this.departements = data; });
+
+    this.fieldOfStudyService.getAllFilieres().subscribe(data => {
+      this.filieres = data;
+    });
+    this.semesterService.getAllSemesters().subscribe(data => {
+      this.semsters = data;});
+  /*  this.classService.getClasses().subscribe(data => {
+      this.classes = data;
+    });*/
     if (this.prof) {
       this.authenticationService.getRole().subscribe(role => {
         this.prof = role.includes('TEACHER');
@@ -65,15 +78,7 @@ export class TimeTableComponent  {
             )
           }
         } else {
-          this.departmentService.getAllDepartements().subscribe(data => { this.departements = data; });
 
-          this.fieldOfStudyService.getAllFilieres().subscribe(data => {
-            this.filieres = data;
-          });
-
-        /*  this.sem.getSemesters().subscribe(data => {
-            this.semesters = data;
-          });*/
           this.admin = role.includes('ADMIN'); // Check if the user is an admin
         }
       });

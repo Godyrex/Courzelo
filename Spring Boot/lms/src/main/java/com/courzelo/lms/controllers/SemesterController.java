@@ -14,6 +14,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping(value = "/api/semesters", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SemesterController {
 

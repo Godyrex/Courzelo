@@ -32,6 +32,11 @@ public class ElementModuleDTO {
     private User teacher;
     private Modul modul;
     private List<FieldOfStudy> fieldOfStudies;
+    private List<String> classIds;
+    private List<String> semesterIds;
+    private List<String> departmentIds;
+    private String modulId;
+    private String teacherId;
 
 
 }
