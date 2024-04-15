@@ -362,4 +362,15 @@ public class ClassService implements IClassService {
             return ResponseEntity.badRequest().body(false);
         }
     }
+    public ResponseEntity<ClassDTO> getMyClass1(Principal principal, String email) {
+        log.info("Getting my class");
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user == null) {
+            user = userRepository.findUserByEmail(email);
+        }
+        if (user.getEducation().getStclass() != null) {
+            return ResponseEntity.ok().body(modelMapper.map(user.getEducation().getStclass(), ClassDTO.class));
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
 }

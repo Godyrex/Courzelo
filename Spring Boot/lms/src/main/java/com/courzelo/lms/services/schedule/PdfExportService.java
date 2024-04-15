@@ -20,10 +20,14 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
@@ -244,10 +248,10 @@ public class PdfExportService {
     public void OneClassePDF(HttpServletResponse response, String id) throws IOException {
         dataFromDB.loadDataFromDatabase();
         // Retrieve all classes
-
-
-        ClassDTO classe = classService.getClasseById(id);
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        ResponseEntity<ClassDTO> responseEntity = classService.getMyClass1(authentication, user.getEmail());
+        ClassDTO classe = responseEntity.getBody();
         Document myPDFDoc = new Document(PageSize.A4,
                 40f,   // left
                 40f,   // right
