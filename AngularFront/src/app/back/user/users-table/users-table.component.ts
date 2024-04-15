@@ -18,7 +18,7 @@ export class UsersTableComponent implements OnInit {
   availableRoles: string[] = ['SUPERADMIN', 'ADMIN', 'STUDENT', 'TEACHER']
   totalPages: number = 0;
   currentPage: number = 0;
-  pageSize: number = 2;
+  pageSize: number = 4;
 
   constructor(private panelService: PanelService,
               private toaster: ToastrService,
@@ -58,7 +58,7 @@ export class UsersTableComponent implements OnInit {
     const userRoleRequest: UserRoleRequest = {userID: user.id};
     this.panelService.toggleBan(userRoleRequest).subscribe(
       () => {
-        user.ban = !user.ban;
+        user.security!.ban = !user.security?.ban;
         this.toaster.success("User "+user.email+" (un)banned successfully", "Success")
       },
       (error: any) => {
@@ -72,7 +72,7 @@ export class UsersTableComponent implements OnInit {
     const userRoleRequest: UserRoleRequest = {userID: user.id};
     this.panelService.toggleEnable(userRoleRequest).subscribe(
       () => {
-        user.enabled = !user.enabled;
+        user.security!.enabled = !user.security?.enabled;
         this.toaster.success("User "+user.email+" enabled/disabled successfully", "Success");
       },
       (error: any) => {

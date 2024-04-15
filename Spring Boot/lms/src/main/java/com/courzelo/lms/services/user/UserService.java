@@ -1,21 +1,16 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.dto.user.DeleteAccountDTO;
-import com.courzelo.lms.dto.user.PasswordDTO;
-import com.courzelo.lms.dto.user.ProfileDTO;
-import com.courzelo.lms.dto.user.UpdateEmailDTO;
+import com.courzelo.lms.dto.program.InstitutionDTO;
+import com.courzelo.lms.dto.program.SimplifiedClassDTO;
+import com.courzelo.lms.dto.program.SimplifiedInstitutionDTO;
+import com.courzelo.lms.dto.program.SimplifiedProgramDTO;
+import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
-import com.courzelo.lms.entities.user.Role;
-import com.courzelo.lms.entities.user.User;
-import com.courzelo.lms.entities.user.VerificationToken;
-import com.courzelo.lms.entities.user.VerificationTokenType;
+import com.courzelo.lms.entities.user.*;
 import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.*;
-import com.courzelo.lms.repositories.ClassRepository;
-import com.courzelo.lms.repositories.InstitutionRepository;
-import com.courzelo.lms.repositories.UserRepository;
-import com.courzelo.lms.repositories.VerificationTokenRepository;
+import com.courzelo.lms.repositories.*;
 import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
@@ -23,6 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,8 +54,12 @@ public class UserService implements UserDetailsService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final ClassRepository classRepository;
     private final InstitutionRepository institutionRepository;
+    private final MongoTemplate mongoTemplate;
+    private final SearchRepository searchRepository;
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository) {
+
+
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate, SearchRepository searchRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
@@ -67,8 +68,12 @@ public class UserService implements UserDetailsService {
         this.verificationTokenRepository = verificationTokenRepository;
         this.classRepository = classRepository;
         this.institutionRepository = institutionRepository;
+        this.mongoTemplate = mongoTemplate;
+        this.searchRepository = searchRepository;
     }
-
+    public List<User> searchByKeyword(String keyword ,int page) {
+        return userRepository.searchByKeyword(keyword,page, mongoTemplate);
+    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email);
@@ -101,6 +106,22 @@ public class UserService implements UserDetailsService {
             user.getProfile().setLastName(profileDTO.getLastName());
             log.info("updateUserProfile :Lastname set to " + user.getProfile().getLastName());
         }
+        if(profileDTO.getTitle() != null && !profileDTO.getTitle().isEmpty()){
+            log.info("updateUserProfile :Setting title to " + profileDTO.getTitle());
+            user.getProfile().setTitle(profileDTO.getTitle());
+            log.info("updateUserProfile :Title set to " + user.getProfile().getTitle());
+        }
+        if(profileDTO.getBio() != null && !profileDTO.getBio().isEmpty()){
+            log.info("updateUserProfile :Setting bio to " + profileDTO.getBio());
+            user.getProfile().setBio(profileDTO.getBio());
+            log.info("updateUserProfile :Bio set to " + user.getProfile().getBio());
+        }
+        if(profileDTO.getBirthDate() != null && !profileDTO.getBirthDate().toString().isEmpty()){
+            log.info("updateUserProfile :Setting birthdate to " + profileDTO.getBirthDate());
+            user.getProfile().setBirthDate(profileDTO.getBirthDate());
+            log.info("updateUserProfile :Birthdate set to " + user.getProfile().getBirthDate());
+        }
+        user.getActivity().setUpdatedAt(Instant.now());
         userRepository.save(user);
         log.info("updateUserProfile :Profile Updated!");
         return ResponseEntity.ok().body(new Response("Profile Updated!"));
@@ -111,31 +132,32 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userID));
     }
 
-    public JwtResponse getMyInfo(String email) {
-        log.info("getMyInfo :Getting user " + email + " info...");
+    public UserDTO getMyInfo(String email) {
         User user = userRepository.findUserByEmail(email);
-        List<String> roles = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-        Institution institution = null;
-        Class institutionClass = null;
-        if (user.getEducation().getInstitution() != null) {
-            institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
-                    .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
-        }
-        if (user.getEducation().getStclass() != null) {
-            institutionClass = classRepository.findById(user.getEducation().getStclass().getId())
-                    .orElseThrow(() -> new ClassNotFoundException("Class not found"));
-        }
-        return new JwtResponse(
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        return new UserDTO(
+                user.getId(),
                 user.getEmail(),
-                user.getProfile().getName(),
-                user.getProfile().getLastName(),
                 roles,
-                user.getProfile().getPhoto() != null ? user.getProfile().getPhoto().getId() : null,
-                institution != null ? institution.getName() : null,
-                institutionClass != null ? institutionClass.getName() : null,
-                user.getSecurity().isTwoFactorAuthEnabled()
+                user.getSecurity(),
+                user.getProfile(),
+                user.getEducation(),
+                user.getContact(),
+                user.getActivity(),
+                user.getSettings(),
+                user.getScore()
+        );
+    }
+    public UserContactDTO getMyContactInfo(String email){
+        User user = userRepository.findUserByEmail(email);
+        return new UserContactDTO(
+                user.getContact().getAddress(),
+                user.getContact().getPhoneNumber(),
+                user.getContact().getWebsite(),
+                user.getContact().getLinkedin(),
+                user.getContact().getFacebook(),
+                user.getContact().getGithub()
         );
     }
 
@@ -150,7 +172,7 @@ public class UserService implements UserDetailsService {
         log.info("changePassword :Setting password to " + passwordDTO.getNewPassword());
         user.setPassword(encoder.encode(passwordDTO.getNewPassword()));
         log.info("changePassword :Encoded password set to " + user.getPassword());
-
+        user.getActivity().setUpdatedAt(Instant.now());
         userRepository.save(user);
         log.info("changePassword :Password Changed!");
         return ResponseEntity.ok().body(new Response("Password updated!"));
@@ -194,6 +216,7 @@ public class UserService implements UserDetailsService {
         }
         if (Objects.equals(user.getId(), verificationToken.getUser().getId())) {
             user.setEmail(updateEmailDTO.getEmail());
+            user.getActivity().setUpdatedAt(Instant.now());
             userRepository.save(user);
             return ResponseEntity.ok().build();
         }
@@ -203,6 +226,7 @@ public class UserService implements UserDetailsService {
     public ResponseEntity<HttpStatus> updatePhoto(MultipartFile file, Principal principal) throws IOException {
         User user = userRepository.findUserByEmail(principal.getName());
         user.getProfile().setPhoto(iPhotoService.addPhoto(file));
+        user.getActivity().setUpdatedAt(Instant.now());
         userRepository.save(user);
         log.info("finish update photo");
         return ResponseEntity.ok().build();
@@ -276,10 +300,95 @@ public class UserService implements UserDetailsService {
    /* public User addTeacher(User teacher) {
         return userRepository.save(teacher);
     }*/
-        public List<User> getTeachers() {
+        public List<User> getTeachers1() {
             return userRepository.findByRolesIs(Collections.singletonList(TEACHER))
                     .stream()
                     .distinct()
                     .collect(Collectors.toList());
         }
+    public List<User> getTeachers() {
+        return userRepository.findByRolesContains(Role.TEACHER);
+    }
+
+
+    public ResponseEntity<HttpStatus> updateUserContact(String name, UserContactDTO userUpdateDTO) {
+        log.info("updateUserDetails :Updating details of user " + name + "...");
+        String facebook = "https://www.facebook.com/";
+        String linkedin = "https://www.linkedin.com/in/";
+        String github = "https://www.github.com/";
+        User user = userRepository.findUserByEmail(name);
+            user.getContact().setAddress(userUpdateDTO.getUserAddress());
+        if(userUpdateDTO.getPhoneNumber() != null && !userUpdateDTO.getPhoneNumber().isEmpty()) {
+            user.getContact().setPhoneNumber(userUpdateDTO.getPhoneNumber());
+        }
+        if(userUpdateDTO.getWebsite() != null && !userUpdateDTO.getWebsite().isEmpty()) {
+            user.getContact().setWebsite(userUpdateDTO.getWebsite());
+        }
+        if(userUpdateDTO.getLinkedin() != null && !userUpdateDTO.getLinkedin().isEmpty()) {
+            user.getContact().setLinkedin(linkedin + userUpdateDTO.getLinkedin());
+        }
+        if(userUpdateDTO.getFacebook() != null && !userUpdateDTO.getFacebook().isEmpty()) {
+            user.getContact().setFacebook(facebook + userUpdateDTO.getFacebook());
+        }
+        if (userUpdateDTO.getGithub() != null && !userUpdateDTO.getGithub().isEmpty()) {
+            user.getContact().setGithub(github + userUpdateDTO.getGithub());
+        }
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateUserDetails :User details Updated!");
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<Response> updateShowBirthDate(String name) {
+        log.info("updateShowBirthDate :Updating showBirthDate of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowBirthDate(!user.getSettings().isShowBirthDate());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowBirthDate :ShowBirthDate Updated!");
+        return ResponseEntity.ok().body(new Response("ShowBirthDate Updated!"));
+    }
+
+    public ResponseEntity<Response> updateShowAddress(String name) {
+        log.info("updateShowAddress :Updating showAddress of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowAddress(!user.getSettings().isShowAddress());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowAddress :ShowAddress Updated!");
+        return ResponseEntity.ok().body(new Response("ShowAddress Updated!"));
+    }
+
+    public ResponseEntity<Response> updateShowPhone(String name) {
+        log.info("updateShowPhone :Updating showPhone of user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getSettings().setShowPhone(!user.getSettings().isShowPhone());
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("updateShowPhone :ShowPhone Updated!");
+        return ResponseEntity.ok().body(new Response("ShowPhone Updated!"));
+    }
+
+    public ResponseEntity<HttpStatus> saveSearch(String query) {
+        log.info("saveSearch :Saving search query..."+query);
+        if(query == null || query.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Search existingSearch = searchRepository.findByQuery(query);
+        if(existingSearch != null && query.equals(existingSearch.getQuery())) {
+            existingSearch.setCount(existingSearch.getCount()+1);
+            searchRepository.save(existingSearch);
+            return ResponseEntity.ok().build();
+        }
+        Search search = new Search(query);
+        searchRepository.save(search);
+        return ResponseEntity.ok().build();
+    }
+
+    public List<Search> getSearchSuggestions(String input) {
+        if(input == null || input.isEmpty()) {
+            return null;
+        }
+        return searchRepository.findTop10ByQueryRegex(input, PageRequest.of(0, 10));
+    }
 }

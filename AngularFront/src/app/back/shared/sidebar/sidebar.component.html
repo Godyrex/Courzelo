@@ -33,7 +33,7 @@
         <img [src]="userPhotoUrl|| 'assets/default-image.jpg'" alt="User Image" class="img-circle elevation-2">
       </div>
       <div class="info">
-        <a class="d-block" routerLink="/settings/profile">{{loginResponse.name + " " + loginResponse.lastname }}</a>
+        <a class="d-block" routerLink="/settings/profile">{{loginResponse.profile?.name + " " + loginResponse.profile?.lastName }}</a>
       </div>
     </div>
 
@@ -98,6 +98,12 @@
                 <p>Users</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/superAdmin/search" routerLinkActive="active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Search</p>
+              </a>
+            </li>
           </ul>
         </li>
 
@@ -111,7 +117,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li *ngIf="loginResponse.institution" class="nav-item">
+            <li *ngIf="loginResponse.education?.institution" class="nav-item">
               <a class="nav-link" routerLink="/organisation/institution" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>My Institution</p>
@@ -129,14 +135,14 @@
                 <p>Programs</p>
               </a>
             </li>
-            <li  *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN') &&loginResponse.institution" class="nav-item">
+            <li *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN') &&loginResponse.education?.institution" class="nav-item">
               <a class="nav-link" routerLink="/organisation/calendar" routerLinkActive="active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Calendar</p>
               </a>
             </li>
           </ul>
-          <ul *ngIf="loginResponse.institution" class="nav nav-treeview">
+          <ul *ngIf="loginResponse.education?.institution" class="nav nav-treeview">
 
             <li class="nav-item">
               <a routerLink="/departments" class="nav-link">

@@ -1,0 +1,57 @@
+.profile-pic {
+  transition: transform 0.2s; /* Animation */
+  transform-origin: center; /* New */
+  position: relative; /* New */
+  z-index: 1; /* New */
+}
+
+.profile-pic:hover {
+  transform: scale(3) translate(0%, 25%); /* Adjusted */
+  z-index: 1000; /* New */
+}
+.large-number {
+  font-size: 1em; /* Adjust this value to your preference */
+}
+.ribbon-wrapper {
+  width: 125px;
+  height: 150px;
+  overflow: hidden;
+  position: absolute;
+  top: -3px;
+  right: -3px;
+}
+
+.ribbon {
+  font: bold 15px Sans-Serif;
+  color: #FFF;
+  text-align: center;
+  text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 120px;
+  display: block;
+  background: #007BFF; /* Change this line */
+  background: linear-gradient(#007BFF 0%, #007BFF 100%); /* Change this line */
+  box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  position: relative;
+  top: 20px;
+  right: -21px;
+  padding: 7px 0;
+}
+
+.ribbon:before, .ribbon:after {
+  content: "";
+  border-top:   3px solid #0056b3; /* Change this line */
+  border-left:  3px solid transparent;
+  border-right: 3px solid transparent;
+  position:absolute;
+  bottom: -3px;
+}
+
+.ribbon:before {
+  left: 0;
+}
+
+.ribbon:after {
+  right: 0;
+}

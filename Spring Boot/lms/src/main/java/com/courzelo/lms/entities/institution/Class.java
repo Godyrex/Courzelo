@@ -6,8 +6,10 @@ import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.user.User;
 import jakarta.persistence.Id;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,4 +44,6 @@ public class Class {
                 Objects.equals(name, that.name) &&
                 Objects.equals(capacity, that.capacity);
     }
+    @TextScore
+    private Float score;
 }
