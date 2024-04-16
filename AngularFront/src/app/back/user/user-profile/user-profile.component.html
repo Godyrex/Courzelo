@@ -29,34 +29,31 @@
   </div>
   <!-- /.card-body -->
 </div>
-<div *ngIf="aboutMe" class="card card-primary">
+<div *ngIf="aboutMe" class="card card-primary mt-3">
   <div class="card-header">
     <h3 class="card-title"><i class="fas fa-info-circle mr-1"></i>About Me</h3>
   </div>
-  <!-- /.card-header -->
-  <div class="card-body">
-
-
-    <strong *ngIf="loginResponse.profile?.bio"><i *ngIf="loginResponse.profile?.bio" class="far fa-file-alt mr-1"></i>Bio</strong>
-
-    <p class="text-muted">{{loginResponse.profile?.bio}}</p>
-    <hr *ngIf="loginResponse.education?.institution">
-    <strong *ngIf="loginResponse.education?.institution"><i *ngIf="loginResponse.education?.institution" class="fas fa-book mr-1"></i>Education</strong>
-
-    <p *ngIf="loginResponse.education?.institution" class="text-muted">
-      Institution : {{ loginResponse.education?.institution?.name! }}<br>
-    </p>
-    <p *ngIf="loginResponse.education?.stclass" class="text-muted">
-      Class : {{ loginResponse.education?.stclass?.name }}<br>
-    </p>
-
-
-    <hr>
-
-    <strong *ngIf="loginResponse.contact?.userAddress?.country"><i *ngIf="loginResponse.contact?.userAddress?.country" class="fas fa-map-marker-alt mr-1"></i>Location</strong>
-
-    <p *ngIf="loginResponse.contact?.userAddress?.country" class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
-
+  <div class="card-body p-4">
+    <div *ngIf="loginResponse.profile?.bio" class="mb-3">
+      <strong><i class="far fa-file-alt mr-1"></i>Bio</strong>
+      <p class="text-muted">{{loginResponse.profile?.bio}}</p>
+    </div>
+    <div *ngIf="loginResponse.education?.institution || loginResponse.education?.stclass" class="mb-3">
+      <hr>
+      <strong><i class="fas fa-book mr-1"></i>Education</strong>
+      <ul class="list-unstyled">
+        <li *ngIf="loginResponse.education?.institution" class="text-muted">
+          <i class="fas fa-university mr-1"></i>{{ loginResponse.education?.institution?.name! }}
+        </li>
+        <li *ngIf="loginResponse.education?.stclass" class="text-muted">
+          <i class="fas fa-graduation-cap mr-1"></i>{{ loginResponse.education?.stclass?.name }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="loginResponse.contact?.userAddress?.country" class="mb-3">
+      <hr>
+      <strong><i class="fas fa-map-marker-alt mr-1"></i>Location</strong>
+      <p class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
+    </div>
   </div>
-  <!-- /.card-body -->
 </div>
