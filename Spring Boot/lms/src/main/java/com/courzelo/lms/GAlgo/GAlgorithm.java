@@ -152,7 +152,6 @@ public class GAlgorithm {
                     newPopulation.add(parent2);
                 }
             }
-
             // Calculate fitness for the new population
             for (UniversityTimetable universityTimetable : newPopulation) {
                 universityTimetable.calculateFitness();

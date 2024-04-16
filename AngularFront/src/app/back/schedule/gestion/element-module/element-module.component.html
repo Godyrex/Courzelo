@@ -1,0 +1,53 @@
+<select formControlName="classes">
+  <option *ngFor="let class of classes" [value]="class.id">{{class.name}}</option>
+</select>
+
+<select formControlName="semesters">
+  <option *ngFor="let semester of semesters" [value]="semester.id">{{semester.semesterNumber}}</option>
+</select>
+
+<select formControlName="departments">
+  <option *ngFor="let department of departments" [value]="department.id">{{department.name}}</option>
+</select>
+
+<select formControlName="teachers">
+  <option *ngFor="let teacher of teachers" [value]="teacher.id">{{teacher.profile?.name}}</option>
+</select>
+
+<select formControlName="modul">
+  <option *ngFor="let modul of modules" [value]="modul.id">{{modul.name}}</option>
+</select>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Number of Hours</th>
+    <th>Day of Week</th>
+    <th>Period</th>
+    <th>Classes</th>
+    <th>Semesters</th>
+    <th>Departments</th>
+    <th>Number of Semesters</th>
+    <th>Number of Departments</th>
+    <th>Teacher</th>
+    <th>Module</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let element of elements">
+    <td>{{element.id}}</td>
+    <td>{{element.name}}</td>
+    <td>{{element.nmbrHours}}</td>
+    <td>{{element.dayOfWeek}}</td>
+    <td>{{element.period}}</td>
+    <td>{{element.classes}}</td>
+    <td>{{element.semesters}}</td>
+    <td>{{element.departments}}</td>
+    <td>{{element.numSemesters}}</td>
+    <td>{{element.numDepartments}}</td>
+    <td>{{element.teacher}}</td>
+    <td>{{element.modul}}</td>
+  </tr>
+  </tbody>
+</table>

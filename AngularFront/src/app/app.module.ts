@@ -86,6 +86,9 @@ import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/u
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { ElementModuleComponent } from './back/schedule/gestion/element-module/element-module.component';
+import { EelmentModuleComponent } from './back/schedule/eelment-module/eelment-module.component';
+import { ModuleElementComponent } from './module-element/module-element.component';
 
 
 @NgModule({
@@ -146,7 +149,10 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     MyProgramsAndClassesComponent,
     JoinProgramDialogComponent,
     UsersSearchComponent,
-    UserProfileByEmailComponent
+    UserProfileByEmailComponent,
+    ElementModuleComponent,
+    EelmentModuleComponent,
+    ModuleElementComponent
   ],
   imports: [
     BrowserModule,

@@ -407,8 +407,11 @@ public class PdfExportService {
         Font font6 = FontFactory.getFont("Calibri", 16, Font.BOLD,Color.RED);
         int year = new Date().getYear();
         String text1 = "Departement : "+classe.getFieldOfStudy().getDepartment().getName();
-        String text2 = "EMPLOI DU TEMPS";
-        String text3 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
+        String text2 = "Field of Study: " + classe.getFieldOfStudy().getName();
+        String text3="Class: " + classe.getName();
+        String text4 = "Semester: " + classe.getSemester().getUniversityYear();
+        String text5 = "TIMETABLE";
+        String text6 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
         String name = classe.getName();
         String[] parts = name.split(" ");
         String annee = "";
@@ -419,7 +422,6 @@ public class PdfExportService {
             // This could be setting a default value, logging an error, etc.
             System.out.println("No second part in the class name");
         }
-        String text4 = "FI "+classe.getFieldOfStudy().getName();
         if(annee =="1"){
             text4 =text4+" -  1ère Année";
         }
@@ -436,8 +438,6 @@ public class PdfExportService {
             // This could be setting a default value, logging an error, etc.
             System.out.println("No second part in the class name");
         }
-        String text5 = "Semestre " + semester;
-        String text6 = "Provisoire";
 
         // Create a paragraph with the new font
         Paragraph paragraph1 = new Paragraph(text1,font1);
