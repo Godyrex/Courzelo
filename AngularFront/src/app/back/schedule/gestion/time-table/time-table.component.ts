@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 import {ActionsService} from "../../../../service/schedule/actions.service";
 import {ClassService} from "../../../../service/program/class.service";
 import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.service";
+import {Class} from "../../../../model/schedule/Class";
+import {SemesterService} from "../../../../service/schedule/semester.service";
+import {ClassListDTO} from "../../../../model/program/ClassListDTO";
 
 @Component({
   selector: 'app-time-table',
@@ -25,6 +28,7 @@ export class TimeTableComponent  {
   public ProfPage:Departement[] = [];
   public filieres:FieldOfStudy[] = [];
   public semsters:Semester[] = [];
+  public classes: ClassDTO[] = [];
   public elementModule:ElementModule[] = [];
   selectedDepartement: Departement|undefined;
   selectedFiliere: FieldOfStudy|undefined;
@@ -41,10 +45,23 @@ export class TimeTableComponent  {
              private elementModuleService: ElementModuleService,
              private actionsService:ActionsService,
              private classService:ClassService,
-             private fieldOfStudyService:FieldOfstudyService){}
+             private fieldOfStudyService:FieldOfstudyService,
+             private semesterService:SemesterService
+
+ ){}
 
 
   ngOnInit() {
+    this.departmentService.getAllDepartements().subscribe(data => { this.departements = data; });
+
+    this.fieldOfStudyService.getAllFilieres().subscribe(data => {
+      this.filieres = data;
+    });
+    this.semesterService.getAllSemesters().subscribe(data => {
+      this.semsters = data;});
+  /*  this.classService.getClasses().subscribe(data => {
+      this.classes = data;
+    });*/
     if (this.prof) {
       this.authenticationService.getRole().subscribe(role => {
         this.prof = role.includes('TEACHER');
@@ -61,13 +78,13 @@ export class TimeTableComponent  {
             )
           }
         } else {
-          this.getDepartements();
+
           this.admin = role.includes('ADMIN'); // Check if the user is an admin
         }
       });
     }
   }
-  /*getDepartements() {
+  getDepartements() {
     this.departmentService.searchDepartments("")
       .subscribe(
         (data: Departement[]) => {
@@ -77,7 +94,8 @@ export class TimeTableComponent  {
           console.error('Error fetching departments:', error);
         }
       );
-  }*/
+  }
+
   hasModule(days: string, period: string): boolean {
 
     let prd= this.getPeriod(period);
@@ -211,23 +229,15 @@ export class TimeTableComponent  {
       }
     });
   }
-  getDepartements(){
-    this.departmentService
-      .searchDepartments("", 0,20)
-      .subscribe(
-        (data) => {
-          this.departements = data;
-        }
-      );
-  }
+
   handleDepartmentChange(target: EventTarget | null) {
     if (target instanceof HTMLSelectElement) {
       const departmentId = (target.value);
-      console.log("departmentId");
-      console.log(departmentId);
+      console.log("Selected department ID:", departmentId); // Debugging line
       this.selectedDepartement = this.departements.find(
         (department) => department.id === departmentId
       );
+      console.log("Selected department:", this.selectedDepartement); // Debugging line
       // Call the getFilieres method to update the filieres based on the selected department
       this.getFilieres();
     }

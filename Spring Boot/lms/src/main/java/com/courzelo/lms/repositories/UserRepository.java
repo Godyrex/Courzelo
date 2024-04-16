@@ -4,6 +4,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,6 +22,9 @@ public interface UserRepository extends MongoRepository<User, String> {
     User findUserByEmail(String email);
     Boolean existsByEmail(String email);
     List<User> findUsersByRoles(List<Role> roles);
+    List<User> findByRolesIs(@NotNull List<Role> roles);
+    List<User> findUsersByIdAndRolesIsAndProfileName(String id, @NotNull List<Role> roles, @NotNull String name);
+    User findUserByIdAndRolesIsAndProfileName(String id, @NotNull List<Role> roles, @NotNull String name);
 
     List<User> findByRolesContains(Role role);
     List<User> findUsersByIdAndRolesContainsAndProfileName(String id, Role role, String name);

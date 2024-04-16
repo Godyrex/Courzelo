@@ -1,5 +1,6 @@
 package com.courzelo.lms.services.schedule;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.Department;
 import com.courzelo.lms.entities.schedule.ElementModule;
@@ -8,21 +9,25 @@ import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.ElementModuleRepository;
 import com.courzelo.lms.services.program.ClassService;
+import com.lowagie.text.alignment.HorizontalAlignment;
 import com.courzelo.lms.services.user.UserService;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
+import com.lowagie.text.Rectangle;  
 import com.lowagie.text.*;
-import com.lowagie.text.alignment.HorizontalAlignment;
 import com.lowagie.text.alignment.VerticalAlignment;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
@@ -181,8 +186,8 @@ public class PdfExportService {
         paragraph3.setAlignment(Element.ALIGN_CENTER);
         Paragraph paragraph6 = new Paragraph(text6,font6);
         paragraph6.setAlignment(Element.ALIGN_CENTER);
-        Image headerImage = Image.getInstance("src/main/resources/header.jpg");
-        Image footerImage = Image.getInstance("src/main/resources/footer.jpg");
+        Image headerImage = Image.getInstance("");
+        Image footerImage = Image.getInstance("");
         float headerWidth = PageSize.A4.getWidth();
         float headerHeight = 50f;  // Adjust the height as needed
         float footerWidth = PageSize.A4.getWidth();
@@ -231,8 +236,10 @@ public class PdfExportService {
         Department departement = departmentService.getDepartmentById(id);
         myPDFDoc.open();  // Open the Document
         for(FieldOfStudy fieldOfStudy :departement.getFieldOfStudies()){
-            for(Class classe :fieldOfStudy.getClasses()){
-                AddPageClasse(myPDFDoc,classe);
+            for(Class aClass :fieldOfStudy.getClasses()){
+                // Convert Class to ClassDTO
+                ClassDTO classDTO = classService.mapToDTO(aClass);
+                AddPageClasse(myPDFDoc, classDTO);
             }
         }
         myPDFDoc.close();
@@ -241,10 +248,10 @@ public class PdfExportService {
     public void OneClassePDF(HttpServletResponse response, String id) throws IOException {
         dataFromDB.loadDataFromDatabase();
         // Retrieve all classes
-
-
-        Class classe = classService.getClasseById(id);
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        ResponseEntity<ClassDTO> responseEntity = classService.getMyClass1(authentication, user.getEmail());
+        ClassDTO classe = responseEntity.getBody();
         Document myPDFDoc = new Document(PageSize.A4,
                 40f,   // left
                 40f,   // right
@@ -265,13 +272,13 @@ public class PdfExportService {
                 70f); // down
         final PdfWriter pdfWriter = PdfWriter.getInstance(myPDFDoc, response.getOutputStream());
         myPDFDoc.open();  // Open the Document
-        for(Class classe :DataFromDB.classes){
+        for(ClassDTO classe :DataFromDB.classes){
             AddPageClasse(myPDFDoc,classe);
         }
         myPDFDoc.close();
         pdfWriter.close();
     }
-    public void AddPageClasse(Document myPDFDoc, Class classe) throws IOException {
+    public void AddPageClasse(Document myPDFDoc, ClassDTO classe) throws IOException {
         // Set TimePeriods in Timetable
         Period[] periods = Period.values();
         days = new ArrayList<>();
@@ -400,18 +407,37 @@ public class PdfExportService {
         Font font6 = FontFactory.getFont("Calibri", 16, Font.BOLD,Color.RED);
         int year = new Date().getYear();
         String text1 = "Departement : "+classe.getFieldOfStudy().getDepartment().getName();
-        String text2 = "EMPLOI DU TEMPS";
-        String text3 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
-        String annee = classe.getName().split(" ")[1];
-        String text4 = "FI "+classe.getFieldOfStudy().getName();
+        String text2 = "Field of Study: " + classe.getFieldOfStudy().getName();
+        String text3="Class: " + classe.getName();
+        String text4 = "Semester: " + classe.getSemester().getUniversityYear();
+        String text5 = "TIMETABLE";
+        String text6 = Integer.toString(year+1900)+" / "+Integer.toString(year+1+1900);
+        String name = classe.getName();
+        String[] parts = name.split(" ");
+        String annee = "";
+        if (parts.length > 1) {
+            annee = parts[1];
+        } else {
+            // Handle the case where there is no second part
+            // This could be setting a default value, logging an error, etc.
+            System.out.println("No second part in the class name");
+        }
         if(annee =="1"){
             text4 =text4+" -  1ère Année";
         }
         else{
             text4 =text4+" -  "+annee+"ème Année";
         }
-        String text5 = "Semestre "+classe.getName().split(" ")[1];
-        String text6 = "Provisoire";
+        String name1 = classe.getName();
+        String[] parts1 = name1.split(" ");
+        String semester = "";
+        if (parts.length > 1) {
+            semester = parts1[1];
+        } else {
+            // Handle the case where there is no second part
+            // This could be setting a default value, logging an error, etc.
+            System.out.println("No second part in the class name");
+        }
 
         // Create a paragraph with the new font
         Paragraph paragraph1 = new Paragraph(text1,font1);
@@ -426,21 +452,21 @@ public class PdfExportService {
         paragraph5.setAlignment(Element.ALIGN_CENTER);
         Paragraph paragraph6 = new Paragraph(text6,font6);
         paragraph6.setAlignment(Element.ALIGN_CENTER);
-        Image headerImage = Image.getInstance("src/main/resources/header.jpg");
-        Image footerImage = Image.getInstance("src/main/resources/footer.jpg");
+       // Image headerImage = Image.getInstance("");
+        //Image footerImage = Image.getInstance("");
         float headerWidth = PageSize.A4.getWidth();
         float headerHeight = 50f;  // Adjust the height as needed
         float footerWidth = PageSize.A4.getWidth();
         float footerHeight = 50f;  // Adjust the height as needed
         Rectangle headerRect = new Rectangle(headerWidth, headerHeight);
         Rectangle footerRect = new Rectangle(footerWidth, footerHeight);
-        headerImage.setAbsolutePosition(0, PageSize.A4.getHeight() - headerHeight - 10f);
-        headerImage.scaleToFit(headerWidth, headerHeight);
-        myPDFDoc.add(headerImage);
+        // headerImage.setAbsolutePosition(0, PageSize.A4.getHeight() - headerHeight - 10f);
+        //headerImage.scaleToFit(headerWidth, headerHeight);
+       // myPDFDoc.add(headerImage);
         // Add footer image to the bottom of each page
-        footerImage.setAbsolutePosition(0, 10f);
-        footerImage.scaleToFit(footerWidth, footerHeight);footerImage.scaleToFit(footerWidth, footerHeight);
-        myPDFDoc.add(footerImage);
+        //footerImage.setAbsolutePosition(0, 10f);
+       // footerImage.scaleToFit(footerWidth, footerHeight);footerImage.scaleToFit(footerWidth, footerHeight);
+       // myPDFDoc.add(footerImage);
         myPDFDoc.add(paragraph1);
         myPDFDoc.add(paragraph2);
         myPDFDoc.add(paragraph3);

@@ -1,7 +1,9 @@
 package com.courzelo.lms.controllers;
 
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.ModulDTO;
-import com.courzelo.lms.entities.schedule.Modul;
+import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.services.program.IClassService;
 import com.courzelo.lms.services.schedule.ModulService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -18,9 +20,11 @@ import java.util.List;
 public class ModulController {
 
     private final ModulService modulService;
+    private final IClassService iClassService;
 
-    public ModulController(final ModulService modulService) {
+    public ModulController(final ModulService modulService, IClassService iClassService) {
         this.modulService = modulService;
+        this.iClassService = iClassService;
     }
 
     @GetMapping
@@ -32,22 +36,33 @@ public class ModulController {
     public ResponseEntity<ModulDTO> getModul(@PathVariable(name = "id") final String id) {
         return ResponseEntity.ok(modulService.get(id));
     }
+    @PostMapping("/create")
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<String> create(@RequestBody @Valid final ModulDTO modulDTO) {
+        return new ResponseEntity<>(modulService.create(modulDTO), HttpStatus.CREATED);
+    }
 
     @PostMapping
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<?> createModul(@RequestBody @Valid final ModulDTO modulDTO) {
+    public ResponseEntity<ModulDTO> createModul(@RequestBody @Valid final ModulDTO modulDTO) {
         if (modulDTO.getAClass() == null) {
-            return new ResponseEntity<>("ClassDTO is null", HttpStatus.BAD_REQUEST);
+            Class aClass = new Class();
+            // Set default values for the ClassDTO object if needed
+            aClass.setName("Default Class Name");
+            modulDTO.setAClass(aClass);
         }
-        final Modul createdModul = modulService.createModul(modulDTO);
+        final ModulDTO createdModul = modulService.createModul(modulDTO);
         return new ResponseEntity<>(createdModul, HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<String> updateModul(@PathVariable(name = "id") final String id,
                                               @RequestBody @Valid final ModulDTO modulDTO) {
+        ModulDTO existingModul = modulService.get(id);
+        if (existingModul == null) {
+            return new ResponseEntity<>("Modul not found for ID: " + id, HttpStatus.NOT_FOUND);
+        }
         modulService.update(id, modulDTO);
-        return ResponseEntity.ok('"' + id + '"');
+        return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
@@ -55,6 +70,10 @@ public class ModulController {
     public ResponseEntity<Void> deleteModul(@PathVariable(name = "id") final String id) {
         modulService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/addmodules")
+    public ResponseEntity<Boolean> addClass(@RequestBody ClassDTO classDTO) {
+        return iClassService.addClass1(classDTO);
     }
 
 }

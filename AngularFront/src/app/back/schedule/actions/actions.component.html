@@ -3,7 +3,7 @@
     <div class="card flex-fill comman-shadow">
       <div class="card flex-fill student-space comman-shadow">
         <div class="card-header d-flex align-items-center">
-          <h5 class="card-title">Tasks to do</h5>
+          <h5 class="card-title">TimetableGeneration</h5>
         </div>
         <div class="card-body">
           <section>
@@ -80,13 +80,7 @@
                   </div>
                 </div>
               </button>
-              <a
-                [ngClass]="{ disabled: !ready }"
-                (click)="handleDownload()"
-                *ngIf="!spinnerExport"
-                class="btn btn-outline-primary me-2"
-              ><i class="fas fa-download"></i> Télécharger
-              </a>
+
               <button
                 *ngIf="!spinnerExport"
                 (click)="handleExport()"

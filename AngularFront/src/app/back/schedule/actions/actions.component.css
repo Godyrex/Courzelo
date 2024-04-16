@@ -17,3 +17,7 @@ i {
   background-color: darkblue;
   padding: 10px;
 }
+:host {
+  display: flex;
+  flex-direction: row;
+}

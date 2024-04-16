@@ -7,6 +7,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.institution.Program;
 import com.courzelo.lms.entities.schedule.FieldOfStudy;
+import com.courzelo.lms.entities.schedule.Modul;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
@@ -25,8 +26,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class ClassService implements IClassService {
     private final InstitutionRepository institutionRepository;
     private final ProgramRepository programRepository;
     private final FieldOfStudyRepository fieldOfRepository;
+    private final ModulRepository modulRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -271,9 +275,11 @@ public class ClassService implements IClassService {
         return ResponseEntity.ok().body(userListDTO);
     }
 
-    public Class getClasseById(String id) {
-        return classRepository.findById(id)
-                .orElseThrow(() -> new ClassNotFoundException("Class " + id + " not found"));
+    public ClassDTO getClasseById(String id) {
+        Class aClass = classRepository.findById(id)
+                .orElseThrow(() ->
+                        new ClassNotFoundException("Class " + id + " not found"));
+        return mapToDTO(aClass);
     }
 
     public Class addClasse(Class classe, String idField) {
@@ -308,5 +314,63 @@ public class ClassService implements IClassService {
 
     public List<Class> findAll() {
         return classRepository.findAll();
+    }
+    public List<ClassDTO> getClasses2() {
+        log.info("Getting all classes");
+        return classRepository.findAll()
+                .stream()
+                .map(classes -> modelMapper.map(classes, ClassDTO.class))
+                .collect(Collectors.toList());
+    }
+    public ClassDTO mapToDTO(Class aClass) {
+        ClassDTO classDTO = new ClassDTO();
+        classDTO.setId(aClass.getId());
+        classDTO.setName(aClass.getName());
+        classDTO.setCapacity(aClass.getCapacity());
+        classDTO.setTeachers(aClass.getTeachers());
+        classDTO.setModuls(aClass.getModuls());
+        classDTO.setFieldOfStudy(aClass.getFieldOfStudy());
+        classDTO.setSemester(aClass.getSemester());
+        return classDTO;
+    }
+    @Override
+    public ResponseEntity<Boolean> addClass1(ClassDTO classDTO) {
+        log.info("Adding class ");
+        Class aClass = modelMapper.map(classDTO, Class.class);
+        List<Modul> moduls = new ArrayList<>();
+        if (classDTO.getModuls() != null) {
+            moduls = classDTO.getModuls().stream()
+                    .map(modulDTO -> {
+                        Modul modul = modulRepository.findById(modulDTO.getId())
+                                .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + modulDTO.getId()));
+                        return modul;
+                    })
+                    .collect(Collectors.toList());
+        }
+        aClass.setModuls(moduls);
+
+        if (classDTO.getFieldOfStudy() != null && classDTO.getFieldOfStudy().getId() != null) {
+            FieldOfStudy fieldOfStudy = fieldOfRepository.findById(classDTO.getFieldOfStudy().getId())
+                    .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + classDTO.getFieldOfStudy().getId()));
+            aClass.setFieldOfStudy(fieldOfStudy);
+        }
+
+        Class savedClass = classRepository.save(aClass);
+        if (savedClass != null && savedClass.getId() != null) {
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+    public ResponseEntity<ClassDTO> getMyClass1(Principal principal, String email) {
+        log.info("Getting my class");
+        User user = userRepository.findUserByEmail(principal.getName());
+        if (user == null) {
+            user = userRepository.findUserByEmail(email);
+        }
+        if (user.getEducation().getStclass() != null) {
+            return ResponseEntity.ok().body(modelMapper.map(user.getEducation().getStclass(), ClassDTO.class));
+        }
+        return ResponseEntity.badRequest().body(null);
     }
 }

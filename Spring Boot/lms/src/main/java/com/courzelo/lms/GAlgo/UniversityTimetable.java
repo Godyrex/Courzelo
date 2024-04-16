@@ -50,11 +50,14 @@ public class UniversityTimetable {
     }
     public void swapGenes(int classIndex, int position1, int position2) {
         List<ElementModule> timetable = universityTimetables.get(classIndex);
-        ElementModule gene1 = timetable.get(position1);
-        ElementModule gene2 = timetable.get(position2);
-        timetable.set(position1, gene2);
-        timetable.set(position2, gene1);
+        if (timetable.size() > position1 && timetable.size() > position2) {
+            ElementModule gene1 = timetable.get(position1);
+            ElementModule gene2 = timetable.get(position2);
+            timetable.set(position1, gene2);
+            timetable.set(position2, gene1);
+        }
     }
+
     public void setTimetable(int classIndex, List<ElementModule> classTimetable2) {
         universityTimetables.set(classIndex, classTimetable2);
     }

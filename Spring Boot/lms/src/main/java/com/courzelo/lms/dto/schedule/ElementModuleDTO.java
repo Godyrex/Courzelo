@@ -1,10 +1,7 @@
 package com.courzelo.lms.dto.schedule;
 
 import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.schedule.Department;
-import com.courzelo.lms.entities.schedule.Modul;
-import com.courzelo.lms.entities.schedule.Period;
-import com.courzelo.lms.entities.schedule.Semester;
+import com.courzelo.lms.entities.schedule.*;
 import com.courzelo.lms.entities.user.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Size;
@@ -18,8 +15,6 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
-@Getter
-@Setter
 public class ElementModuleDTO {
 
     @Id
@@ -36,6 +31,12 @@ public class ElementModuleDTO {
     private List<Class> classes;
     private User teacher;
     private Modul modul;
+    private List<FieldOfStudy> fieldOfStudies;
+    private List<String> classIds;
+    private List<String> semesterIds;
+    private List<String> departmentIds;
+    private String modulId;
+    private String teacherId;
 
 
 }

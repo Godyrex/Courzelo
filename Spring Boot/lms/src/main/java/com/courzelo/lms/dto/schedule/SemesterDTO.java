@@ -10,9 +10,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
-
-@Getter
-@Setter
 public class SemesterDTO {
     private String  id;
     private LocalDate startDate;

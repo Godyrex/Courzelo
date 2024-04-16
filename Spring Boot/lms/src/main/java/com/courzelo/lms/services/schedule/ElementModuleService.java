@@ -1,14 +1,14 @@
 package com.courzelo.lms.services.schedule;
-
+import com.courzelo.lms.entities.institution.Class;
+import com.courzelo.lms.entities.schedule.*;
 import com.courzelo.lms.dto.schedule.ElementModuleDTO;
-import com.courzelo.lms.entities.schedule.ElementModule;
-import com.courzelo.lms.repositories.DepartmentRepository;
-import com.courzelo.lms.repositories.ElementModuleRepository;
-import com.courzelo.lms.repositories.SemesterRepository;
+import com.courzelo.lms.entities.user.User;
+import com.courzelo.lms.repositories.*;
 import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,12 +18,19 @@ public class ElementModuleService {
     private final ElementModuleRepository elementModuleRepository;
     private final SemesterRepository semesterRepository;
     private final DepartmentRepository departmentRepository;
+    private final ModulRepository modulRepository;
+    private final UserRepository userRepository;
+    private final FieldOfStudyRepository fieldOfStudyRepository;
+    private final ClassRepository classRepository;
 
-
-    public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository) {
+    public ElementModuleService(final ElementModuleRepository elementModuleRepository, SemesterRepository semesterRepository, DepartmentRepository departmentRepository, ModulRepository modulRepository, UserRepository userRepository, FieldOfStudyRepository fieldOfStudyRepository, ClassRepository classRepository) {
         this.elementModuleRepository = elementModuleRepository;
         this.semesterRepository = semesterRepository;
         this.departmentRepository = departmentRepository;
+        this.modulRepository = modulRepository;
+        this.userRepository = userRepository;
+        this.fieldOfStudyRepository = fieldOfStudyRepository;
+        this.classRepository = classRepository;
     }
 
     public List<ElementModuleDTO> findAll() {
@@ -41,8 +48,35 @@ public class ElementModuleService {
 
     public String create(final ElementModuleDTO elementModuleDTO) {
         final ElementModule elementModule = new ElementModule();
+        if (elementModuleDTO.getId() != null) {
+            Modul modul = modulRepository.findById(elementModuleDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + elementModuleDTO.getId()));
+            elementModule.setModul(modul);
+        }
+        if (elementModuleDTO.getTeacher() != null && elementModuleDTO.getTeacher().getId() != null) {
+            User teacher = userRepository.findById(elementModuleDTO.getTeacher().getId())
+                    .orElseThrow(() -> new RuntimeException("Teacher not found for ID: " + elementModuleDTO.getTeacher().getId()));
+            elementModule.setTeacher(teacher);
+        }
+        if (elementModuleDTO.getFieldOfStudies() != null) {
+            List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+            for (FieldOfStudy fieldOfStudyDTO : elementModuleDTO.getFieldOfStudies()) {
+                if (fieldOfStudyDTO.getId() != null) {
+                    FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(fieldOfStudyDTO.getId())
+                            .orElseThrow(() -> new RuntimeException("FieldOfStudy not found for ID: " + fieldOfStudyDTO.getId()));
+                    fieldOfStudies.add(fieldOfStudy);
+                }
+            }
+            elementModule.setFieldOfStudies(fieldOfStudies);
+        }
+
+
         mapToEntity(elementModuleDTO, elementModule);
-        return elementModuleRepository.save(elementModule).getId();
+        ElementModule savedElementModule = elementModuleRepository.save(elementModule);
+        if (elementModule.getModul() != null) {
+            modulRepository.save(elementModule.getModul());
+        }
+        return savedElementModule.getId();
     }
 
     public void update(final String id, final ElementModuleDTO elementModuleDTO) {
@@ -63,9 +97,14 @@ public class ElementModuleService {
         elementModuleDTO.setName(elementModule.getName());
         elementModuleDTO.setDayOfWeek(elementModule.getDayOfWeek());
         elementModuleDTO.setPeriod(elementModule.getPeriod());
-        elementModuleDTO.setClasses(elementModule.getClasses());
         elementModuleDTO.setSemesters(elementModule.getSemesters());
         elementModuleDTO.setDepartments(elementModule.getDepartments());
+        elementModuleDTO.setNumSemesters(elementModule.getNumSemesters());
+        elementModuleDTO.setNumDepartments(elementModule.getNumDepartments());
+        elementModuleDTO.setModul(elementModule.getModul());
+        elementModuleDTO.setClasses(elementModule.getClasses());
+        elementModuleDTO.setTeacher(elementModule.getTeacher());
+        elementModuleDTO.setFieldOfStudies(elementModule.getFieldOfStudies());
         return elementModuleDTO;
     }
 
@@ -75,12 +114,14 @@ public class ElementModuleService {
         elementModule.setName(elementModuleDTO.getName());
         elementModule.setDayOfWeek(elementModuleDTO.getDayOfWeek());
         elementModule.setPeriod(elementModuleDTO.getPeriod());
-        elementModule.setClasses(elementModuleDTO.getClasses());
         elementModule.setSemesters(elementModuleDTO.getSemesters());
         elementModule.setDepartments(elementModuleDTO.getDepartments());
         elementModule.setNumSemesters(elementModuleDTO.getNumSemesters());
         elementModule.setNumDepartments(elementModuleDTO.getNumDepartments());
         elementModule.setModul(elementModuleDTO.getModul());
+        elementModule.setClasses(elementModuleDTO.getClasses());
+        elementModule.setTeacher(elementModuleDTO.getTeacher());
+        elementModule.setFieldOfStudies(elementModuleDTO.getFieldOfStudies());
         return elementModule;
     }
 
@@ -89,51 +130,58 @@ public class ElementModuleService {
     }
 
     public List<ElementModule> getEmploisByClasse(String id) {
-        return elementModuleRepository.getEmploisByClasses(id);
+        return elementModuleRepository.getElementModulesByClasses(id);
     }
 
     public ElementModule addElementModule(ElementModule elementDeModule) {
         return elementModuleRepository.save(elementDeModule);
     }
+    public ElementModuleDTO createElementModule(ElementModuleDTO elementModuleDTO) {
+        List <Class> classes = new ArrayList<>();
+        for (String classId : elementModuleDTO.getClassIds()) {
+            Class aClass = classRepository.findById(classId)
+                    .orElseThrow(() -> new RuntimeException("Class not found for ID: " + classId));
+            classes.add(aClass);
+        }
+
+        List<Semester> semesters = new ArrayList<>();
+        for (String semesterId : elementModuleDTO.getSemesterIds()) {
+            Semester semester = semesterRepository.findById(semesterId)
+                    .orElseThrow(() -> new RuntimeException("Semester not found for ID: " + semesterId));
+            semesters.add(semester);
+        }
+
+        List<Department> departments = new ArrayList<>();
+        for (String departmentId : elementModuleDTO.getDepartmentIds()) {
+            Department department = departmentRepository.findById(departmentId)
+                    .orElseThrow(() -> new RuntimeException("Department not found for ID: " + departmentId));
+            departments.add(department);
+        }
+
+        Modul modul = modulRepository.findById(elementModuleDTO.getModulId())
+                .orElseThrow(() -> new RuntimeException("Modul not found for ID: " + elementModuleDTO.getModulId()));
+
+        User teacher = userRepository.findById(elementModuleDTO.getTeacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher not found for ID: " + elementModuleDTO.getTeacherId()));
+
+        ElementModule elementModule = new ElementModule();
+        elementModule.setClasses(classes);
+        elementModule.setSemesters(semesters);
+        elementModule.setDepartments(departments);
+        elementModule.setModul(modul);
+        elementModule.setTeacher(teacher);
+
+        ElementModule savedElementModule = elementModuleRepository.save(elementModule);
+        return mapToDTO(savedElementModule, new ElementModuleDTO());
+    }
 
    /* public List<ElementModule>getEmploisByClass(String classe){
         return elementModuleRepository.findByClasse(classe);
     }*/
-   /* @PostPersist
-   public ElementModule createElementModule(@Valid ElementModuleDTO elementModuleDTO) {
-        ElementModule elementModule = new ElementModule();
-       List<Department> departmentList = departmentRepository.findAll();
-       elementModuleDTO.setDepartments(departmentList);
-       List<Semester>semesterList =semesterRepository.findAll();
-       elementModuleDTO.setSemesters(semesterList);
-
-       elementModule = mapToEntity(elementModuleDTO, elementModule);
-
-       return elementModuleRepository.save( elementModule);
-   }*/
 
 
 
-    /*public ElementModule createElementModule(@Valid ElementModuleDTO elementModuleDTO) {
-        ElementModule elementModule = new ElementModule();
-        List<Department> departments = new ArrayList<>();
-        for (Department departmentDTO : elementModuleDTO.getDepartments()) {
-            Department department = departmentRepository.findById(departmentDTO.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Department not found for ID: " + departmentDTO.getId()));
-            departments.add(department);
-        }
-        List<Semester> semesters = new ArrayList<>();
-        for (Semester semesterDTO : elementModuleDTO.getSemesters()) {
-            Semester semester = semesterRepository.findById(semesterDTO.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Semester not found for ID: " + semesterDTO.getId()));
-            semesters.add(semester);
-        }
-        elementModule.setDepartments(departments);
-        elementModule.setSemesters(semesters);
-        mapToEntity(elementModuleDTO, elementModule);
-        return elementModuleRepository.save(elementModule);
-    }
-*/
+
 
 }
 

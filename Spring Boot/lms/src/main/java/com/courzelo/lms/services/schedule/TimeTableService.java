@@ -2,6 +2,7 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.GAlgo.GAlgorithm;
 import com.courzelo.lms.GAlgo.UniversityTimetable;
+import com.courzelo.lms.dto.program.ClassDTO;
 import com.courzelo.lms.dto.schedule.TimeTableDTO;
 import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.ElementModule;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.mongodb.internal.authentication.AwsCredentialHelper.LOGGER;
 
 @Service
 public class TimeTableService {
@@ -57,8 +60,8 @@ public class TimeTableService {
         List<Map<String, List<ElementModule>>> emplois = new ArrayList<>();
         dataFromDb.loadDataFromDatabase();
         // Retrieve all classes
-        List<Class> classes = DataFromDB.classes;
-        for (Class classe : classes) {
+        List<ClassDTO> classes = DataFromDB.classes;
+        for (ClassDTO classe : classes) {
             Map<String, List<ElementModule>> emploi = new HashMap<>();
             emploi.put(classe.getId(), elementModuleService.getEmploisByClasse(classe.getId()));
             emplois.add(emploi);
@@ -69,15 +72,18 @@ public class TimeTableService {
         return elementModuleService.getEmploisByClasse(id);
     }
     public List<Map<String, List<ElementModule>>> generateEmplois() {
+        LOGGER.info("Generating timetable...");
         List<Map<String, List<ElementModule>>> emplois = new ArrayList<>();
         dataFromDb.loadDataFromDatabase();
         GAlgorithm algorithm = new GAlgorithm();
         UniversityTimetable universityTimetable = algorithm.generateTimetable();
 
         for (int i = 0; i < universityTimetable.getNumberOfClasses(); i++) {
-            Map<String, List<ElementModule>> emploi = new HashMap<>();
-            emploi.put(universityTimetable.getClasses().get(i).getId(),universityTimetable.getTimetable(i));
-            emplois.add(emploi);
+            if (!universityTimetable.getClasses().isEmpty() && i < universityTimetable.getClasses().size()) {
+                Map<String, List<ElementModule>> emploi = new HashMap<>();
+                emploi.put(universityTimetable.getClasses().get(i).getId(), universityTimetable.getTimetable(i));
+                emplois.add(emploi);
+            }
         }
 
         for (ElementModule elementDeModule : universityTimetable.getAllElements()) {

@@ -5,7 +5,6 @@ import com.courzelo.lms.dto.user.UserListDTO;
 import com.courzelo.lms.entities.schedule.SemesterNumber;
 import com.courzelo.lms.services.program.IClassService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,17 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/v1/class")
 @RestController
-@RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 @RateLimiter(name = "backend")
 public class ClassController {
     private final IClassService iClassService;
     private ModelMapper modelMapper;
+
+    public ClassController(IClassService iClassService, ModelMapper modelMapper) {
+        this.iClassService = iClassService;
+        this.modelMapper = modelMapper;
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Boolean> addClass(ClassDTO classDTO) {
         return iClassService.addClass(classDTO);
@@ -33,10 +37,11 @@ public class ClassController {
     public ResponseEntity<List<ClassDTO>> getClasses() {
         return iClassService.getClasses();
     }
-    @GetMapping("/allWithoutPagination")
+   /* @GetMapping("/allWithoutPagination")
     public ResponseEntity<List<ClassDTO>> getClassesWithoutPagination() {
         return iClassService.getClassesWithoutPagination();
-    }
+    }*/
+    
     @GetMapping("/myClass")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ClassDTO> getMyClass(Principal principal) {

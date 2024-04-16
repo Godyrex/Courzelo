@@ -21,7 +21,7 @@ export class ActionsComponent {
 
   constructor(private actionsService:ActionsService,private cl:ClassService,private el:TimeTableService , private router: Router) { }
   ngOnInit(): void {
-    this.cl.getClassUsers('classID', 'Teacher', 0, 6).subscribe(
+    this.cl.getClasses().subscribe(
       (data: UserListDTO) => {
         console.log(data);
         if(data.userResponse && data.userResponse.length > 0){

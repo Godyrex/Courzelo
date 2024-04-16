@@ -1,6 +1,7 @@
 package com.courzelo.lms.controllers;
 
 import com.courzelo.lms.dto.schedule.ElementModuleDTO;
+import com.courzelo.lms.entities.schedule.ElementModule;
 import com.courzelo.lms.entities.schedule.Period;
 import com.courzelo.lms.services.schedule.ElementModuleService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +23,11 @@ public class ElementModuleController {
 
     public ElementModuleController(final ElementModuleService elementModuleService) {
         this.elementModuleService = elementModuleService;
+    }
+    @PostMapping("/create")
+    public ResponseEntity<ElementModuleDTO> createElementModuleTest(@RequestBody @Valid ElementModuleDTO elementModuleDTO) {
+        ElementModuleDTO createdElementModule = elementModuleService.createElementModule(elementModuleDTO);
+        return new ResponseEntity<>(createdElementModule, HttpStatus.CREATED);
     }
 
     @GetMapping

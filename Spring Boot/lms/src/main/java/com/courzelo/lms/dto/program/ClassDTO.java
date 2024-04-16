@@ -6,13 +6,14 @@ import com.courzelo.lms.entities.schedule.Semester;
 import com.courzelo.lms.entities.user.User;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class ClassDTO {
     private String id;
     private String name;
-    private Long capacity;
+    private Integer capacity;
     private List<User> teachers;
     private List<Modul> moduls;
     private FieldOfStudy fieldOfStudy;

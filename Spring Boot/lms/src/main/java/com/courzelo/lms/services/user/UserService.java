@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.courzelo.lms.entities.user.Role.TEACHER;
 
@@ -244,8 +245,17 @@ public class UserService implements UserDetailsService {
         }
         return ResponseEntity.badRequest().build();
     }
+
     public User getProfById(String id) {
-        return  userRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Teacher with id " + id + " doesn't exist!"));
+        // Check if the user has the TEACHER role
+        boolean hasTeacherRole = user.getRoles().stream()
+                .anyMatch(role -> role == Role.TEACHER);
+        if (!hasTeacherRole) {
+            throw new RuntimeException("No TEACHER role found for user with id: " + id);
+        }
+        return user;
     }
     public List<Role> getUserRoles(String userId) {
         User user = userRepository.findById(userId)
@@ -253,35 +263,49 @@ public class UserService implements UserDetailsService {
         return user.getRoles();
     }
     public List<User> getProfsByRole() {
-        return  userRepository.findUsersByRoles(Collections.singletonList(TEACHER));
-    }
-    public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUsersByIdAndRolesContainsAndProfileName(id,TEACHER, name);
-    }
-    public User findTeacherByNameAndRole(String id,String name, Role role) {
-        return userRepository.findUserByIdAndRolesContainsAndProfileName(id,TEACHER, name);
+        return userRepository.findUsersByRoles(Collections.singletonList(Role.TEACHER));
     }
 
+    public List<User> findTeachersByNameAndRole(String id, String name, List<Role> roles) {
+        return userRepository.findUsersByIdAndRolesIsAndProfileName(id, roles, name);
+    }
 
-    public User addTeacher(User user) {
-        // Check if the user is a teacher
-        if (!user.getRoles().contains(Role.TEACHER)) {
-            throw new IllegalArgumentException("User must be a teacher");
+    public User findTeacherByNameAndRole(String id, String name, List<Role> roles) {
+        return userRepository.findUserByIdAndRolesIsAndProfileName(id, roles, name);}
+
+        public List<User> findTeachersByNameAndRole(String id,String name, Role role) {
+            return userRepository.findUsersByIdAndRolesContainsAndProfileName(id,TEACHER, name);
         }
-        // Check if the password is null
+        public User findTeacherByNameAndRole(String id,String name, Role role) {
+            return userRepository.findUserByIdAndRolesContainsAndProfileName(id,TEACHER, name);
+        }
+
+
+        public User addTeacher(User user) {
+            // Check if the user is a teacher
+            if (!user.getRoles().contains(Role.TEACHER)) {
+                throw new IllegalArgumentException("User must be a teacher");
+            }
+            // Check if the password is null
         /*if (user.getPassword() == null || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null");
         }
         // Encode the password
         user.setPassword(encoder.encode(user.getPassword()));*/
-        // Save the user in the database
-        return userRepository.save(user);
-    }
+            // Save the user in the database
+            return userRepository.save(user);
+        }
 
 
    /* public User addTeacher(User teacher) {
         return userRepository.save(teacher);
     }*/
+        public List<User> getTeachers1() {
+            return userRepository.findByRolesIs(Collections.singletonList(TEACHER))
+                    .stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
     public List<User> getTeachers() {
         return userRepository.findByRolesContains(Role.TEACHER);
     }

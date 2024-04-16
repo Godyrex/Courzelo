@@ -22,11 +22,11 @@ public interface ElementModuleRepository extends MongoRepository<ElementModule, 
 
     // Within your ElementModuleRepository interface
     @Query("{ 'classe': ?0 }")
-     List<ElementModule> getEmploisByClasses(String classeId);
+     List<ElementModule> getElementModulesByClasses(String classeId);
     @Query("{ 'dayOfWeek': ?0, 'period': ?1 }")
     ElementModule findByDayOfWeekAndPeriod(DayOfWeek dayOfWeek, Period period);
     ElementModule findByDayOfWeekAndPeriodAndClasses(@NotNull DayOfWeek dayOfWeek, @NotNull Period period, @NotNull List<Class> classes);
    List<ElementModule> findByDayOfWeekAndPeriodAndTeacher(@NotNull DayOfWeek dayOfWeek, @NotNull Period period, @NotNull User teacher);
 
-    List<ElementModule> findByDayOfWeekAndPeriodAndClasses(DayOfWeek day, Period p, String id);
+    List<ElementModule> findByDayOfWeekAndPeriodAndClasses(DayOfWeek day, Period p, String classeId);
 }

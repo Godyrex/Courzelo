@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {TokenStorageService} from "../user/auth/token-storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class ActionsService {
   private baseUrl = 'http://localhost:8081/api/data';
   private baseUrl1 = 'http://localhost:8081/api/pdf';
   private baseUrl2 = 'http://localhost:8081/api/TimeTable';
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private tokenStorageService:TokenStorageService) { }
   public importFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);

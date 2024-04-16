@@ -1,5 +1,4 @@
 package com.courzelo.lms.services.schedule;
-
 import com.courzelo.lms.dto.schedule.DepartmentDTO;
 import com.courzelo.lms.dto.schedule.FieldOfStudyDTO;
 import com.courzelo.lms.dto.schedule.SemesterDTO;
@@ -7,7 +6,7 @@ import com.courzelo.lms.entities.institution.Class;
 import com.courzelo.lms.entities.schedule.*;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.User;
-import com.courzelo.lms.services.program.ClassService;
+import com.courzelo.lms.services.program.*;
 import com.courzelo.lms.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.poi.EncryptedDocumentException;
@@ -151,8 +150,8 @@ public class LoadFromExcelToDB {
                                             t = new User();
                                             t.getProfile().setName(cell.getRow().getCell(5).getStringCellValue().split("_")[0]);
                                             t.getProfile().setLastName(cell.getRow().getCell(5).getStringCellValue().split("_")[1]);
-                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Role.TEACHER).size() != 0) {
-                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Role.TEACHER).get(0));
+                                            if (userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Collections.singletonList(Role.TEACHER)).size() != 0) {
+                                                element.setTeacher(userService.findTeachersByNameAndRole(t.getId(), t.getProfile().getName(), Collections.singletonList(Role.TEACHER)).get(0));
                                             } else {
                                                 isImported = false;
                                                 System.out.println("Teacher doesn't exist in the database");

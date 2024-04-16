@@ -46,4 +46,7 @@ export class ClassService {
       .set('size', size.toString());
     return this.http.get<ClassDTO[]>(`${this.baseUrl}/searchBySemester`, {params});
   }
+  getClasses():Observable<UserListDTO>{
+    return  this.http.get<UserListDTO>(`${this.baseUrl}/all`);
+  }
 }

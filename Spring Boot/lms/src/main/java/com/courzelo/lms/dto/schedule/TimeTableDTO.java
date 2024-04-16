@@ -15,8 +15,6 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
-@Getter
-@Setter
 public class TimeTableDTO {
     private String id;
     private String name;

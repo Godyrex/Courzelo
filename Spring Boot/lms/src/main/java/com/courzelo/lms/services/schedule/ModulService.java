@@ -11,6 +11,7 @@ import com.courzelo.lms.utils.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,28 @@ public class ModulService {
         modul.setId(modulDTO.getId());
         return modulRepository.save(modul).getId();
     }
-    public Modul createModul(ModulDTO modulDTO) {
+    public ModulDTO createModul(ModulDTO modulDTO) {
+        List<ElementModule> elementModules = new ArrayList<>();
+        if (modulDTO.getElementModules() != null) {
+            elementModules = modulDTO.getElementModules().stream()
+                    .filter(dto -> dto.getId() != null)
+                    .map(dto -> elementModuleRepository.findById(dto.getId())
+                            .orElseThrow(() -> new RuntimeException("ElementModule not found for ID: " + dto.getId())))
+                    .collect(Collectors.toList());
+        }
+        Class aClass = null;
+        if (modulDTO.getAClass() != null && modulDTO.getAClass().getId() != null) {
+            aClass = classRepository.findById(modulDTO.getAClass().getId())
+                    .orElseThrow(() -> new RuntimeException("Class not found for ID: " + modulDTO.getAClass().getId()));
+        }
+        Modul modul = new Modul();
+        modul.setName(modulDTO.getName());
+        modul.setElementModules(elementModules);
+        modul.setAClass(aClass);
+        modul = modulRepository.save(modul);
+        return mapToDTO(modul, new ModulDTO());
+    }
+    public ModulDTO createModul1(ModulDTO modulDTO) {
         List<ElementModule> elementModules = modulDTO.getElementModules().stream()
                 .map(dto -> {
                     ElementModule elementModule = new ElementModule();
@@ -54,24 +76,25 @@ public class ModulService {
                     return elementModuleRepository.save(elementModule);
                 })
                 .collect(Collectors.toList());
-        Class classDTO = modulDTO.getAClass();
-        Class aClass = new Class();
-        if (classDTO != null) {
-            aClass.setName(classDTO.getName());
-        } else {
-            throw new IllegalArgumentException("ClassDTO is null");
-        }
-        aClass = classRepository.save(aClass);
+
+        // Retrieve the Class entity using the provided ID
+        Class aClass = classRepository.findById(modulDTO.getAClass().getId())
+                .orElseThrow(() -> new NotFoundException("Class not found for ID: " + modulDTO.getAClass().getId()));
+
         Modul modul = new Modul();
         modul.setName(modulDTO.getName());
         modul.setElementModules(elementModules);
-        modul.setAClass(aClass);
-        return modulRepository.save(modul);
+        modul.setAClass(aClass); // Associate the retrieved Class entity with the new Modul entity
+        modul = modulRepository.save(modul);
+        return mapToDTO(modul, new ModulDTO());
     }
 
     public void update(final String id, final ModulDTO modulDTO) {
         final Modul modul = modulRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException("Modul not found for ID: " + id));
+        if (modul == null) {
+            throw new NotFoundException("Modul not found for ID: " + id);
+        }
         mapToEntity(modulDTO, modul);
         modulRepository.save(modul);
     }
@@ -112,5 +135,24 @@ public class ModulService {
     public Modul addModul(Modul modul ) {
         return modulRepository.save(modul);
     }
+    public ModulDTO updateModulClass(String modulId, String classId) {
+        // Retrieve the Modul entity using the provided ID
+        Modul modul = modulRepository.findById(modulId)
+                .orElseThrow(() -> new NotFoundException("Modul not found for ID: " + modulId));
+
+        // Retrieve the Class entity using the provided ID
+        Class aClass = classRepository.findById(classId)
+                .orElseThrow(() -> new NotFoundException("Class not found for ID: " + classId));
+
+        // Associate the retrieved Class entity with the Modul entity
+        modul.setAClass(aClass);
+
+        // Save the updated Modul entity
+        modul = modulRepository.save(modul);
+
+        // Convert the updated Modul entity to DTO and return
+        return mapToDTO(modul, new ModulDTO());
+    }
+
 
 }

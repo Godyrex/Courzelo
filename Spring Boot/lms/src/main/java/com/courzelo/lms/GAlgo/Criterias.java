@@ -21,7 +21,7 @@ public class Criterias {
         int counter = 0;
         List<User> teachers = universityTimetable.getTeachers();
         for (User teacher : teachers) {
-            for (ElementModule element : teacher.getEducation().getElementModules()) {
+           for (ElementModule element : teacher.getEducation().getElementModules()) {
                 boolean isAvailable = teacher.getEducation().getNonDisponibilities().stream()
                         .noneMatch(nonDispo ->
                                 nonDispo.getDayOfWeek() == element.getDayOfWeek() &&
