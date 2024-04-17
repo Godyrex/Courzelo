@@ -6,17 +6,10 @@ import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { EditUniversityComponent } from './features/university/components/university/edit-university/edit-university.component';
-import { ListUniversityComponent } from './features/university/components/university/list-university/list-university.component';
-import { RegisterComponent } from './core/back/register/register.component';
 import { FooterComponent } from './core/back/footer/footer.component';
 import { HeaderComponent } from './core/back/header/header.component';
 import { SidebarComponent } from './core/back/sidebar/sidebar.component';
-import { AddUniversityComponent } from './features/university/components/add-university/add-university.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ProgramComponent } from './features/prog/components/program/program.component';
-import { AddProgramComponent } from './features/prog/components/add-program/add-program.component';
-import { EditProgramComponent } from './features/prog/components/edit-program/edit-program.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EdiPostComponent } from './features/post/components/edi-post/edi-post.component';
@@ -33,13 +26,6 @@ import { AddPostComponent } from './features/post/components/add-post/add-post.c
     FooterComponent,
     HeaderComponent,
     FooterComponent,
-    RegisterComponent,
-    ListUniversityComponent,
-    EditUniversityComponent,
-    AddUniversityComponent,
-    ProgramComponent,
-    AddProgramComponent,
-    EditProgramComponent,
     EdiPostComponent,
     ListPostComponent,
     ListCommentComponent,

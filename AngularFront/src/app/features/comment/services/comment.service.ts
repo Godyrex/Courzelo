@@ -8,7 +8,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class CommentService {
-  url:any ="http://localhost:8085/commentaire";
+  url:any ="http://localhost:8081/commentaire";
 
   constructor(public httpClient: HttpClient) { }
 

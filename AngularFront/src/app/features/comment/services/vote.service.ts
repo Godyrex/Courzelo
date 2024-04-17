@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class VoteService {
-public  url='http://localhost:8085/vote';
+public  url='http://localhost:8081/vote';
 constructor(private httpClient:HttpClient) { }
 
 public getAll(): Observable<Vote []> {

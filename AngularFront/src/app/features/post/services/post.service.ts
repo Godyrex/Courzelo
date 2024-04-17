@@ -9,7 +9,7 @@ import { User } from '../../comment/models/user';
 })
 export class PostService {
 
-  url:any ="http://localhost:8085/post";
+  url:any ="http://localhost:8081/post";
   userUrl:any ="http://localhost:8085/api/v1/user/";
 
   constructor(public httpClient: HttpClient) { }
