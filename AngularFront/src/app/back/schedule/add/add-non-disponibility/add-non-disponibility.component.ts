@@ -27,7 +27,7 @@ export class AddNonDisponibilityComponent implements OnInit {
   ngOnInit(): void {
     this.newNDBFormGroup = this.fb.group({
 
-      day: ['', Validators.required],
+      dayOfWeek: ['', Validators.required],
       period: ['', Validators.required]
     });
   }
@@ -35,14 +35,15 @@ export class AddNonDisponibilityComponent implements OnInit {
   handleAddNDB() {
     if (this.newNDBFormGroup.valid) {
       const newNDB: NonDisponibility = this.newNDBFormGroup.value;
+      console.log(newNDB);
       this.nonDisponibilityService.saveNdb(newNDB).subscribe({
         next: data => {
           this.NDBAdded.emit(newNDB);
           this.dialogRef.close();
-
+          this.handleSuccessMessage('Non Disponibility added successfully');
         },
         error: err => {
-          this.handleSuccessMessage('Non Disponibility added successfully');
+          this.handleErrorMessage("An error occurred while saving the Non Disponibility")
           console.error('Save Non Disponibility  error:', err);
         }
       });

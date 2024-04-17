@@ -41,60 +41,12 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'departments',
-    component: GestionDepartementComponent,
-    canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    },
-    children: [
-      {path: 'add', component: AddDepartementComponent},
-      {path: 'edit', component: EditDepartementComponent}
-    ]
-  },
-  {
-    path: 'departments',
-    component: GestionDepartementComponent
-  },
-  {
-    path: 'timetable',
-    component: TimeTableComponent,
-    canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN','TEACHER','STUDENT']
-    },
-  },
-  {
     path: 'actions',
     component: ActionsComponent,
     canActivate: [RoleGuardService],
     data: {
       expectedRole: ['ADMIN']
     },
-  },
-  {
-    path: 'fieldOfStudies',
-    component: GestionFieldOfStudyComponent,
-    canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    },
-    children: [
-      {path: 'add', component: AddFieldOfStudyComponent},
-      {path: 'edit', component: EditFieldOfStudyComponent}
-    ]
-  },
-  {
-    path: 'NonDisponibilities',
-    component: NonDisponibilityComponent,
-    canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['TEACHER']
-    },
-    children: [
-      {path: 'add', component: AddNonDisponibilityComponent},
-      {path: 'edit', component: EditNonDisponibilityComponent}
-    ]
   },
 
   {
@@ -205,6 +157,38 @@ const routes: Routes = [
         data: {
           expectedRole: 'ADMIN'
         },
+      },
+      {
+        path: 'departments',
+        component: GestionDepartementComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: ['ADMIN']
+        }
+      },
+      {
+        path: 'timetable',
+        component: TimeTableComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: ['ADMIN','TEACHER','STUDENT']
+        },
+      },
+      {
+        path: 'fieldOfStudies',
+        component: GestionFieldOfStudyComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: ['ADMIN']
+        }
+      },
+      {
+        path: 'NonDisponibilities',
+        component: NonDisponibilityComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          expectedRole: ['TEACHER','ADMIN']
+        }
       }
     ]
   }

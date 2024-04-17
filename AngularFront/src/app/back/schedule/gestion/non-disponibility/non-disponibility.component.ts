@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -12,7 +12,7 @@ import {AddNonDisponibilityComponent} from "../../add/add-non-disponibility/add-
   templateUrl: './non-disponibility.component.html',
   styleUrls: ['./non-disponibility.component.css']
 })
-export class NonDisponibilityComponent {
+export class NonDisponibilityComponent implements OnInit {
   nonDisponibilities: NonDisponibility[] = [];
   errorMessage!: string;
   searchFormGroup!: FormGroup;
@@ -28,7 +28,7 @@ export class NonDisponibilityComponent {
   messageSuccess: string = "";
   messageError: string = "";
   addFormVisible: boolean = false;
-  selectedNDB: NonDisponibility = {id: '', day: "", period: ''};
+  selectedNDB: NonDisponibility = {id: '', dayOfWeek: "", period: ''};
   isEditFormVisible = false;
 
   constructor(private nonDisponibilityService: NonDisponibilityService,
@@ -42,8 +42,6 @@ export class NonDisponibilityComponent {
     this.searchFormGroup = this.fb.group({
       keyword: this.fb.control('')
     });
-    this.handleSearchNDB();
-    this.nonDisponibilityService.getAllNDB();
     this.fetchNDB();
   }
 

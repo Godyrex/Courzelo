@@ -1,8 +1,5 @@
-<!-- Main Sidebar Container -->
-<app-sidebar></app-sidebar>
 
-
-<div class="container">
+<div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-lg-8">
       <div class="student-group-form">
@@ -29,9 +26,7 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="container" style="max-width: 800px; margin: 0 auto">
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
@@ -85,7 +80,7 @@
                   </div>
                 </td>
                 <td>{{ ndb.id }}</td>
-                <td>{{ ndb.day }}</td>
+                <td>{{ ndb.dayOfWeek }}</td>
                 <td>{{ ndb.period}}</td>
                 <td class="text-center">
                   <a (click)="showUpdateForm(ndb)" class="btn btn-sm bg-success-light me-2">

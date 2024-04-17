@@ -16,6 +16,4 @@ public class NonDisponibilityDTO {
     private String  id;
     private DayOfWeek dayOfWeek;
     private Period period;
-    private User teacher;
-
 }

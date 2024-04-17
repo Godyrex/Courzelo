@@ -12,7 +12,7 @@ import {NonDisponibilityService} from "../../../../service/schedule/non-disponib
 })
 export class EditNonDisponibilityComponent implements OnChanges {
   editNDBFormGroup!: FormGroup;
-  @Input() NDBToUpdate: NonDisponibility = {id: '', day: "", period: ''};
+  @Input() NDBToUpdate: NonDisponibility = {id: '', dayOfWeek: "", period: ''};
   @Output() successMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() errorMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateForm: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -27,7 +27,7 @@ export class EditNonDisponibilityComponent implements OnChanges {
 
   ngOnInit(): void {
     this.editNDBFormGroup = this.fb.group({
-      day: [this.NDBToUpdate.day, [Validators.required, Validators.maxLength(40)]],
+      dayOfWeek: [this.NDBToUpdate.dayOfWeek, [Validators.required, Validators.maxLength(40)]],
       period: [this.NDBToUpdate.period, [Validators.required, Validators.maxLength(80)]],
       // fieldOfStudies: [this.departmentToUpdate.fieldOfStudies, [Validators.required, Validators.maxLength(200), Validators.minLength(10)]],
     });
@@ -51,6 +51,7 @@ export class EditNonDisponibilityComponent implements OnChanges {
         ...this.NDBToUpdate,
         ...this.editNDBFormGroup.value
       };
+      console.log(updatedNDB);
       this.nonDisponibilityService.updateNdb(this.NDBToUpdate.id, updatedNDB).subscribe(() => {
         this.handleSuccessMessage('Non Disponibility updated successfully');
       }, (error) => {
@@ -68,7 +69,7 @@ export class EditNonDisponibilityComponent implements OnChanges {
 
   private initializeForm(): void {
     this.editNDBFormGroup.patchValue({
-      name: this.NDBToUpdate.day,
+      name: this.NDBToUpdate.dayOfWeek,
       chefDepartment: this.NDBToUpdate.period,
       //fieldOfStudies: this.departmentToUpdate.fieldOfStudies
     });
