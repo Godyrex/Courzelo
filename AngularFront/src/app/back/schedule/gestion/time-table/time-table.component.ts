@@ -16,6 +16,7 @@ import {FieldOfstudyService} from "../../../../service/schedule/field-ofstudy.se
 import {Class} from "../../../../model/schedule/Class";
 import {SemesterService} from "../../../../service/schedule/semester.service";
 import {ClassListDTO} from "../../../../model/program/ClassListDTO";
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-time-table',
@@ -99,9 +100,9 @@ export class TimeTableComponent  {
   hasModule(days: string, period: string): boolean {
 
     let prd= this.getPeriod(period);
-    let day = this.changeDay(days).toUpperCase();
+    let dayOfWeek  = this.changeDay(days).toUpperCase();
 
-    return this.elementModule.some(modul => modul.dayOfWeek === day && modul.period === prd);
+    return this.elementModule.some(modul => modul.dayOfWeek ===dayOfWeek  && modul.period === prd);
   }
   getPeriod(period: string): string {
     let prd = "";
@@ -123,41 +124,42 @@ export class TimeTableComponent  {
     }
     return prd;
   }
-  changeDay(day:string){
-    let prd = "";
-    switch (day) {
+  changeDay(dayOfWeek:string){
+    let period = "";
+    switch (dayOfWeek) {
       case "Monday":
-        prd = "Monday";
+        period = "Monday";
         break;
       case "Tuesday":
-        prd = "Tuesday";
+        period = "Tuesday";
         break;
       case "Wednesday":
-        prd = "Wednesday";
+        period = "Wednesday";
         break;
       case "Thursday":
-        prd = "Thursday";
+        period = "Thursday";
         break;
       case "Friday":
-        prd = "Friday";
+        period = "Friday";
         break;
       default:
         break;
     }
-    return prd;
+    return period;
   }
-  getModuleTitle(days: string, timeSlot: string): string {
-    let day = this.changeDay(days).toUpperCase();
-    let prd= this.getPeriod(timeSlot );
-    const modul = this.elementModule.find(modul => modul.dayOfWeek === day
-      && modul.period === prd);
+ /* getModuleTitle(days: string, timeSlot: string): string {
+    let dayOfWeek = this.changeDay(days).toUpperCase();
+    let period= this.getPeriod(timeSlot );
+    const modul = this.elementModule.find(modul => modul.dayOfWeek === dayOfWeek
+      && modul.period === period);
+
     return modul ? modul.name : '';
   }
   getModuleTeacher(days: string, timeSlot: string): string {
-    let day = this.changeDay(days).toUpperCase();
-    let prd= this.getPeriod(timeSlot );
-    const modul = this.elementModule.find(modul => modul.dayOfWeek === day
-      && modul.period === prd);
+    let dayOfWeek = this.changeDay(days).toUpperCase();
+    let period= this.getPeriod(timeSlot );
+    const modul = this.elementModule.find(modul => modul.dayOfWeek === dayOfWeek
+      && modul.period === period);
     if(!this.prof)
     {
       return modul ? modul.teacher.profile?.name+" "+modul.teacher.profile?.lastName : '';
@@ -165,6 +167,17 @@ export class TimeTableComponent  {
     }else{
       return modul && modul.modul && modul.modul.aClass && modul.modul.aClass.name ? modul.modul.aClass.name : '';
     }
+  }*/
+  getModuleTitle(day: string, time: string): string {
+    const module = this.elementModule.find(m => m.dayOfWeek === day && m.period === time);
+    console.log('Module for ' + day + ' at ' + time + ':', module);
+    return module ? module.name : '';
+  }
+
+  getModuleTeacher(day: string, time: string): string {
+    const module = this.elementModule.find(m => m.dayOfWeek === day && m.period === time);
+    console.log('Teacher for ' + day + ' at ' + time + ':', module && module.teacher);
+    return module && module.teacher ? `${module.teacher.profile?.name} ${module.teacher.profile?.lastName}` : '';
   }
   handleDownloadEmploi() {
     Swal.fire({
@@ -230,7 +243,8 @@ export class TimeTableComponent  {
     });
   }
 
-  handleDepartmentChange(target: EventTarget | null) {
+
+ /* handleDepartmentChange(target: EventTarget | null) {
     if (target instanceof HTMLSelectElement) {
       const departmentId = (target.value);
       console.log("Selected department ID:", departmentId); // Debugging line
@@ -261,6 +275,72 @@ export class TimeTableComponent  {
       this.ready = true;
       this.getEmplois(semsterId, this.selectedFiliere!.id, this.selectedDepartement!.id);
     }
+  }*/
+
+  fetchElementModules(): void {
+    this.elementModuleService.getAllElementModules()
+      .subscribe(
+        elements => {
+          this.elementModule = elements;
+          console.log('elementModule:', this.elementModule); // Log the elementModule array to the console
+        },
+        error => {
+          console.error('Error fetching element modules:', error); // Log any errors that occur while fetching the data
+        }
+      );
+  }
+  handleSemsterChange(target: EventTarget | null) {
+    if (target instanceof HTMLSelectElement) {
+      const semsterId = (target.value);
+      this.selectedSemster = this.semsters.find(
+        (s) => s.id === semsterId
+      );
+      this.ready = true;
+      this.getEmplois(semsterId, this.selectedFiliere!.id, this.selectedDepartement!.id);
+      this.generatePDF();
+      this.fetchElementModules(); // Fetch the element modules
+    }
+  }
+
+  handleFiliereChange(target: EventTarget | null) {
+    if (target instanceof HTMLSelectElement) {
+      const fieldId = (target.value);
+      this.selectedFiliere = this.filieres.find(
+        (f) => f.id === fieldId
+      );
+      this.getSemsters();
+      this.fetchElementModules(); // Fetch the element modules
+    }
+  }
+
+  handleDepartmentChange(target: EventTarget | null) {
+    if (target instanceof HTMLSelectElement) {
+      const departmentId = (target.value);
+      this.selectedDepartement = this.departements.find(
+        (department) => department.id === departmentId
+      );
+      this.getFilieres();
+      this.fetchElementModules(); // Fetch the element modules
+    }
+  }
+  generatePDF(): void {
+    const doc = new jsPDF();
+
+    let content = 'Timetable:\n\n';
+    this.elementModule.forEach((module, index) => {
+      content += `Module ${index + 1}:\n`;
+      content += `Name: ${module.name}\n`;
+      content += `Number of Hours: ${module.nmbrHours}\n`;
+      content += `Day of Week: ${module.dayOfWeek}\n`;
+      content += `Period: ${module.period}\n`;
+      content += `Number of Semesters: ${module.numSemesters}\n`;
+      content += `Number of Departments: ${module.numDepartments}\n`;
+      content += `Teacher: ${module.teacher.profile?.name} ${module.teacher.profile?.lastName}\n`;
+      content += `Module: ${module.modul.name}\n\n`;
+    });
+
+    doc.text(content, 10, 10);
+    doc.save('timetable.pdf');
   }
 
   getEmplois(semsterId: string, idFiliere: string | undefined, idDepartement: string) {

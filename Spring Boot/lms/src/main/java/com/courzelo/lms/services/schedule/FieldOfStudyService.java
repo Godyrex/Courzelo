@@ -67,6 +67,7 @@ public class FieldOfStudyService {
         fieldOfStudyDTO.setName(fieldOfStudy.getName());
         fieldOfStudyDTO.setNumbrWeeks(fieldOfStudy.getNumbrWeeks());
         fieldOfStudyDTO.setChefField(fieldOfStudy.getChefField());
+        fieldOfStudyDTO.setSemester(fieldOfStudy.getSemester());
         fieldOfStudyDTO.setDepartmentID(fieldOfStudy.getDepartment().getId());
         return fieldOfStudyDTO;
     }
@@ -77,6 +78,7 @@ public class FieldOfStudyService {
         fieldOfStudy.setName(fieldOfStudyDTO.getName());
         fieldOfStudy.setNumbrWeeks(fieldOfStudyDTO.getNumbrWeeks());
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
+        fieldOfStudy.setSemester(fieldOfStudyDTO.getSemester());
         Department department = departmentRepository.findById(fieldOfStudyDTO.getDepartmentID())
                 .orElseThrow(() -> new RuntimeException("department not found"));
         fieldOfStudyRepository.save(fieldOfStudy);

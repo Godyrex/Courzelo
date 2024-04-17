@@ -20,7 +20,6 @@ export class ElementModuleService {
   public getElementModuleByID(id: string): Observable<ElementModule> {
     return this.http.get<ElementModule>(`${this.baseUrl}/${id}`);
   }
-
   public getAllElementModules(): Observable<ElementModule[]> {
     console.log('ElementModules:', this.elementModules);
     return this.http.get<ElementModule[]>(this.baseUrl);
@@ -50,6 +49,7 @@ export class ElementModuleService {
   public getEnums(): Observable<string[]> {
     return this.http.get<string[]>(`${this.baseUrl}/enums`);
   }
+
 
 }
 

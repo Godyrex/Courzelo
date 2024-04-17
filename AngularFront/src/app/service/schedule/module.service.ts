@@ -12,6 +12,7 @@ export class ModuleService {
   Modules:Modul[]=[];
   constructor(private http: HttpClient) { }
   public getAllModules(): Observable<Modul[]> {
+    console.log('Fetching Modules...',this.Modules);
     return this.http.get<Modul[]>(this.baseUrl);
   }
   public getModule(id: string): Observable<Modul> {

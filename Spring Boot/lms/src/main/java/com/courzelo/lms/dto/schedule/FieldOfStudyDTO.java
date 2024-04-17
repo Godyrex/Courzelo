@@ -1,5 +1,6 @@
 package com.courzelo.lms.dto.schedule;
 
+import com.courzelo.lms.entities.schedule.Semester;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class FieldOfStudyDTO {
     @Size(max = 255)
     private String chefField;
     private String departmentID;
+    private Semester semester;
 }
