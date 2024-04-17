@@ -21,14 +21,8 @@ export class FieldOfstudyService {
     return this.http.get<FieldOfStudy[]>(this.baseUrl); // Use http.get with FieldOfStudy[] type
   }
 
-  saveFieldOfStudy(fieldOfStudy: FieldOfStudy): Observable<FieldOfStudy> {
-    return this.http.post<FieldOfStudy>(this.baseUrl, fieldOfStudy)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error occurred:', error);
-          return throwError(error);
-        })
-      );
+  saveFieldOfStudy(fieldOfStudy: FieldOfStudy) {
+    return this.http.post(this.baseUrl, fieldOfStudy)
   }
 
   searchFields(name: string): Observable<FieldOfStudy[]> {

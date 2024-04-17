@@ -69,9 +69,11 @@ export class AddFieldOfStudyComponent implements OnInit {
   handleAddFieldOfStudy() {
     if (this.newfieldOfstudyFormGroup.valid) {
       const fieldOfStudy: FieldOfStudy = Object.assign({}, this.newfieldOfstudyFormGroup.value);
-      const selectedDepartmentId = this.newfieldOfstudyFormGroup.get('id')?.value;
-      if (selectedDepartmentId !== null && selectedDepartmentId !== undefined) {
-        fieldOfStudy.departmentID = selectedDepartmentId;
+      const selectedDepartment = this.newfieldOfstudyFormGroup.get('departmentID')?.value;
+      console.log('Selected department:', selectedDepartment);
+      if (selectedDepartment !== null && selectedDepartment !== undefined) {
+        fieldOfStudy.departmentID = selectedDepartment;
+        console.log('Field of study:', fieldOfStudy);
         this.fieldOfstudyService.saveFieldOfStudy(fieldOfStudy).subscribe({
           next: data => {
             console.log(data);
