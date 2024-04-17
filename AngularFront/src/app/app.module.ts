@@ -1,12 +1,19 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { DialogModule } from 'primeng/dialog';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {HomeComponent} from './front/home/home.component';
-import {HeaderComponent} from './back/header/header.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EdiPostComponent } from './features/post/components/edi-post/edi-post.component';
+import { ListPostComponent } from './features/post/components/list-post/list-post.component';
+import { ListCommentComponent } from './features/comment/components/list-comment/list-comment.component';
+import { AddCommentComponent } from './features/comment/components/add-comment/add-comment.component';
+import { EditCommentComponent } from './features/comment/components/edit-comment/edit-comment.component';
+import { AddPostComponent } from './features/post/components/add-post/add-post.component';
 import {SidebarComponent} from './back/shared/sidebar/sidebar.component';
-import {FooterComponent} from './back/footer/footer.component';
 import {FrontheaderComponent} from './front/frontheader/frontheader.component';
 import {FrontfooterComponent} from './front/frontfooter/frontfooter.component';
 import {RegisterComponent} from './back/auth/register/register.component';
@@ -64,10 +71,7 @@ import {
   EditNonDisponibilityComponent
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
 import {MatButtonModule} from "@angular/material/button";
-import {MatDialogModule} from "@angular/material/dialog";
 import {CalendarComponent} from './back/program/institution/calendar/calendar.component';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
 import {ActionsComponent} from './back/schedule/actions/actions.component';
 import {UserProfileDialogComponent} from './back/user/user-profile-dialog/user-profile-dialog.component';
@@ -83,19 +87,28 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { UsersSearchComponent } from './back/user/users-search/users-search.component';
 import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/user-profile-by-email.component';
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ElementModuleComponent } from './back/schedule/gestion/element-module/element-module.component';
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {FooterComponent} from "./back/footer/footer.component";
+import {HeaderComponent} from "./back/header/header.component";
+import {HomeComponent} from "./front/home/home.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
+    EdiPostComponent,
+    ListPostComponent,
+    ListCommentComponent,
+    AddCommentComponent,
+    EditCommentComponent,
+    AddPostComponent,
     FrontheaderComponent,
     FrontfooterComponent,
     RegisterComponent,
@@ -148,7 +161,8 @@ import { ElementModuleComponent } from './back/schedule/gestion/element-module/e
     JoinProgramDialogComponent,
     UsersSearchComponent,
     UserProfileByEmailComponent,
-    ElementModuleComponent
+    ElementModuleComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -157,6 +171,10 @@ import { ElementModuleComponent } from './back/schedule/gestion/element-module/e
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    CommonModule,
+    DialogModule,
+    BrowserAnimationsModule,
     InfiniteScrollModule,
     MatSlideToggleModule,
     RouterOutlet,
@@ -171,7 +189,7 @@ import { ElementModuleComponent } from './back/schedule/gestion/element-module/e
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [HttpClient, {
+  providers: [HttpClient, Location, {
     provide: HTTP_INTERCEPTORS,
     useClass: Interceptor,
     multi: true

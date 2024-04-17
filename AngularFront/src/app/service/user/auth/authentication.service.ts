@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {RegisterRequest} from "../../../model/RegisterRequest";
-import {JsonResponse} from "../../../model/user/JsonResponse";
 import {LoginRequest} from "../../../model/user/LoginRequest";
 import {Observable} from "rxjs";
 import {RecoverPasswordRequest} from "../../../model/user/RecoverPasswordRequest";
+import {RegisterRequest} from "../../../model/RegisterRequest";
+import {JsonResponse} from "../../../model/user/JsonResponse";
 
 @Injectable({
   providedIn: 'root'
