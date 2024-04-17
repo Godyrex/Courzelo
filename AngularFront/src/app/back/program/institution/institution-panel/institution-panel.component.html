@@ -86,8 +86,8 @@
       </div>
     </div>
   </div>
-  <div class="row mt-4">
-    <div class="col-lg-12">
+  <div  class="row mt-4">
+    <div *ngIf="loginResponse.roles && loginResponse.roles.includes('ROLE_ADMIN')" class="col-lg-12">
       <app-actions></app-actions>
     </div>
   </div>
