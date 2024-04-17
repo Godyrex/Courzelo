@@ -1,17 +1,14 @@
 package com.courzelo.lms.services;
 
-import com.courzelo.lms.entities.Class;
-import com.courzelo.lms.entities.Commentaire;
+
 import com.courzelo.lms.entities.Post;
-import com.courzelo.lms.entities.User;
-import com.courzelo.lms.repositories.ClassRepository;
+
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.CommentaireRepository;
 import com.courzelo.lms.repositories.PostRepository;
 import com.courzelo.lms.repositories.UserRepository;
-import com.courzelo.lms.services.IService.IClassService;
 import com.courzelo.lms.services.IService.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

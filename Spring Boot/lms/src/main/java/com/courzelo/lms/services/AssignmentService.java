@@ -2,7 +2,6 @@ package com.courzelo.lms.services;
 
 
 import com.courzelo.lms.entities.Assignment;
-import com.courzelo.lms.entities.Course;
 import com.courzelo.lms.repositories.AsseignmentRepository;
 import com.courzelo.lms.services.IService.IAsseignmentService;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,8 @@
 
 package com.courzelo.lms.controllers;
 
-import com.courzelo.lms.entities.Course;
 import com.courzelo.lms.entities.CourseContent;
 import com.courzelo.lms.services.CoursContentService;
-import com.courzelo.lms.services.CoursService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,10 +1,8 @@
 package com.courzelo.lms.controllers;
 
 
-import com.courzelo.lms.entities.Class;
 import com.courzelo.lms.entities.Post;
-import com.courzelo.lms.entities.User;
-import com.courzelo.lms.services.ClassService;
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

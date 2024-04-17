@@ -13,10 +13,7 @@ import { ListCommentComponent } from './features/comment/components/list-comment
 import { AddCommentComponent } from './features/comment/components/add-comment/add-comment.component';
 import { EditCommentComponent } from './features/comment/components/edit-comment/edit-comment.component';
 import { AddPostComponent } from './features/post/components/add-post/add-post.component';
-import {HomeComponent} from './front/home/home.component';
-import {HeaderComponent} from './back/header/header.component';
 import {SidebarComponent} from './back/shared/sidebar/sidebar.component';
-import {FooterComponent} from './back/footer/footer.component';
 import {FrontheaderComponent} from './front/frontheader/frontheader.component';
 import {FrontfooterComponent} from './front/frontfooter/frontfooter.component';
 import {RegisterComponent} from './back/auth/register/register.component';
@@ -75,7 +72,6 @@ import {
 } from "./back/schedule/edit/edit-non-disponibility/edit-non-disponibility.component";
 import {MatButtonModule} from "@angular/material/button";
 import {CalendarComponent} from './back/program/institution/calendar/calendar.component';
-import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {ToastrModule} from "ngx-toastr";
 import {ActionsComponent} from './back/schedule/actions/actions.component';
 import {UserProfileDialogComponent} from './back/user/user-profile-dialog/user-profile-dialog.component';
@@ -91,10 +87,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { UsersSearchComponent } from './back/user/users-search/users-search.component';
 import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/user-profile-by-email.component';
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ElementModuleComponent } from './back/schedule/gestion/element-module/element-module.component';
+import {HeaderComponent} from "./core/components/header/header.component";
+import {FooterComponent} from "./core/components/footer/footer.component";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -102,8 +101,6 @@ import { ElementModuleComponent } from './back/schedule/gestion/element-module/e
     AppComponent,
     HeaderComponent,
     SidebarComponent,
-    FooterComponent,
-    HeaderComponent,
     FooterComponent,
     EdiPostComponent,
     ListPostComponent,
