@@ -1,6 +1,6 @@
 export interface NonDisponibility {
 
   id: string;
-  day: string;
+  dayOfWeek: string;
   period?: string;
 }

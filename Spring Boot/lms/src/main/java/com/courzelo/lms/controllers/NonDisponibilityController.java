@@ -8,13 +8,15 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RestController
-@RequestMapping(value = "/api/nonDisponibilities", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/nonDisponibilities")
 public class NonDisponibilityController {
 
     private final NonDisponibilityService nonDisponibilityService;
@@ -37,9 +39,10 @@ public class NonDisponibilityController {
 
     @PostMapping
     @ApiResponse(responseCode = "201")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<String> createNonDisponibility(
-            @RequestBody @Valid final NonDisponibilityDTO nonDisponibilityDTO) {
-        final String createdId = nonDisponibilityService.create(nonDisponibilityDTO);
+            @RequestBody @Valid final NonDisponibilityDTO nonDisponibilityDTO, Principal principal) {
+        final String createdId = nonDisponibilityService.create(nonDisponibilityDTO,principal.getName());
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 

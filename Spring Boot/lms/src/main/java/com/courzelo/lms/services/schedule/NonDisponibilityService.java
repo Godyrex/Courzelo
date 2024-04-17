@@ -3,26 +3,36 @@ package com.courzelo.lms.services.schedule;
 
 import com.courzelo.lms.dto.schedule.NonDisponibilityDTO;
 import com.courzelo.lms.entities.schedule.NonDisponibility;
+import com.courzelo.lms.entities.user.Role;
+import com.courzelo.lms.entities.user.User;
 import com.courzelo.lms.repositories.NonDisponibilityRepository;
+import com.courzelo.lms.repositories.UserRepository;
 import com.courzelo.lms.utils.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class NonDisponibilityService {
 
     private final NonDisponibilityRepository nonDisponibilityRepository;
+    private final UserRepository userRepository;
 
-    public NonDisponibilityService(final NonDisponibilityRepository nonDisponibilityRepository) {
+    public NonDisponibilityService(final NonDisponibilityRepository nonDisponibilityRepository, UserRepository userRepository) {
         this.nonDisponibilityRepository = nonDisponibilityRepository;
+        this.userRepository = userRepository;
     }
     
 
     public List<NonDisponibilityDTO> findAll() {
+        log.info("Finding all non disponibilities");
         final List<NonDisponibility> nonDisponibilities = nonDisponibilityRepository.findAll(Sort.by("id"));
+        log.info("Found {} non disponibilities", nonDisponibilities.size());
         return nonDisponibilities.stream()
                 .map(nonDisponibility -> mapToDTO(nonDisponibility, new NonDisponibilityDTO()))
                 .toList();
@@ -34,17 +44,24 @@ public class NonDisponibilityService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public String create(final NonDisponibilityDTO nonDisponibilityDTO) {
+    public String create(final NonDisponibilityDTO nonDisponibilityDTO, String email) {
+        log.info("Creating non disponibility");
+        User teacher = userRepository.findUserByEmail(email);
+        if(!teacher.getRoles().contains(Role.TEACHER)){
+            throw new RuntimeException("User is not a teacher"+teacher.getRoles()+teacher.getEmail());
+        }
         final NonDisponibility nonDisponibility = new NonDisponibility();
         mapToEntity(nonDisponibilityDTO, nonDisponibility);
-
-        return nonDisponibilityRepository.save(nonDisponibility).getId();
+        NonDisponibility saveDISPO = nonDisponibilityRepository.save(nonDisponibility);
+        saveDISPO.setTeacher(teacher);
+        return nonDisponibilityRepository.save(saveDISPO).getId();
     }
 
     public void update(final String id, final NonDisponibilityDTO nonDisponibilityDTO) {
         final NonDisponibility nonDisponibility = nonDisponibilityRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        mapToEntity(nonDisponibilityDTO, nonDisponibility);
+        nonDisponibility.setPeriod(nonDisponibilityDTO.getPeriod());
+        nonDisponibility.setDayOfWeek(nonDisponibilityDTO.getDayOfWeek());
         nonDisponibilityRepository.save(nonDisponibility);
     }
 
@@ -57,17 +74,16 @@ public class NonDisponibilityService {
         nonDisponibilityDTO.setId(nonDisponibility.getId());
         nonDisponibilityDTO.setPeriod(nonDisponibility.getPeriod());
         nonDisponibilityDTO.setDayOfWeek(nonDisponibility.getDayOfWeek());
-        nonDisponibilityDTO.setTeacher(nonDisponibility.getTeacher());
         return nonDisponibilityDTO;
     }
 
 
     private NonDisponibility mapToEntity(final NonDisponibilityDTO nonDisponibilityDTO,
                                          final NonDisponibility nonDisponibility) {
-        nonDisponibility.setId(nonDisponibilityDTO.getId());
         nonDisponibility.setPeriod(nonDisponibilityDTO.getPeriod());
         nonDisponibility.setDayOfWeek(nonDisponibilityDTO.getDayOfWeek());
-        nonDisponibility.setTeacher(nonDisponibilityDTO.getTeacher());
+        log.info("dto : "+nonDisponibilityDTO);
+        log.info("entity : "+nonDisponibility);
         return nonDisponibility;
     }
 

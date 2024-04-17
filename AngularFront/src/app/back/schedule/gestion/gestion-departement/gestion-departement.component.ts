@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 import {Router} from "@angular/router";
@@ -14,7 +14,7 @@ import {DepartmentService} from "../../../../service/schedule/department.service
   styleUrls: ['./gestion-departement.component.css']
 })
 
-export class GestionDepartementComponent {
+export class GestionDepartementComponent  implements OnInit {
 
   departments: Departement[] = [];
   selectedDepartments: Departement | null = null;
