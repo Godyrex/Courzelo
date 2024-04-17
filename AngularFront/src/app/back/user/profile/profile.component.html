@@ -1,0 +1,315 @@
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Header (Page header) -->
+<link href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" rel="stylesheet" >
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Profile</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">User Profile</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <!-- Profile Image -->
+        <app-user-profile [userInfoChanged]="userInfoChanged"></app-user-profile>
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header p-2">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name" (click)="toggleLoading()">Profile</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo" (click)="checkUserProfileImage(); toggleLoading()">Profile photo</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contact" (click)="toggleLoading()">Contact</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email" (click)="toggleLoading()">Email</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password" (click)="toggleLoading()">Password</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#delete" (click)="toggleLoading()">Delete account</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tfa" (click)="checkUserProfileTwoFactorAuth();toggleLoading()">Two Factor Authentication</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings" (click)="toggleLoading()">Settings</a></li>
+            </ul>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div [@fadeInOut]="loading ? 'void' : '*'" (@fadeInOut.done)="loading = false" class="tab-content">
+              <div class="active tab-pane" id="name">
+                <form (ngSubmit)="changeName()" [formGroup]="nameForm" class="form-horizontal">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-user"></i> Name</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="name" placeholder="Name" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-user"></i> Lastname</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="lastName" placeholder="Lastname" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-briefcase"></i> Title</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="title" placeholder="Title" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-info-circle"></i> Bio</label>
+                    <div class="col-sm-10">
+                      <textarea rows="3" class="form-control" formControlName="bio" placeholder="Bio" type="text"></textarea>
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-calendar"></i> Date of Birth</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" placeholder="Date" bsDatepicker
+                             [maxDate]="maxDate"
+                             [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" formControlName="birthDate">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="photo">
+                <form (ngSubmit)="changePhoto()" [formGroup]="photoForm" class="form-horizontal"
+                      enctype="multipart/form-data">
+                  <div *ngIf="photoForm.controls.photo.touched && photoForm.controls.photo?.invalid"
+                       class="text-danger">Please upload a photo
+                  </div>
+                  <div class="form-group row">
+                    <label for="exampleInputFile"><i class="fa fa-file"></i> File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input (change)="onFileSelected($event)" class="custom-file-input" formControlName="photo"
+                               id="exampleInputFile" type="file">
+                        <label class="custom-file-label"
+                               for="exampleInputFile">{{ selectedFile?.name || 'Choose file' }}</label>
+                      </div>
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-upload"></i> Upload</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="contact">
+                <form (ngSubmit)="updateContact()" [formGroup]="contactForm" class="form-horizontal">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-phone"></i> Phone</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="phone" placeholder="Phone" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fab fa-facebook"></i> Facebook</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="facebook" placeholder="Facebook" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fab fa-linkedin"></i> Linkedin</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="linkedin" placeholder="Linkedin" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fab fa-github"></i> Github</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="github" placeholder="Github" type="text">
+                    </div>
+                    <!-- ... -->
+                  </div>
+                  <div *ngIf="countries" class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-globe"></i> Country</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" formControlName="country" [(ngModel)]="selectedCountry" (change)="onCountryChange(selectedCountry)">
+                        <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div *ngIf="showStatesForm" class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-map-marker"></i> State</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" formControlName="state">
+                        <option *ngFor="let state of states" [value]="state.name">{{state.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Update</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="email">
+                <form (ngSubmit)="sendVerificationCode()" *ngIf="showEmailForm" [formGroup]="emailForm"
+                      class="form-horizontal">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-envelope"></i> Email</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="email" placeholder="Email" type="email">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+                    </div>
+                  </div>
+                </form>
+                <div *ngIf="showVerification">
+                  <form (ngSubmit)="changeEmail()" [formGroup]="verificationForm" class="form-horizontal">
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label"><i class="fa fa-key"></i> Verification Code</label>
+                      <div class="col-sm-10">
+                        <input class="form-control" formControlName="code" name="verificationCode"
+                               placeholder="Verification Code"
+                               required type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-sm-2 col-sm-10">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-check-circle"></i> Verify Code</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="password">
+                <form (ngSubmit)="changePassword()" [formGroup]="passwordForm" class="form-horizontal">
+                  <div
+                    *ngIf="passwordForm.controls['newPassword'].touched && passwordForm.controls['newPassword']?.invalid"
+                    class="text-danger">
+                    password must be at least 8 characters and maximum 50 characters
+                  </div>
+                  <div
+                    *ngIf="passwordForm.controls['confirmPassword'].errors?.['confirmedValidator']"
+                    class="text-danger">
+                    Passwords did not match
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-lock"></i> Password</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="password" id="inputName" placeholder="Password"
+                             type="password">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-lock"></i> New password</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="newPassword" placeholder="New password"
+                             type="password">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-lock"></i> Confirm password</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="confirmPassword" placeholder="Confirm password"
+                             type="password">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="tab-pane" id="delete">
+                <form (ngSubmit)="confirmDelete()" [formGroup]="deleteForm" class="form-horizontal">
+                  <div
+                    *ngIf="passwordForm.controls['newPassword'].touched && passwordForm.controls['newPassword']?.invalid"
+                    class="text-danger">
+                    Please type your password
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inputName"><i class="fa fa-lock"></i> Password</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" formControlName="password" id="psps" placeholder="Password"
+                             type="password">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary"><i class="fa fa-trash"></i> Delete My Account</button>
+                </form>
+              </div>
+              <div class="tab-pane" id="tfa">
+                <div *ngIf="!user.security?.twoFactorAuthEnabled" class="card-body">
+                  <button class="btn btn-primary" (click)="generateTwoFactorAuthQrCode()"><i class="fa fa-qrcode"></i> Generate QR Code</button>
+                  <!-- Display the QR code here -->
+                  <div *ngIf="qrCodeImage">
+                    <img [src]="qrCodeImage" alt="QR Code">
+                  </div>
+                  <form *ngIf="qrCodeImage" [formGroup]="tfaForm" (ngSubmit)="enableTwoFactorAuth()">
+                    <div class="form-group">
+                      <label for="verificationCode"><i class="fa fa-key"></i> Verification Code</label>
+                      <input type="text" id="verificationCode" formControlName="verificationCode" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Enable Two-Factor Authentication</button>
+                  </form>
+                </div>
+                <!-- Display a message when TFA is already enabled -->
+                <div *ngIf="user.security?.twoFactorAuthEnabled" class="card-body">
+                  <p>Two-Factor Authentication is already enabled.</p>
+                  <button class="btn btn-danger" (click)="disableTwoFactorAuth()"><i class="fa fa-times-circle"></i> Disable Two-Factor Authentication</button>
+                </div>
+              </div>
+              <div class="tab-pane" id="settings">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <label for="verificationCode"><i class="fa fa-cogs"></i> Privacy Settings :</label>
+                    <div class="form-group">
+                      <mat-slide-toggle (click)="toggleShowPhone()" [(ngModel)]="showPhone"><i class="fa fa-phone"></i> Show Phone</mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group">
+                      <mat-slide-toggle (click)="toggleShowAddress()" [(ngModel)]="showAddress"><i class="fa fa-home"></i> Show Address</mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group">
+                      <mat-slide-toggle (click)="toggleShowBirthDate()" [(ngModel)]="showBirthDate"><i class="fa fa-birthday-cake"></i> Show Birth Date</mat-slide-toggle>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div><!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+  <button data-widget="pushmenu" mat-fab color="primary" class="fabb" (click)="openDialog()">
+    <mat-icon>live_help</mat-icon>
+  </button>
+</section>
+

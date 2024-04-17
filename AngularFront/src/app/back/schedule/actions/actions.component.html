@@ -1,0 +1,105 @@
+
+      <div class="card flex-fill student-space comman-shadow">
+        <div class="card-header bg-primary">
+          <h3 class="card-title text-white">Timetable Generation</h3>
+        </div>
+        <div class="card-body">
+          <section>
+            <!--generete emplois du temps-->
+            <!--Import data-->
+            <!--export emplois du temps en PDF-->
+            <!--vider la base de données-->
+            <div class="container justify-content-between">
+              <button
+                *ngIf="!spinnerImport"
+                type="button"
+                onclick="document.getElementById('getFile').click()"
+                class="btn btn-primary btn-square-md"
+              >
+                <i class="fas fa-file-import"></i><br />
+                Import Data from excel file
+                <input
+                  type="file"
+                  (change)="handleImport($event)"
+                  accept=".xlsx, .xls"
+                  class="form-control"
+                  id="getFile"
+                  style="display: none"
+                />
+              </button>
+              <button
+                *ngIf="spinnerImport"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </button>
+              <button
+                *ngIf="!spinnerGenerate"
+                (click)="handleGenerate()"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <i class="fas fa-random"></i><br />
+                Generate TimeTable
+              </button>
+              <button
+                *ngIf="spinnerGenerate"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </button>
+              <button
+                *ngIf="!spinnerGenerate"
+                (click)="handleDownload()"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <i class="fas fa-random"></i><br />
+                Generate TimeTable
+              </button>
+              <button
+                *ngIf="spinnerGenerate"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                *ngIf="!spinnerExport"
+                (click)="handleExport()"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <i class="fas fa-file-export"></i><br />
+                Export TimeTable to PDF
+              </button>
+              <button
+                *ngIf="spinnerExport"
+                type="button"
+                class="btn btn-primary btn-square-md"
+              >
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>

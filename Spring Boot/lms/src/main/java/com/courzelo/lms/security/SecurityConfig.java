@@ -2,7 +2,7 @@ package com.courzelo.lms.security;
 
 import com.courzelo.lms.security.jwt.AuthEntryPointJwt;
 import com.courzelo.lms.security.jwt.AuthTokenFilter;
-import com.courzelo.lms.services.AuthService;
+import com.courzelo.lms.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    AuthService authService;
+    UserService userService;
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -34,7 +34,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(authService);
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -44,6 +44,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -52,36 +53,47 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(unauthorizedHandler)
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("**")
+                        .requestMatchers("/api/v1/auth/**")
                         .permitAll()
-                        .requestMatchers("/api/auth/**")
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
                         .permitAll()
-                        .requestMatchers("/progam")
+                        .requestMatchers("/api/Modules/**")
                         .permitAll()
-                        .requestMatchers("/commentaire/*")
+                        .requestMatchers("/api/v1/institution/**")
                         .permitAll()
-                        .requestMatchers("/post/*")
+                        .requestMatchers("/api/v1/class/**")
                         .permitAll()
-                        .requestMatchers("/post/img/*")
+                        .requestMatchers("/api/data/**")
                         .permitAll()
-                        .requestMatchers("/post/user/*")
+                        .requestMatchers("/api/TimeTable/**")
                         .permitAll()
-                        .requestMatchers("/coursContet/*")
+                        .requestMatchers("/api/v1/class/getClassUsers/Teacher")
                         .permitAll()
-                        .requestMatchers("/coursContet/upload/*")
+                        .requestMatchers("/api/pdf/classes/**")
                         .permitAll()
-                        .requestMatchers("/university")
+                        .requestMatchers("/api/pdf/departments/**")
                         .permitAll()
-                        .requestMatchers("/api/user/**")
+                        .requestMatchers("/api/elementModules/**")
                         .permitAll()
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**")
+                        .requestMatchers("/api/fieldOfStudies/**")
+                        .permitAll()
+                        .requestMatchers("/api/departments/**")
+                        .permitAll()
+                        .requestMatchers("/api/Modules/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/user/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/schedule/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/program/**")
+                        .permitAll()
+                        .requestMatchers("/api/nonDisponibilities/**")
                         .permitAll()
                         .anyRequest().authenticated());
 

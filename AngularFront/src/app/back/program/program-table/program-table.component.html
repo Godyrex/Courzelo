@@ -1,0 +1,107 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">Program</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <!-- Notification area -->
+      <div *ngIf="messageSuccess" class="alert alert-success alert-dismissible">
+        <button (click)="resetSuccessAlert()" class="close" type="button">×</button>
+        {{ messageSuccess }}
+      </div>
+      <div *ngIf="messageError" class="alert alert-danger alert-dismissible">
+        <button (click)="resetErrorAlert()" class="close" type="button">×</button>
+        {{ messageError }}
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Programs Table</h3>
+          <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <input class="form-control float-right" name="table_search" placeholder="Search" type="text">
+
+              <div class="input-group-append">
+                <button class="btn btn-default" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>ProgramType</th>
+              <th>SecretKey</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let program of programDTOS">
+              <td>{{ program.name }}</td>
+              <td>{{ program.description }}</td>
+              <td>{{ program.programType }}</td>
+              <td>{{program.secretKey||"Not Assigned"}}</td>
+              <td>
+                <button (click)="showClassesTable(program.id!)" class="btn btn-link">
+                  <i class="fas fa-user-graduate mr-1" style="color: orange;"></i>Classes
+                </button>
+              </td>
+              <td>
+                <button (click)="showUpdateForm(program)" class="btn btn-info btn-sm">Update</button>
+              </td>
+              <td>
+                <button (click)="deleteInstitution(program.id!)" class="btn btn-danger btn-sm">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <button (click)="showAddForm()" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Program
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination
+          (pageChanged)="onPageChange($event)"
+          [totalPages]="totalPages">
+        </app-pagination>
+        <!-- /.card-body -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-program-add-form
+        (programInfoChanged)="handleProgInfoChanged()"
+        (addForm)="handleAddFormToggle($event)"
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        *ngIf="addForm">
+      </app-program-add-form>
+      <app-program-update-form
+        (programInfoChanged)="handleProgInfoChanged()"
+        (errorMessage)="handleErrorMessage($event)"
+        (successMessage)="handleSuccessMessage($event)"
+        (updateForm)="handleUpdateFormToggle($event)"
+        *ngIf="updateForm"
+        [programToUpdate]="selectedProgram">
+      </app-program-update-form>
+      <app-program-classes-table
+        (updateClassTable)="handleClassesTableToggle($event)"
+        *ngIf="classesTable"
+        [programID]="selectedProgramClass"
+      ></app-program-classes-table>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+

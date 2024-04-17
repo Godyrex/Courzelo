@@ -1,0 +1,76 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">Update institution</h3>
+    <div class="card-tools">
+      <button (click)="close()" class="btn btn-tool" type="button">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <form (ngSubmit)="updateInstitution()" [formGroup]="institutionForm" class="form-horizontal">
+    <div class="card-body">
+      <div class="form-group row" style="display: none;">
+        <label class="col-sm-2 col-form-label">ID</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="id" placeholder="id" type="text">
+          <div *ngIf="institutionForm.controls.id.touched && institutionForm.controls.id?.invalid" class="text-danger">
+            <div *ngIf="institutionForm.get('id')?.errors?.['required']">ID is required.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="name" placeholder="Name" type="text">
+          <div *ngIf="institutionForm.controls.name.touched && institutionForm.controls.name?.invalid"
+               class="text-danger">
+            <div *ngIf="institutionForm.get('name')?.errors?.['required']">Name is required.</div>
+            <div *ngIf="institutionForm.get('name')?.errors?.['maxlength']">Name must be less than 40 characters.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Location</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="location" placeholder="Location" type="text">
+          <div *ngIf="institutionForm.controls.location.touched && institutionForm.controls.location?.invalid"
+               class="text-danger">
+            <div *ngIf="institutionForm.get('location')?.errors?.['required']">Location is required.</div>
+            <div *ngIf="institutionForm.get('location')?.errors?.['maxlength']">Location must be less than 80
+              characters.
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="description" placeholder="Description" type="text">
+          <div *ngIf="institutionForm.controls.description.touched && institutionForm.controls.description?.invalid"
+               class="text-danger">
+            <div *ngIf="institutionForm.get('description')?.errors?.['required']">Description is required.</div>
+            <div *ngIf="institutionForm.get('description')?.errors?.['maxlength']">Description must be less than 20
+              characters.
+            </div>
+            <div *ngIf="institutionForm.get('description')?.errors?.['minlength']">Description must be at least 10
+              characters.
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Website</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="website" placeholder="Website" type="text">
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+        <button class="btn btn-danger" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>

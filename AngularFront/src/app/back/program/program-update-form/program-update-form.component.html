@@ -1,0 +1,68 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">Update institution</h3>
+    <div class="card-tools">
+      <button (click)="close()" class="btn btn-tool" type="button">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <form (ngSubmit)="updateProgram()" [formGroup]="programForm" class="form-horizontal">
+    <div class="card-body">
+      <div class="form-group row" style="display: none;">
+        <label class="col-sm-2 col-form-label">ID</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="id" placeholder="id" type="text">
+          <div *ngIf="programForm.controls.id.touched && programForm.controls.id?.invalid" class="text-danger">
+            <div *ngIf="programForm.get('id')?.errors?.['required']">ID is required.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="name" placeholder="Name" type="text">
+          <div *ngIf="programForm.controls.name.touched && programForm.controls.name?.invalid" class="text-danger">
+            <div *ngIf="programForm.get('name')?.errors?.['required']">Name is required.</div>
+            <div *ngIf="programForm.get('name')?.errors?.['maxlength']">Name must be less than 40 characters.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="description" placeholder="Description" type="text">
+          <div *ngIf="programForm.controls.description.touched && programForm.controls.description?.invalid"
+               class="text-danger">
+            <div *ngIf="programForm.get('description')?.errors?.['required']">Description is required.</div>
+            <div *ngIf="programForm.get('description')?.errors?.['maxlength']">Description must be less than 20
+              characters.
+            </div>
+            <div *ngIf="programForm.get('description')?.errors?.['minlength']">Description must be at least 10
+              characters.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Visibility</label>
+        <div class="col-sm-10">
+          <select class="form-control" formControlName="programType">
+            <option value="PUBLIC">Public</option>
+            <option value="PRIVATE">Private</option>
+          </select>
+          <div *ngIf="programForm.controls.programType.touched && programForm.controls.programType?.invalid"
+               class="text-danger">
+            <div *ngIf="programForm.get('programType')?.errors?.['required']">Visibility is required.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+        <button class="btn btn-danger" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+
+</div>

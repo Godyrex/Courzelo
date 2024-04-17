@@ -1,0 +1,12 @@
+
+X	java:S125"<This block of commented-out lines of code should be removed.(ôù‚©8ÇÖğ‡ß1
+]	java:S125"<This block of commented-out lines of code should be removed.(¨ğÓ—úÿÿÿÿ8ÑáàÓß1
+s
+java:S1128"QRemove this unused import 'org.springframework.data.mongodb.core.query.Criteria'.(ıËéæùÿÿÿÿ8èº‡—æ1
+q
+java:S1128"TRemove this unused import 'org.springframework.data.mongodb.repository.Aggregation'.(İÉ´¾8èº‡—æ1
+€
+java:S1128	"cRemove this unused import 'org.springframework.data.mongodb.core.aggregation.AggregationOperation'.(“ïøß8èº‡—æ1
+r
+java:S1128
+"PRemove this unused import 'org.springframework.data.mongodb.core.MongoTemplate'.(áÌ¨âÿÿÿÿÿ8èº‡—æ1

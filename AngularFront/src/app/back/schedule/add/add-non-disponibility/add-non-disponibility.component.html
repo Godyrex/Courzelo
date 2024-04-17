@@ -1,0 +1,49 @@
+<div class="container-fluid h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+        <div class="card-body">
+          <form [formGroup]="newNDBFormGroup" (ngSubmit)="handleAddNDB()">
+            <div class="text-center mb-4">
+              <h2 class="form-title text-primary">ADD Non Disponibility</h2>
+            </div>
+            <div class="form-group">
+              <label for="day">Day <span class="text-danger">*</span></label>
+              <select class="form-control" id="day" formControlName="dayOfWeek">
+                <option value="">Select Day</option>
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="period">Period <span class="text-danger">*</span></label>
+              <select class="form-control" id="period" formControlName="period">
+                <option value="">Select Period</option>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+                <option value="P3">P3</option>
+                <option value="P4">P4</option>
+              </select>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary" style="background-color: darkgreen; color: white;">Submit</button>
+              <button type="button" class="btn btn-secondary" style="background-color: darkred; color: white;" (click)="onCancelClick()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  <div class="row mt-4">
+    <div class="col">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ndb of nonDisponibilities">
+          <span class="font-weight-bold">{{ ndb.dayOfWeek }}</span>
+          (ID: {{ ndb.id }}) -
+          Period: {{ ndb.period}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

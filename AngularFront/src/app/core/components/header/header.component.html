@@ -3,10 +3,13 @@
     <h1>Courzelo</h1>
     <nav>
       <ul>
-        <li><a routerLink="/" >Home</a></li>
-        <li><a routerLink="/dashboard">Dashboard</a></li>
-        <li><a routerLink="/login">Login</a></li>
-        <li><a routerLink="/signup">Signup</a></li>
+        <li><a routerLink="/">Home</a></li>
+        <li *ngIf="userRoles.roles && userRoles.roles.includes('ROLE_SUPERADMIN')"><a routerLink="/superAdmin">Admin</a>
+        </li>
+        <li *ngIf="(auth | async)"><a routerLink="/settings/profile">Profile</a></li>
+        <li *ngIf="!(auth | async)"><a routerLink="/login">Login</a></li>
+        <li *ngIf="!(auth | async)"><a routerLink="/signup">Signup</a></li>
+        <li *ngIf="(auth | async)"><a routerLink="/logout">Logout</a></li>
       </ul>
     </nav>
   </div>

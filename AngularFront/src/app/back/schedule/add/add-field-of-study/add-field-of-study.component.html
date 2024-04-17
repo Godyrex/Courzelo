@@ -1,0 +1,69 @@
+<div class="container-fluid h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+      <div class="card-body">
+        <form [formGroup]="newfieldOfstudyFormGroup" (ngSubmit)="handleAddFieldOfStudy()">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="form-title student-info">
+                Informations about fields<span
+              ><a href="javascript:"
+              ><i class="feather-more-vertical"></i></a
+              ></span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="form-group local-forms">
+                <label>name <span class="login-danger">*</span></label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="name ...."
+                  formControlName="name"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="form-group local-forms">
+                <label>numbrWeeks <span class="login-danger">*</span></label>
+                <input
+                  class="form-control"
+                  type="number"
+                  placeholder="numbrWeeks...."
+                  formControlName="numbrWeeks"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="form-group local-forms">
+                <label>chefField<span class="login-danger">*</span></label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="chefField ...."
+                  formControlName="chefField"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-4">
+              <div class="form-group local-forms">
+                <label>departments<span class="login-danger">*</span></label>
+                <select class="form-control" formControlName="departmentID">
+                  <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 d-flex align-items-center justify-content-center">
+              <div class="student-submit">
+                <button type="submit" class="btn btn-primary">submit</button>
+              </div>
+            </div>
+            <hr class="mt-4"/>
+            <div class="col-12 col-sm-12">
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
