@@ -40,10 +40,10 @@ public class NonDisponibilityController {
     @PostMapping
     @ApiResponse(responseCode = "201")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<String> createNonDisponibility(
+    public ResponseEntity<HttpStatus> createNonDisponibility(
             @RequestBody @Valid final NonDisponibilityDTO nonDisponibilityDTO, Principal principal) {
         final String createdId = nonDisponibilityService.create(nonDisponibilityDTO,principal.getName());
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+        return new ResponseEntity<HttpStatus>( HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

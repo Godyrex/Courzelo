@@ -79,6 +79,7 @@ public class FieldOfStudyService {
         fieldOfStudy.setChefField(fieldOfStudyDTO.getChefField());
         Department department = departmentRepository.findById(fieldOfStudyDTO.getDepartmentID())
                 .orElseThrow(() -> new RuntimeException("department not found"));
+        fieldOfStudyRepository.save(fieldOfStudy);
         fieldOfStudy.setDepartment(department);
         return fieldOfStudy;
     }

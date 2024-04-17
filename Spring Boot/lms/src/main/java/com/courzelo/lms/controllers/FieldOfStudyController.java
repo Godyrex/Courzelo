@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600, allowedHeaders = "*", allowCredentials = "true")
 @RestController
-@RequestMapping(value = "/api/fieldOfStudies", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/fieldOfStudies")
 public class FieldOfStudyController {
 
     private final FieldOfStudyService fieldOfStudyService;
@@ -40,10 +40,10 @@ public class FieldOfStudyController {
 
     @PostMapping
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<String> createFieldOfStudy(
+    public ResponseEntity<HttpStatus> createFieldOfStudy(
             @RequestBody @Valid final FieldOfStudyDTO fieldOfStudyDTO) {
         final String createdId = fieldOfStudyService.create(fieldOfStudyDTO);
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

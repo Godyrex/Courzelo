@@ -31,8 +31,8 @@ export class NonDisponibilityService {
     return this.http.get<NonDisponibility>(`${this.baseUrl}/${id}`);
   }
 
-  saveNdb(nonDisponibilities: NonDisponibility): Observable<any> {
-    return this.http.post<any>(this.baseUrl, nonDisponibilities).pipe(
+  saveNdb(nonDisponibilities: NonDisponibility){
+    return this.http.post(this.baseUrl, nonDisponibilities).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error occurred:', error);
         return throwError(error);
