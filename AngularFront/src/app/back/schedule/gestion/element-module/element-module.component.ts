@@ -79,6 +79,7 @@ export class ElementModuleComponent implements OnInit {
   fetchSemesters(): void {
     this.semesterService.getAllSemesters()
       .subscribe(semesters => {
+        console.log('Semesters:', semesters);
         this.semesters = semesters;
       });
   }
@@ -86,6 +87,7 @@ export class ElementModuleComponent implements OnInit {
   fetchDepartments(): void {
     this.departmentService.getAllDepartements()
       .subscribe(departments => {
+        console.log('Departments:', departments);
         this.departments = departments;
       });
   }

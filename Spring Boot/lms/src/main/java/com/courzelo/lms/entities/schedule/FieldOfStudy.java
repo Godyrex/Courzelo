@@ -29,6 +29,8 @@ public class FieldOfStudy {
     @DBRef
     private Department department;
     @DBRef
+    private Semester semester;
+    @DBRef
     private List<Class> classes;
     @Override
     public boolean equals(Object o) {
