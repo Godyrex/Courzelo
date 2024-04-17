@@ -16,6 +16,8 @@ export class AddPostComponent {
   public post_id!: any;
   public post!: Post;
   public formGroup!: FormGroup;
+  public formGroupPhoto!:FormGroup;
+  public selectedFiles: any;
   submitted = false;
   @Output() postAdded: EventEmitter<any> = new EventEmitter();
 
@@ -46,7 +48,9 @@ export class AddPostComponent {
       description: ['', Validators.required],
       userId: [''],
     });
-
+    this.formGroupPhoto=this.fb.group({
+      img:['',Validators.required],
+    })
 
   }
 
@@ -60,8 +64,31 @@ export class AddPostComponent {
     }
 
     this.service.add(this.formGroup.value).subscribe(
-      (resp) => {
-        console.log(resp);
+      (resp:Post) => {
+        console.log("response ",resp);
+        if(resp!=null)
+        {
+          const postUid = resp.id;
+          const inputPhoto = document.getElementById('img') as HTMLInputElement;
+          const file = inputPhoto.files ? inputPhoto.files[0] : null; // Obtenez le premier fichier sélectionné
+
+          console.log('%cadd-user.component.ts line:257 file', 'color: #007acc;', file);
+
+          if (file) {
+            this.service.addImagePost(postUid, file).subscribe(
+              (res) => {
+                // Traitez la réponse du serveur ici
+                console.log('%cadd-user.component.ts line:253 success', 'color: #007acc;');
+              },
+              (err) => {
+                // Traitez les erreurs ici
+                console.log(err);
+              }
+            );
+          } else {
+            console.log('Aucun fichier sélectionné.');
+          }
+        }
         alert("Publication a été enrigistré avec succées");
         this.postAdded.emit();
         // Déclencher la détection de changement pour mettre à jour la vue
@@ -75,5 +102,9 @@ export class AddPostComponent {
 
   }
 
+
+  onSelectedFile(event:any) {
+    this.selectedFiles = event.target.files;
+  }
 
 }

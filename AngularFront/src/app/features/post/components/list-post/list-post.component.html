@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-tools">
-                        <button type="button" data-target=".bs-example-modal-lg-add" data-toggle="modal" (click)="Add()"
+                        <button type="button" data-target=".bs-example-modal-lg-add" data-toggle="modal"
                             class="btn btn-primary">Ajouter une publication</button>
                     </div>
                 </div>
@@ -60,7 +60,14 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    {{item.description}}
+                                    <div class="row">
+                                        {{item.description}}
+                                    </div>
+                                    <div class="row">
+                                        <img  [src]="item.imageUrl" class="post-img" alt="user image" style="
+                                        width: 200px; /* height: 150px; */ ">
+                                    </div>
+
                                     <!-- <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
                                         Share</button>
                                     <button type="button" class="btn btn-default btn-sm"><i
@@ -88,7 +95,25 @@
                         <!-- /.col -->
 
 
-                 
+                        <div class="modal fade bs-example-modal-lg-add" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Ajout publication</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <app-add-post (postAdded)="onPostAdded()"></app-add-post>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -103,7 +128,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <app-edi-post (postEdited)="onPostEdited()" [data]="item"></app-edi-post>
+                                        <app-edi-post (postEdited)="onPostEdited()" [data]="data"></app-edi-post>
                                     </div>
 
 
@@ -118,26 +143,6 @@
 
 
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade bs-example-modal-lg-add" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Ajout publication</h4>
-                    <button type="button" class="close" data-dismiss="modal"><span
-                            aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <app-add-post (postAdded)="onPostAdded()"></app-add-post>
-
-                </div>
-
-
             </div>
         </div>
     </div>

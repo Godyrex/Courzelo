@@ -19,4 +19,7 @@ public class CourseContent {
     private String description ;
     private CoursContentType type ;
     private String path ;
+    private String fichierName ;
+    private String extension ;
+    private byte[] data ;
 }

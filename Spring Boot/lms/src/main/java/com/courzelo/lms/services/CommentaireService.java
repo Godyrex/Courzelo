@@ -19,10 +19,17 @@ public class CommentaireService implements ICommentaireService {
     private  final CommentaireRepository commentaireRepository;
     @Autowired
     private PostService postService;
+    private static final String[] BAD_WORDS = {"fuck", "pute","kys"}; // Ajoutez vos mots interdits ici
 
     @Override
     public void saveCommentaire(Commentaire commentaire, String idPost) {
         List<Commentaire> comments ;
+        String filtered = commentaire.getComment();
+        for (String word : BAD_WORDS) {
+            // Remplace toutes les occurrences du mot interdit par des astérisques
+            filtered = filtered.replaceAll("(?i)" + word, "*".repeat(word.length()));
+        }
+        commentaire.setComment(filtered);
         Commentaire c =commentaireRepository.save(commentaire);
         Post p =postService.getPostByID(idPost);
         if (p.getComments() == null) {
@@ -33,18 +40,17 @@ public class CommentaireService implements ICommentaireService {
         }
         comments.add(c);
         p.setComments(comments);
+
+
         postService.savePost(p);
 
     }
 
+
     @Override
     public void deleteCommentaire(String commentaireID,String idPost) {
         Post p =postService.getPostByID(idPost);
-        Commentaire c =getCommentaireByID(commentaireID);
-        System.out.println("remove 123"+c.toString());
-
-        System.out.println("remove"+p.getComments().remove(c));
-
+        p.getComments().remove(getCommentaireByID(commentaireID));
         p.setComments(p.getComments());
         postService.savePost(p);
         commentaireRepository.deleteById(commentaireID);

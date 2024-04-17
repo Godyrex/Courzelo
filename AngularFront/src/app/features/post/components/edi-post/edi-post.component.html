@@ -21,6 +21,19 @@
                         formControlName="userId" required>
                 </div>
 
+                <div class="col-md-4">
+                  <form [formGroup]="formGroupPhoto">
+                    <label for="img" class="form-label">image</label>
+                    <div class="position-relative">
+                        <input type="file" class="form-control" id="img" placeholder="photo"
+                            (change)="onSelectedFile($event)" type="file" formControlName="img"
+                            accept=".jpg, .jpeg, .png, .gif"
+                           required />
+
+                    </div>
+                </form>
+                </div>
+
             </div>
 
             <div class="modal-footer">

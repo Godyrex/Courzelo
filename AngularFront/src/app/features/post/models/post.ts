@@ -7,6 +7,8 @@ export class Post {
             json['id'],
             json['description'],
             json['userId'],
+            json['img'],
+            json['imageUrl'],
             json['comments'],
         )
 
@@ -17,6 +19,8 @@ export class Post {
         public id: number,
         public description: string,
         public userId: string,
+        public img:string,
+        public imageUrl:string,
         public comments: Comment[],
     ) { }
 

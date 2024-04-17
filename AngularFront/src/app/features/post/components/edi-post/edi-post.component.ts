@@ -16,6 +16,8 @@ export class EdiPostComponent {
   public post_id!: any;
   public post!: Post;
   public formGroup!: FormGroup;
+  public formGroupPhoto!:FormGroup;
+  public selectedFiles: any;
   submitted = false;
   @Input() data: any;
   @Output() postEdited: EventEmitter<any> = new EventEmitter();
@@ -41,6 +43,14 @@ export class EdiPostComponent {
       description: this.data.description,
       userId: this.data.userId,
     });
+
+    this.formGroupPhoto=this.fb.group({
+      img:['',Validators.required],
+    })
+
+    this.formGroupPhoto.patchValue({
+      img: this.data.img,
+    });
   }
 
   ngOnChanges() {
@@ -49,6 +59,10 @@ export class EdiPostComponent {
       id: this.data.id,
       description: this.data.description,
       userId: this.data.userId,
+    });
+
+    this.formGroupPhoto.patchValue({
+      img: this.data.img,
     });
   }
 
@@ -63,16 +77,39 @@ export class EdiPostComponent {
     this.service.edit(this.formGroup.value).subscribe(
       (resp) => {
         console.log(resp);
-        alert("Publication a été modifié avec succées");     
+        alert("Publication a été modifié avec succées");
         this.postEdited.emit();
         // Déclencher la détection de changement pour mettre à jour la vue
         this.cdr.detectChanges();
       },
       (err) => {
         console.log(err);
-        alert(err.error);       
+        alert(err.error);
       }
     );
+    const inputPhoto = document.getElementById('img') as HTMLInputElement;
+    const file = inputPhoto.files ? inputPhoto.files[0] : null; // Obtenez le premier fichier sélectionné
 
+    console.log('%cadd-user.component.ts line:257 file', 'color: #007acc;', file);
+
+    if (file) {
+      this.service.addImagePost(this.data.id, file).subscribe(
+        (res:any) => {
+          // Traitez la réponse du serveur ici
+          console.log('%cadd-user.component.ts line:253 success', 'color: #007acc;');
+        },
+        (err) => {
+          // Traitez les erreurs ici
+          console.log(err);
+        }
+      );
+    } else {
+      console.log('Aucun fichier sélectionné.');
+    }
   }
+
+  onSelectedFile(event:any) {
+    this.selectedFiles = event.target.files;
+  }
+
 }

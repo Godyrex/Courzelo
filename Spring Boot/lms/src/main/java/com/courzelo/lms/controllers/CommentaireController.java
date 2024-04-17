@@ -6,6 +6,7 @@ import com.courzelo.lms.services.CommentaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class CommentaireController {
 
 
     @PostMapping({"/{idPost}"})
-    public void saveCommentaire(@RequestBody Commentaire commentaire, @PathVariable String idPost){
+    public void saveCommentaire(@RequestBody Commentaire commentaire, @PathVariable String idPost) throws IOException {
         commentaireService.saveCommentaire(commentaire,idPost);
     }
     @PutMapping()
@@ -34,7 +35,7 @@ public class CommentaireController {
         return  commentaireService.getCommentaires();
     }
     @DeleteMapping("/{id}/{idPost}")
-    public String  DeleteCommentaires(@PathVariable String id,@PathVariable String idPost){
+    public String  DeleteCommentaires(@PathVariable String id,@PathVariable String idPost) throws IOException {
         commentaireService.deleteCommentaire(id,idPost);
         return  "delete";
     }

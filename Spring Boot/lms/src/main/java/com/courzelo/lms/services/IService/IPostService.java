@@ -1,7 +1,9 @@
 package com.courzelo.lms.services.IService;
 
 import com.courzelo.lms.entities.Post;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IPostService {

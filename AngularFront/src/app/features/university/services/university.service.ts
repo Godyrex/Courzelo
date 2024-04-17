@@ -34,7 +34,7 @@ export class UniversityService {
   public delete(id: any):Observable<string> {
     return this.httpClient.delete<string>(this.url +'/'+ id);
   }
- 
+
 
 
 }

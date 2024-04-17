@@ -14,7 +14,7 @@ export class Comment {
 
     constructor(
 
-        public id: number,
+        public id: string,
         public comment: string,
         public idUser: string,
         public idPost: string,

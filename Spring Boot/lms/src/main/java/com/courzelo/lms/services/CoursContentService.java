@@ -38,4 +38,8 @@ public class CoursContentService implements ICoursContentService {
     public List<CourseContent> getCoursContents() {
         return coursContentRepository.findAll();
     }
+
+    public CourseContent getContentById(String courseContentID) {
+        return coursContentRepository.findById(courseContentID).get();
+    }
 }

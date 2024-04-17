@@ -17,5 +17,6 @@ public class Post {
     private String description ;
     private String userId ;
 
+    private byte[] img ;
     private List<Commentaire> comments ;
 }

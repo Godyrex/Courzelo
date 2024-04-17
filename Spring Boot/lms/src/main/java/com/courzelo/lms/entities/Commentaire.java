@@ -39,4 +39,6 @@ public class Commentaire {
     public int hashCode() {
         return Objects.hash(id, comment, idUser, idPost, idPere, date);
     }
+
+
 }
