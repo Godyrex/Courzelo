@@ -90,10 +90,11 @@ import { UserProfileByEmailComponent } from './back/user/user-profile-by-email/u
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ElementModuleComponent } from './back/schedule/gestion/element-module/element-module.component';
-import {HeaderComponent} from "./core/components/header/header.component";
-import {FooterComponent} from "./core/components/footer/footer.component";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {FooterComponent} from "./back/footer/footer.component";
+import {HeaderComponent} from "./back/header/header.component";
+import {HomeComponent} from "./front/home/home.component";
 
 
 @NgModule({
@@ -160,7 +161,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     JoinProgramDialogComponent,
     UsersSearchComponent,
     UserProfileByEmailComponent,
-    ElementModuleComponent
+    ElementModuleComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

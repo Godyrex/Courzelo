@@ -51,10 +51,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'listPost',
-    component: ListPostComponent
-  },
-  {
     path: 'signup',
     component: RegisterComponent
   },
@@ -194,7 +190,11 @@ const routes: Routes = [
         data: {
           expectedRole: ['TEACHER','ADMIN']
         }
-      }
+      },
+      {
+        path: 'listPost',
+        component: ListPostComponent
+      },
     ]
   }
 
