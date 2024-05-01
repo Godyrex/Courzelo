@@ -16,6 +16,8 @@ import com.courzelo.lms.repositories.ClassRepository;
 import com.courzelo.lms.repositories.InstitutionRepository;
 import com.courzelo.lms.repositories.ProgramRepository;
 import com.courzelo.lms.repositories.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,13 +26,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,6 +45,7 @@ public class ProgramService implements IProgramService {
     private final UserRepository userRepository;
     private final InstitutionRepository institutionRepository;
     private final IClassService iClassService;
+    private final RestTemplate restTemplate;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -273,6 +277,61 @@ public class ProgramService implements IProgramService {
                 .orElseThrow(() -> new ProgramNotFoundException("Program " + classe.getProgram().getId() + " not found"));
         ProgramDTO programDTO = modelMapper.map(program, ProgramDTO.class);
         return ResponseEntity.ok().body(programDTO);
+    }
+
+    @Override
+    public ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException {
+        // Get the skills of the searched user
+        User user = userRepository.findUserByEmail(name);
+        String[] skills = user.getProfile().getSkills().toArray(new String[0]);
+        log.info("Skills: " + skills);
+        // Create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Create request
+        HttpEntity<String[]> request = new HttpEntity<>(skills, headers);
+
+        // Make a POST request
+        ResponseEntity<String> programNameResponse = restTemplate.exchange(
+                "http://localhost:5000/predict",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        ObjectMapper objectMapper = new ObjectMapper();
+        String programName = objectMapper.readValue(programNameResponse.getBody(), String.class);
+        log.info("Program suggested: " + programName);
+        Program program = Optional
+                .ofNullable(programRepository
+                        .findByName(programName))
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + programName + " not found"));
+        ProgramDTO programDTO = modelMapper.map(program, ProgramDTO.class);
+        return programDTO != null ? ResponseEntity.ok().body(programDTO) : ResponseEntity.badRequest().body(null);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> joinProgramByID(String email, String id) {
+        User user = userRepository.findUserByEmail(email);
+        Program program = programRepository.findById(id)
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + id + " not found"));
+        if(program==null){
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+        if(program.getProgramType().equals(ProgramType.PUBLIC)){
+            if(program.getStudents().contains(user)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            program.getStudents().add(user);
+            programRepository.save(program);
+            if(user.getEducation().getPrograms().contains(program)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            user.getEducation().getPrograms().add(program);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
     }
 
     private String generateSecretKey() {
