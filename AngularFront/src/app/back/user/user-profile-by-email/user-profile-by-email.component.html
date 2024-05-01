@@ -54,13 +54,20 @@
     <p *ngIf="loginResponse.education?.stclass" class="text-muted">
       Class : {{ loginResponse.education?.stclass?.name }}<br>
     </p>
-
+    <hr>
+    <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+    <p *ngIf="loginResponse.profile?.skills?.length; else noSkills" class="text-muted">
+      <span *ngFor="let skill of loginResponse.profile?.skills" class="badge badge-primary mr-1">{{skill}}</span>
+    </p>
+    <ng-template #noSkills>
+      <p class="text-muted">None</p>
+    </ng-template>
 
     <hr>
 
-    <strong *ngIf="loginResponse.contact?.userAddress?.country"><i *ngIf="loginResponse.contact?.userAddress?.country" class="fas fa-map-marker-alt mr-1"></i>Location</strong>
+    <strong *ngIf="loginResponse.contact?.userAddress?.country && loginResponse.settings?.showAddress"><i *ngIf="loginResponse.contact?.userAddress?.country" class="fas fa-map-marker-alt mr-1"></i>Location</strong>
 
-    <p *ngIf="loginResponse.contact?.userAddress?.country" class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
+    <p *ngIf="loginResponse.contact?.userAddress?.country && loginResponse.settings?.showAddress" class="text-muted">{{ loginResponse.contact?.userAddress?.state }}, {{loginResponse.contact?.userAddress?.country}}</p>
 
   </div>
   <!-- /.card-body -->

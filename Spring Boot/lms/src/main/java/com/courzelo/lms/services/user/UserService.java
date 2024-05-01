@@ -1,17 +1,9 @@
 package com.courzelo.lms.services.user;
 
-import com.courzelo.lms.dto.program.InstitutionDTO;
-import com.courzelo.lms.dto.program.SimplifiedClassDTO;
-import com.courzelo.lms.dto.program.SimplifiedInstitutionDTO;
-import com.courzelo.lms.dto.program.SimplifiedProgramDTO;
 import com.courzelo.lms.dto.user.*;
-import com.courzelo.lms.entities.institution.Class;
-import com.courzelo.lms.entities.institution.Institution;
 import com.courzelo.lms.entities.user.*;
-import com.courzelo.lms.exceptions.ClassNotFoundException;
 import com.courzelo.lms.exceptions.*;
 import com.courzelo.lms.repositories.*;
-import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -390,5 +382,34 @@ public class UserService implements UserDetailsService {
             return null;
         }
         return searchRepository.findTop10ByQueryRegex(input, PageRequest.of(0, 10));
+    }
+
+    public ResponseEntity<Response> updateSkill(String name, String[] skills) {
+        log.info("addSkill :Updating skills to user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        user.getProfile().setSkills(List.of(skills));
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("addSkill :Skills added!");
+        return ResponseEntity.ok().body(new Response("Skills added!"));
+    }
+
+    public ResponseEntity<Response> removeSkill(String name, String[] skills) {
+        log.info("removeSkill :Removing skills from user " + name + "...");
+        User user = userRepository.findUserByEmail(name);
+        if(user.getProfile().getSkills()==null){
+            user.getProfile().setSkills(Collections.emptyList());
+        }
+        for (String skill : skills) {
+            if(user.getProfile().getSkills().contains(skill)){
+                user.getProfile().getSkills().remove(skill);
+            }else {
+                log.info("removeSkill :Skill doesn't exist!");
+            }
+        }
+        user.getActivity().setUpdatedAt(Instant.now());
+        userRepository.save(user);
+        log.info("removeSkill :Skills removed!");
+        return ResponseEntity.ok().body(new Response("Skills removed!"));
     }
 }

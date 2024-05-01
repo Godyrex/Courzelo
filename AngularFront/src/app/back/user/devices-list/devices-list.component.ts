@@ -13,7 +13,7 @@ export class DevicesListComponent implements OnInit {
   deviceDTOS: DeviceDTO[] = []
   totalPages: number = 0;
   currentPage: number = 0;
-  pageSize: number = 2;
+  pageSize: number = 10;
 
   constructor(private deviceService: DeviceService,
               private toastr: ToastrService) {

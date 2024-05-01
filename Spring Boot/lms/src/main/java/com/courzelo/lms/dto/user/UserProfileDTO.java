@@ -18,6 +18,7 @@ public class UserProfileDTO {
     private Date birthDate;
     private String title;
     private String bio;
+    private String[] skills;
 
     public UserProfileDTO(UserProfile profile) {
         this.name = profile.getName() != null ? profile.getName() : null;
@@ -27,5 +28,6 @@ public class UserProfileDTO {
         this.birthDate = profile.getBirthDate() != null ? profile.getBirthDate() : null;
         this.title = profile.getTitle() != null ? profile.getTitle() : null;
         this.bio = profile.getBio() != null ? profile.getBio() : null;
+        this.skills = profile.getSkills() != null ? profile.getSkills().toArray(new String[0]) : null;
     }
 }

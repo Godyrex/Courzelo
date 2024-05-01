@@ -6,4 +6,5 @@ export interface UserProfile {
   birthDate?: Date;
   title?: string;
   bio?: string;
+  skills?: string[];
 }
