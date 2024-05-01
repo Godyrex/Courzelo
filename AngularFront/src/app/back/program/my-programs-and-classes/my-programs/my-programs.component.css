@@ -7,3 +7,9 @@
 .card:active {
   transform: scale(0.95);
 }
+.badge-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.2em;
+}

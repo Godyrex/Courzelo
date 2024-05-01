@@ -12,6 +12,8 @@ import {JoinProgramDialogComponent} from "./join-program-dialog/join-program-dia
 })
 export class MyProgramsComponent implements OnInit{
   programs: ProgramDTO[] = [];
+  suggestedProgram: ProgramDTO = {};
+  toggleSuggestedProgram = false;
   constructor(private dialog: MatDialog,private programService: ProgramService, private toaster: ToastrService) {
   }
 
@@ -24,6 +26,24 @@ export class MyProgramsComponent implements OnInit{
   }
   ngOnInit(): void {
     this.getMyPrograms();
+    this.predictProgram();
+  }
+  predictProgram() {
+  this.toggleSuggestedProgram = false;
+    this.programService.predictProgram().subscribe(
+      prediction => {
+        console.log('Prediction:', prediction);
+        this.suggestedProgram = prediction;
+        //check if suggested program is already in my programs
+        if(this.programs.find(program => program.id === this.suggestedProgram.id) === undefined)
+        {
+          this.toggleSuggestedProgram = true;
+        }
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
   }
   getMyPrograms(){
     this.programService.getMyPrograms().subscribe(data=>{
@@ -38,9 +58,21 @@ export class MyProgramsComponent implements OnInit{
     this.programService.leaveProgram(programId).subscribe(data=>{
       this.toaster.success("You have left the program");
       this.getMyPrograms();
+      this.predictProgram();
     },error=>{
       console.log(error);
       this.toaster.error("Error while leaving the program");
+    })
+  }
+
+  joinProgram(s: string) {
+    this.programService.joinProgramByID(s).subscribe(data=>{
+      this.toaster.success("You have joined the program");
+      this.predictProgram();
+      this.getMyPrograms();
+    },error => {
+      console.log(error);
+      this.toaster.error("Error while joining the program");
     })
   }
 }

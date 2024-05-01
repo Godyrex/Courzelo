@@ -14,7 +14,9 @@ export class ProgramService {
 
   constructor(private http: HttpClient) {
   }
-
+  predictProgram(): Observable<ProgramDTO> {
+    return this.http.get<ProgramDTO>(`${this.baseUrl}/get/ProgramSuggestion`,);
+  }
   addProgram(program: ProgramDTO): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/add`, program);
   }
@@ -58,6 +60,11 @@ export class ProgramService {
     const params = new HttpParams()
       .set('key', key);
     return this.http.post<boolean>(`${this.baseUrl}/join`, null, {params});
+  }
+  joinProgramByID(id: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('id', id);
+    return this.http.post<boolean>(`${this.baseUrl}/joinByID`, null, {params});
   }
   leaveProgram(programID: string): Observable<boolean> {
     const params = new HttpParams()
