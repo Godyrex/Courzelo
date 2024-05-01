@@ -4,7 +4,9 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserProfile {
@@ -20,5 +22,7 @@ public class UserProfile {
     private String title;
     @TextIndexed(weight = 4)
     private String bio;
+    @TextIndexed(weight = 4)
+    private List<String> skills = new ArrayList<>();
 
 }

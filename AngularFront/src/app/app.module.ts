@@ -198,3 +198,5 @@ import {HomeComponent} from "./front/home/home.component";
 })
 export class AppModule {
 }
+
+

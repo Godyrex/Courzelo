@@ -22,7 +22,7 @@
               <div class="card mb-3">
                 <div class="card-body">
                   <h5 class="card-title"><i class="fas fa-tablet-alt mr-2"></i>{{ device.deviceDetails }}</h5>
-                  <p class="card-text"><i class="fas fa-clock mr-2"></i>Last Login: {{ device.lastLoggedIn }}</p>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>Last Login: {{ device.lastLoggedIn | date:'medium'}}</p>
                   <button (click)="deleteDevice(device.id!)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
                 </div>
               </div>
