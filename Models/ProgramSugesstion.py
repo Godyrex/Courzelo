@@ -6,12 +6,13 @@ import numpy as np
 app = Flask(__name__)
 CORS(app, supports_credentials=True)  # This will enable CORS for all routes and include the Access-Control-Allow-Credentials header
 
-# Load the model and transformers from the files
+# tchargiw il fichiers
 model = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/programModel.joblib')
 label_encoder_skill1 = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/labelEncoderSkill1.joblib')
 label_encoder_skill2 = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/labelEncoderSkill2.joblib')
 scaler = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/scaler.joblib')
 
+#thasen fil input
 def safe_transform(label_encoder, labels):
     try:
         return label_encoder.transform(labels)
@@ -21,18 +22,18 @@ def safe_transform(label_encoder, labels):
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get the data from the POST request
+    # ijib skills
     skills = request.get_json(force=True)
     print("skills : ",skills)
-    # Make prediction using model loaded from disk as per the data
+    # ihadher donne
     new_observation_encoded = [safe_transform(label_encoder_skill1, [skills[0]]), safe_transform(label_encoder_skill2, [skills[1]])]
     new_observation_encoded = np.array(new_observation_encoded).reshape(1, -1)
     new_observation_scaled = scaler.transform(new_observation_encoded)
 
-    # Use the model to make a prediction
+    # nista3mlo model w npredectiw
     prediction = model.predict(new_observation_scaled)
 
-    # Take the first value of prediction
+    # nibaatho il program
     output = prediction[0]
     print("output : ",output)
     return jsonify(output)
