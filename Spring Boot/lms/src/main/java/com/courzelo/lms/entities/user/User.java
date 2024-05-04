@@ -18,7 +18,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Data
 @Document(collection = "users")
-
 public class User implements UserDetails {
     @Id
     private String id;
