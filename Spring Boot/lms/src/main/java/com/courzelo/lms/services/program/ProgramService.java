@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -285,12 +282,22 @@ public class ProgramService implements IProgramService {
         User user = userRepository.findUserByEmail(name);
         String[] skills = user.getProfile().getSkills().toArray(new String[0]);
         log.info("Skills: " + skills);
+        Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
+        String institutionName = institution.getName();
+
         // Create headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        // Create request body
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("skills", skills);
+        requestBody.put("institution", institutionName);
+        String requestBodyJson = new ObjectMapper().writeValueAsString(requestBody);
+
         // Create request
-        HttpEntity<String[]> request = new HttpEntity<>(skills, headers);
+        HttpEntity<String> request = new HttpEntity<>(requestBodyJson, headers);
 
         // Make a POST request
         ResponseEntity<String> programNameResponse = restTemplate.exchange(
