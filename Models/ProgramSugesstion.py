@@ -6,36 +6,43 @@ import numpy as np
 app = Flask(__name__)
 CORS(app, supports_credentials=True)  # This will enable CORS for all routes and include the Access-Control-Allow-Credentials header
 
-# tchargiw il fichiers
+# Load the files
 model = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/programModel.joblib')
-label_encoder_skill1 = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/labelEncoderSkill1.joblib')
-label_encoder_skill2 = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/labelEncoderSkill2.joblib')
-scaler = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/scaler.joblib')
+label_encoders = load('C:/Users/Oussema/Documents/GitHub/Courzelo/Models/labelEncoders.joblib')
 
-#thasen fil input
-def safe_transform(label_encoder, labels):
-    try:
-        return label_encoder.transform(labels)
-    except ValueError as e:
-        print(f"Unseen label: {e}")
-        return np.array([label_encoder.classes_.shape[0]])
+# Handle unseen labels
+def safe_transform(label_encoders, labels):
+    transformed_labels = []
+    for label in labels:
+        transformed = False
+        for le in label_encoders.values():
+            try:
+                transformed_labels.append(le.transform([label])[0])
+                transformed = True
+                break
+            except ValueError:
+                continue
+        if not transformed:
+            print(f"Unseen label: {label}")
+            transformed_labels.append(len(le.classes_))
+    return np.array(transformed_labels)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # ijib skills
-    skills = request.get_json(force=True)
-    print("skills : ",skills)
-    # ihadher donne
-    new_observation_encoded = [safe_transform(label_encoder_skill1, [skills[0]]), safe_transform(label_encoder_skill2, [skills[1]])]
-    new_observation_encoded = np.array(new_observation_encoded).reshape(1, -1)
-    new_observation_scaled = scaler.transform(new_observation_encoded)
+    # Get skills and institution
+    data = request.get_json(force=True)
+    print("Data : ", data)
+    skills = data['skills']
+    # Prepare data
+    new_observation_encoded = safe_transform(label_encoders, skills + [data['institution']])
+    new_observation_encoded = new_observation_encoded.reshape(1, -1)
 
-    # nista3mlo model w npredectiw
-    prediction = model.predict(new_observation_scaled)
+    # Predict
+    prediction = model.predict(new_observation_encoded)
 
-    # nibaatho il program
+    # Send the program
     output = prediction[0]
-    print("output : ",output)
+    print("output : ", output)
     return jsonify(output)
 
 if __name__ == '__main__':
