@@ -1,10 +1,13 @@
 package com.courzelo.lms.services.user;
 
+import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.user.*;
 import com.courzelo.lms.exceptions.*;
 import com.courzelo.lms.repositories.*;
 import com.courzelo.lms.security.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,14 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -48,10 +51,13 @@ public class UserService implements UserDetailsService {
     private final InstitutionRepository institutionRepository;
     private final MongoTemplate mongoTemplate;
     private final SearchRepository searchRepository;
+    private final DeviceMetadataRepository deviceMetadataRepository;
+    private final RestTemplate restTemplate;
 
 
 
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate, SearchRepository searchRepository) {
+
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder encoder, EmailService emailService, IPhotoService iPhotoService, @Lazy IAuthService iAuthService, VerificationTokenRepository verificationTokenRepository, ClassRepository classRepository, InstitutionRepository institutionRepository, MongoTemplate mongoTemplate, SearchRepository searchRepository, DeviceMetadataRepository deviceMetadataRepository, RestTemplate restTemplate) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.emailService = emailService;
@@ -62,6 +68,8 @@ public class UserService implements UserDetailsService {
         this.institutionRepository = institutionRepository;
         this.mongoTemplate = mongoTemplate;
         this.searchRepository = searchRepository;
+        this.deviceMetadataRepository = deviceMetadataRepository;
+        this.restTemplate = restTemplate;
     }
     public List<User> searchByKeyword(String keyword ,int page) {
         return userRepository.searchByKeyword(keyword,page, mongoTemplate);
@@ -229,7 +237,7 @@ public class UserService implements UserDetailsService {
         if (user != null && dto.getPassword() != null) {
             if (encoder.matches(dto.getPassword(), user.getPassword())) {
                 deleteUser(user);
-                iAuthService.logout(response);
+                iAuthService.logout(response,principal);
                 return ResponseEntity.ok().build();
             }
             return ResponseEntity.badRequest().build();
@@ -411,5 +419,28 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         log.info("removeSkill :Skills removed!");
         return ResponseEntity.ok().body(new Response("Skills removed!"));
+    }
+
+    public ResponseEntity<Boolean> predictTFA(String name) throws JsonProcessingException {
+        User user = userRepository.findUserByEmail(name);
+        long deviceCount = deviceMetadataRepository.countByUser(user);
+        // Create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Create request with user devicecount and user alst login and last logout
+        String[] input = new String[]{String.valueOf(deviceCount), String.valueOf(user.getActivity().getLastLogin()), String.valueOf(user.getActivity().getLastLogout())};
+        log.info("predictTFA :Input :"+new ObjectMapper().writeValueAsString(input));
+        HttpEntity<String[]> request = new HttpEntity<>(input, headers);
+
+        // Make a POST request
+        ResponseEntity<Integer> tfaResponse = restTemplate.exchange(
+                "http://localhost:5000/predictTFA",
+                HttpMethod.POST,
+                request,
+                Integer.class
+        );
+        int tfaBool = Integer.parseInt(String.valueOf(tfaResponse.getBody()));
+        return ResponseEntity.ok(tfaBool == 1);
     }
 }
