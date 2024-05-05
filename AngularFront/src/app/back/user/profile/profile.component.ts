@@ -183,10 +183,15 @@ export class ProfileComponent implements OnInit{
     return this.skills.filter(skill => skill.toLowerCase().includes(filterValue));
   }
   addSkill() {
-    if(!this.selectedSkills.includes(this.skillControl.value.toString())) {
-      this.selectedSkills.push(this.skillControl.value.toString());
-    } else {
-      this.toaster.error('Skill already added', 'Error');
+    //max 5 skills
+    if(this.selectedSkills.length < 5) {
+      if (!this.selectedSkills.includes(this.skillControl.value.toString())) {
+        this.selectedSkills.push(this.skillControl.value.toString());
+      } else {
+        this.toaster.error('Skill already added', 'Error');
+      }
+    }else{
+      this.toaster.error('Max 5 skills allowed', 'Error');
     }
     // Reset the skillControl value
     this.skillControl.setValue('');
@@ -263,6 +268,15 @@ export class ProfileComponent implements OnInit{
         localStorage.setItem('lastTwoFactorAuthNotification', String(now));
       }
     }
+    this.updateService.predictTFA().subscribe(
+      response => {
+        this.toaster.info('Two factor authentication prediction: ' + response);
+        console.log(response);
+      },error => {
+        this.toaster.error('Error predicting two factor authentication', 'Error');
+        console.log(error);
+      }
+    );
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {

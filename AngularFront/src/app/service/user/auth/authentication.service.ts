@@ -34,6 +34,9 @@ export class AuthenticationService {
   recoverPassword(token: string, password: RecoverPasswordRequest) {
     return this.http.post<JsonResponse>(`${this.baseUrl}/recover-password?token=${token}`, password);
   }
+  logout() {
+    return this.http.post(`${this.baseUrl}/logout`, null);
+  }
 
   confirmDevice(loginRequest: LoginRequest, code: number): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/confirmDevice/${code}`, loginRequest);
