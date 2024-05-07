@@ -31,6 +31,7 @@
             <ul class="nav nav-pills">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#name" (click)="toggleLoading()">Profile</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo" (click)="checkUserProfileImage(); toggleLoading()">Profile photo</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#skills" (click)="toggleLoading()">Skills</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contact" (click)="toggleLoading()">Contact</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email" (click)="toggleLoading()">Email</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#password" (click)="toggleLoading()">Password</a></li>
@@ -104,6 +105,35 @@
                       <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-upload"></i> Upload</button>
                       </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="skills">
+                <form (ngSubmit)="updateSkills()" class="form-horizontal">
+                  <div class="form-group row">
+                    <div class="col-sm-8 offset-sm-2">
+                      <div class="input-group mb-3">
+                        <input type="text" [matAutocomplete]="auto" [formControl]="skillControl" class="form-control" placeholder="Enter skill">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addSkill()">
+                          <mat-option *ngFor="let skill of filteredSkills | async" [value]="skill">
+                            {{skill}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngFor="let skill of selectedSkills; index as i">
+                    <div class="col-sm-8 offset-sm-2">
+                      <div class="alert alert-primary d-flex justify-content-between align-items-center" role="alert">
+                        {{skill}}
+                        <button type="button" class="btn btn-danger btn-sm" (click)="removeSkill(i)">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-8 offset-sm-2">
+                      <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-paper-plane"></i> Update</button>
                     </div>
                   </div>
                 </form>
@@ -282,15 +312,15 @@
                   <div class="custom-control custom-switch">
                     <label for="verificationCode"><i class="fa fa-cogs"></i> Privacy Settings :</label>
                     <div class="form-group">
-                      <mat-slide-toggle (click)="toggleShowPhone()" [(ngModel)]="showPhone"><i class="fa fa-phone"></i> Show Phone</mat-slide-toggle>
+                      <mat-slide-toggle color="primary" (click)="toggleShowPhone()" [(ngModel)]="showPhone"><i class="fa fa-phone"></i> Show Phone</mat-slide-toggle>
                     </div>
 
                     <div class="form-group">
-                      <mat-slide-toggle (click)="toggleShowAddress()" [(ngModel)]="showAddress"><i class="fa fa-home"></i> Show Address</mat-slide-toggle>
+                      <mat-slide-toggle color="primary" (click)="toggleShowAddress()" [(ngModel)]="showAddress"><i class="fa fa-home"></i> Show Address</mat-slide-toggle>
                     </div>
 
                     <div class="form-group">
-                      <mat-slide-toggle (click)="toggleShowBirthDate()" [(ngModel)]="showBirthDate"><i class="fa fa-birthday-cake"></i> Show Birth Date</mat-slide-toggle>
+                      <mat-slide-toggle color="primary" (click)="toggleShowBirthDate()" [(ngModel)]="showBirthDate"><i class="fa fa-birthday-cake"></i> Show Birth Date</mat-slide-toggle>
                     </div>
 
                   </div>

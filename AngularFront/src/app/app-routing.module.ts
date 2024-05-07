@@ -1,5 +1,6 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ListPostComponent } from './features/post/components/list-post/list-post.component';
 import {HomeComponent} from "./front/home/home.component";
 import {GestionDepartementComponent} from "./back/schedule/gestion/gestion-departement/gestion-departement.component";
 import {AddDepartementComponent} from "./back/schedule/add/add-departement/add-departement.component";
@@ -36,6 +37,7 @@ import {MyProgramsAndClassesComponent} from "./back/program/my-programs-and-clas
 import {UsersSearchComponent} from "./back/user/users-search/users-search.component";
 
 const routes: Routes = [
+
   {
     path: '',
     component: HomeComponent
@@ -48,7 +50,6 @@ const routes: Routes = [
       expectedRole: ['ADMIN']
     },
   },
-
   {
     path: 'signup',
     component: RegisterComponent
@@ -189,7 +190,11 @@ const routes: Routes = [
         data: {
           expectedRole: ['TEACHER','ADMIN']
         }
-      }
+      },
+      {
+        path: 'listPost',
+        component: ListPostComponent
+      },
     ]
   }
 

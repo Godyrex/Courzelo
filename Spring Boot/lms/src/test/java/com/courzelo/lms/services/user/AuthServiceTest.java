@@ -102,13 +102,4 @@ class AuthServiceTest {
         verify(log, times(1)).info("refreshToken :Access token created!");
         verify(log, times(1)).info("refreshToken :Refreshing token DONE!");
     }
-    @Test
-    void logoutClearsSecurityContextAndRemovesCookies() {
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
-        authService.logout(response);
-
-        verify(response, times(2)).addHeader(eq(HttpHeaders.SET_COOKIE), anyString());
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
 }

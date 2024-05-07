@@ -400,7 +400,8 @@ public class AuthService implements IAuthService {
                 .body(new Response("Account Created!"));
     }
 
-    public void logout(@NonNull HttpServletResponse response) {
+    public void logout(@NonNull HttpServletResponse response ,Principal principal) {
+        User user = userRepository.findUserByEmail(principal.getName());
         log.info("Logout :Logging out...");
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie("accessToken", 0L).toString());
         log.info("Logout: Access Token removed");
@@ -408,6 +409,8 @@ public class AuthService implements IAuthService {
         log.info("Logout :Refresh Token removed");
         SecurityContextHolder.clearContext();
         log.info("Logout :Security context cleared!");
+       user.getActivity().setLastLogout(Instant.now());
+        userRepository.save(user);
         log.info("Logout :Logout Finished!");
     }
 

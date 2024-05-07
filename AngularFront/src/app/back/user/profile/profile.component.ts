@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UpdateService} from "../../../service/user/profile/update.service";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
@@ -17,12 +17,9 @@ import {QaDialogComponent} from "../qa-dialog/qa-dialog.component";
 import {UserContact} from "../../../model/user/UserContact";
 import {UserAddress} from "../../../model/user/UserAddress";
 import {UserResponse} from "../../../model/user/UserResponse";
-<<<<<<< Updated upstream
-=======
 import {map, Observable, of, startWith} from "rxjs";
 import {ModuleService} from "../../../service/schedule/module.service";
 import {PredictModule} from "../../../model/schedule/PredictModule";
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-profile',
@@ -54,6 +51,7 @@ export class ProfileComponent implements OnInit{
   showStatesForm: boolean = false;
   countries: any[] = [];
   states: any[] = [];
+  skills: string[] = [];
   qrCodeImage: string = '';
   deleteAccountRequest: DeleteAccountRequest = {};
   passwordRequest: PasswordRequest = {};
@@ -83,6 +81,9 @@ export class ProfileComponent implements OnInit{
     state: [this.user.contact?.userAddress?.state],
     country: [this.user.contact?.userAddress?.country],
     zipCode: [this.user.contact?.userAddress?.zipCode],
+  });
+  skillForm = this.formBuilder.group({
+    skill: ['', [Validators.required]],
   });
   usernameValidator(control: AbstractControl) {
     const value = control.value;
@@ -163,13 +164,44 @@ export class ProfileComponent implements OnInit{
   openDialog(): void {
     this.dialog.open(QaDialogComponent);
   }
+  skillControl = new FormControl();
+  selectedSkills : string[] = [];
+  filteredSkills: Observable<string[]> = of([]);
   ngOnInit(): void {
         this.getMyInfo();
         this.updateService.getCountries().subscribe(countries => {
           this.countries = countries;
           console.log(countries);
         });
+    this.updateService.getSkills().subscribe(skills => {
+      this.skills = skills;
+      this.filteredSkills = this.skillControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    });
     }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.skills.filter(skill => skill.toLowerCase().includes(filterValue));
+  }
+  addSkill() {
+    //max 5 skills
+    if(this.selectedSkills.length < 5) {
+      if (!this.selectedSkills.includes(this.skillControl.value.toString())) {
+        this.selectedSkills.push(this.skillControl.value.toString());
+      } else {
+        this.toaster.error('Skill already added', 'Error');
+      }
+    }else{
+      this.toaster.error('Max 5 skills allowed', 'Error');
+    }
+    // Reset the skillControl value
+    this.skillControl.setValue('');
+  }
+  removeSkill(index: number) {
+    this.selectedSkills.splice(index, 1);
+  }
   updateContact(){
     if(this.contactForm.valid) {
       this.userContact.phoneNumber = this.contactForm.controls['phone'].value!;
@@ -239,6 +271,15 @@ export class ProfileComponent implements OnInit{
         localStorage.setItem('lastTwoFactorAuthNotification', String(now));
       }
     }
+    this.updateService.predictTFA().subscribe(
+      response => {
+        this.toaster.info('Two factor authentication prediction: ' + response);
+        console.log(response);
+      },error => {
+        this.toaster.error('Error predicting two factor authentication', 'Error');
+        console.log(error);
+      }
+    );
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {
@@ -419,4 +460,11 @@ export class ProfileComponent implements OnInit{
   }
 
 
+  updateSkills() {
+    this.updateService.updateSkill(this.selectedSkills).subscribe(response => {
+      console.log(response);
+      this.toaster.success('Skills updated successfully', 'Success');
+      this.userInfoChanged.emit();
+    });
+  }
 }

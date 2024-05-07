@@ -62,8 +62,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletResponse response) {
-        iAuthService.logout(response);
+    @PreAuthorize("isAuthenticated()")
+    public void logout(HttpServletResponse response ,Principal principal) {
+        iAuthService.logout(response,principal);
     }
 
     @GetMapping("/verify")

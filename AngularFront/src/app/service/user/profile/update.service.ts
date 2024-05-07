@@ -54,6 +54,17 @@ export class UpdateService {
   changeProfile(nameRequest: NameRequest) {
     return this.http.patch<JsonResponse>(`${this.baseUrl}/update/profile`, nameRequest);
   }
+  updateSkill(skills: string[]): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/skill`, null, {params: {skills: skills.join(',')}});
+  }
+  predictTFA(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/predictTFA`);
+  }
+  getSkills(): Observable<string[]> {
+    return this.http.get<{ skills: string[] }>('/assets/skills.json').pipe(
+      map(response => response.skills)
+    );
+  }
 
   sendVerificationCode(): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendVerificationCode`, null);

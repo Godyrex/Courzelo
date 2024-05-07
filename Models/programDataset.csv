@@ -1,0 +1,50 @@
+User Skill 1,User Skill 2,User Skill 3,User Skill 4,User Skill 5,Institution,Program Name
+Java,Spring Boot,MongoDB,MySQL,JPA,University of California Los Angeles,Backend Development
+Python,Django,NoSQL,PostgreSQL,Hibernate,University of British Columbia,Backend Development
+C++,Qt,Cassandra,SQLite,ORM,California Institute of Technology,Database Systems
+JavaScript,Angular,Redis,Oracle,SQLAlchemy,University of Texas at Austin,Frontend Development
+Ruby on Rails,MongoDB,SQLite,MySQL,ActiveRecord,University of Michigan,Database Systems
+C#,ASP.NET,MariaDB,SQL Server,Entity Framework,University of Illinois Urbana-Champaign,Backend Development
+PHP,Laravel,CouchDB,Amazon Aurora,Doctrine,University of Washington,Backend Development
+Java,Spring Boot,Neo4j,PostgreSQL,JPA,University of Melbourne,Backend Development
+Python,Flask,Couchbase,SQLite,Django,University of Toronto,Backend Development
+C++,MySQL,SQLite,PostgreSQL,ODBC,University of Pennsylvania,Database Systems
+JavaScript,React.js,MongoDB,MySQL,Mongoose,University of Waterloo,Frontend Development
+Ruby on Rails,SQLite,PostgreSQL,Redis,ActiveRecord,University of California Santa Barbara,Database Systems
+C#,ASP.NET Core,Cosmos DB,SQL Server,Entity Framework,University of Colorado Boulder,Backend Development
+PHP,Symfony,Neo4j,Amazon RDS,Doctrine,University of Edinburgh,Backend Development
+Java,Spring Boot,Cassandra,MySQL,JPA,University of California San Diego,Backend Development
+Python,Django,CouchDB,PostgreSQL,Hibernate,University of Wisconsin-Madison,Backend Development
+C++,Qt,MongoDB,SQLite,ORM,University of Minnesota,Database Systems
+JavaScript,Angular,Redis,Oracle,SQLAlchemy,University of Manchester,Frontend Development
+Ruby on Rails,MongoDB,SQLite,MySQL,ActiveRecord,University of Auckland,Database Systems
+C#,ASP.NET,MariaDB,SQL Server,Entity Framework,University of Sydney,Backend Development
+PHP,Laravel,MongoDB,Amazon Aurora,Doctrine,University of Auckland,Backend Development
+Java,Spring Boot,Cassandra,MySQL,JPA,University of Oulu,Backend Development
+Python,Flask,HBase,PostgreSQL,Hibernate,University of Southampton,Backend Development
+C++,MySQL,SQLite,PostgreSQL,ODBC,University of California Santa Cruz,Database Systems
+JavaScript,React.js,Couchbase,MySQL,Mongoose,University of Manchester,Frontend Development
+Ruby on Rails,SQLite,PostgreSQL,Redis,ActiveRecord,University of Florida,Database Systems
+C#,ASP.NET Core,Cosmos DB,SQL Server,Entity Framework,University of Waterloo,Backend Development
+PHP,Symfony,Neo4j,Amazon RDS,Doctrine,University of Bristol,Backend Development
+Java,Spring Boot,Neo4j,MySQL,JPA,University of Amsterdam,Backend Development
+Python,Django,Cassandra,PostgreSQL,Hibernate,University of California Irvine,Backend Development
+C++,Qt,CouchDB,SQLite,ORM,University of Texas at Dallas,Database Systems
+JavaScript,Angular,Redis,Oracle,SQLAlchemy,University of Maryland,Frontend Development
+Ruby on Rails,MongoDB,SQLite,MySQL,ActiveRecord,University of Florida,Database Systems
+C#,ASP.NET,MongoDB,SQL Server,Entity Framework,University of California Riverside,Backend Development
+PHP,Laravel,HBase,Amazon Aurora,Doctrine,University of Auckland,Backend Development
+Java,Spring Boot,Couchbase,PostgreSQL,JPA,University of Copenhagen,Backend Development
+Python,Flask,Neo4j,SQLite,Django,University of Helsinki,Backend Development
+C++,MySQL,SQLite,PostgreSQL,ODBC,University of Colorado Denver,Database Systems
+JavaScript,React.js,MongoDB,MySQL,Mongoose,University of Manchester,Frontend Development
+Ruby on Rails,SQLite,PostgreSQL,Redis,ActiveRecord,University of Texas at San Antonio,Database Systems
+C#,ASP.NET Core,Cosmos DB,SQL Server,Entity Framework,University of Alberta,Backend Development
+PHP,Symfony,Cassandra,Amazon RDS,Doctrine,University of New South Wales,Backend Development
+Java,Spring Boot,HBase,MySQL,JPA,University of Massachusetts Amherst,Backend Development
+Python,Django,CouchDB,PostgreSQL,Hibernate,University of Utah,Backend Development
+C++,Qt,Neo4j,SQLite,ORM,University of Auckland,Database Systems
+JavaScript,Angular,Redis,Oracle,SQLAlchemy,University of Oslo,Frontend Development
+Ruby on Rails,MongoDB,SQLite,MySQL,ActiveRecord,University of South Florida,Database Systems
+C#,ASP.NET,MariaDB,SQL Server,Entity Framework,University of Warsaw,Backend Development
+PHP,Laravel,MongoDB,Amazon Aurora,Doctrine,University of Auckland,Backend Development

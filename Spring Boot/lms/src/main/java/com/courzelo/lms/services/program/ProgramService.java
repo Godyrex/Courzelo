@@ -16,6 +16,8 @@ import com.courzelo.lms.repositories.ClassRepository;
 import com.courzelo.lms.repositories.InstitutionRepository;
 import com.courzelo.lms.repositories.ProgramRepository;
 import com.courzelo.lms.repositories.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,19 +26,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
-<<<<<<< Updated upstream
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-=======
 import java.time.Instant;
 import java.util.*;
->>>>>>> Stashed changes
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +46,7 @@ public class ProgramService implements IProgramService {
     private final UserRepository userRepository;
     private final InstitutionRepository institutionRepository;
     private final IClassService iClassService;
+    private final RestTemplate restTemplate;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -285,8 +285,6 @@ public class ProgramService implements IProgramService {
         return ResponseEntity.ok().body(programDTO);
     }
 
-<<<<<<< Updated upstream
-=======
     @Override
     public ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException {
         // Get the skills of the searched user
@@ -353,6 +351,7 @@ public class ProgramService implements IProgramService {
         return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
     }
 
+
     @Override
     public ResponseEntity<String> predictPopularity(String programID) throws JsonProcessingException {
         Program program = programRepository.findById(programID).orElseThrow(null);
@@ -381,7 +380,6 @@ public class ProgramService implements IProgramService {
         }
     }
 
->>>>>>> Stashed changes
     private String generateSecretKey() {
         return UUID.randomUUID().toString().substring(0, 6);
     }

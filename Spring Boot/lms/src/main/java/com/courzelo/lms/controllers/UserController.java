@@ -1,16 +1,16 @@
 package com.courzelo.lms.controllers;
 
 
+import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.user.*;
 import com.courzelo.lms.entities.user.Role;
 import com.courzelo.lms.entities.user.Search;
 import com.courzelo.lms.entities.user.User;
-import com.courzelo.lms.entities.user.UserAddress;
-import com.courzelo.lms.security.JwtResponse;
 import com.courzelo.lms.security.Response;
 import com.courzelo.lms.services.user.IDeviceMetadataService;
 import com.courzelo.lms.services.user.IPhotoService;
 import com.courzelo.lms.services.user.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -197,4 +197,16 @@ public class UserController {
     public ResponseEntity<HttpStatus> updateUserContact(@Valid @RequestBody UserContactDTO userContactDTO, Principal principal) {
         return userService.updateUserContact(principal.getName(), userContactDTO);
     }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/update/skill")
+    @CacheEvict(value = {"UsersList", "MyInfo", "AnotherCache"}, allEntries = true)
+    public ResponseEntity<Response> updateSkill(@Valid @RequestParam String[] skills, Principal principal) {
+        return userService.updateSkill(principal.getName(), skills);
+    }
+    @GetMapping("/predictTFA")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Boolean> predictTFA(Principal principal) throws JsonProcessingException {
+        return userService.predictTFA(principal.getName());
+    }
+
 }

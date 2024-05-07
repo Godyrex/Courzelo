@@ -3,14 +3,9 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/AngularFront/dist" />
-      <excludeFolder url="file://$MODULE_DIR$/AngularFront/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/.idea/copilot/chatSessions" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (Courzelo)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-  <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="0376fbe7-246f-4154-a796-6b914ad92087" />
   </component>
 </module>

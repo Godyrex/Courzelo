@@ -5,6 +5,7 @@ import com.courzelo.lms.dto.program.ClassListDTO;
 import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.program.ProgramListDTO;
 import com.courzelo.lms.entities.institution.Program;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -34,12 +35,8 @@ public interface IProgramService {
     ResponseEntity<ProgramListDTO> getMyPrograms(String name);
 
     ResponseEntity<ProgramDTO> getProgramByClassID(String classID);
-<<<<<<< Updated upstream
-=======
 
     ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException;
     ResponseEntity<HttpStatus> joinProgramByID(String email, String id);
-
     ResponseEntity<String> predictPopularity(String programID) throws JsonProcessingException;
->>>>>>> Stashed changes
 }

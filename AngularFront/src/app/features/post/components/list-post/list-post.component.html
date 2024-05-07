@@ -1,0 +1,148 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Liste des publications</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Liste des publications</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<div class="container-fluid">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-tools">
+                        <button type="button" data-target=".bs-example-modal-lg-add" data-toggle="modal"
+                            class="btn btn-primary">Ajouter une publication</button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div *ngFor="let item of dataSource; let i = index" class="row">
+                        <div class="col-md-12">
+                            <!-- Box Comment -->
+                            <div class="card card-widget">
+                                <div class="card-header">
+                                    <div class="user-block">
+                                        <span class="username"><a href="#">Nada Hamdi</a></span>
+                                        <span class="username" hidden="true"><a href="#">{{item.id}}</a></span>
+
+                                        <!-- <span class="description">Shared publicly - 7:30 PM Today</span>-->
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <div class="card-tools">
+
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" data-target=".bs-example-modal-lg-edit"
+                                            data-toggle="modal" (click)="openDialogedit(item)" class="btn btn-tool">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" (click)="Delete(item.id)" class="btn btn-tool"
+                                            data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        {{item.description}}
+                                    </div>
+                                    <div class="row">
+                                        <img  [src]="item.imageUrl" class="post-img" alt="user image" style="
+                                        width: 200px; /* height: 150px; */ ">
+                                    </div>
+
+                                    <!-- <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
+                                        Share</button>
+                                    <button type="button" class="btn btn-default btn-sm"><i
+                                            class="far fa-thumbs-up"></i> Like</button>-->
+                                    <span class="float-right text-muted">{{ item.comments ? item.comments.length :
+                                        0 }} commentaires</span>
+
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer card-comments">
+                                    <app-list-comment [comments]="item.comments" [idPost]="item.id"></app-list-comment>
+                                    <!-- /.card-comment -->
+
+                                </div>
+                                <!-- /.card-footer -->
+                                <div class="card-footer">
+                                    <app-add-comment (commentAdded)="onCommentAdded()" [idPost]="item.id">
+                                    </app-add-comment>
+                                </div>
+                                <!-- /.card-footer -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+
+                        <!-- /.col -->
+
+
+                        <div class="modal fade bs-example-modal-lg-add" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Ajout publication</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <app-add-post (postAdded)="onPostAdded()"></app-add-post>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="modal fade bs-example-modal-lg-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Edit publication</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <app-edi-post (postEdited)="onPostEdited()" [data]="data"></app-edi-post>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <!-- /.row -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>

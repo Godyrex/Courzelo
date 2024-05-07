@@ -5,6 +5,7 @@ import com.courzelo.lms.dto.program.ClassListDTO;
 import com.courzelo.lms.dto.program.ProgramDTO;
 import com.courzelo.lms.dto.program.ProgramListDTO;
 import com.courzelo.lms.services.program.IProgramService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -40,6 +41,12 @@ public class ProgramController {
     public ResponseEntity<ProgramListDTO> getMyPrograms(Principal principal) {
         return iProgramService.getMyPrograms(principal.getName());
     }
+    @GetMapping("/get/ProgramSuggestion")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ProgramDTO> getProgramSuggestions(Principal principal) throws JsonProcessingException {
+        return iProgramService.getProgramSuggestions(principal.getName());
+    }
+
 
     @GetMapping("/all")
     @Cacheable(value = "ProgramList", key = "#page + '-' + #sizePerPage")
@@ -81,6 +88,11 @@ public class ProgramController {
     @PostMapping("/join")
     public ResponseEntity<HttpStatus> joinProgram(Principal principal, @RequestParam() String key){
         return iProgramService.joinProgram(principal.getName(), key);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/joinByID")
+    public ResponseEntity<HttpStatus> joinProgramByID(Principal principal, @RequestParam() String id){
+        return iProgramService.joinProgramByID(principal.getName(), id);
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/leave")
