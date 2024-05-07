@@ -16,11 +16,15 @@ def predict():
     print(data)
 
     # Convert ISO 8601 formatted strings to Unix timestamps
-    data[1] = int(parse(data[1]).timestamp()) if data[1] != 'null' else 0
-    data[2] = int(parse(data[2]).timestamp()) if data[2] != 'null' else 0
+    login_time = int(parse(data[1]).timestamp()) if data[1] != 'null' else 0
+    logout_time = int(parse(data[2]).timestamp()) if data[2] != 'null' else 0
+    device_count = data[0]
+
+    # Convert list to DataFrame and provide feature names
+    df = pd.DataFrame([[login_time, logout_time, device_count]], columns=['login_time', 'logout_time', 'device_count'])
 
     # Make a prediction
-    prediction = model.predict(pd.DataFrame([data], index=[0]))
+    prediction = model.predict(df)
 
     # Send the prediction as a response
     return jsonify(int(prediction[0]))
