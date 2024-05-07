@@ -38,5 +38,5 @@ public interface IProgramService {
 
     ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException;
     ResponseEntity<HttpStatus> joinProgramByID(String email, String id);
-
+    ResponseEntity<String> predictPopularity(String programID) throws JsonProcessingException;
 }

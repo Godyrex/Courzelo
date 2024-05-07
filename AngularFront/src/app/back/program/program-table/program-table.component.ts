@@ -3,6 +3,7 @@ import {ProgramDTO} from "../../../model/program/ProgramDTO";
 import {ProgramListDTO} from "../../../model/program/ProgramListDTO";
 import {ProgramService} from "../../../service/program/program.service";
 import {ToastrService} from "ngx-toastr";
+import {ModuleService} from "../../../service/schedule/module.service";
 
 @Component({
   selector: 'app-program-table',
@@ -24,6 +25,7 @@ export class ProgramTableComponent implements OnInit {
 
   constructor(
     private programService: ProgramService,
+    private moduleSerivce: ModuleService,
     private toaster: ToastrService
   ) {
   }
@@ -56,6 +58,17 @@ export class ProgramTableComponent implements OnInit {
     this.programService.getPaginatedPrograms(this.currentPage, this.pageSize).subscribe(
       (response: ProgramListDTO) => {
         this.programDTOS = response.programs!;
+        this.programDTOS.forEach(program => {
+          // Assuming the predictPopularity function accepts a program as parameter
+          this.moduleSerivce.predictPopularity(program.id!).subscribe(
+            (prediction: string) => {
+              program.popularity = prediction;
+            },
+            (error: any) => {
+              console.error('Error predicting popularity:', error);
+            }
+          );
+        });
         console.log("programs in page " + this.currentPage + " :" + response.programs)
         this.totalPages = response.totalPages!;
         console.log("total number of pages : " + response.totalPages)

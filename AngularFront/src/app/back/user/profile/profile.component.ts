@@ -18,6 +18,8 @@ import {UserContact} from "../../../model/user/UserContact";
 import {UserAddress} from "../../../model/user/UserAddress";
 import {UserResponse} from "../../../model/user/UserResponse";
 import {map, Observable, of, startWith} from "rxjs";
+import {ModuleService} from "../../../service/schedule/module.service";
+import {PredictModule} from "../../../model/schedule/PredictModule";
 
 @Component({
   selector: 'app-profile',
@@ -131,6 +133,7 @@ export class ProfileComponent implements OnInit{
     private formBuilder: FormBuilder,
     private toaster: ToastrService,
     private authService: AuthenticationService,
+    private moduleService:ModuleService,
     public dialog:MatDialog
   ) {
   }
