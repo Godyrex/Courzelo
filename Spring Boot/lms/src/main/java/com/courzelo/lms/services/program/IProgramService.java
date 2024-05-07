@@ -34,4 +34,12 @@ public interface IProgramService {
     ResponseEntity<ProgramListDTO> getMyPrograms(String name);
 
     ResponseEntity<ProgramDTO> getProgramByClassID(String classID);
+<<<<<<< Updated upstream
+=======
+
+    ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException;
+    ResponseEntity<HttpStatus> joinProgramByID(String email, String id);
+
+    ResponseEntity<String> predictPopularity(String programID) throws JsonProcessingException;
+>>>>>>> Stashed changes
 }

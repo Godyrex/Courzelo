@@ -3,5 +3,6 @@ export interface ProgramDTO {
   name?: string;
   description?: string;
   programType?: string;
+  popularity?: string;
   secretKey?: string;
 }

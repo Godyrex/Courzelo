@@ -29,9 +29,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+<<<<<<< Updated upstream
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+=======
+import java.time.Instant;
+import java.util.*;
+>>>>>>> Stashed changes
 
 @Service
 @RequiredArgsConstructor
@@ -119,6 +124,7 @@ public class ProgramService implements IProgramService {
         if(program.getProgramType().equals(ProgramType.PUBLIC)){
             program.setSecretKey(generateSecretKey());
         }
+        program.setLastUpdate(Instant.now());
         Program savedProgram = programRepository.save(program);
         institution.getPrograms().add(program);
         institutionRepository.save(institution);
@@ -145,6 +151,7 @@ public class ProgramService implements IProgramService {
         }else if(program.getProgramType().equals(ProgramType.PRIVATE)){
             program.setSecretKey(null);
         }
+        program.setLastUpdate(Instant.now());
         Program savedProgram = programRepository.save(program);
         if (savedProgram.getId() != null) {
             return ResponseEntity.ok().body(true);
@@ -210,6 +217,7 @@ public class ProgramService implements IProgramService {
         newClass.setProgram(program1);
         classRepository.save(newClass);
         program1.getClasses().add(newClass);
+        program1.setLastUpdate(Instant.now());
         programRepository.save(program1);
         return ResponseEntity.ok().body(true);
     }
@@ -226,6 +234,7 @@ public class ProgramService implements IProgramService {
                 return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
             }
             program.getStudents().add(user);
+            program.setLastUpdate(Instant.now());
             programRepository.save(program);
             if(user.getEducation().getPrograms().contains(program)){
                 return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
@@ -244,6 +253,7 @@ public class ProgramService implements IProgramService {
                 .orElseThrow(() -> new ProgramNotFoundException("Program " + programID + " not found"));
         if(program.getStudents().contains(user)){
             program.getStudents().remove(user);
+            program.setLastUpdate(Instant.now());
             programRepository.save(program);
             if(user.getEducation().getPrograms().contains(program)){
                 user.getEducation().getPrograms().remove(program);
@@ -275,6 +285,103 @@ public class ProgramService implements IProgramService {
         return ResponseEntity.ok().body(programDTO);
     }
 
+<<<<<<< Updated upstream
+=======
+    @Override
+    public ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException {
+        // Get the skills of the searched user
+        User user = userRepository.findUserByEmail(name);
+        String[] skills = user.getProfile().getSkills().toArray(new String[0]);
+        log.info("Skills: " + skills);
+        Institution institution = institutionRepository.findById(user.getEducation().getInstitution().getId())
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
+        String institutionName = institution.getName();
+
+        // Create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Create request body
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("skills", skills);
+        requestBody.put("institution", institutionName);
+        String requestBodyJson = new ObjectMapper().writeValueAsString(requestBody);
+
+        // Create request
+        HttpEntity<String> request = new HttpEntity<>(requestBodyJson, headers);
+
+        // Make a POST request
+        ResponseEntity<String> programNameResponse = restTemplate.exchange(
+                "http://localhost:5000/predict",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        ObjectMapper objectMapper = new ObjectMapper();
+        String programName = objectMapper.readValue(programNameResponse.getBody(), String.class);
+        log.info("Program suggested: " + programName);
+        Program program = Optional
+                .ofNullable(programRepository
+                        .findByName(programName))
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + programName + " not found"));
+        ProgramDTO programDTO = modelMapper.map(program, ProgramDTO.class);
+        return programDTO != null ? ResponseEntity.ok().body(programDTO) : ResponseEntity.badRequest().body(null);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> joinProgramByID(String email, String id) {
+        User user = userRepository.findUserByEmail(email);
+        Program program = programRepository.findById(id)
+                .orElseThrow(() -> new ProgramNotFoundException("Program " + id + " not found"));
+        if(program==null){
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+        if(program.getProgramType().equals(ProgramType.PUBLIC)){
+            if(program.getStudents().contains(user)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            program.getStudents().add(user);
+            program.setLastUpdate(Instant.now());
+            programRepository.save(program);
+            if(user.getEducation().getPrograms().contains(program)){
+                return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+            }
+            user.getEducation().getPrograms().add(program);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<String> predictPopularity(String programID) throws JsonProcessingException {
+        Program program = programRepository.findById(programID).orElseThrow(null);
+        if(program==null){
+            return ResponseEntity.badRequest().body("Program not found");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String[] input = new String[]{String.valueOf(program.getLastUpdate()), String.valueOf(Instant.now())};
+        log.info("predictPopularity :Input :"+new ObjectMapper().writeValueAsString(input));
+        HttpEntity<String[]> request = new HttpEntity<>(input, headers);
+
+        // Make a POST request
+        ResponseEntity<Integer> popularityResponse = restTemplate.exchange(
+                "http://localhost:5000/predictModule",
+                HttpMethod.POST,
+                request,
+                Integer.class
+        );
+        int popularity = Integer.parseInt(String.valueOf(popularityResponse.getBody()));
+        if(popularity==1){
+            return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString("Popular"));
+        }else{
+            return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString("Not Popular"));
+        }
+    }
+
+>>>>>>> Stashed changes
     private String generateSecretKey() {
         return UUID.randomUUID().toString().substring(0, 6);
     }

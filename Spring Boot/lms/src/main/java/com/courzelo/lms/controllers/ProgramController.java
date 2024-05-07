@@ -94,4 +94,9 @@ public class ProgramController {
     public ResponseEntity<Boolean> removeClass(@PathVariable String classID, Principal principal) {
         return iProgramService.removeClass(classID, principal);
     }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/predictPopularity")
+    public ResponseEntity<String> predictPopularity(@RequestParam() String programID) throws JsonProcessingException {
+        return iProgramService.predictPopularity(programID);
+    }
 }
