@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
+import {UpdateService} from "../../../service/user/profile/update.service";
 
 @Component({
   selector: 'app-logout',
@@ -13,16 +14,19 @@ export class LogoutComponent implements OnInit {
 
   constructor(private router: Router,
               private toastr: ToastrService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private updateService: UpdateService,
+  ) {
   }
 
   ngOnInit(): void {
+    this.updateService.clearUserInfo();
     this.authenticationService.logout().subscribe(() => {
       this.toastr.success('You have been logged out', 'Success')
       localStorage.clear();
-      this.router.navigate(['/login']);
     }, error => {
       this.toastr.error('An error occurred while logging out', 'Error');
     });
+    this.router.navigate(['/login']);
   }
 }

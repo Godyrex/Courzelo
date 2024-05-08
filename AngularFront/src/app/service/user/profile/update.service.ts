@@ -4,7 +4,7 @@ import {JsonResponse} from "../../../model/user/JsonResponse";
 import {PasswordRequest} from "../../../model/user/PasswordRequest";
 import {NameRequest} from "../../../model/user/NameRequest";
 import {EmailRequest} from "../../../model/user/EmailRequest";
-import {map, Observable} from "rxjs";
+import {map, Observable, of, tap} from "rxjs";
 import {DeleteAccountRequest} from "../../../model/user/DeleteAccountRequest";
 import {LoginResponse} from "../../../model/user/LoginResponse";
 import {UserAddress} from "../../../model/user/UserAddress";
@@ -94,8 +94,19 @@ export class UpdateService {
     return this.http.get<SearchDTO[]>(`${this.baseUrl}/searches`, {params: {query: query}});
   }
 
-  getMyInfo() {
-    return this.http.get<UserResponse>(`${this.baseUrl}/myInfo`);
+  private userInfo: UserResponse | undefined;
+
+  getMyInfo(): Observable<UserResponse> {
+    if (this.userInfo) {
+      return of(this.userInfo);
+    } else {
+      return this.http.get<UserResponse>(`${this.baseUrl}/myInfo`).pipe(
+        tap(data => this.userInfo = data)
+      );
+    }
+  }
+  clearUserInfo() {
+    this.userInfo = undefined;
   }
   getMyContactInfo(){
     return this.http.get<UserContact>(`${this.baseUrl}/myContactInfo`);
