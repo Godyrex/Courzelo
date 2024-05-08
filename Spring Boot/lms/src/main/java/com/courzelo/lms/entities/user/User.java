@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.TextScore;
@@ -23,6 +24,7 @@ public class User implements UserDetails {
     private String id;
     @NotNull
     @TextIndexed(weight = 1)
+    @Indexed(unique = true)
     private String email;
     @NotNull
     private String password;

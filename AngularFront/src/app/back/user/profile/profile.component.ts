@@ -273,10 +273,11 @@ export class ProfileComponent implements OnInit{
     }
     this.updateService.predictTFA().subscribe(
       response => {
-        this.toaster.info('Two factor authentication prediction: ' + response);
+        if(response == true){
+          this.toaster.info("We recommend you to enable two factor authentication for better security");
+        }
         console.log(response);
       },error => {
-        this.toaster.error('Error predicting two factor authentication', 'Error');
         console.log(error);
       }
     );
