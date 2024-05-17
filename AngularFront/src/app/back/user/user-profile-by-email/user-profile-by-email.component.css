@@ -30,8 +30,8 @@
   -webkit-transform: rotate(45deg);
   width: 120px;
   display: block;
-  background: #007BFF; /* Change this line */
-  background: linear-gradient(#007BFF 0%, #007BFF 100%); /* Change this line */
+  background: #ffc600; /* Change this line */
+  background: linear-gradient(#ffc600 0%, #ffc600 100%); /* Change this line */
   box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
   position: relative;
   top: 20px;
@@ -41,7 +41,7 @@
 
 .ribbon:before, .ribbon:after {
   content: "";
-  border-top:   3px solid #0056b3; /* Change this line */
+  border-top:   3px solid #ffc600; /* Change this line */
   border-left:  3px solid transparent;
   border-right: 3px solid transparent;
   position:absolute;

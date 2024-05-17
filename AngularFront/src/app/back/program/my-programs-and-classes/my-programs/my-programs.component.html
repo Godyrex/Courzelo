@@ -9,7 +9,7 @@
   <div class="col-sm-4" *ngFor="let program of programs">
     <div class="card mt-4">
       <div class="card-body">
-        <h2 class="card-title text-primary">{{program.name}}</h2>
+        <h2 class="card-title ">{{program.name}}</h2>
         <p class="card-text"><strong>Description:</strong> {{program.description}}</p>
         <p class="card-text"><strong>Type:</strong> {{program.programType}}</p>
         <button class="btn btn-danger" (click)="leaveProgram(program.id!)">Leave</button>
@@ -19,7 +19,7 @@
   <div *ngIf="toggleSuggestedProgram" class="col-sm-4">
     <div class="card mt-4">
       <div class="card-body">
-        <h2 class="card-title text-primary">{{suggestedProgram.name}}</h2>
+        <h2 class="card-title ">{{suggestedProgram.name}}</h2>
         <p class="card-text"><strong>Description:</strong> {{suggestedProgram.description}}</p>
         <p class="card-text"><strong>Type:</strong> {{suggestedProgram.programType}}</p>
         <button class="btn btn-success" (click)="joinProgram(suggestedProgram.id!)">Join</button>

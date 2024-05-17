@@ -55,18 +55,18 @@
                 <a href="https://{{ institution.website }}" target="_blank">{{ institution.website }}</a>
               </td>
               <td>
-                <button (click)="showUsersTable(admins,institution.id!)" class="btn btn-link">
+                <button (click)="showUsersTable(admins,institution.id!)" class="btn ">
                   <i class="fas fa-user-shield mr-1" style="color: blue;"></i>Admins
                 </button>
               </td>
               <td>
-                <button (click)="showUsersTable(teachers,institution.id!)" class="btn btn-link">
+                <button (click)="showUsersTable(teachers,institution.id!)" class="btn ">
                   <i class="fas fa-chalkboard-teacher mr-1" style="color: green;"></i>Teachers
                 </button>
               </td>
 
               <td>
-                <button (click)="showUsersTable(students,institution.id!)" class="btn btn-link">
+                <button (click)="showUsersTable(students,institution.id!)" class="btn ">
                   <i class="fas fa-user-graduate mr-1" style="color: orange;"></i>Students
                 </button>
               </td>

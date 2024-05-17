@@ -1,29 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.btn-primary {
-  background-color: rgb(7, 41, 77) !important;
-  border-color: rgb(7, 41, 77) !important;
+.card-primary:not(.card-outline) > .card-header {
+  background-color: #ffc600 !important;
+}
+.page-link {
+  color: #07294DFF !important;
 }
 .btn {
-  background-color: rgb(7, 41, 77) !important;
-  border-color: rgb(7, 41, 77) !important;
+  background-color: #07294DFF ;
+  border-color: #07294DFF ;
+}
+.btn-primary {
+  background-color: #07294DFF !important;
+  border-color: #07294DFF !important;
+}
+
+.btn-link {
+  color: #e9ecef !important;
+}
+.nav-link:hover {
+  color: #07294DFF !important;
+  border-color: #e9ecef !important;
 }
 .nav-link.active {
-  background-color: rgb(7, 41, 77) !important;
-  border-color: rgb(7, 41, 77) !important;
+  background-color: #07294DFF !important;
+  border-color: #07294DFF !important;
   color: #ffffff !important;
 }
+
 .badge-primary {
   color: #fff !important;
-  background-color: rgb(7, 41, 77) !important;
+  background-color: #07294DFF !important;
 }
 .card-primary.card-outline {
   border-top: 3px solid #ffc600 !important;
 }
-h1 {
-  color: #ffc600 !important;
-}
 .bg-primary {
   background-color: #ffc600 !important;
 }
+.home-link {
+  color: #07294DFF !important;
+}
+.fa-github {
+  color: black !important;
+}
+.fa-facebook {
+  color: #1877F2 !important;
+}
+.fa-linkedin {
+  color: #0a66c2 !important;
+}
+.card-header
+{
+  background-color: #ffc600 !important;
+}
+
+
