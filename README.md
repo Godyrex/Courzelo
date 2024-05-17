@@ -9,12 +9,18 @@ Developed for [IPACT Consult inc.](https://www.ipactconsult.com/)
 ## Technologies
 
 ### Backend:
-- [Spring Boot](https://spring.io/projects/spring-boot)
+
+![Spring Logo](https://miro.medium.com/v2/resize:fit:700/0*R60lnmJl4hanOBaJ.png) 
+
+- [Spring Boot](https://spring.io/projects/spring-boot)  
 - [Spring Data](https://spring.io/projects/spring-data)
 - [Spring Security](https://spring.io/projects/spring-security)
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 
 ### Frontend:
+
+![Angular Logo](https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/21_Angular_logo_logos-512.png) 
+
 - [Angular](https://angular.io/)
 
 ## Installation
