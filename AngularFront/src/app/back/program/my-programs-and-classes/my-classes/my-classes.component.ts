@@ -20,7 +20,7 @@ export class MyClassesComponent implements OnInit{
       console.log(data);
       this.getProgramByClassId(this.myClass.id!);
     }, error=>{
-      this.toaster.error("Class not found");
+      console.log(error);
     })
   }
   getProgramByClassId(classId:string) {
@@ -29,11 +29,12 @@ export class MyClassesComponent implements OnInit{
       console.log(data);
     }, error => {
       console.log(error);
-      this.toaster.error("Program not found");
     }
     );
   }
   ngOnInit(): void {
     this.GetMyClass();
   }
+
+  protected readonly Object = Object;
 }
