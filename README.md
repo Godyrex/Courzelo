@@ -1,5 +1,7 @@
 # Courzelo
+
 ![Courzelo Logo](AngularFront/src/assets/Courzelo.png) 
+
 Courzelo is an e-learning platform that provides institutions worldwide with an easy-to-use learning management system.
 
 Developed for [IPACT Consult inc.](https://www.ipactconsult.com/)
