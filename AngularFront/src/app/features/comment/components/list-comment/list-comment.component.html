@@ -31,7 +31,7 @@
       </div>
         <div>
           <div style="float: inline-end;" *ngIf="response!=true && c.idPere==''">
-            <button type="button" class="btn btn-info btn-flat" (click)="response=true; selectComment(c)" >repondre !</button>
+            <button type="button" class="btn btn-primary" (click)="response=true; selectComment(c)" >repondre !</button>
           </div>
 
           <form [formGroup]="formGroup">

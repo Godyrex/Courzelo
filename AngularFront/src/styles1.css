@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.btn-primary {
+  background-color: rgb(7, 41, 77) !important;
+  border-color: rgb(7, 41, 77) !important;
+}
+.btn {
+  background-color: rgb(7, 41, 77) !important;
+  border-color: rgb(7, 41, 77) !important;
+}
+.nav-link.active {
+  background-color: rgb(7, 41, 77) !important;
+  border-color: rgb(7, 41, 77) !important;
+  color: #ffffff !important;
+}
+.badge-primary {
+  color: #fff !important;
+  background-color: rgb(7, 41, 77) !important;
+}
+.card-primary.card-outline {
+  border-top: 3px solid #ffc600 !important;
+}
+h1 {
+  color: #ffc600 !important;
+}
+.bg-primary {
+  background-color: #ffc600 !important;
+}
