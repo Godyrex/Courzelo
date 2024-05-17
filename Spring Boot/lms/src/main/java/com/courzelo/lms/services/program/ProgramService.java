@@ -284,10 +284,10 @@ public class ProgramService implements IProgramService {
         ProgramDTO programDTO = modelMapper.map(program, ProgramDTO.class);
         return ResponseEntity.ok().body(programDTO);
     }
-
+//***********************************************************************************************************
     @Override
     public ResponseEntity<ProgramDTO> getProgramSuggestions(String name) throws JsonProcessingException {
-        // Get the skills of the searched user
+        // nekhdho information il user
         User user = userRepository.findUserByEmail(name);
         String[] skills = user.getProfile().getSkills().toArray(new String[0]);
         log.info("Skills: " + skills);
@@ -295,20 +295,17 @@ public class ProgramService implements IProgramService {
                 .orElseThrow(() -> new InstitutionNotFoundException("Institution not found"));
         String institutionName = institution.getName();
 
-        // Create headers
+        // nhadhro information w nibaathohom lil flask
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create request body
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("skills", skills);
         requestBody.put("institution", institutionName);
         String requestBodyJson = new ObjectMapper().writeValueAsString(requestBody);
 
-        // Create request
         HttpEntity<String> request = new HttpEntity<>(requestBodyJson, headers);
 
-        // Make a POST request
         ResponseEntity<String> programNameResponse = restTemplate.exchange(
                 "http://localhost:5000/predict",
                 HttpMethod.POST,

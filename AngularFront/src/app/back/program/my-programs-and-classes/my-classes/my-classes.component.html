@@ -3,7 +3,7 @@
     <h1 class="m-0 display-4">Classe</h1>
   </div><!-- /.col -->
 </div><!-- /.row -->
-<div *ngIf="myClass" class="row">
+<div *ngIf="myClass && Object.keys(myClass).length > 0; else noClass" class="row">
   <div class="col-sm-6">
     <div class="card mt-4">
       <div class="card-body">
@@ -16,3 +16,10 @@
     </div>
   </div>
 </div>
+<ng-template #noClass>
+  <div class="row">
+    <div class="col-sm-6">
+      <p>You are not part of any class.</p>
+    </div>
+  </div>
+</ng-template>

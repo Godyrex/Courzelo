@@ -28,6 +28,7 @@ export class MyProgramsComponent implements OnInit{
     this.getMyPrograms();
     this.predictProgram();
   }
+  //************************************************************
   predictProgram() {
   this.toggleSuggestedProgram = false;
     this.programService.predictProgram().subscribe(

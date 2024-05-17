@@ -41,6 +41,7 @@ public class ProgramController {
     public ResponseEntity<ProgramListDTO> getMyPrograms(Principal principal) {
         return iProgramService.getMyPrograms(principal.getName());
     }
+    //*************************************************************************
     @GetMapping("/get/ProgramSuggestion")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ProgramDTO> getProgramSuggestions(Principal principal) throws JsonProcessingException {
