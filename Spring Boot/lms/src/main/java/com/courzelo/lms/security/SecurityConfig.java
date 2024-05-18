@@ -95,6 +95,12 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/nonDisponibilities/**")
                         .permitAll()
+                        .requestMatchers("/api/typereclamation/**")
+                        .permitAll()
+                        .requestMatchers("/api/board/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/reclamation/**")
+                        .permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());

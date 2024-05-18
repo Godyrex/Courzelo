@@ -1,0 +1,12 @@
+
+C
+java:S1452)"&Remove usage of generic wildcard type.(≥јЌЧ8БовЌш1
+l
+java:S4488("JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(џИМ∆ы€€€€8БовЌш1
+G	java:S106/"+Replace this use of System.out by a logger.(Г±–£8ВовЌш1
+L	java:S1061"+Replace this use of System.out by a logger.(®і°Њь€€€€8ГовЌш1
+]	java:S1252"<This block of commented-out lines of code should be removed.(Рхввщ€€€€8ГовЌш1
+b
+java:S46847"@Replace this persistent entity with a simple POJO or DTO object.(–ЎЃЃы€€€€8ДовЌш1
+]
+java:S4684<"@Replace this persistent entity with a simple POJO or DTO object.(АЧЭќ8ДовЌш1

@@ -1,0 +1,34 @@
+
+‚
+java:S1192e"`Define a constant instead of duplicating this literal "Reclamation not exist with id :" 3 times.(â˜†ãùÿÿÿÿ8ŒùöÎø1
+l	java:S117Z"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ò¸ŞM8ŒùöÎø1
+	java:S116 "^Rename this field "IReclamationService" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ıõúæùÿÿÿÿ8‹úöÎø1
+b
+java:S4684'"@Replace this persistent entity with a simple POJO or DTO object.(†ö¬µıÿÿÿÿ8úöÎø1
+]	java:S125("<This block of commented-out lines of code should be removed.(ê¤’±şÿÿÿÿ8úöÎø1
+L	java:S106*"+Replace this use of System.out by a logger.(Ÿ½©ÿúÿÿÿÿ8úöÎø1
+]	java:S1251"<This block of commented-out lines of code should be removed.(ê¤’±şÿÿÿÿ8‘úöÎø1
+L	java:S1063"+Replace this use of System.out by a logger.(Ÿ½©ÿúÿÿÿÿ8‘úöÎø1
+b
+java:S4684="@Replace this persistent entity with a simple POJO or DTO object.(åµïîúÿÿÿÿ8’úöÎø1
+]
+java:S4684B"@Replace this persistent entity with a simple POJO or DTO object.(ëÔÌ8’úöÎø1
+]
+java:S4684G"@Replace this persistent entity with a simple POJO or DTO object.(ò¨î‹8“úöÎø1
+]
+java:S4684_"@Replace this persistent entity with a simple POJO or DTO object.(™É8•úöÎø1
+j	java:S100c"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤Ï”8•úöÎø1
+U
+java:S1854f"8Remove this useless assignment to local variable "user".(ÁÉùƒ8•úöÎø1
+F
+java:S1481f")Remove this unused "user" local variable.(ÁÉùƒ8–úöÎø1
+l
+java:S4488k"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÚÑ¼›ıÿÿÿÿ8—úöÎø1
+G	java:S106~"+Replace this use of System.out by a logger.(¿Œ¹Ÿ8™úöÎø1
+^	java:S125"<This block of commented-out lines of code should be removed.(¥›Œûÿÿÿÿ8›úöÎø1
+D
+java:S1452˜"&Remove usage of generic wildcard type.(³ÀÍ—8œúöÎø1
+m
+java:S4488—"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÛˆŒÆûÿÿÿÿ8œúöÎø1
+Y	java:S125"<This block of commented-out lines of code should be removed.(›¤™®8úöÎø1
+^	java:S125£"<This block of commented-out lines of code should be removed.(«ìé¶ùÿÿÿÿ8úöÎø1
