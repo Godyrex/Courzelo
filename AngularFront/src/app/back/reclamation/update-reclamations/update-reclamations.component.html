@@ -1,0 +1,47 @@
+<div class="card-body">
+    <p class="login-box-msg">Modification reclamation</p>
+
+    <form [formGroup]="reclamationForm" (ngSubmit)="onUpdate()">
+        <div class="input-group mb-3">
+            <h1>ID:{{id}}</h1>
+          </div> 
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="sujet" formControlName="sujet">
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <span class="fas fa-user"></span>
+          </div>
+        </div>
+      </div>          
+      <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="details" formControlName="details">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <select class="form-control select2" style="width: 100%;" formControlName="type">
+              <option *ngFor="let s of types" [value]="s">{{s}}</option>
+          </select>
+      </div> 
+      <div class="input-group mb-3">
+        <select class="form-control select2" style="width: 100%;" formControlName="status">
+            <option *ngFor="let v of status" [value]="v">{{v}}</option>  
+        </select>
+      </div> 
+      <div class="row">
+        <!-- /.col -->
+       <!-- <div class="col-6">
+          <button type="submit" [disabled]="reclamationForm.invalid"  class="btn btn-primary btn-block">Modifier</button>
+        </div>-->
+        <div class="col-6">
+          <button (click)="onClose()" type="reset" class="btn btn-danger btn-block">Annuler</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+  </div>
+  <!-- /.form-box -->

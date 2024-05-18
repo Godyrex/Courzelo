@@ -35,6 +35,11 @@ import {CalendarComponent} from "./back/program/institution/calendar/calendar.co
 import {ActionsComponent} from "./back/schedule/actions/actions.component";
 import {MyProgramsAndClassesComponent} from "./back/program/my-programs-and-classes/my-programs-and-classes.component";
 import {UsersSearchComponent} from "./back/user/users-search/users-search.component";
+import { ListReclamationsComponent } from './back/reclamation/list-reclamations/list-reclamations.component';
+import { AddReclamationComponent } from './back/reclamation/add-reclamation/add-reclamation.component';
+import { AddTypeComponent } from './back/reclamation/type-reclamation/add-type/add-type.component';
+import { JitsiComponent } from './back/reclamation/jitsi/jitsi.component';
+import { VideoComponent } from './back/reclamation/video/video.component';
 
 const routes: Routes = [
 
@@ -196,8 +201,26 @@ const routes: Routes = [
         component: ListPostComponent
       },
     ]
+  }   
+  ,   {
+    path: 'reclamations',
+    component: ListReclamationsComponent
+  } ,   {
+    path: 'addreclamation',
+    component: AddReclamationComponent
+  },   {
+    path: 'addrectype',
+    component: AddTypeComponent
+  },   {
+    path: 'jitsi',
+    component: JitsiComponent
   }
-
+  ,   {
+    path: 'video',
+    component: VideoComponent
+  }
+  
+  
 ];
 
 @NgModule({

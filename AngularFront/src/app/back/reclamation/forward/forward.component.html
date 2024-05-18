@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Transférer a Trello</h5>
+    </div>
+    <form [formGroup]="reclamationForm" (ngSubmit)="forward()">
+        <div>
+            <label class="form-label">Sujet :{{sujet}}</label>
+            </div>
+            <div>
+            <label class="form-label">Details:{{details}}</label></div>
+            <div class="card-body">
+                <div class="m-sm-4">
+                    <form [formGroup]="data" (ngSubmit)="forward()">
+                        <div class="mb-3">
+                            <label class="form-label">Transférer à </label>
+                            <select class="form-select mb-3" formControlName="developper">
+                                <option value="" disabled>Choisir un service</option>
+                                <option [value]="" *ngFor="let e of employee">{{e}}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Les activités</label>
+                            <textarea class="form-control" id="form6Example7" 
+                            formControlName="activity"
+                            rows="3"></textarea>
+                        </div>
+                        <div class="text-center m-3">
+                            <button  class="btn btn-dark btn-lg" style="margin-right: 10px;" [disabled]="! data.valid">Transférer</button> 
+                            <button type="reset" class="btn btn-danger btn-lg" (click)="middle()">Annuler</button>
+                            <!-- <button type="submit" class="btn btn-lg btn-primary">Sign up</button> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
