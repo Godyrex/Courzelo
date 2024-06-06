@@ -24,7 +24,7 @@ export class UserProfileComponent implements OnInit {
 
   listenForChanges(): void {
     this.userInfoChanged?.subscribe(() => {
-      this.getMyInfo();
+      this.updateMyInfo();
     });
   }
   getImage() {
@@ -38,12 +38,27 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMyInfo();
+    if(localStorage.getItem('loggedIn') == 'true') {
+      this.getMyInfo();
+    }
     this.listenForChanges()
   }
 
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
+      response => {
+        this.loginResponse = response;
+        if(this.loginResponse.profile?.photo != null) {
+          console.log("photoID: " + this.loginResponse.profile.photo)
+          this.getImage();
+        }
+        this.profileRoles = this.loginResponse!.roles!.map(role => role.replace('ROLE_', ''));
+        console.log(response);
+      }
+    )
+  }
+  updateMyInfo() {
+    this.updateService.updateMyInfo().subscribe(
       response => {
         this.loginResponse = response;
         if(this.loginResponse.profile?.photo != null) {
