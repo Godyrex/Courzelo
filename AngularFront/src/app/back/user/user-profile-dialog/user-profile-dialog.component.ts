@@ -29,7 +29,9 @@ export class UserProfileDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    if(localStorage.getItem('loggedIn') == 'true') {
       this.getMyInfo();
+    }
   }
 
   getMyInfo() {

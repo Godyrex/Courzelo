@@ -163,7 +163,6 @@ public class AuthService implements IAuthService {
 
         String accessToken = jwtUtils.generateJwtToken(authentication.getName());
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken, jwtExpirationMs).toString());
-
         User userDetails = (User) authentication.getPrincipal();
         RefreshToken refreshToken = null;
         userDetails.getActivity().setLastLogin(Instant.now());
@@ -179,7 +178,7 @@ public class AuthService implements IAuthService {
         }
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getToken(), loginDTO.isRememberMe() ? refreshRememberMeExpirationMs : refreshExpirationMs).toString());
-
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createLoggedInCookie(true, loginDTO.isRememberMe() ? refreshRememberMeExpirationMs : refreshExpirationMs).toString());
         userRepository.save(userDetails);
         return ResponseEntity.ok().build();
     }
@@ -407,6 +406,8 @@ public class AuthService implements IAuthService {
         log.info("Logout: Access Token removed");
         response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie("refreshToken", 0L).toString());
         log.info("Logout :Refresh Token removed");
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieUtil.createLoggedInCookie(false, 0L).toString());
+        log.info("Logout :Logged In Cookie removed");
         SecurityContextHolder.clearContext();
         log.info("Logout :Security context cleared!");
        user.getActivity().setLastLogout(Instant.now());

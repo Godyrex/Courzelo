@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
 import {AuthenticationService} from "../../../service/user/auth/authentication.service";
 import {UpdateService} from "../../../service/user/profile/update.service";
+import {AuthGuardService} from "../../../service/user/guard/auth-guard.service";
 
 @Component({
   selector: 'app-logout',
@@ -20,6 +21,7 @@ export class LogoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    AuthGuardService.unsetLoggedIn();
     this.updateService.clearUserInfo();
     this.authenticationService.logout().subscribe(() => {
       this.toastr.success('You have been logged out', 'Success')
