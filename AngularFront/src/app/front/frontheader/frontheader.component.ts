@@ -9,24 +9,21 @@ import {LoginResponse} from "../../model/user/LoginResponse";
   styleUrls: ['./frontheader.component.css']
 })
 export class FrontheaderComponent implements OnInit {
-  userRoles: LoginResponse = {};
-  auth: any = false;
+  user: LoginResponse | null = null;
 
-  constructor(private updateService: UpdateService,
-              private authGuardService: AuthGuardService) {
+  constructor(private updateService: UpdateService) {
   }
 
   ngOnInit(): void {
-    this.getMyInfo();
-    this.auth = this.authGuardService.canActivate();
-    console.log("User Authenticated : " + this.auth)
+    if (AuthGuardService.isLoggedIn()) {
+      this.getMyInfo();
+    }
   }
 
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
       response => {
-        this.userRoles = response;
-        console.log(response);
+        this.user = response;
       }
     )
   }

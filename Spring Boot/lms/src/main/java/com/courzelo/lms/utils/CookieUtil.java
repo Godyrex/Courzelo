@@ -11,6 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class CookieUtil {
+    public ResponseCookie createLoggedInCookie(boolean loggedIn, Long duration) {
+        return ResponseCookie.from("loggedIn", loggedIn ? "true" : "false")
+                .maxAge(duration / 1000)
+                .httpOnly(true)
+                .path("/")
+                .build();
+    }
     public ResponseCookie createAccessTokenCookie(String accessToken, Long duration) {
         return ResponseCookie.from("accessToken", accessToken)
                 .maxAge(duration / 1000)
@@ -26,7 +33,21 @@ public class CookieUtil {
                 .path("/")
                 .build();
     }
-
+    public String getLoggedInFromCookies(HttpServletRequest request) {
+        log.info("getLoggedInFromCookies : Getting LoggedIn...");
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("loggedIn")) {
+                    log.info("getLoggedInFromCookies : Cookie found : " + cookie.getValue());
+                    return cookie.getValue();
+                }
+            }
+            log.error("getLoggedInFromCookies : for is null");
+            return null;
+        }
+        log.error("getLoggedInFromCookies : request.getCookies() is null");
+        return null;
+    }
     public String getAccessTokenFromCookies(HttpServletRequest request) {
         log.info("getAccessTokenFromCookies : Getting token...");
         if (request.getCookies() != null) {

@@ -7,6 +7,7 @@ import {AuthenticationService} from "../../../service/user/auth/authentication.s
 import {TokenStorageService} from "../../../service/user/auth/token-storage.service";
 import {ToastrService} from "ngx-toastr";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {AuthGuardService} from "../../../service/user/guard/auth-guard.service";
 
 @Component({
   animations: [
@@ -65,7 +66,6 @@ export class LoginComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private token: TokenStorageService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
   ) {
@@ -96,6 +96,7 @@ export class LoginComponent {
                 this.toastr.info('Please enter the verification code sent to your email', 'Verification Required');
               }
             } else {
+              AuthGuardService.setLoggedIn();
               console.log("logging in")
               console.log(this.loginRequest.rememberMe)
               this.toastr.success('Login Successful');
@@ -113,6 +114,7 @@ export class LoginComponent {
   verifyTwoFactorAuth() {
     this.authService.loginTFA(this.loginRequest,this.TFAForm.controls['twoFactorAuthCode'].value!).subscribe(
       (response: any) => {
+        AuthGuardService.setLoggedIn();
         console.log(this.loginRequest.rememberMe)
         this.toastr.success('Login Successful');
         this.router.navigate(['settings/profile']);
@@ -128,6 +130,7 @@ export class LoginComponent {
       this.code = +this.verificationForm.controls['code'].value!;
       this.authService.confirmDevice(this.loginRequest, this.code).subscribe(
         response => {
+          AuthGuardService.setLoggedIn();
           this.toastr.success('Login Successful');
           this.router.navigate(['settings/profile']);
         },

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from "@angular/router";
 import {AuthenticationService} from "../auth/authentication.service";
-import {map, Observable} from "rxjs";
+import {map, Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,16 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(): Observable<boolean> {
-    return this.auth.isAuthenticated().pipe(
-      map(response => {
-        return response;
-      })
-    );
+    return of(localStorage.getItem('loggedIn') === 'true');
+  }
+
+  static isLoggedIn() {
+    return !!localStorage.getItem('loggedIn');
+  }
+  static setLoggedIn() {
+    localStorage.setItem('loggedIn', 'true');
+  }
+  static unsetLoggedIn() {
+    localStorage.setItem('loggedIn', 'false');
   }
 }

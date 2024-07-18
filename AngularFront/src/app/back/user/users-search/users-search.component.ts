@@ -39,7 +39,6 @@ export class UsersSearchComponent implements OnInit{
         this.isLoading = false;
       },
       (error) => {
-        this.toaster.error('Error while searching');
         this.isLoading = false;
       }
     );

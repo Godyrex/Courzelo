@@ -139,19 +139,19 @@ export class ProfileComponent implements OnInit{
   }
   toggleShowPhone() {
     this.updateService.updateShowPhone().subscribe(() => {
-      this.getMyInfo();
+      this.updateMyInfo()
       this.userInfoChanged.emit();
     });
   }
   toggleShowAddress() {
     this.updateService.updateShowAddress().subscribe(() => {
-      this.getMyInfo();
+      this.updateMyInfo();
       this.userInfoChanged.emit();
     });
   }
   toggleShowBirthDate() {
     this.updateService.updateShowBirthDate().subscribe(() => {
-      this.getMyInfo();
+      this.updateMyInfo();
       this.userInfoChanged.emit();
     });
   }
@@ -168,7 +168,9 @@ export class ProfileComponent implements OnInit{
   selectedSkills : string[] = [];
   filteredSkills: Observable<string[]> = of([]);
   ngOnInit(): void {
-        this.getMyInfo();
+    if(localStorage.getItem('loggedIn') == 'true') {
+      this.getMyInfo();
+    }
         this.updateService.getCountries().subscribe(countries => {
           this.countries = countries;
           console.log(countries);
@@ -218,7 +220,7 @@ export class ProfileComponent implements OnInit{
         response => {
           console.log(response);
           this.toaster.success('Contact information updated successfully', 'Success');
-          this.getMyInfo();
+          this.updateMyInfo();
           this.userInfoChanged.emit();
         },
         error => {
@@ -227,6 +229,28 @@ export class ProfileComponent implements OnInit{
         }
       )
     }
+  }
+  updateMyInfo() {
+    this.updateService.updateMyInfo().subscribe(
+      response => {
+        this.user = response;
+        if(this.user.contact?.userAddress?.country!=null && this.user.contact?.userAddress?.country!=""){
+          this.onCountryChange(this.user.contact?.userAddress?.country);
+        }
+        if(this.user.settings!= null){
+          this.showPhone = this.user.settings.showPhone!;
+          this.showAddress = this.user.settings.showAddress!;
+          this.showBirthDate = this.user.settings.showBirthDate!;
+        }
+        console.log(this.showAddress);
+        console.log(this.showPhone);
+        console.log(this.showBirthDate);
+        this.contactForm.controls['country'].setValue(this.user.contact?.userAddress?.country);
+        this.contactForm.controls['state'].setValue(this.user.contact?.userAddress?.state);
+        this.profileRoles = this.user!.roles!.map(role => role.replace('ROLE_', ''));
+        console.log(response);
+      }
+    )
   }
   getMyInfo() {
     this.updateService.getMyInfo().subscribe(
@@ -305,7 +329,7 @@ export class ProfileComponent implements OnInit{
         data => {
           console.log(data);
           this.toaster.success('Two factor authentication enabled successfully', 'Success')
-          this.getMyInfo()
+          this.updateMyInfo()
         },
         error => {
           console.log(error);
@@ -333,7 +357,7 @@ export class ProfileComponent implements OnInit{
         data => {
           console.log(data);
           this.toaster.success('Two factor authentication disabled successfully', 'Success')
-          this.getMyInfo()
+          this.updateMyInfo()
         },
         error => {
           console.log(error);
@@ -348,7 +372,7 @@ export class ProfileComponent implements OnInit{
       this.updateService.changeProfile(this.nameRequest)
         .subscribe(data => {
             console.log(data)
-            this.getMyInfo()
+            this.updateMyInfo()
             this.toaster.success("Profile updated successfully", "Success");
             this.userInfoChanged.emit();
           },
@@ -374,7 +398,6 @@ export class ProfileComponent implements OnInit{
           }
         });
     }
-
   }
 
   onFileSelected(event: any) {

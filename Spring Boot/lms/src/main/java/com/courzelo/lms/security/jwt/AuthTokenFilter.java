@@ -65,7 +65,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         String requestUri = request.getRequestURI();
 
-        if (isExcludedEndpoint(requestUri, excludedEndpoints)) {
+        if (isExcludedEndpoint(requestUri, excludedEndpoints) ||
+                (cookieUtil.getLoggedInFromCookies(request) == null ||
+                        cookieUtil.getLoggedInFromCookies(request).equals("false"))) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -96,6 +98,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 log.info("Device is new, please confirm device");
             } else if (userDetailsService.ValidUser(email)) {
                 UserDetails userDetails = userDetailsService.loadUserByEmail(email);
+                log.info("UserDetails: " + userDetails);
                 setAuthenticationInSecurityContext(request, userDetails);
             }
         }

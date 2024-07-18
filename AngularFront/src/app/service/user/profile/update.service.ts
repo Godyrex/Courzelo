@@ -94,19 +94,27 @@ export class UpdateService {
     return this.http.get<SearchDTO[]>(`${this.baseUrl}/searches`, {params: {query: query}});
   }
 
-  private userInfo: UserResponse | undefined;
 
   getMyInfo(): Observable<UserResponse> {
-    if (this.userInfo) {
-      return of(this.userInfo);
+    if (localStorage.getItem('user') !== null) {
+      return of(JSON.parse(localStorage.getItem('user')!));
     } else {
       return this.http.get<UserResponse>(`${this.baseUrl}/myInfo`).pipe(
-        tap(data => this.userInfo = data)
+        tap(data =>
+          localStorage.setItem('user', JSON.stringify(data))
+           )
       );
     }
   }
+  updateMyInfo(): Observable<UserResponse> {
+      return this.http.get<UserResponse>(`${this.baseUrl}/myInfo`).pipe(
+        tap(data =>
+          localStorage.setItem('user', JSON.stringify(data))
+        )
+      );
+  }
   clearUserInfo() {
-    this.userInfo = undefined;
+    localStorage.removeItem('user');
   }
   getMyContactInfo(){
     return this.http.get<UserContact>(`${this.baseUrl}/myContactInfo`);
