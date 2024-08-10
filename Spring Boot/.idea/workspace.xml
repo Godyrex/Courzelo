@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20846d53-6b70-49e9-90a2-dd5f05a3aa6f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/dto/ReclamationDT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AngularFront/src/app/features/comment/components/edit-comment/edit-comment.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../AngularFront/src/app/features/comment/components/edit-comment/edit-comment.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Spring Boot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Spring Boot.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/140e5d28-f551-4298-9dde-001350884389.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/140e5d28-f551-4298-9dde-001350884389.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/6/567032ae1fea63a5460f5520788eeb3a29bb9182" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/7/d772478e5632635c3b7737390f777656c06e0319" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/7/d772478e5632635c3b7737390f777656c06e0319" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/6/567032ae1fea63a5460f5520788eeb3a29bb9182" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/lms/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/reclamation/ReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/lms/src/main/java/com/courzelo/lms/controllers/reclamation/ReclamationController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,29 +43,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "ReclamationManagement",
-    "last_opened_file_path": "C:/Users/Ahmed/Desktop/pi-front/Courzelo/Courzelo/Spring Boot/lms/src/main/java/com/courzelo/lms/entities",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "spring.configuration.checksum": "d27cfd44d40d37576bbdfefa8ef30556",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ReclamationManagement&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ahmed/Desktop/pi-front/Courzelo/Courzelo/Spring Boot/lms/src/main/java/com/courzelo/lms/entities&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;d27cfd44d40d37576bbdfefa8ef30556&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mongo"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Ahmed\Desktop\pi-front\Courzelo\Courzelo\Spring Boot\lms\src\main\java\com\courzelo\lms\entities" />
@@ -136,7 +137,9 @@
       <workItem from="1711623911118" duration="4000" />
       <workItem from="1711623930935" duration="86000" />
       <workItem from="1715974781418" duration="5793000" />
-      <workItem from="1715983503730" duration="21394000" />
+      <workItem from="1715983503730" duration="23193000" />
+      <workItem from="1720665143661" duration="2385000" />
+      <workItem from="1720697620279" duration="5811000" />
     </task>
     <servers />
   </component>

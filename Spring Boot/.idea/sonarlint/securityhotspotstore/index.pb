@@ -57,8 +57,6 @@ t
 Dlms/src/main/java/com/courzelo/lms/entities/institution/Program.java,7\9\79bd1a6f67a58d2c111da5621b8f968527addba2
 r
 Blms/src/main/java/com/courzelo/lms/entities/institution/Class.java,2\8\28dfb7b76909c4055235ea893607997d8c7deaf5
-j
-:lms/src/main/java/com/courzelo/lms/dto/ReclamationDTO.java,5\6\567032ae1fea63a5460f5520788eeb3a29bb9182
 l
 <lms/src/main/java/com/courzelo/lms/dto/program/ClassDTO.java,0\e\0e57c786269e5b015db56149ff1cd67d3b17ad78
 p
